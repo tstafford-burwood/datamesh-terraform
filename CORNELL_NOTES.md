@@ -16,5 +16,7 @@ use main instead of master
 
 add instructions to connect repository
 
+test service accounts per cloudbuild
+
 how are we deploying new workspaces.  Break out bootstrap cloudbuild pipelines for foundation and deployment?
 

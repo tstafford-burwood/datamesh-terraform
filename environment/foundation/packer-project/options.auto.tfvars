@@ -11,7 +11,7 @@ activate_apis = [
   "oslogin.googleapis.com",
   "compute.googleapis.com"
 ]
-auto_create_network         = true
+auto_create_network         = false
 create_project_sa           = false
 default_service_account     = "keep"
 disable_dependent_services  = true

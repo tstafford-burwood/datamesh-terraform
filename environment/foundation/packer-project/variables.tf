@@ -23,7 +23,7 @@ variable "activate_apis" {
 variable "auto_create_network" {
   description = "Create the default network"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_project_sa" {

@@ -3,35 +3,35 @@ timeout: 1200s
 steps:
 - id: Terraform Init
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project'
+  dir: 'environment/foundation/packer-project'
   args: ['init',
     '-backend-config=bucket=${_BUCKET}',
     '-backend-config=prefix=${_PREFIX}/packer-project']
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project'
+  dir: 'environment/foundation/packer-project'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project'
+  dir: 'environment/foundation/packer-project'
   args: ['validate',
     '-no-color'
     ]
 
 - id: Terraform Plan
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project'
+  dir: 'environment/foundation/packer-project'
   args: ['plan',
     '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
       
 - id: Terraform Apply
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project'
+  dir: 'environment/foundation/packer-project'
   args: ['apply',
     '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-auto-approve'

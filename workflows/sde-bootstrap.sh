@@ -40,14 +40,14 @@ else
     echo "cloudbuild-sde-plan already created"
 fi
 
-if ! gcloud beta builds triggers describe cloudbuild-sde-plan ; then
+if ! gcloud beta builds triggers describe cloudbuild-sde-apply ; then
     gcloud beta builds triggers create github \
         --name="cloudbuild-sde-apply" \
         --repo-owner=${REPO_OWNER} \
         --repo-name=${REPO_NAME} \
         --branch-pattern="^main$" \
         --included-files="environment/foundation/cloudbuild-sde/terraform.tfvars" \
-        --build-config="cloudbuild/foundation/cloudbuild-sde-plan.yaml" \
+        --build-config="cloudbuild/foundation/cloudbuild-sde-apply.yaml" \
         --substitutions _BUCKET=${TF_STATE_BUCKET},_PREFIX=${TF_STATE_PREFIX},_TAG=${TF_VERSION}
 else
     echo "cloudbuild-sde-apply already created"

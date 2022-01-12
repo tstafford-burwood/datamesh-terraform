@@ -4,7 +4,7 @@ steps:
 
 - id: "terraform init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/cloudbuild-sde'
+  dir: 'environment/foundation/cloudbuild-sde'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -13,14 +13,14 @@ steps:
 
 - id: "terraform plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/cloudbuild-sde'
+  dir: 'environment/foundation/cloudbuild-sde'
   args: [
     'plan'
   ]
 
 - id: "terraform apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/cloudbuild-sde'
+  dir: 'environment/foundation/cloudbuild-sde'
   args: [
     'apply',
     '-auto-approve'

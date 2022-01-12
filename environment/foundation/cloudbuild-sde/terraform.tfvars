@@ -26,7 +26,7 @@ srde_composer_dag_bucket = "us-central1-composer-all-pr-77f45ed9-bucket" // CHAN
 # ---------------------------------------------------------
 
 srde_plan_trigger_repo_name  = "bitbucket_rkoliyatt-burwood_cornell-onboarding1" // CHANGE BEFORE FIRST DEPLOYMENT
-srde_plan_branch_name        = "gcp-wcm-srde-aaron"                              // CHANGE BEFORE FIRST DEPLOYMENT
+srde_plan_branch_name        = "^main$"                              // CHANGE BEFORE FIRST DEPLOYMENT
 srde_apply_trigger_repo_name = "bitbucket_rkoliyatt-burwood_cornell-onboarding1"
 srde_apply_branch_name       = "^main$"
 

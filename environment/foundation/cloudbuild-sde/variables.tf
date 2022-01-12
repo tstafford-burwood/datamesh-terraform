@@ -2,15 +2,6 @@
 # CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
 #-------------------------------------
 
-variable "source_code_repository" {
-  description = "Where the source code is stored. Values: `GITHUB`, `SOURCEREPO`."
-  type        = string
-
-  validation {
-    condition     = contains(["GITHUB", "SOURCEREPO"], var.source_code_repository)
-    error_message = "Valid values for var: source_code_repository are (GITHUB, SOURCEREPO)."
-  }
-}
 
 variable "github_owner" {
   description = "GitHub Organization Name"

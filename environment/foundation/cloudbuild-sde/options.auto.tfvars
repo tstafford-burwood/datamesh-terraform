@@ -40,8 +40,8 @@ srde_apply_trigger_invert_regex = false
 # CLOUDBUILD TRIGGERS - COMPOSER PLAN TFVARS
 #-------------------------------------------
 
-srde_composer_plan_trigger_tags     = []
-srde_composer_plan_trigger_disabled = false
+composer_plan_trigger_tags     = []
+composer_plan_trigger_disabled = false
 
 #-------------------------------------------
 # CLOUDBUILD TRIGGERS - COMPOSER APPLY TFVARS

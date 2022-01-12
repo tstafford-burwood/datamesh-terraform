@@ -142,13 +142,13 @@ variable "srde_apply_branch_name" {
 # CLOUDBUILD TRIGGERS - COMPOSER PLAN VARIABLES
 #----------------------------------------------
 
-variable "srde_composer_plan_trigger_tags" {
+variable "composer_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_composer_plan_trigger_disabled" {
+variable "composer_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false

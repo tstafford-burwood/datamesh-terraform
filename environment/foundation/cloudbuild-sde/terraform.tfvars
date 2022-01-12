@@ -3,8 +3,8 @@
 # CHANGE AFTER THE AUTOMATION PROJECT IS UP AND HAS A BUCKET AND PREFIX
 # ---------------------------------------------------------
 
-terraform_state_bucket = "terraform-state-3746" // CHANGE BEFORE FIRST DEPLOYMENT
-terraform_state_prefix = "tfstate" // CHANGE BEFORE FIRST DEPLOYMENT
+terraform_state_bucket = "terraform-state-sde-1292" // CHANGE BEFORE FIRST DEPLOYMENT
+terraform_state_prefix = "cloudbuild-sde" // CHANGE BEFORE FIRST DEPLOYMENT
 
 # ---------------------------------------------------------
 # STEP 2:

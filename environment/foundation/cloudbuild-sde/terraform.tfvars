@@ -33,6 +33,8 @@ srde_apply_branch_name       = "^main$"
 github_owner = "Burwood"
 github_repo_name = "terraform-gcp-sde"
 
+source_code_repository = "GITHUB"
+
 #srde_plan_trigger_repo_name  = "bitbucket_rkoliyatt-burwood_cornell-onboarding1" // CHANGE BEFORE FIRST DEPLOYMENT
 #srde_plan_branch_name        = "gcp-wcm-srde-aaron"                              // CHANGE BEFORE FIRST DEPLOYMENT
 #srde_apply_trigger_repo_name = "bitbucket_rkoliyatt-burwood_cornell-onboarding1"

@@ -1,4 +1,30 @@
 #-------------------------------------
+# CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
+#-------------------------------------
+
+variable "source_code_repository" {
+  description = "Where the source code is stored. Values: `GITHUB`, `SOURCEREPO`."
+  type        = string
+
+  validation {
+    condition     = contains(["GITHUB", "SOURCEREPO"], var.source_code_repository)
+    error_message = "Valid values for var: source_code_repository are (GITHUB, SOURCEREPO)."
+  }
+}
+
+variable "github_owner" {
+  description = "GitHub Organization Name"
+  type        = string
+  default     = ""
+}
+
+variable "github_repo_name" {
+  description = "Name of GitHub Repo"
+  type        = string
+  default     = ""
+}
+
+#-------------------------------------
 # CLOUDBUILD TRIGGERS - PLAN VARAIBLES
 #-------------------------------------
 
@@ -44,17 +70,7 @@ variable "srde_plan_trigger_repo_name" {
   default     = ""
 }
 
-variable "github_owner" {
-  description = "GitHub Organization Name"
-  type        = string
-  default     = ""
-}
 
-variable "github_repo_name" {
-  description = "Name of GitHub Repo"
-  type        = string
-  default     = ""
-}
 
 variable "srde_plan_trigger_invert_regex" {
   description = "Only trigger a build if the revision regex does NOT match the revision regex."

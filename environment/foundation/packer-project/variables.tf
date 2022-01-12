@@ -23,7 +23,7 @@ variable "activate_apis" {
 variable "auto_create_network" {
   description = "Create the default network"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "create_project_sa" {
@@ -92,7 +92,7 @@ variable "bucket_force_destroy" {
 
 variable "storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -216,39 +216,39 @@ variable "packer_container_artifact_repository_labels" {
   default     = {}
 }
 
-#---------------------------------------------------------
-# PATH ML CONTAINER ARTIFACT REGISTRY REPOSITORY VARIABLES
-#---------------------------------------------------------
+# #---------------------------------------------------------
+# # PATH ML CONTAINER ARTIFACT REGISTRY REPOSITORY VARIABLES
+# #---------------------------------------------------------
 
-variable "path_ml_container_artifact_repository_name" {
-  description = "The name of the repository that will be provisioned."
-  type        = string
-  default     = ""
-}
+# variable "path_ml_container_artifact_repository_name" {
+#   description = "The name of the repository that will be provisioned."
+#   type        = string
+#   default     = ""
+# }
 
-variable "path_ml_container_artifact_repository_format" {
-  description = "The format of packages that are stored in the repository. You can only create alpha formats if you are a member of the [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access). DOCKER, MAVEN (Preview), NPM (Preview), PYTHON (Preview), APT (alpha), YUM (alpha)."
-  type        = string
-  default     = ""
-}
+# variable "path_ml_container_artifact_repository_format" {
+#   description = "The format of packages that are stored in the repository. You can only create alpha formats if you are a member of the [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access). DOCKER, MAVEN (Preview), NPM (Preview), PYTHON (Preview), APT (alpha), YUM (alpha)."
+#   type        = string
+#   default     = ""
+# }
 
-variable "path_ml_container_artifact_repository_location" {
-  description = "The name of the location this repository is located in."
-  type        = string
-  default     = ""
-}
+# variable "path_ml_container_artifact_repository_location" {
+#   description = "The name of the location this repository is located in."
+#   type        = string
+#   default     = ""
+# }
 
-variable "path_ml_container_artifact_repository_description" {
-  description = "The user-provided description of the repository."
-  type        = string
-  default     = "Artifact Registry Repository created with Terraform."
-}
+# variable "path_ml_container_artifact_repository_description" {
+#   description = "The user-provided description of the repository."
+#   type        = string
+#   default     = "Artifact Registry Repository created with Terraform."
+# }
 
-variable "path_ml_container_artifact_repository_labels" {
-  description = "Labels with user-defined metadata. This field may contain up to 64 entries. Label keys and values may be no longer than 63 characters. Label keys must begin with a lowercase letter and may only contain lowercase letters, numeric characters, underscores, and dashes."
-  type        = map(string)
-  default     = {}
-}
+# variable "path_ml_container_artifact_repository_labels" {
+#   description = "Labels with user-defined metadata. This field may contain up to 64 entries. Label keys and values may be no longer than 63 characters. Label keys must begin with a lowercase letter and may only contain lowercase letters, numeric characters, underscores, and dashes."
+#   type        = map(string)
+#   default     = {}
+# }
 
 #---------------------------------------------------------------------
 # terraform-validator CONTAINER ARTIFACT REGISTRY REPOSITORY VARIABLES

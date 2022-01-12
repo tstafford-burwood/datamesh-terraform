@@ -11,7 +11,7 @@ steps:
 
 - id: 'VM Build and Image Creation'
   name: '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:${_PACKER_IMAGE_TAG}'
-  dir: 'environment/deployments/wcm-srde/packer-project/researcher-vm-image-build'
+  dir: 'environment/foundation/packer-project/researcher-vm-image-build'
   args:
     - build
     - -var

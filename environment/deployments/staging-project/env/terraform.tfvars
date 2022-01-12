@@ -2,7 +2,7 @@
 # PROJECT FACTORY TFVARS
 #-----------------------
 
-project_name = "aaron4-staging" // CHANGE BEFORE FIRST DEPLOYMENT
+project_name = "aws-staging" // CHANGE BEFORE FIRST DEPLOYMENT
 
 #-------------------------------------
 # BIGQUERY DATASET - GCS EVENTS TFVARS

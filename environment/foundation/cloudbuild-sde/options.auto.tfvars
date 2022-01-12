@@ -1,4 +1,4 @@
-terraform_container_version  = "0.13.5" // TERRAFORM TAG 
+terraform_container_version = "0.13.5" // TERRAFORM TAG 
 
 #----------------------------------
 # CLOUDBUILD TRIGGERS - PLAN TFVARS

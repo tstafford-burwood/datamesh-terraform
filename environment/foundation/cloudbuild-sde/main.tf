@@ -103,11 +103,20 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   filename       = "cloudbuild/deployments/composer-plan.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/terraform.tfvars"]
 
-  trigger_template {
-    project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+  #trigger_template {
+  #  project_id   = local.automation_project_id
+  #  repo_name    = var.srde_plan_trigger_repo_name
+  #  invert_regex = var.srde_plan_trigger_invert_regex
+  #  branch_name  = var.srde_plan_branch_name
+  #}
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
   }
 
   substitutions = {

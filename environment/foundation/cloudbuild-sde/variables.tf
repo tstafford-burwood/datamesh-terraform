@@ -44,6 +44,18 @@ variable "srde_plan_trigger_repo_name" {
   default     = ""
 }
 
+variable "github_owner" {
+  description = "GitHub Organization Name"
+  type        = string
+  default     = ""
+}
+
+variable "github_repo_name" {
+  description = "Name of GitHub Repo"
+  type        = string
+  default     = ""
+}
+
 variable "srde_plan_trigger_invert_regex" {
   description = "Only trigger a build if the revision regex does NOT match the revision regex."
   type        = bool

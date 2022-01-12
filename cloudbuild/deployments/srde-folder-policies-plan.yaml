@@ -1,0 +1,22 @@
+steps:
+
+
+# SRDE FOLDER POLICIES
+
+- id: "srde folder policies init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/srde-folder-policies'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/srde-folder-policies'
+  ]
+
+- id: "srde folder policies plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/srde-folder-policies'
+  args: [
+    'plan'
+  ]
+
+timeout: 1800s

@@ -1,0 +1,17 @@
+#-------------------------------
+# VPC SC BRIDGE PERIMETER MODULE
+#-------------------------------
+
+module "bridge_service_perimeter" {
+  source = "./modules/vpc_service_controls/bridge_service_perimeter"
+
+  // REQUIRED
+
+  bridge_service_perimeter_name      = var.bridge_service_perimeter_name
+  parent_policy_name                 = var.parent_policy_name
+  bridge_service_perimeter_resources = var.bridge_service_perimeter_resources
+
+  // OPTIONAL
+
+  bridge_service_perimeter_description = var.bridge_service_perimeter_description
+}

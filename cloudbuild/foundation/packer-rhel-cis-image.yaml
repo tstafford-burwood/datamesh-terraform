@@ -1,0 +1,22 @@
+# Perform a Packer build based on the `packer.json` configuration. This Packer
+# build creates a GCE image.
+#
+# See README.md for invocation instructions.
+
+# TODO: Create a Cloud Build pipeline in cloudbuild-iam-and-pipelines/main.tf
+
+timeout: 1800s
+
+steps:
+
+- id: 'VM Build and Image Creation'
+  name: '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:${_PACKER_IMAGE_TAG}'
+  dir: 'environment/deployments/wcm-srde/packer-project/researcher-vm-image-build'
+  args:
+    - build
+    - -var
+    - project_id=${_PACKER_PROJECT_ID}
+    - -var
+    - subnetwork=projects/${_PACKER_PROJECT_ID}/regions/${_REGION}/subnetworks/packer-${_REGION}-subnet
+    - packer-rhel-cis-image.json
+tags: ['cloud-builders-community']

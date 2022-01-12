@@ -1,0 +1,27 @@
+#----------------------------
+# VPC SC ACCESS LEVELS TFVARS
+#----------------------------
+
+// REQUIRED TFVARS
+
+access_level_name  = ""
+parent_policy_name = ""
+
+// OPTIONAL TFVARS - NON PREMIUM
+
+combining_function       = "AND"
+access_level_description = ""
+ip_subnetworks           = []
+access_level_members     = []
+negate                   = false
+regions                  = []
+required_access_levels   = []
+
+// OPTIONAL TFVARS - DEVICE POLICY (PREMIUM)
+
+allowed_device_management_levels = []
+allowed_encryption_statuses      = []
+minimum_version                  = ""
+os_type                          = "OS_UNSPECIFIED"
+require_corp_owned               = false
+require_screen_lock              = false

@@ -1,0 +1,13 @@
+#-------------------------------
+# VPC SC BRIDGE PERIMETER TFVARS
+#-------------------------------
+
+// REQUIRED TFVARS
+
+bridge_service_perimeter_name      = ""
+parent_policy_name                 = ""
+bridge_service_perimeter_resources = []
+
+// OPTIONAL TFVARS
+
+bridge_service_perimeter_description = ""

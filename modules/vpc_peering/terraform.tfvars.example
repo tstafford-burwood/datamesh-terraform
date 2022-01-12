@@ -1,0 +1,11 @@
+#-------------------
+# VPC PEERING TFVARS
+#-------------------
+
+vpc_peering_name                    = ""
+vpc_network_name                    = ""
+peer_network_name                   = ""
+export_custom_routes                = false
+import_custom_routes                = false
+export_subnet_routes_with_public_ip = false
+import_subnet_routes_with_public_ip = false

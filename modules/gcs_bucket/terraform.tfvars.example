@@ -1,0 +1,10 @@
+#--------------------------
+# GCS BUCKET MODULE TFVARS
+#--------------------------
+
+// GCS BUCKET TFVARS - REQUIRED
+bucket_suffix_name = [""]
+bucket_prefix_name = ""
+
+// GCS BUCKET TFVARS - OPTIONAL
+bucket_location = ""

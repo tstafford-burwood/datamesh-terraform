@@ -1,0 +1,30 @@
+steps:
+
+# PACKER PROJECT
+
+- id: "packer project - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/packer-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/packer-project'
+  ]
+
+- id: "packer project - destroy plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/packer-project'
+  args: [
+    'plan',
+    '-destroy'
+  ]
+
+- id: "packer project - destroy apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/packer-project'
+  args: [
+  'destroy',
+  '-auto-approve'
+  ]
+
+timeout: 3600s

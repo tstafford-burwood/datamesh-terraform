@@ -1,0 +1,30 @@
+timeout: 1800s
+
+steps:
+
+
+# SRDE FOLDER POLICIES
+
+- id: "srde folder policies init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/srde-folder-policies'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/srde-folder-policies'
+  ]
+
+- id: "srde folder policies plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/srde-folder-policies'
+  args: [
+  'plan'
+  ]
+
+- id: "srde folder policies apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/srde-folder-policies'
+  args: [
+  'apply',
+  '-auto-approve'
+  ]

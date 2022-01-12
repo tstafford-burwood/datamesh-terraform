@@ -1,0 +1,31 @@
+{
+  "builders": [
+    {
+      "type": "googlecompute",
+      "instance_name": "packer-builder-vm",
+      "disk_size": "50",
+      "project_id": "{{user `project_id`}}",
+      "source_image_project_id": "{{user `project_id`}}",
+      "source_image": "rhel-cis-image",
+      "zone": "us-central1-b",
+      "subnetwork": "{{user `subnetwork`}}",
+      "image_description": "created-with-packer",
+      "image_family": "packer-srde-cis-rhel8-poc",
+      "machine_type": "n1-standard-2",
+      "communicator": "none",
+      "scopes": [
+	"https://www.googleapis.com/auth/userinfo.email",
+	"https://www.googleapis.com/auth/compute",
+	"https://www.googleapis.com/auth/devstorage.full_control",
+	"https://www.googleapis.com/auth/logging.admin"
+      ],
+      "tags": ["packer"],
+      "use_os_login":true,
+      "image_storage_locations":["us-central1"],
+      "enable_secure_boot": true,
+      "enable_vtpm": true,
+      "enable_integrity_monitoring": true,
+      "startup_script_file": "sde-bastion-vm.sh"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+#----------------------------
+# AI PLATFORM NOTEBOOK MODULE
+#----------------------------
+
+module "ai_platform_notebook" {
+  source = "./modules/ai_notebook"
+
+  name         = var.notebook_name
+  location     = var.notebook_location
+  machine_type = var.notebook_machine_type
+  project      = var.notebook_project
+  labels       = var.notebook_labels
+  metadata     = var.notebook_metadata
+
+  // ACCOUNT INFO
+  instance_owners        = var.notebook_instance_owners
+  service_account        = var.notebook_service_account
+  service_account_scopes = var.notebook_service_account_scopes
+
+  // GPU DRIVER
+  install_gpu_driver = var.notebook_install_gpu_driver
+
+  // VPC AND SUBNET
+  network = var.notebook_network
+  subnet  = var.notebook_subnet
+
+  // BOOT DISK AND DATA DISK 
+  boot_disk_type    = var.notebook_boot_disk_type
+  boot_disk_size_gb = var.notebook_boot_disk_size_gb
+  data_disk_type    = var.notebook_data_disk_type
+  data_disk_size_gb = var.notebook_data_disk_size_gb
+
+  // ONLY ALLOW NETWORK WITH PRIVATE IP
+  no_public_ip = var.notebook_no_public_ip
+
+  // IF TRUE FORCES TO USE SSH TUNNEL
+  no_proxy_access = var.notebook_no_proxy_access
+
+  vm_project   = var.notebook_vm_project
+  image_family = var.notebook_image_family
+  image_name   = var.notebook_image_name
+
+  // A SET OF SHIELDED INSTANCE OPTIONS
+  // CHECK IF IMAGE SUPPORTS THIS OPTION
+  enable_integrity_monitoring = var.notebook_enable_integrity_monitoring
+  enable_secure_boot          = var.notebook_enable_secure_boot
+  enable_vtpm                 = var.notebook_enable_vtpm
+}

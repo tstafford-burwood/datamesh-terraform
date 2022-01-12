@@ -1,0 +1,25 @@
+#-------------------
+# GCS BUCKET MODULE
+#-------------------
+
+module "gcs_bucket" {
+  source = "./modules/gcs_bucket"
+
+  project_id                  = var.project_id
+  bucket_suffix_name          = var.bucket_suffix_name
+  bucket_prefix_name          = var.bucket_prefix_name
+  bucket_set_admin_roles      = var.bucket_set_admin_roles
+  admins                      = var.admins
+  bucket_versioning           = var.bucket_versioning
+  creators                    = var.creators
+  bucket_encryption_key_names = var.bucket_encryption_key_names
+  bucket_folders              = var.bucket_folders
+  bucket_force_destroy        = var.bucket_force_destroy
+  storage_bucket_labels       = var.storage_bucket_labels
+  bucket_location             = var.bucket_location
+  bucket_set_creator_roles    = var.bucket_set_creator_roles
+  bucket_set_viewer_roles     = var.bucket_set_viewer_roles
+  bucket_storage_class        = var.bucket_storage_class
+  viewers                     = var.viewers
+  depends_on                  = []
+}

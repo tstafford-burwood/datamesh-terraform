@@ -1,0 +1,31 @@
+timeout: 3600s
+
+steps:
+
+# SECURE DATA STAGING PROJECT
+
+- id: "staging projects - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/staging-project'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/staging-project'
+  ]
+
+  
+- id: "staging project - destroy plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/staging-project'
+  args: [
+  'plan',
+  '-destroy'
+  ]
+
+- id: "staging project - destroy all"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/staging-project'
+  args: [
+  'destroy',
+  '-auto-approve'
+  ]

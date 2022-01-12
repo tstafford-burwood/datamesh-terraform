@@ -1,0 +1,31 @@
+steps:
+
+
+# CLOUDBUILD ACCESS LEVELS
+
+- id: "access levels terraform init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/cloudbuild-access-levels'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/cloudbuild-access-levels'
+  ]
+
+- id: "access levels terraform plan destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/cloudbuild-access-levels'
+  args: [
+  'plan',
+  '-destroy'
+  ]
+
+- id: "access levels terraform destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/cloudbuild-access-levels'
+  args: [
+  'destroy',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

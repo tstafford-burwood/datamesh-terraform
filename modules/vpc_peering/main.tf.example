@@ -1,0 +1,16 @@
+#-------------------
+# VPC PEERING MODULE
+#-------------------
+
+module "vpc_peering" {
+
+  source = "./modules/vpc_peering"
+
+  vpc_peering_name                    = var.vpc_peering_name
+  vpc_network_name                    = var.vpc_network_name
+  peer_network_name                   = var.peer_network_name
+  export_custom_routes                = var.export_custom_routes
+  import_custom_routes                = var.import_custom_routes
+  export_subnet_routes_with_public_ip = var.export_subnet_routes_with_public_ip
+  import_subnet_routes_with_public_ip = var.import_subnet_routes_with_public_ip
+}

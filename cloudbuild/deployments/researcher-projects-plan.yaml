@@ -1,0 +1,31 @@
+steps:
+
+# RESEARCHER PROJECTS WITH DAGS
+- id: "researcher projects - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/researcher-projects'
+  ]
+
+- id: "researcher projects - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  args: [
+  'plan',
+  '--out',
+  'tfplan.binary'
+  ]
+
+- id: "staging project - first show"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    terraform show -json tfplan.binary > tfplan.json
+
+timeout: 3600s

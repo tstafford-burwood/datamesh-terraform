@@ -1,0 +1,22 @@
+timeout: 1800s
+
+steps:
+
+
+# SRDE ADMIN ACCESS LEVEL
+
+- id: "srde admin access levels - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/srde-admin-access-levels'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/srde-admin-access-levels'
+  ]
+
+- id: "srde admin access levels - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/srde-admin-access-levels'
+  args: [
+  'plan'
+  ]

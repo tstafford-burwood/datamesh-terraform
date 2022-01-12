@@ -1,0 +1,9 @@
+#-------------------------------------
+# ACCESS CONTEXT MANAGER ACCESS POLICY
+#-------------------------------------
+
+module "google_access_context_manager_access_policy" {
+  source      = "./modules/acess_context_manager_policy"
+  parent_id   = var.parent_id
+  policy_name = var.policy_name
+}

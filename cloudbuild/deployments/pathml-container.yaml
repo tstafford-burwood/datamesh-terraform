@@ -1,0 +1,13 @@
+# Build Path ML Container Image and push to Artifact Registry in Packer project.
+
+# TODO: Create a Cloud Build pipeline in cloudbuild-iam-and-pipelines/main.tf
+
+timeout: 1800s
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    dir: 'environment/deployments/wcm-srde/packer-project/pathml-container'
+    args: ['build', '.', '-t', '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/path-ml/path-ml:latest']
+
+images:
+  - '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/path-ml/path-ml:latest'

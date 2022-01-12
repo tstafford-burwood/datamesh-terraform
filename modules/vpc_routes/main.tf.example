@@ -1,0 +1,12 @@
+#------------------
+# VPC ROUTES MODULE
+#------------------
+
+module "vpc_routes" {
+  source  = "./modules/vpc_routes"
+
+  vpc_project_id    = var.vpc_project_id
+  vpc_network_name  = var.vpc_network_name
+  vpc_routes        = var.vpc_routes
+  module_depends_on = [var.module_depends_on]
+}

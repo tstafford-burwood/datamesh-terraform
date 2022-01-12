@@ -30,7 +30,7 @@ module "constants" {
 #-----------------------
 
 module "packer-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = var.project_name
@@ -101,7 +101,7 @@ resource "google_project_service" "enable_packer_project_apis" {
 #--------------------------
 
 module "packer_vpc" {
-  source = "../../../../modules/vpc"
+  source = "../../../modules/vpc"
 
   project_id                             = module.packer-project.project_id
   vpc_network_name                       = var.vpc_network_name
@@ -125,7 +125,7 @@ module "packer_vpc" {
 #----------------------------------------------
 
 module "packer_container_artifact_registry_repository" {
-  source = "../../../../modules/artifact_registry"
+  source = "../../../modules/artifact_registry"
 
   artifact_repository_project_id = module.packer-project.project_id
   artifact_repository_name       = var.packer_container_artifact_repository_name
@@ -143,7 +143,7 @@ module "packer_container_artifact_registry_repository" {
 #-----------------------------------------------
 
 module "path_ml_container_artifact_registry_repository" {
-  source = "../../../../modules/artifact_registry"
+  source = "../../../modules/artifact_registry"
 
   artifact_repository_project_id = module.packer-project.project_id
   artifact_repository_name       = var.path_ml_container_artifact_repository_name
@@ -161,7 +161,7 @@ module "path_ml_container_artifact_registry_repository" {
 #-----------------------------------------------------------
 
 module "terraform_validator_container_artifact_registry_repository" {
-  source = "../../../../modules/artifact_registry"
+  source = "../../../modules/artifact_registry"
 
   artifact_repository_project_id = module.packer-project.project_id
   artifact_repository_name       = var.terraform_validator_container_artifact_repository_name
@@ -196,7 +196,7 @@ module "packer_project_disable_sa_creation" {
 #----------------------------------------
 
 module "project_iam_marketplace_role" {
-  source = "../../../../modules/iam/project_iam"
+  source = "../../../modules/iam/project_iam"
 
   project_id            = module.packer-project.project_id
   project_member        = var.deploymentmanager_editor

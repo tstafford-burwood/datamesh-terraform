@@ -8,8 +8,8 @@ locals {
 
     org_id                     = "645343216837" // CHANGE BEFORE FIRST DEPLOYMENT
     billing_account_id         = "01EF01-627C10-7CD2DF" // CHANGE BEFORE FIRST DEPLOYMENT
-    srde_folder_id             = "411225293317" // CHANGE BEFORE FIRST DEPLOYMENT
-    automation_project_id      = "AUTOMATE_PROJECT_ID_REPLACE" // CHANGE BEFORE FIRST DEPLOYMEN
+    srde_folder_id             = "48819915135" // CHANGE BEFORE FIRST DEPLOYMENT
+    automation_project_id      = "automation-dan-sde" // CHANGE BEFORE FIRST DEPLOYMEN
     cloudbuild_service_account = "547140210872@cloudbuild.gserviceaccount.com" // CHANGE BEFORE FIRST DEPLOYMENT
 
     // PACKER PROJECT INFORMATION

@@ -3,7 +3,7 @@
 #------------------
 
 module "constants" {
-  source = "../constants"
+  source = "../../foundation/constants"
 }
 
 // DATA BLOCK
@@ -44,7 +44,7 @@ locals {
 #--------------------------------
 
 module "researcher-workspace-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = format("%v-%v", var.workspace_project_name, "workspace")
@@ -78,19 +78,19 @@ resource "google_compute_project_metadata" "researcher_workspace_project" {
 # GOOGLE CLOUD SOURCE REPOSITORY MODULE
 #--------------------------------------
 
-module "workspace_cloud_source_repository" {
-  source = "../../../../modules/source_repository"
+# module "workspace_cloud_source_repository" {
+#   source = "../../../modules/source_repository"
 
-  cloud_source_repo_name       = var.workspace_cloud_source_repo_name
-  cloud_source_repo_project_id = module.researcher-workspace-project.project_id
-}
+#   cloud_source_repo_name       = var.workspace_cloud_source_repo_name
+#   cloud_source_repo_project_id = module.researcher-workspace-project.project_id
+# }
 
 #------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM MEMBER BINDING
 #------------------------------------------------
 
 module "workspace_project_iam_member" {
-  source = "../../../../modules/iam/project_iam"
+  source = "../../../modules/iam/project_iam"
 
   project_id            = module.researcher-workspace-project.project_id
   project_member        = var.workspace_project_member
@@ -102,7 +102,7 @@ module "workspace_project_iam_member" {
 #---------------------------
 
 module "workspace_vpc" {
-  source = "../../../../modules/vpc"
+  source = "../../../modules/vpc"
 
   project_id                             = module.researcher-workspace-project.project_id
   vpc_network_name                       = var.workspace_vpc_network_name
@@ -134,7 +134,7 @@ module "workspace_vpc" {
 #------------------------------------------------------------
 
 module "researcher_workspace_restricted_api_cloud_dns" {
-  source = "../../../../modules/cloud_dns"
+  source = "../../../modules/cloud_dns"
 
   // REQUIRED
   cloud_dns_domain     = var.workspace_restricted_api_cloud_dns_domain
@@ -162,7 +162,7 @@ module "researcher_workspace_restricted_api_cloud_dns" {
 #------------------------------------------------------
 
 module "researcher_workspace_iap_tunnel_cloud_dns" {
-  source = "../../../../modules/cloud_dns"
+  source = "../../../modules/cloud_dns"
 
   // REQUIRED
   cloud_dns_domain     = var.workspace_iap_tunnel_cloud_dns_domain
@@ -189,7 +189,7 @@ module "researcher_workspace_iap_tunnel_cloud_dns" {
 #-------------------------------------------------------------
 
 module "researcher_workspace_artifact_registry_cloud_dns" {
-  source = "../../../../modules/cloud_dns"
+  source = "../../../modules/cloud_dns"
 
   // REQUIRED
   cloud_dns_domain     = var.workspace_artifact_registry_cloud_dns_domain
@@ -215,7 +215,7 @@ module "researcher_workspace_artifact_registry_cloud_dns" {
 
 module "researcher_workspace_vpc_firewall" {
 
-  source = "../../../../modules/firewall"
+  source = "../../../modules/firewall"
 
   custom_rules = var.workspace_firewall_custom_rules
   network      = module.workspace_vpc.network_name
@@ -228,7 +228,7 @@ module "researcher_workspace_vpc_firewall" {
 
 module "researcher_workspace_to_bastion_vpc_peer" {
 
-  source = "../../../../modules/vpc_peering"
+  source = "../../../modules/vpc_peering"
 
   vpc_peering_name                    = var.researcher_workspace_to_bastion_vpc_peering_name
   vpc_network_name                    = module.workspace_vpc.network_self_link
@@ -245,7 +245,7 @@ module "researcher_workspace_to_bastion_vpc_peer" {
 
 module "workspace_deeplearning_vm_service_account" {
 
-  source = "../../../../modules/service_account"
+  source = "../../../modules/service_account"
 
   // REQUIRED
 
@@ -269,34 +269,34 @@ module "workspace_deeplearning_vm_service_account" {
 # RESEARCHER WORKSPACE - PATH ML VM SERVICE ACCOUNT
 #--------------------------------------------------
 
-module "workspace_path_ml_vm_service_account" {
+# module "workspace_path_ml_vm_service_account" {
 
-  source = "../../../../modules/service_account"
+#   source = "../../../modules/service_account"
 
-  // REQUIRED
+#   // REQUIRED
 
-  project_id = module.researcher-workspace-project.project_id
+#   project_id = module.researcher-workspace-project.project_id
 
-  // OPTIONAL
+#   // OPTIONAL
 
-  billing_account_id    = local.billing_account_id
-  description           = var.workspace_path_ml_vm_sa_description
-  display_name          = var.workspace_path_ml_vm_sa_display_name
-  generate_keys         = var.workspace_path_ml_vm_sa_generate_keys
-  grant_billing_role    = var.workspace_path_ml_vm_sa_grant_billing_role
-  grant_xpn_roles       = var.workspace_path_ml_vm_sa_grant_xpn_roles
-  service_account_names = var.workspace_path_ml_vm_sa_service_account_names
-  org_id                = local.org_id
-  prefix                = var.workspace_path_ml_vm_sa_prefix
-  depends_on            = [time_sleep.wait_130_seconds]
-}
+#   billing_account_id    = local.billing_account_id
+#   description           = var.workspace_path_ml_vm_sa_description
+#   display_name          = var.workspace_path_ml_vm_sa_display_name
+#   generate_keys         = var.workspace_path_ml_vm_sa_generate_keys
+#   grant_billing_role    = var.workspace_path_ml_vm_sa_grant_billing_role
+#   grant_xpn_roles       = var.workspace_path_ml_vm_sa_grant_xpn_roles
+#   service_account_names = var.workspace_path_ml_vm_sa_service_account_names
+#   org_id                = local.org_id
+#   prefix                = var.workspace_path_ml_vm_sa_prefix
+#   depends_on            = [time_sleep.wait_130_seconds]
+# }
 
 #----------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM CUSTOM ROLE MODULE
 #----------------------------------------------------
 
 module "workspace_project_iam_custom_role" {
-  source = "../../../../modules/iam/project_iam_custom_role"
+  source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.researcher-workspace-project.project_id
   project_iam_custom_role_description = var.workspace_project_iam_custom_role_description
@@ -324,7 +324,7 @@ resource "google_project_iam_member" "researcher_workspace_project_custom_srde_r
 #---------------------------------------------------------
 
 module "researcher_workspace_deeplearning_vm_private_ip" {
-  source = "../../../../modules/compute_vm_instance/private_ip_instance"
+  source = "../../../modules/compute_vm_instance/private_ip_instance"
 
   // REQUIRED FIELDS
   project_id = module.researcher-workspace-project.project_id
@@ -370,63 +370,63 @@ module "researcher_workspace_deeplearning_vm_private_ip" {
   enable_integrity_monitoring = var.workspace_deeplearning_vm_enable_integrity_monitoring
 
   // DEPENDS ON
-  depends_on = [module.workspace_vpc, module.researcher-workspace-project]
+  #depends_on = [module.workspace_vpc, module.researcher-workspace-project]
 }
 
 #----------------------------------------------------
 # RESEARCHER WORKSPACE PATH ML VM - PRIVATE IP MODULE
 #----------------------------------------------------
 
-module "researcher_workspace_path_ml_vm_private_ip" {
-  source = "../../../../modules/compute_vm_instance/private_ip_instance"
+# module "researcher_workspace_path_ml_vm_private_ip" {
+#   source = "../../../modules/compute_vm_instance/private_ip_instance"
 
-  // REQUIRED FIELDS
-  project_id = module.researcher-workspace-project.project_id
+#   // REQUIRED FIELDS
+#   project_id = module.researcher-workspace-project.project_id
 
-  // OPTIONAL FIELDS
-  allow_stopping_for_update = var.workspace_path_ml_vm_allow_stopping_for_update
-  vm_description            = var.workspace_path_ml_vm_description
-  desired_status            = var.workspace_path_ml_vm_desired_status
-  deletion_protection       = var.workspace_path_ml_vm_deletion_protection
-  labels                    = var.workspace_path_ml_vm_labels
-  metadata                  = var.workspace_path_ml_vm_metadata
-  machine_type              = var.workspace_path_ml_vm_machine_type
-  vm_name                   = var.workspace_path_ml_vm_name
-  tags                      = var.workspace_path_ml_vm_tags
-  #zone                      = var.workspace_path_ml_vm_zone
-  zone = "${local.workspace_default_region}-b"
+#   // OPTIONAL FIELDS
+#   allow_stopping_for_update = var.workspace_path_ml_vm_allow_stopping_for_update
+#   vm_description            = var.workspace_path_ml_vm_description
+#   desired_status            = var.workspace_path_ml_vm_desired_status
+#   deletion_protection       = var.workspace_path_ml_vm_deletion_protection
+#   labels                    = var.workspace_path_ml_vm_labels
+#   metadata                  = var.workspace_path_ml_vm_metadata
+#   machine_type              = var.workspace_path_ml_vm_machine_type
+#   vm_name                   = var.workspace_path_ml_vm_name
+#   tags                      = var.workspace_path_ml_vm_tags
+#   #zone                      = var.workspace_path_ml_vm_zone
+#   zone = "${local.workspace_default_region}-b"
 
-  // BOOT DISK
+#   // BOOT DISK
 
-  initialize_params = [
-    {
-      vm_disk_size  = 100
-      vm_disk_type  = "pd-standard"
-      vm_disk_image = "${module.constants.value.packer_project_id}/${module.constants.value.packer_base_image_id_deeplearning}"
-    }
-  ]
-  auto_delete_disk        = var.workspace_path_ml_vm_auto_delete_disk
-  metadata_startup_script = file(var.workspace_path_ml_vm_metadata_startup_script)
+#   initialize_params = [
+#     {
+#       vm_disk_size  = 100
+#       vm_disk_type  = "pd-standard"
+#       vm_disk_image = "${module.constants.value.packer_project_id}/${module.constants.value.packer_base_image_id_deeplearning}"
+#     }
+#   ]
+#   auto_delete_disk        = var.workspace_path_ml_vm_auto_delete_disk
+#   metadata_startup_script = file(var.workspace_path_ml_vm_metadata_startup_script)
 
-  // NETWORK INTERFACE
+#   // NETWORK INTERFACE
 
-  subnetwork = module.workspace_vpc.subnets_self_links[0]
-  network_ip = var.workspace_path_ml_vm_network_ip // KEEP AS AN EMPTY STRING FOR AN AUTOMATICALLY ASSIGNED PRIVATE IP
+#   subnetwork = module.workspace_vpc.subnets_self_links[0]
+#   network_ip = var.workspace_path_ml_vm_network_ip // KEEP AS AN EMPTY STRING FOR AN AUTOMATICALLY ASSIGNED PRIVATE IP
 
-  // SERVICE ACCOUNT
+#   // SERVICE ACCOUNT
 
-  service_account_email  = module.workspace_path_ml_vm_service_account.email
-  service_account_scopes = var.workspace_path_ml_vm_service_account_scopes
+#   service_account_email  = module.workspace_path_ml_vm_service_account.email
+#   service_account_scopes = var.workspace_path_ml_vm_service_account_scopes
 
-  // SHIELDED INSTANCE CONFIG
+#   // SHIELDED INSTANCE CONFIG
 
-  enable_secure_boot          = var.workspace_path_ml_vm_enable_secure_boot
-  enable_vtpm                 = var.workspace_path_ml_vm_enable_vtpm
-  enable_integrity_monitoring = var.workspace_path_ml_vm_enable_integrity_monitoring
+#   enable_secure_boot          = var.workspace_path_ml_vm_enable_secure_boot
+#   enable_vtpm                 = var.workspace_path_ml_vm_enable_vtpm
+#   enable_integrity_monitoring = var.workspace_path_ml_vm_enable_integrity_monitoring
 
-  // DEPENDS ON
-  depends_on = [module.workspace_vpc, module.researcher-workspace-project]
-}
+#   // DEPENDS ON
+#   depends_on = [module.workspace_vpc, module.researcher-workspace-project]
+# }
 
 #----------------------------------------------------------
 # RESEARCHER WORKSPACE - REGIONAL EXTERNAL STATIC IP MODULE
@@ -435,7 +435,7 @@ module "researcher_workspace_path_ml_vm_private_ip" {
 // FUNCTIONALITY IN THIS MODULE IS ONLY FOR A REGIONAL EXTERNAL STATIC IP
 
 module "researcher_workspace_regional_external_static_ip" {
-  source = "../../../../modules/regional_external_static_ip"
+  source = "../../../modules/regional_external_static_ip"
 
   // REQUIRED
   regional_external_static_ip_name = var.researcher_workspace_regional_external_static_ip_name
@@ -454,7 +454,7 @@ module "researcher_workspace_regional_external_static_ip" {
 #----------------------------------------
 
 module "researcher_workspace_cloud_nat" {
-  source = "../../../../modules/cloud_nat"
+  source = "../../../modules/cloud_nat"
 
   create_router     = var.researcher_workspace_create_router
   project_id        = module.researcher-workspace-project.project_id
@@ -489,7 +489,7 @@ module "researcher_workspace_cloud_nat" {
 #----------------------------------
 
 module "researcher-bastion-access-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = format("%v-%v", var.bastion_project_name, "bastion")
@@ -530,7 +530,7 @@ resource "google_compute_project_metadata" "researcher_bastion_project" {
 #----------------------------------------------
 
 module "bastion_project_iam_member" {
-  source = "../../../../modules/iam/project_iam"
+  source = "../../../modules/iam/project_iam"
 
   project_id            = module.researcher-bastion-access-project.project_id
   project_member        = var.bastion_project_member
@@ -542,7 +542,7 @@ module "bastion_project_iam_member" {
 #--------------------------------------------------
 
 module "bastion_project_iam_custom_role" {
-  source = "../../../../modules/iam/project_iam_custom_role"
+  source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.researcher-bastion-access-project.project_id
   project_iam_custom_role_description = var.bastion_project_iam_custom_role_description
@@ -550,7 +550,7 @@ module "bastion_project_iam_custom_role" {
   project_iam_custom_role_title       = var.bastion_project_iam_custom_role_title
   project_iam_custom_role_permissions = var.bastion_project_iam_custom_role_permissions
   project_iam_custom_role_stage       = var.bastion_project_iam_custom_role_stage
-  depends_on                          = [module.researcher-bastion-access-project]
+  #depends_on                          = [module.researcher-bastion-access-project]
 }
 
 // USED SPECIFICALLY TO BIND CUSTOM IAM ROLE IN BASTION PROJECT TO RESEARCH USER OR GROUP
@@ -572,7 +572,7 @@ resource "google_project_iam_member" "researcher_bastion_project_custom_srde_rol
 #---------------------------------
 
 module "bastion_project_vpc" {
-  source = "../../../../modules/vpc"
+  source = "../../../modules/vpc"
 
   project_id                             = module.researcher-bastion-access-project.project_id
   vpc_network_name                       = var.bastion_project_vpc_network_name
@@ -606,7 +606,7 @@ module "bastion_project_vpc" {
 
 module "researcher_bastion_project_vpc_firewall" {
 
-  source = "../../../../modules/firewall"
+  source = "../../../modules/firewall"
 
   custom_rules = var.bastion_project_firewall_custom_rules
   network      = module.bastion_project_vpc.network_name
@@ -619,7 +619,7 @@ module "researcher_bastion_project_vpc_firewall" {
 
 module "researcher_bastion_to_workspace_vpc_peer" {
 
-  source = "../../../../modules/vpc_peering"
+  source = "../../../modules/vpc_peering"
 
   vpc_peering_name                    = var.researcher_bastion_to_workspace_vpc_peering_name
   vpc_network_name                    = module.bastion_project_vpc.network_self_link
@@ -637,7 +637,7 @@ module "researcher_bastion_to_workspace_vpc_peer" {
 
 module "bastion_project_service_account" {
 
-  source = "../../../../modules/service_account"
+  source = "../../../modules/service_account"
 
   // REQUIRED
 
@@ -662,7 +662,7 @@ module "bastion_project_service_account" {
 #------------------------------------------------------------------
 
 module "bastion_vm_sa_project_iam_member" {
-  source = "../../../../modules/iam/project_iam"
+  source = "../../../modules/iam/project_iam"
 
   project_id            = module.researcher-bastion-access-project.project_id
   project_member        = module.bastion_project_service_account.iam_email
@@ -676,7 +676,7 @@ module "bastion_vm_sa_project_iam_member" {
 #------------------------------------------
 
 module "researcher_bastion_vm_private_ip" {
-  source = "../../../../modules/compute_vm_instance/private_ip_instance"
+  source = "../../../modules/compute_vm_instance/private_ip_instance"
 
   // REQUIRED FIELDS
   project_id = module.researcher-bastion-access-project.project_id
@@ -688,10 +688,10 @@ module "researcher_bastion_vm_private_ip" {
   deletion_protection       = var.bastion_vm_deletion_protection
   labels                    = var.bastion_vm_labels
   metadata                  = var.bastion_vm_metadata
-  #metadata_startup_script   = file("./sde-bastion-vm.sh")
-  machine_type = var.bastion_vm_machine_type
-  vm_name      = var.bastion_vm_name
-  tags         = var.bastion_vm_tags
+  metadata_startup_script   = file("./sde-bastion-vm.sh")
+  machine_type              = var.bastion_vm_machine_type
+  vm_name                   = var.bastion_vm_name
+  tags                      = var.bastion_vm_tags
   #zone         = var.bastion_vm_zone
   zone = "${local.bastion_default_region}-b"
 
@@ -723,7 +723,7 @@ module "researcher_bastion_vm_private_ip" {
   enable_integrity_monitoring = var.bastion_vm_enable_integrity_monitoring
 
   // DEPENDS ON
-  depends_on = [module.bastion_project_vpc, module.researcher-bastion-access-project]
+  #depends_on = [module.bastion_project_vpc, module.researcher-bastion-access-project]
 }
 
 #-----------------------------------------------------
@@ -733,7 +733,7 @@ module "researcher_bastion_vm_private_ip" {
 // FUNCTIONALITY IN THIS MODULE IS ONLY FOR A REGIONAL EXTERNAL STATIC IP
 
 module "bastion_project_regional_external_static_ip" {
-  source = "../../../../modules/regional_external_static_ip"
+  source = "../../../modules/regional_external_static_ip"
 
   // REQUIRED
   regional_external_static_ip_name = var.bastion_project_regional_external_static_ip_name
@@ -752,7 +752,7 @@ module "bastion_project_regional_external_static_ip" {
 #-----------------------------------
 
 module "bastion_project_cloud_nat" {
-  source = "../../../../modules/cloud_nat"
+  source = "../../../modules/cloud_nat"
 
   create_router     = var.bastion_project_create_router
   project_id        = module.researcher-bastion-access-project.project_id
@@ -790,7 +790,7 @@ module "bastion_project_cloud_nat" {
 #------------
 
 module "iap_tunneling" {
-  source = "../../../../modules/iap"
+  source = "../../../modules/iap"
 
   // REQUIRED
   project           = module.researcher-bastion-access-project.project_id
@@ -804,7 +804,7 @@ module "iap_tunneling" {
   fw_name_allow_ssh_from_iap = var.fw_name_allow_ssh_from_iap
   host_project               = var.host_project
   network_tags               = module.researcher_bastion_vm_private_ip.tags
-  depends_on                 = [module.researcher_bastion_vm_private_ip]
+  #depends_on                 = [module.researcher_bastion_vm_private_ip]
 }
 
 #--------------------------------------
@@ -812,7 +812,7 @@ module "iap_tunneling" {
 #--------------------------------------
 
 module "researcher-data-egress-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = format("%v-%v", var.data_egress_project_name, "data-egress")
@@ -832,4 +832,12 @@ module "researcher-data-egress-project" {
   project_labels              = var.egress_project_labels
   lien                        = var.egress_lien
   random_project_id           = var.egress_random_project_id
+}
+
+resource "google_compute_project_metadata" "researcher_egress_project" {
+  project = module.researcher-data-egress-project.project_id
+  metadata = {
+    enable-osconfig = "TRUE",
+    enable-oslogin  = "TRUE"
+  }
 }

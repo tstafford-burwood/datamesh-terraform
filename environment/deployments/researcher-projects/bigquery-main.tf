@@ -9,7 +9,7 @@
 #----------------------------------------------------------
 
 module "bigquery_researcher_dlp" {
-  source = "../../../../modules/bigquery"
+  source = "../../../modules/bigquery"
 
   // REQUIRED
 
@@ -40,7 +40,7 @@ module "bigquery_researcher_dlp" {
 #----------------------------------------
 
 module "bigquery_researcher_workspace" {
-  source = "../../../../modules/bigquery"
+  source = "../../../modules/bigquery"
 
   // REQUIRED
 

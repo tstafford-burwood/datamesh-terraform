@@ -15,7 +15,7 @@ gcs_events_dataset_id = "srde_gcs_events"
 #--------------------------------------------
 
 access_level_name    = "aar4_staging_data_stewards"                                 // CHANGE NAME IF NEEDED, DATA STEWARDS ACCESS
-access_level_members = ["user:astrong@prorelativity.com","user:datasteward@prorelativity.com"] // CHANGE AS NEEDED WITH DATA STEWARD INDIVIDUALS
+access_level_members = ["user:dspeck@sde.burwood.io"] // CHANGE AS NEEDED WITH DATA STEWARD INDIVIDUALS
 
 #---------------------------------------------------------
 # VPC SC REGULAR PERIMETER TFVARS - SECURE STAGING PROJECT
@@ -33,4 +33,4 @@ staging_project_regular_service_perimeter_name = "aar4_staging_project_perimeter
 
 // USED TO SET role/composer.user AND custom srde role ON THE STAGING PROJECT FOR DATA STEWARDS TO ACCESS CLOUD COMPOSER
 
-data_stewards_iam_staging_project = ["user:astrong@prorelativity.com","user:datasteward@prorelativity.com"]
+data_stewards_iam_staging_project = ["user:dspeck@sde.burwood.io"]

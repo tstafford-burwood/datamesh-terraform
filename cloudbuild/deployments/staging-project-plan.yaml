@@ -1,86 +1,23 @@
+timeout: 3600s
+
 steps:
 
 # SECURE DATA STAGING PROJECT
 
 - id: "staging project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
   '-backend-config=prefix=${_PREFIX}/staging-project'
   ]
 
-- id: "staging project - copy table_schema_gcs_events.json"
-  name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/wcm-srde/staging-project/bigquery-table-schema'
-  entrypoint: /bin/sh
-  args: [
-  '-c',
-  'cp table_schema_gcs_events.json /workspace/environment/deployments/wcm-srde/staging-project'
-  ]
-
 - id: "staging project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'plan',
-  '--out',
-  'tfplan.tfplan'
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-target=module.secure-staging-project'
   ]
-
-- id: "staging project - first show"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    terraform show -json tfplan.tfplan > tfplan.json
-
-- id: Clone Google CSR with OPA Policies
-  name: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
-  entrypoint: bash
-  dir: 'environment/deployments/wcm-srde/staging-project'
-  args:
-  - '-c'
-  - |
-    gcloud source repos clone bitbucket_rkoliyatt-burwood_cornell-opa
-    cd bitbucket_rkoliyatt-burwood_cornell-opa
-    ls
-    cd gcp-hipaa-policies
-    ls
-    cd policies
-    ls
-    cd constraints
-    ls
-    cat bq_dataset_location.yaml
-
-- id: Run terraform-validator validate
-  name: gcr.io/automation-9aec/terraform-validator:latest
-  entrypoint: /bin/sh
-  dir: 'environment/deployments/wcm-srde/staging-project'
-  args:
-  - '-c'
-  - |
-    pwd
-    ls
-    cd bitbucket_rkoliyatt-burwood_cornell-opa
-    ls
-    cd gcp-hipaa-policies
-    ls
-    cd policies
-    ls
-    cd constraints
-    ls
-    cat bq_dataset_location.yaml
-    cd /workspace/environment/deployments/wcm-srde/staging-project
-    ls
-    terraform-validator validate tfplan.json --policy-path=bitbucket_rkoliyatt-burwood_cornell-opa/gcp-hipaa-policies --project=wcm-srde-staging-project-b5b2
-    
-artifacts:
-  objects:
-    location: 'gs://cloudbuild-artifacts-automation-9aec/staging-project-artifacts'
-    paths: ['environment/deployments/wcm-srde/staging-project/tfplan.json']
-
-timeout: 3600s

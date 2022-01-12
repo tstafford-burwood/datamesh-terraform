@@ -13,7 +13,7 @@ locals {
 #-------------------------------------
 
 module "access_level_members" {
-  source = "../../../../modules/vpc_service_controls/access_levels"
+  source = "../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
   access_level_name  = var.access_level_name
@@ -45,7 +45,7 @@ module "access_level_members" {
 # TODO: Consider implementing ingress/egress rules instead of using bridges (determine whether or not this is requires too much maintenance.)
 
 module "staging_project_regular_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+  source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
   // REQUIRED
   regular_service_perimeter_description = var.staging_project_regular_service_perimeter_description

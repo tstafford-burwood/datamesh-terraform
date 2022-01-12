@@ -3,7 +3,7 @@
 #------------------------------
 
 module "bigquery_dataset_gcs_events" {
-  source = "../../../../modules/bigquery"
+  source = "../../../modules/bigquery"
 
   // REQUIRED
 

@@ -1,10 +1,6 @@
-#----------------------
+#----------------------------------------------------------------------------
 # PACKER PROJECT TFVARS
-#----------------------
-
-// REQUIRED TFVARS
-
-#project_name = "packer-srde-wcm-aaron2" // CHANGE BEFORE FIRST DEPLOYMENT
+#----------------------------------------------------------------------------
 
 // OPTIONAL TFVARS
 activate_apis = [
@@ -12,7 +8,8 @@ activate_apis = [
   "artifactregistry.googleapis.com",
   "deploymentmanager.googleapis.com",
   "runtimeconfig.googleapis.com",
-  "oslogin.googleapis.com"
+  "oslogin.googleapis.com",
+  "compute.googleapis.com"
 ]
 auto_create_network         = true
 create_project_sa           = false
@@ -29,20 +26,20 @@ project_labels = {
 lien              = false
 random_project_id = true
 
-#--------------------------
+#----------------------------------------------------------------------------
 # GCS BUCKET MODULE TFVARS
-#--------------------------
+#----------------------------------------------------------------------------
 
 // GCS BUCKET TFVARS - OPTIONAL
 bucket_location             = "us-central1"
 uniform_bucket_level_access = true
 
-#------------------
+#----------------------------------------------------------------------------
 # PACKER VPC TFVARS
 # The `subnet_name` is hard coded in some of the cloudbuild files like
 # cloudbuild-packer-deep-learning-image.yaml.
 # Change this value, other files will need to be updated.
-#------------------
+#----------------------------------------------------------------------------
 
 vpc_network_name        = "packer-vpc"
 auto_create_subnetworks = false
@@ -63,44 +60,24 @@ subnets = [
   }
 ]
 
-#-----------------------------------------------------
+#----------------------------------------------------------------------------
 # PACKER CONTAINER ARTIFACT REGISTRY REPOSITORY TFVARS
 # The cloudbuild/deployments/cloudbuild-packer-container.yaml has the region
 # hard coded. If region changes here, must change there.
-#-----------------------------------------------------
+#----------------------------------------------------------------------------
 
-packer_container_artifact_repository_name   = "packer"
-packer_container_artifact_repository_format = "DOCKER"
-#packer_container_artifact_repository_location    = "us-central1" # Defined in the container yaml files (cloudbuild file)
+packer_container_artifact_repository_name        = "packer"
+packer_container_artifact_repository_format      = "DOCKER"
 packer_container_artifact_repository_description = "Packer Container Artifact Registry Repository created with Terraform"
 packer_container_artifact_repository_labels      = { "repository" : "packer-container" }
 
-#------------------------------------------------------
-# PATH ML CONTAINER ARTIFACT REGISTRY REPOSITORY TFVARS
-# The cloudbuild/deployments/cloudbuild-pathml-container.yaml has the region
-# hard coded. If region changes here, must change there.
-#------------------------------------------------------
-
-path_ml_container_artifact_repository_name   = "path-ml"
-path_ml_container_artifact_repository_format = "DOCKER"
-#path_ml_container_artifact_repository_location    = "us-central1" # Defined in the container yaml files (cloudbuild file)
-path_ml_container_artifact_repository_description = "Path ML Container Artifact Registry Repository created with Terraform"
-path_ml_container_artifact_repository_labels      = { "repository" : "path-ml-container" }
-
-#------------------------------------------------------------------
+#----------------------------------------------------------------------------
 # terraform-validator CONTAINER ARTIFACT REGISTRY REPOSITORY TFVARS
 # The cloudbuild/deployments/cloudbuild-terraform-validator.yaml has the region
 # hard coded. If region changes here, must change there.
-#------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
-terraform_validator_container_artifact_repository_name   = "terraform-validator"
-terraform_validator_container_artifact_repository_format = "DOCKER"
-#terraform_validator_container_artifact_repository_location    = "us-central1" # Defined in the container yaml files (cloudbuild file)
+terraform_validator_container_artifact_repository_name        = "terraform-validator"
+terraform_validator_container_artifact_repository_format      = "DOCKER"
 terraform_validator_container_artifact_repository_description = "terraform-validator Container Artifact Registry Repository created with Terraform"
 terraform_validator_container_artifact_repository_labels      = { "repository" : "terraform-validator-container" }
-
-#------------------------------------------------------------------
-# PACKER PROJECT DEPLOYMENT MANAGER ROLE
-#------------------------------------------------------------------
-
-#deploymentmanager_editor = "user:astrong@prorelativity.com" // CHANGE BEFORE FIRST DEPLOYMENT

@@ -3,7 +3,7 @@
 #-----------------
 
 module "constants" {
-  source = "../constants"
+  source = "../../foundation/constants"
 }
 
 // SET CONSTANTS VALUES
@@ -19,7 +19,7 @@ locals {
 #-----------------------
 
 module "secure-staging-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = var.project_name
@@ -47,7 +47,7 @@ module "secure-staging-project" {
 #--------------------------
 
 module "vpc" {
-  source = "../../../../modules/vpc"
+  source = "../../../modules/vpc"
 
   project_id                             = module.secure-staging-project.project_id
   vpc_network_name                       = var.vpc_network_name
@@ -68,7 +68,7 @@ module "vpc" {
 #----------------------
 
 module "pub_sub_topic" {
-  source = "../../../../modules/pub_sub/pub_sub_topic"
+  source = "../../../modules/pub_sub/pub_sub_topic"
 
   // REQUIRED
 
@@ -87,7 +87,7 @@ module "pub_sub_topic" {
 #----------------------------
 
 module "pub_sub_subscription" {
-  source = "../../../../modules/pub_sub/pub_sub_subscription"
+  source = "../../../modules/pub_sub/pub_sub_subscription"
 
   // REQUIRED
 
@@ -132,7 +132,7 @@ data "google_storage_project_service_account" "gcs_account" {
 #--------------------------------
 
 module "pub_sub_topic_iam_binding" {
-  source = "../../../../modules/pub_sub/pub_sub_topic/pub_sub_topic_iam_member"
+  source = "../../../modules/pub_sub/pub_sub_topic/pub_sub_topic_iam_member"
 
   // REQUIRED
 
@@ -148,7 +148,7 @@ module "pub_sub_topic_iam_binding" {
 #-------------------------------------------------
 
 module "folder_iam_member" {
-  source = "../../../../modules/iam/folder_iam"
+  source = "../../../modules/iam/folder_iam"
 
   folder_id     = local.srde_folder_id
   iam_role_list = var.dlp_service_agent_iam_role_list
@@ -160,7 +160,7 @@ module "folder_iam_member" {
 #---------------------------------------
 
 module "staging_project_iam_custom_role" {
-  source = "../../../../modules/iam/project_iam_custom_role"
+  source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.secure-staging-project.project_id
   project_iam_custom_role_description = var.project_iam_custom_role_description

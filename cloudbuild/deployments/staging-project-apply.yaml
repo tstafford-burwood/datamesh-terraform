@@ -6,7 +6,7 @@ steps:
 
 - id: "staging project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -15,17 +15,19 @@ steps:
 
 - id: "staging project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-target=module.secure-staging-project'
   ]
 
 - id: "staging project - first apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-target=module.secure-staging-project',
   '-auto-approve'
   ]
@@ -34,7 +36,7 @@ steps:
 
 - id: "staging project - output"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   entrypoint: /bin/sh
   args: [
   '-c',
@@ -46,7 +48,7 @@ steps:
 
 - id: "staging project - enable DLP API service agent"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   entrypoint: "bash"
   args:
     - "-c"
@@ -65,26 +67,28 @@ steps:
 
 - id: "staging project - copy table_schema_gcs_events.json"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/wcm-srde/staging-project/bigquery-table-schema'
+  dir: 'environment/deployments/staging-project/bigquery-table-schema'
   entrypoint: /bin/sh
   args: [
   '-c',
-  'cp table_schema_gcs_events.json /workspace/environment/deployments/wcm-srde/staging-project'
+  'cp table_schema_gcs_events.json /workspace/environment/deployments/staging-project'
   ]
 
 # The following steps provision everything else.
 
 - id: "staging project - second plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 - id: "staging project - second apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]

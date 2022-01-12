@@ -421,7 +421,7 @@ resource "google_cloudbuild_trigger" "terraform_validator_container_image" {
 #--------------------------
 
 module "folder_iam_member" {
-  source = "../../../../modules/iam/folder_iam"
+  source = "../../../modules/iam/folder_iam"
 
   folder_id     = local.srde_folder_id
   iam_role_list = var.iam_role_list

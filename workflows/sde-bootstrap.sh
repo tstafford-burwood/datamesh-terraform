@@ -7,7 +7,7 @@
 REPO_OWNER="Burwood"
 REPO_NAME="terraform-gcp-sde"
 TF_STATE_BUCKET="terraform-state-sde-1292"
-TF_STATE_PREFIX="foundation/cb-iam"
+TF_STATE_PREFIX="foundation"
 TF_VERSION="0.13.5"
 
 ORG_ID="645343216837"

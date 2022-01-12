@@ -19,7 +19,7 @@ steps:
     '-destroy'
   ]
 
-- id: "terraform apply"
+- id: "terraform destroy"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/cloudbuild-sde'
   args: [

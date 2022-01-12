@@ -53,6 +53,20 @@ else
     echo "cloudbuild-sde-apply already created"
 fi
 
+if ! gcloud beta builds triggers describe cloudbuild-sde-destroy ; then
+    gcloud beta builds triggers create github \
+        --name="cloudbuild-sde-destroy" \
+        --repo-owner=${REPO_OWNER} \
+        --repo-name=${REPO_NAME} \
+        --branch-pattern="^main$" \
+        --included-files="environment/foundation/cloudbuild-sde/terraform.tfvars" \
+        --build-config="cloudbuild/foundation/cloudbuild-sde-destroy.yaml" \
+        --require-approval \
+        --substitutions _BUCKET=${TF_STATE_BUCKET},_PREFIX=${TF_STATE_PREFIX},_TAG=${TF_VERSION}
+else
+    echo "cloudbuild-sde-apply already created"
+fi
+
 
 # Update Constants Values
 sed -i "s/ORG_ID_REPLACE/${ORG_ID}/g" ../environment/foundation/constants/constants.tf

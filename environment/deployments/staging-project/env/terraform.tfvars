@@ -1,6 +1,6 @@
 #-----------------------
 # PROJECT FACTORY TFVARS
-#----------------------- 
+#-----------------------
 
 project_name = "aws-staging" // CHANGE BEFORE FIRST DEPLOYMENT
 

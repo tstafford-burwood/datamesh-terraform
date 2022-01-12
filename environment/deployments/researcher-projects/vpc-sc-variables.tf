@@ -133,8 +133,8 @@ variable "researcher_workspace_regular_service_perimeter_allowed_services" {
 
 variable "researcher_workspace_regular_service_perimeter_egress_policies_identities" {
   description = "A list of allowed users"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 # variable "researcher_workspace_regular_service_perimeter_egress_policies" {

@@ -9,7 +9,7 @@
 #--------------------------------
 
 module "gcs_pub_sub_notification" {
-  source = "../../../../modules/pub_sub/pub_sub_gcs_notification"
+  source = "../../../modules/pub_sub/pub_sub_gcs_notification"
 
   for_each = local.researcher_bucket_names
 
@@ -59,7 +59,7 @@ locals {
 #--------------------------------
 
 module "pub_sub_topic_iam_binding" {
-  source = "../../../../modules/pub_sub/pub_sub_topic/pub_sub_topic_iam_member"
+  source = "../../../modules/pub_sub/pub_sub_topic/pub_sub_topic_iam_member"
 
   for_each = local.researcher_projects_buckets_gcs_service_accounts
 

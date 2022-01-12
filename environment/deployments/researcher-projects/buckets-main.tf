@@ -19,7 +19,7 @@ locals {
 #---------------------------------
 
 module "gcs_bucket_staging_ingress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = local.staging_project_id
@@ -49,7 +49,7 @@ module "gcs_bucket_staging_ingress" {
 #--------------------------------
 
 module "gcs_bucket_staging_egress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = local.staging_project_id
@@ -79,7 +79,7 @@ module "gcs_bucket_staging_egress" {
 #--------------------------------------
 
 module "gcs_bucket_researcher_workspace_ingress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = module.researcher-workspace-project.project_id
@@ -109,7 +109,7 @@ module "gcs_bucket_researcher_workspace_ingress" {
 #-------------------------------------
 
 module "gcs_bucket_researcher_workspace_egress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = module.researcher-workspace-project.project_id
@@ -141,7 +141,7 @@ module "gcs_bucket_researcher_workspace_egress" {
 #-----------------------------------------------
 
 module "gcs_bucket_researcher_data_egress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = module.researcher-data-egress-project.project_id
@@ -171,7 +171,7 @@ module "gcs_bucket_researcher_data_egress" {
 #-------------------------------------
 
 module "gcs_bucket_researcher_workspace_vm_access" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = module.researcher-workspace-project.project_id

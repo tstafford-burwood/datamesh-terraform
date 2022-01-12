@@ -31,7 +31,7 @@ variable "staging_ingress_bucket_admins" {
 
 variable "staging_ingress_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -43,25 +43,25 @@ variable "staging_ingress_bucket_creators" {
 
 variable "staging_ingress_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_ingress_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_ingress_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_ingress_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -128,7 +128,7 @@ variable "staging_egress_bucket_admins" {
 
 variable "staging_egress_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -140,25 +140,25 @@ variable "staging_egress_bucket_creators" {
 
 variable "staging_egress_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_egress_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_egress_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "staging_egress_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -225,7 +225,7 @@ variable "workspace_ingress_bucket_admins" {
 
 variable "workspace_ingress_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -237,25 +237,25 @@ variable "workspace_ingress_bucket_creators" {
 
 variable "workspace_ingress_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_ingress_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_ingress_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_ingress_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -322,7 +322,7 @@ variable "workspace_egress_bucket_admins" {
 
 variable "workspace_egress_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -334,25 +334,25 @@ variable "workspace_egress_bucket_creators" {
 
 variable "workspace_egress_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_egress_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_egress_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_egress_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -419,7 +419,7 @@ variable "researcher_data_egress_project_bucket_admins" {
 
 variable "researcher_data_egress_project_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -431,25 +431,25 @@ variable "researcher_data_egress_project_bucket_creators" {
 
 variable "researcher_data_egress_project_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "researcher_data_egress_project_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "researcher_data_egress_project_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "researcher_data_egress_project_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -516,7 +516,7 @@ variable "workspace_vm_access_bucket_admins" {
 
 variable "workspace_vm_access_bucket_versioning" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
@@ -528,25 +528,25 @@ variable "workspace_vm_access_bucket_creators" {
 
 variable "workspace_vm_access_bucket_encryption_key_names" {
   description = "Optional map of lowercase unprefixed name => string, empty strings are ignored."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_vm_access_bucket_folders" {
   description = "Map of lowercase unprefixed name => list of top level folder objects."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_vm_access_bucket_force_destroy" {
   description = "Optional map of lowercase unprefixed name => boolean, defaults to false."
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "workspace_vm_access_storage_bucket_labels" {
   description = "Labels to be attached to the buckets"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 

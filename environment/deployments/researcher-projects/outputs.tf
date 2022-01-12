@@ -162,20 +162,20 @@ output "workspace_deeplearning_vm_service_account" {
 # RESEARCHER WORKSPACE PATH ML VM SERVICE ACCOUNT OUTPUTS 
 #--------------------------------------------------------
 
-output "workspace_path_ml_vm_sa_email" {
-  description = "The service account email."
-  value       = module.workspace_path_ml_vm_service_account.email
-}
+# output "workspace_path_ml_vm_sa_email" {
+#   description = "The service account email."
+#   value       = module.workspace_path_ml_vm_service_account.email
+# }
 
-output "workspace_path_ml_vm_sa_iam_email" {
-  description = "The service account IAM-format email."
-  value       = module.workspace_path_ml_vm_service_account.iam_email
-}
+# output "workspace_path_ml_vm_sa_iam_email" {
+#   description = "The service account IAM-format email."
+#   value       = module.workspace_path_ml_vm_service_account.iam_email
+# }
 
-output "workspace_path_ml_vm_service_account" {
-  description = "Service account resource (for single use)."
-  value       = module.workspace_path_ml_vm_service_account.service_account
-}
+# output "workspace_path_ml_vm_service_account" {
+#   description = "Service account resource (for single use)."
+#   value       = module.workspace_path_ml_vm_service_account.service_account
+# }
 
 #-----------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM CUSTOM ROLE OUTPUTS
@@ -214,20 +214,20 @@ output "workspace_deeplearning_vm_tags" {
 # RESEARCHER WORKSPACE PATH ML VM - PRIVATE IP OUTPUTS
 #-----------------------------------------------------
 
-output "workspace_path_ml_vm_instance_id" {
-  description = "The server-assigned unique identifier of this instance."
-  value       = module.researcher_workspace_path_ml_vm_private_ip.instance_id
-}
+# output "workspace_path_ml_vm_instance_id" {
+#   description = "The server-assigned unique identifier of this instance."
+#   value       = module.researcher_workspace_path_ml_vm_private_ip.instance_id
+# }
 
-output "workspace_path_ml_vm_self_link" {
-  description = "The URI of the instance that was created."
-  value       = module.researcher_workspace_path_ml_vm_private_ip.self_link
-}
+# output "workspace_path_ml_vm_self_link" {
+#   description = "The URI of the instance that was created."
+#   value       = module.researcher_workspace_path_ml_vm_private_ip.self_link
+# }
 
-output "workspace_path_ml_vm_tags" {
-  description = "The tags applied to the VM instance."
-  value       = module.researcher_workspace_path_ml_vm_private_ip.tags
-}
+# output "workspace_path_ml_vm_tags" {
+#   description = "The tags applied to the VM instance."
+#   value       = module.researcher_workspace_path_ml_vm_private_ip.tags
+# }
 
 #-----------------------------------------------------------
 # RESEARCHER WORKSPACE - REGIONAL EXTERNAL STATIC IP OUTPUTS

@@ -29,7 +29,7 @@ locals {
 #--------------------------------------------
 
 module "researcher_group_member_access_level" {
-  source = "../../../../modules/vpc_service_controls/access_levels"
+  source = "../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
   access_level_name  = var.access_level_name
@@ -63,7 +63,7 @@ module "researcher_group_member_access_level" {
 # TODO: Consider implementing ingress/egress rules instead of using bridges (determine whether or not this is requires too much maintenance.)
 
 module "researcher_workspace_regular_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+  source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
   // REQUIRED
   regular_service_perimeter_description = var.researcher_workspace_regular_service_perimeter_description
@@ -85,39 +85,39 @@ module "researcher_workspace_regular_service_perimeter" {
   allowed_services         = var.researcher_workspace_regular_service_perimeter_allowed_services
   #egress_policies          = var.researcher_workspace_regular_service_perimeter_egress_policies
   egress_policies = [ // Allows the workspace project to pull the Path ML container in the Packer project. Note that the identity is set to the user instead of the VM's service account.
-  {
-    "from" = {
-      "identity_type" = ""
-      "identities"    = var.researcher_workspace_regular_service_perimeter_egress_policies_identities // RESEARCH GROUP USER // TODO: Consider changing this to the service account of the VM that will be running the Path ML container
+    {
+      "from" = {
+        "identity_type" = ""
+        "identities"    = var.researcher_workspace_regular_service_perimeter_egress_policies_identities // RESEARCH GROUP USER // TODO: Consider changing this to the service account of the VM that will be running the Path ML container
+      },
+      "to" = {
+        "resources" = [local.packer_project_number] // PACKER PROJECT NUMBER
+        "operations" = {
+          "artifactregistry.googleapis.com" = {
+            "methods" = [
+              "artifactregistry.googleapis.com/DockerRead"
+            ]
+          }
+        }
+      }
     },
-    "to" = {
-      "resources" = ["${local.packer_project_number}"] // PACKER PROJECT NUMBER
-      "operations" = {
-        "artifactregistry.googleapis.com" = {
-          "methods" = [
-            "artifactregistry.googleapis.com/DockerRead"
-          ]
+    { // Allows the Cloud Build service account in the workspace project to retrieve the Deep Learning VM image from the Packer project
+      "from" = {
+        "identity_type" = ""
+        "identities"    = ["serviceAccount:${local.cloudbuild_service_account}"] // CLOUDBUILD SERVICE ACCOUNT
+      },
+      "to" = {
+        "resources" = [local.packer_project_number] // PACKER PROJECT NUMBER
+        "operations" = {
+          "compute.googleapis.com" = {
+            "methods" = [
+              "InstancesService.Insert"
+            ]
+          }
         }
       }
     }
-  },
-  { // Allows the Cloud Build service account in the workspace project to retrieve the Deep Learning VM image from the Packer project
-    "from" = {
-      "identity_type" = ""
-      "identities"    = ["serviceAccount:${local.cloudbuild_service_account}"] // CLOUDBUILD SERVICE ACCOUNT
-    },
-    "to" = {
-      "resources" = ["${local.packer_project_number}"] // PACKER PROJECT NUMBER
-      "operations" = {
-        "compute.googleapis.com" = {
-          "methods" = [
-            "InstancesService.Insert"
-          ]
-        }
-      }
-    }
-  }
-]
+  ]
 
   depends_on = [module.researcher-workspace-project]
 }
@@ -131,7 +131,7 @@ module "researcher_workspace_regular_service_perimeter" {
 #---------------------------------------------------------------
 
 module "researcher_workspace_and_staging_project_bridge_perimeter" {
-  source = "../../../../modules/vpc_service_controls/bridge_service_perimeter"
+  source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
 
   // REQUIRED
 
@@ -157,7 +157,7 @@ module "researcher_workspace_and_staging_project_bridge_perimeter" {
 #-----------------------------------------------------------------
 
 module "researcher_workspace_and_data_lake_project_bridge_perimeter" {
-  source = "../../../../modules/vpc_service_controls/bridge_service_perimeter"
+  source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
 
   // REQUIRED
 
@@ -187,7 +187,7 @@ module "researcher_workspace_and_data_lake_project_bridge_perimeter" {
 
 module "researcher_bastion_project_regular_service_perimeter" {
   // This policy allows access to retrieve the bastion VM image from the Packer project
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+  source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
   // REQUIRED
   regular_service_perimeter_description = var.researcher_bastion_project_regular_service_perimeter_description
@@ -207,27 +207,27 @@ module "researcher_bastion_project_regular_service_perimeter" {
   restricted_services      = local.vpc_sc_all_restricted_apis
   enable_restriction       = var.researcher_bastion_project_regular_service_perimeter_enable_restriction
   allowed_services         = var.researcher_bastion_project_regular_service_perimeter_allowed_services
-  
+
   #egress_policies          = var.researcher_bastion_project_regular_service_perimeter_egress_policies
   egress_policies = [ // This policy allows access to retrieve the bastion VM image from the Packer project
-  {
-    "from" = {
-      "identity_type" = ""
-      "identities"    = ["serviceAccount:${local.cloudbuild_service_account}"] // CLOUDBUILD SERVICE ACCOUNT
-    },
-    "to" = {
-      "resources" = ["${local.packer_project_number}"] // PACKER PROJECT NUMBER
-      "operations" = {
-        "compute.googleapis.com" = {
-          "methods" = [
-            "InstancesService.Insert"
-          ]
+    {
+      "from" = {
+        "identity_type" = ""
+        "identities"    = ["serviceAccount:${local.cloudbuild_service_account}"] // CLOUDBUILD SERVICE ACCOUNT
+      },
+      "to" = {
+        "resources" = ["${local.packer_project_number}"] // PACKER PROJECT NUMBER
+        "operations" = {
+          "compute.googleapis.com" = {
+            "methods" = [
+              "InstancesService.Insert"
+            ]
+          }
         }
       }
     }
-  }
-]
-  depends_on               = [module.researcher-bastion-access-project]
+  ]
+  depends_on = [module.researcher-bastion-access-project]
 }
 
 // PERIMETER AROUND RESEARCHER EXTERNAL DATA EGRESS PROJECT
@@ -240,7 +240,7 @@ module "researcher_bastion_project_regular_service_perimeter" {
 # TODO: Consider implementing ingress/egress rules instead of using bridges (determine whether or not this is requires too much maintenance.)
 
 module "researcher_data_egress_regular_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+  source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
   // REQUIRED
   regular_service_perimeter_description = var.researcher_data_egress_regular_service_perimeter_description
@@ -267,7 +267,7 @@ module "researcher_data_egress_regular_service_perimeter" {
 #--------------------------------------------------------------------------
 
 module "researcher_external_data_egress_and_staging_project_bridge_perimeter" {
-  source = "../../../../modules/vpc_service_controls/bridge_service_perimeter"
+  source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
 
   // REQUIRED
 

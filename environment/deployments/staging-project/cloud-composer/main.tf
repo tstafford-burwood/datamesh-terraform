@@ -7,11 +7,11 @@ module "constants" {
 // SET LOCALS VALUES
 
 locals {
-  billing_account_id      = module.constants.value.billing_account_id
-  org_id                  = module.constants.value.org_id
-  staging_project_id      = module.constants.value.staging_project_id
-  parent_access_policy_id = module.constants.value.parent_access_policy_id
-  srde_folder_id          = module.constants.value.srde_folder_id
+  billing_account_id               = module.constants.value.billing_account_id
+  org_id                           = module.constants.value.org_id
+  staging_project_id               = module.constants.value.staging_project_id
+  parent_access_policy_id          = module.constants.value.parent_access_policy_id
+  srde_folder_id                   = module.constants.value.srde_folder_id
   cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
 
@@ -22,7 +22,7 @@ locals {
 resource "time_sleep" "wait_120_seconds" {
 
   create_duration = "120s"
-  depends_on      = [module.staging_project_shielded_vms, module.staging_project_disable_sa_creation, module.staging_project_vm_os_login]
+  #depends_on      = [module.staging_project_shielded_vms, module.staging_project_disable_sa_creation, module.staging_project_vm_os_login]
 }
 
 #-----------------------
@@ -117,32 +117,32 @@ module "folder_iam_member" {
 
 // FOR COMPOSER SERVICE ACCOUNT
 
-module "cloud_composer_access_level_members" {
-  source = "../../../../modules/vpc_service_controls/access_levels"
+# module "cloud_composer_access_level_members" {
+#   source = "../../../../modules/vpc_service_controls/access_levels"
 
-  // REQUIRED
-  #access_level_name  = var.access_level_name
-  access_level_name  = local.cloud_composer_access_level_name
-  parent_policy_name = local.parent_access_policy_id
+#   // REQUIRED
+#   #access_level_name  = var.access_level_name
+#   access_level_name  = local.cloud_composer_access_level_name
+#   parent_policy_name = local.parent_access_policy_id
 
-  // OPTIONAL - NON PREMIUM
-  combining_function       = var.combining_function
-  access_level_description = var.access_level_description
-  ip_subnetworks           = var.ip_subnetworks
-  access_level_members     = ["serviceAccount:${module.composer_service_account.email}"]
-  negate                   = var.negate
-  regions                  = var.regions
-  required_access_levels   = var.required_access_levels
+#   // OPTIONAL - NON PREMIUM
+#   combining_function       = var.combining_function
+#   access_level_description = var.access_level_description
+#   ip_subnetworks           = var.ip_subnetworks
+#   access_level_members     = ["serviceAccount:${module.composer_service_account.email}"]
+#   negate                   = var.negate
+#   regions                  = var.regions
+#   required_access_levels   = var.required_access_levels
 
-  // OPTIONAL - DEVICE POLICY (PREMIUM FEATURE)
-  allowed_device_management_levels = var.allowed_device_management_levels
-  allowed_encryption_statuses      = var.allowed_encryption_statuses
-  minimum_version                  = var.minimum_version
-  os_type                          = var.os_type
-  require_corp_owned               = var.require_corp_owned
-  require_screen_lock              = var.require_screen_lock
-  depends_on                       = [module.composer_service_account]
-}
+#   // OPTIONAL - DEVICE POLICY (PREMIUM FEATURE)
+#   allowed_device_management_levels = var.allowed_device_management_levels
+#   allowed_encryption_statuses      = var.allowed_encryption_statuses
+#   minimum_version                  = var.minimum_version
+#   os_type                          = var.os_type
+#   require_corp_owned               = var.require_corp_owned
+#   require_screen_lock              = var.require_screen_lock
+#   depends_on                       = [module.composer_service_account]
+# }
 
 // THE BELOW POLICIES ARE LISTED HERE TO DISABLE THEN RE-ENABLE DURING CLOUD BUILD PIPELINE RUNS
 // THESE POLICIES ARE ALSO APPLIED AT THE SRDE FOLDER LEVEL IN THE `../..srde-folder-policies` DIRECTORY
@@ -151,38 +151,40 @@ module "cloud_composer_access_level_members" {
 # STAGING PROJECT SERVICE ACCOUNT CREATION
 #-----------------------------------------
 
-module "staging_project_disable_sa_creation" {
-  source      = "terraform-google-modules/org-policy/google"
-  version     = "~> 3.0.2"
-  constraint  = "constraints/iam.disableServiceAccountCreation"
-  policy_type = "boolean"
-  policy_for  = "project"
-  project_id  = local.staging_project_id
-  enforce     = var.enforce_staging_project_disable_sa_creation
-}
+# module "staging_project_disable_sa_creation" {
+#   source      = "terraform-google-modules/org-policy/google"
+#   version     = "~> 3.0.2"
+#   constraint  = "constraints/iam.disableServiceAccountCreation"
+#   policy_type = "boolean"
+#   policy_for  = "project"
+#   project_id  = local.staging_project_id
+#   enforce     = var.enforce_staging_project_disable_sa_creation
+# }
 
 #-----------------------------------------
 # STAGING PROJECT REQUIRE OS LOGIN FOR VMs
 #-----------------------------------------
-module "staging_project_vm_os_login" {
-  source      = "terraform-google-modules/org-policy/google"
-  version     = "~> 3.0.2"
-  constraint  = "constraints/compute.requireOsLogin"
-  policy_type = "boolean"
-  policy_for  = "project"
-  project_id  = local.staging_project_id
-  enforce     = var.enforce_staging_project_vm_os_login
-}
+
+# module "staging_project_vm_os_login" {
+#   source      = "terraform-google-modules/org-policy/google"
+#   version     = "~> 3.0.2"
+#   constraint  = "constraints/compute.requireOsLogin"
+#   policy_type = "boolean"
+#   policy_for  = "project"
+#   project_id  = local.staging_project_id
+#   enforce     = var.enforce_staging_project_vm_os_login
+# }
 
 #-----------------------------
 # STAGING PROJECT SHIELDED VMs
 #-----------------------------
-module "staging_project_shielded_vms" {
-  source      = "terraform-google-modules/org-policy/google"
-  version     = "~> 3.0.2"
-  constraint  = "constraints/compute.requireShieldedVm"
-  policy_type = "boolean"
-  policy_for  = "project"
-  project_id  = local.staging_project_id
-  enforce     = var.enforce_staging_project_shielded_vms
-}
+
+# module "staging_project_shielded_vms" {
+#   source      = "terraform-google-modules/org-policy/google"
+#   version     = "~> 3.0.2"
+#   constraint  = "constraints/compute.requireShieldedVm"
+#   policy_type = "boolean"
+#   policy_for  = "project"
+#   project_id  = local.staging_project_id
+#   enforce     = var.enforce_staging_project_shielded_vms
+# }

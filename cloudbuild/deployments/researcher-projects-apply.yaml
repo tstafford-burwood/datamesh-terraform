@@ -12,30 +12,9 @@ steps:
 
 # First plan/apply provision only the workspace and bastion projects
 
-- id: "researcher projects - first plan"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-target=module.researcher-workspace-project',
-    '-target=module.researcher-bastion-access-project'
-  ]
-
-- id: "researcher projects - first apply"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'apply',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-target=module.researcher-workspace-project',
-    '-target=module.researcher-bastion-access-project',
-    '-auto-approve'
-  ]
-
 # Second plan/apply disables two org policies at the project level and then provision everything else
 
-- id: "researcher projects - second plan"
+- id: "researcher projects - plan org policies disabled"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
   args: [
@@ -45,18 +24,16 @@ steps:
     '-var=enforce_bastion_project_disable_sa_creation=false'
   ]
 
-# # Note: This step will always succeed to ensure that the next step always runs.
-
-- id: "researcher projects - second apply and disable project policies"
+- id: "researcher projects - apply org policies disabled"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    if ! terraform apply -auto-approve  -var-file=env/${_TFVARS_FILE}.tfvars -var=enforce_researcher_workspace_disable_sa_creation=false -var=enforce_bastion_project_disable_sa_creation=false ; then
-      echo "Pipeline has failed, check terraform apply log output to determine error."
-    fi
+  args: [
+    'apply',
+    '-auto-approve',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-var=enforce_researcher_workspace_disable_sa_creation=false',
+    '-var=enforce_bastion_project_disable_sa_creation=false'
+  ]
 
 # Third plan/apply re-enables two org policies at the project level
 

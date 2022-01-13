@@ -26,6 +26,7 @@ steps:
   dir: 'environment/deployments/researcher-projects'
   args: [
     'apply',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-target=module.researcher-workspace-project',
     '-target=module.researcher-bastion-access-project',
     '-auto-approve'

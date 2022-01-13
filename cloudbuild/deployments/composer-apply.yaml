@@ -1,11 +1,10 @@
 steps:
 
-
 # CLOUD COMPOSER WITH DAGS
 
 - id: "composer init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer'
+  dir: 'environment/deployments/staging-project/cloud-composer'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -14,9 +13,10 @@ steps:
 
 - id: "composer - first plan and disable project policies"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer'
+  dir: 'environment/deployments/staging-project/cloud-composer'
   args: [
     'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-var=enforce_staging_project_disable_sa_creation=false',
     '-var=enforce_staging_project_vm_os_login=false',
     '-var=enforce_staging_project_shielded_vms=false'
@@ -24,7 +24,7 @@ steps:
 
 - id: "composer - first apply and disable org policies"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer'
+  dir: 'environment/deployments/staging-project/cloud-composer'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -35,12 +35,13 @@ steps:
 
 - id: "composer - second plan and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer'
+  dir: 'environment/deployments/staging-project/cloud-composer'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
       terraform plan \
+      -var-file=env/${_TFVARS_FILE}.tfvars \
       -target=module.staging_project_disable_sa_creation \
       -var="enforce_staging_project_disable_sa_creation=true" \
       -target=module.staging_project_vm_os_login \
@@ -50,12 +51,13 @@ steps:
 
 - id: "composer - second apply and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer'
+  dir: 'environment/deployments/staging-project/cloud-composer'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
       terraform apply -auto-approve \
+      -var-file=env/${_TFVARS_FILE}.tfvars \
       -target=module.staging_project_disable_sa_creation \
       -var="enforce_staging_project_disable_sa_creation=true" \
       -target=module.staging_project_vm_os_login \
@@ -65,7 +67,7 @@ steps:
 
 - id: "staging project state pull - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -74,7 +76,7 @@ steps:
 
 - id: "output file creation - staging project"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   entrypoint: /bin/sh
   args: [
     '-c',
@@ -83,7 +85,7 @@ steps:
 
 - id: "load variables for notify DAG"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer/composer-dag-files'
+  dir: 'environment/deployments/staging-project/cloud-composer/composer-dag-files'
   entrypoint: python
   args: [
     'set_notify_envs.py'
@@ -91,7 +93,7 @@ steps:
 
 - id: "load DAG to GCS bucket"
   name: gcr.io/cloud-builders/gsutil
-  dir: 'environment/deployments/wcm-srde/staging-project/cloud-composer/composer-dag-files'
+  dir: 'environment/deployments/staging-project/cloud-composer/composer-dag-files'
   args: [
     'cp',
     '-n',

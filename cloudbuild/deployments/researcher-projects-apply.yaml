@@ -75,16 +75,16 @@ steps:
 - id: "researcher projects - third apply and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    terraform apply -auto-approve \
+  args: [
+    'apply',
+    '-auto-approve',
     '-var-file=env/${_TFVARS_FILE}.tfvars',
-    -target=module.researcher_workspace_disable_sa_creation \
-    -target=module.bastion_project_disable_sa_creation \
-    -var="enforce_researcher_workspace_disable_sa_creation=true" \
-    -var="enforce_bastion_project_disable_sa_creation=true" \
+    '-target=module.researcher_workspace_disable_sa_creation',
+    '-target=module.bastion_project_disable_sa_creation',
+    '-var=enforce_researcher_workspace_disable_sa_creation=true',
+    '-var=enforce_bastion_project_disable_sa_creation=true'
+  ]
+
 
 # Create output files to use when performing variable substitution in the Composer DAGs for this workspace
 

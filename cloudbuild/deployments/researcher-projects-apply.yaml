@@ -16,6 +16,7 @@ steps:
   dir: 'environment/deployments/researcher-projects'
   args: [
     'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-target=module.researcher-workspace-project',
     '-target=module.researcher-bastion-access-project'
   ]

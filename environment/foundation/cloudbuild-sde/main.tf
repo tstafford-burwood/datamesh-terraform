@@ -116,7 +116,7 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
 resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-composer-plan-sde"
+  name    = "composer-plan-sde"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.composer_plan_trigger_tags
@@ -159,12 +159,12 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-composer-apply-sde"
+  name    = "composer-apply-sde"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.srde_composer_apply_trigger_tags
   disabled       = var.srde_composer_apply_trigger_disabled
-  filename       = "cloudbuild/deployments/env/cloudbuild-composer-apply.yaml"
+  filename       = "cloudbuild/deployments/composer-apply.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
   #trigger_template {
@@ -201,12 +201,12 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-access-level-plan-sde"
+  name    = "access-level-plan-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.srde_cloudbuild_sa_access_level_plan_trigger_tags
   disabled       = var.srde_cloudbuild_sa_access_level_plan_trigger_disabled
-  filename       = "cloudbuild/foundation/cloudbuild-access-levels-plan.yaml"
+  filename       = "cloudbuild/foundation/access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
@@ -242,12 +242,12 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-access-level-apply-sde"
+  name    = "access-level-apply-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.srde_cloudbuild_sa_access_level_apply_trigger_tags
   disabled       = var.srde_cloudbuild_sa_access_level_apply_trigger_disabled
-  filename       = "cloudbuild/foundation/cloudbuild-access-levels-apply.yaml"
+  filename       = "cloudbuild/foundation/access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
@@ -281,12 +281,12 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-sde-admin-access-level-plan"
+  name    = "admin-access-level-plan-sde"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
   tags           = var.srde_admin_access_level_plan_trigger_tags
   disabled       = var.srde_admin_access_level_plan_trigger_disabled
-  filename       = "cloudbuild/foundation/cloudbuild-srde-admin-access-levels-plan.yaml"
+  filename       = "cloudbuild/foundation/admin-access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
@@ -320,12 +320,12 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-sde-admin-access-level-apply"
+  name    = "admin-access-level-apply-sde"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
   tags           = var.srde_admin_access_level_apply_trigger_tags
   disabled       = var.srde_admin_access_level_apply_trigger_disabled
-  filename       = "cloudbuild/foundation/cloudbuild-srde-admin-access-levels-apply.yaml"
+  filename       = "cloudbuild/foundation/admin-access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   #trigger_template {

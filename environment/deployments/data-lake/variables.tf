@@ -185,61 +185,61 @@ variable "datalake_allowed_services" {
 
 // REQUIRED VARIABLES
 
-variable "datalake_access_level_name" {
-  description = "Description of the AccessLevel and its use. Does not affect behavior."
-  type        = string
-  default     = ""
-}
+# variable "datalake_access_level_name" {
+#   description = "Description of the AccessLevel and its use. Does not affect behavior."
+#   type        = string
+#   default     = ""
+# }
 
-variable "datalake_parent_policy_name" {
-  description = "Name of the parent policy."
-  type        = string
-  default     = ""
-}
+# variable "datalake_parent_policy_name" {
+#   description = "Name of the parent policy."
+#   type        = string
+#   default     = ""
+# }
 
-// OPTIONAL VARIABLES - NON PREMIUM
+# // OPTIONAL VARIABLES - NON PREMIUM
 
-variable "datalake_combining_function" {
-  description = "How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition must be satisfied for the AccessLevel to be applied."
-  type        = string
-  default     = "AND"
-}
+# variable "datalake_combining_function" {
+#   description = "How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition must be satisfied for the AccessLevel to be applied."
+#   type        = string
+#   default     = "AND"
+# }
 
-variable "datalake_access_level_description" {
-  description = "Description of the access level."
-  type        = string
-  default     = ""
-}
+# variable "datalake_access_level_description" {
+#   description = "Description of the access level."
+#   type        = string
+#   default     = ""
+# }
 
-variable "datalake_ip_subnetworks" {
-  description = "Condition - A list of CIDR block IP subnetwork specifications. May be IPv4 or IPv6. Note that for a CIDR IP address block, the specified IP address portion must be properly truncated (i.e. all the host bits must be zero) or the input is considered malformed. For example, \"192.0.2.0/24\" is accepted but \"192.0.2.1/24\" is not. Similarly, for IPv6, \"2001:db8::/32\" is accepted whereas \"2001:db8::1/32\" is not. The originating IP of a request must be in one of the listed subnets in order for this Condition to be true. If empty, all IP addresses are allowed."
-  type        = list(string)
-  default     = []
-}
+# variable "datalake_ip_subnetworks" {
+#   description = "Condition - A list of CIDR block IP subnetwork specifications. May be IPv4 or IPv6. Note that for a CIDR IP address block, the specified IP address portion must be properly truncated (i.e. all the host bits must be zero) or the input is considered malformed. For example, \"192.0.2.0/24\" is accepted but \"192.0.2.1/24\" is not. Similarly, for IPv6, \"2001:db8::/32\" is accepted whereas \"2001:db8::1/32\" is not. The originating IP of a request must be in one of the listed subnets in order for this Condition to be true. If empty, all IP addresses are allowed."
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "datalake_access_level_members" {
-  description = "Condition - An allowed list of members (users, service accounts). The signed-in identity originating the request must be a part of one of the provided members. If not specified, a request may come from any user (logged in/not logged in, etc.). Formats: user:{emailid}, serviceAccount:{emailid}"
-  type        = list(string)
-  default     = []
-}
+# variable "datalake_access_level_members" {
+#   description = "Condition - An allowed list of members (users, service accounts). The signed-in identity originating the request must be a part of one of the provided members. If not specified, a request may come from any user (logged in/not logged in, etc.). Formats: user:{emailid}, serviceAccount:{emailid}"
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "datalake_negate" {
-  description = "Whether to negate the Condition. If true, the Condition becomes a NAND over its non-empty fields, each field must be false for the Condition overall to be satisfied."
-  type        = bool
-  default     = false
-}
+# variable "datalake_negate" {
+#   description = "Whether to negate the Condition. If true, the Condition becomes a NAND over its non-empty fields, each field must be false for the Condition overall to be satisfied."
+#   type        = bool
+#   default     = false
+# }
 
-variable "datalake_regions" {
-  description = "Condition - The request must originate from one of the provided countries/regions. Format: A valid ISO 3166-1 alpha-2 code."
-  type        = list(string)
-  default     = []
-}
+# variable "datalake_regions" {
+#   description = "Condition - The request must originate from one of the provided countries/regions. Format: A valid ISO 3166-1 alpha-2 code."
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "datalake_required_access_levels" {
-  description = "Condition - A list of other access levels defined in the same Policy, referenced by resource name. Referencing an AccessLevel which does not exist is an error. All access levels listed must be granted for the Condition to be true."
-  type        = list(string)
-  default     = []
-}
+# variable "datalake_required_access_levels" {
+#   description = "Condition - A list of other access levels defined in the same Policy, referenced by resource name. Referencing an AccessLevel which does not exist is an error. All access levels listed must be granted for the Condition to be true."
+#   type        = list(string)
+#   default     = []
+# }
 
 #------------------------------------------------------
 # VPC SC DATALAKE TO STAGING BRIDGE PERIMETER VARIABLES
@@ -247,22 +247,22 @@ variable "datalake_required_access_levels" {
 
 // REQUIRED VARIABLES
 
-variable "datalake_bridge_service_perimeter_name" {
-  description = "Name of the bridge perimeter. Should be one unified string. Must only be letters, numbers and underscores"
-  type        = string
-  default     = ""
-}
+# variable "datalake_bridge_service_perimeter_name" {
+#   description = "Name of the bridge perimeter. Should be one unified string. Must only be letters, numbers and underscores"
+#   type        = string
+#   default     = ""
+# }
 
-variable "datalake_bridge_service_perimeter_resources" {
-  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-  type        = list(string)
-  default     = []
-}
+# variable "datalake_bridge_service_perimeter_resources" {
+#   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
+#   type        = list(string)
+#   default     = []
+# }
 
-// OPTIONAL
+# // OPTIONAL
 
-variable "datalake_bridge_service_perimeter_description" {
-  description = "Description of the bridge perimeter"
-  type        = string
-  default     = ""
-}
+# variable "datalake_bridge_service_perimeter_description" {
+#   description = "Description of the bridge perimeter"
+#   type        = string
+#   default     = ""
+# }

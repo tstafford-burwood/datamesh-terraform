@@ -10,7 +10,7 @@ data "google_project" "staging_project_number" {
 #------------------
 
 module "constants" {
-  source = "../constants"
+  source = "../../foundation/constants"
 }
 
 // SET CONSTANT MODULE VALUES AS LOCALS
@@ -37,7 +37,7 @@ locals {
 #------------------
 
 module "data-lake-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = format("%v-%v", var.data_lake_project_name, "data-lake")
@@ -64,7 +64,7 @@ module "data-lake-project" {
 #-----------------------------------------
 
 module "datalake_iam_custom_role" {
-  source = "../../../../modules/iam/project_iam_custom_role"
+  source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.data-lake-project.project_id
   project_iam_custom_role_description = var.datalake_iam_custom_role_description
@@ -93,66 +93,66 @@ resource "google_project_iam_member" "datalake_project" {
 # VPC SC REGULAR SERVICE PERIMETER - DATA LAKE PROJECT
 # ----------------------------------------------------
 
-module "data_lake_regular_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+# module "data_lake_regular_service_perimeter" {
+#   source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
-  // REQUIRED
-  regular_service_perimeter_description = var.datalake_regular_service_perimeter_description
-  regular_service_perimeter_name        = var.datalake_regular_service_perimeter_name
-  parent_policy_id                      = local.parent_access_policy_id
+#   // REQUIRED
+#   regular_service_perimeter_description = var.datalake_regular_service_perimeter_description
+#   regular_service_perimeter_name        = var.datalake_regular_service_perimeter_name
+#   parent_policy_id                      = local.parent_access_policy_id
 
-  // OPTIONAL
-  access_level_names = [
-    local.cloudbuild_access_level_name,
-    local.cloud_composer_access_level_name,
-    local.srde_admin_access_level_name
-  ]
-  project_to_add_perimeter = [module.data-lake-project.project_number]
-  restricted_services      = local.vpc_sc_all_restricted_apis
-  enable_restriction       = var.datalake_enable_restriction
-  allowed_services         = var.datalake_allowed_services
-  depends_on               = [module.data-lake-project]
-}
+#   // OPTIONAL
+#   access_level_names = [
+#     local.cloudbuild_access_level_name,
+#     local.cloud_composer_access_level_name,
+#     local.srde_admin_access_level_name
+#   ]
+#   project_to_add_perimeter = [module.data-lake-project.project_number]
+#   restricted_services      = local.vpc_sc_all_restricted_apis
+#   enable_restriction       = var.datalake_enable_restriction
+#   allowed_services         = var.datalake_allowed_services
+#   depends_on               = [module.data-lake-project]
+# }
 
 #--------------------------------------
 # VPC SC DATA LAKE ACCESS LEVELS MODULE
 #--------------------------------------
 
-module "datalake_access_level_members" {
-  source = "../../../../modules/vpc_service_controls/access_levels"
+# module "datalake_access_level_members" {
+#   source = "../../../modules/vpc_service_controls/access_levels"
 
-  // REQUIRED
-  access_level_name  = var.datalake_access_level_name
-  parent_policy_name = local.parent_access_policy_id
+#   // REQUIRED
+#   access_level_name  = var.datalake_access_level_name
+#   parent_policy_name = local.parent_access_policy_id
 
-  // OPTIONAL - NON PREMIUM
-  combining_function       = var.datalake_combining_function
-  access_level_description = var.datalake_access_level_description
-  ip_subnetworks           = var.datalake_ip_subnetworks
-  access_level_members     = var.datalake_access_level_members
-  negate                   = var.datalake_negate
-  regions                  = var.datalake_regions
-  required_access_levels   = var.datalake_required_access_levels
-}
+#   // OPTIONAL - NON PREMIUM
+#   combining_function       = var.datalake_combining_function
+#   access_level_description = var.datalake_access_level_description
+#   ip_subnetworks           = var.datalake_ip_subnetworks
+#   access_level_members     = var.datalake_access_level_members
+#   negate                   = var.datalake_negate
+#   regions                  = var.datalake_regions
+#   required_access_levels   = var.datalake_required_access_levels
+# }
 
 #----------------------------------------------------
 # VPC SC DATALAKE TO STAGING PROJECT BRIDGE PERIMETER 
 #----------------------------------------------------
 
-module "datalake_to_staging_bridge_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/bridge_service_perimeter"
+# module "datalake_to_staging_bridge_service_perimeter" {
+#   source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
 
-  // REQUIRED
+#   // REQUIRED
 
-  bridge_service_perimeter_name = var.datalake_bridge_service_perimeter_name
-  parent_policy_name            = local.parent_access_policy_id
-  bridge_service_perimeter_resources = [
-    local.staging_project_number,
-    module.data-lake-project.project_number
-  ]
+#   bridge_service_perimeter_name = var.datalake_bridge_service_perimeter_name
+#   parent_policy_name            = local.parent_access_policy_id
+#   bridge_service_perimeter_resources = [
+#     local.staging_project_number,
+#     module.data-lake-project.project_number
+#   ]
 
-  // OPTIONAL
+#   // OPTIONAL
 
-  bridge_service_perimeter_description = var.datalake_bridge_service_perimeter_description
-  depends_on                           = [module.data_lake_regular_service_perimeter]
-}
+#   bridge_service_perimeter_description = var.datalake_bridge_service_perimeter_description
+#   depends_on                           = [module.data_lake_regular_service_perimeter]
+# }

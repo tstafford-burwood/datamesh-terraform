@@ -4,7 +4,7 @@ steps:
 
 - id: "datalake project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -13,22 +13,24 @@ steps:
 
 - id: "datalake project - plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   args: [
     'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 - id: "datalake project - apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   args: [
     'apply',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-auto-approve'
   ]
 
 - id: "output file creation - datalake projects"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   entrypoint: /bin/sh
   args: [
     '-c',
@@ -37,7 +39,7 @@ steps:
 
 - id: "staging project state pull - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -46,7 +48,7 @@ steps:
 
 - id: "output file creation - staging project"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   entrypoint: /bin/sh
   args: [
     '-c',
@@ -55,7 +57,7 @@ steps:
 
 - id: "load variables for Datalake DAG envs"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/wcm-srde/data-lake/cloud-composer/composer-dag-files'
+  dir: 'environment/deployments/data-lake/cloud-composer/composer-dag-files'
   entrypoint: python
   args: [
     'set_data_lake_dag_envs.py'
@@ -63,7 +65,7 @@ steps:
 
 - id: "load DAG to GCS bucket"
   name: gcr.io/cloud-builders/gsutil
-  dir: 'environment/deployments/wcm-srde/data-lake/cloud-composer/composer-dag-files'
+  dir: 'environment/deployments/data-lake/cloud-composer/composer-dag-files'
   args: [
     'cp',
     '-n',

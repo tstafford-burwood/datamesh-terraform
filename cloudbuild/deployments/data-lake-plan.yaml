@@ -4,52 +4,17 @@ steps:
 
 - id: "datalake project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
     '-backend-config=prefix=${_PREFIX}/data-lake'
   ]
 
-- id: "datalake project - plan .plan output creation"
+- id: "datalake project - plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
+  dir: 'environment/deployments/data-lake'
   args: [
     'plan',
-    '-out=tfplan.tfplan'
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
-
-- id: "datalake project - plan .json output creation"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/data-lake'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-      terraform show -json tfplan.tfplan > tfplan.json
-
-# TODO: Create a new repo of OPA policies for the Datalake project (Dan owns a repo in GitHub)
-
-- id: Clone Google CSR with OPA Policies
-  name: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
-  entrypoint: bash
-  dir: 'environment/deployments/wcm-srde/data-lake'
-  args:
-  - '-c'
-  - |
-    gcloud source repos clone bitbucket_rkoliyatt-burwood_cornell-opa
-
-# TODO: Resolve permissioning error with the Cloud Build service account
-
-- id: Run terraform-validator validate
-  name: us-east1-docker.pkg.dev/packer-srde-wcm-fb69/terraform-validator/terraform-validator:latest
-  dir: 'environment/deployments/wcm-srde/data-lake'
-  args: [
-    'terraform-validator',
-    'validate',
-    'tfplan.json',
-    '--policy-path=./bitbucket_rkoliyatt-burwood_cornell-opa/gcp-hipaa-policies',
-    '--verbosity=debug'
-  ]
-
-timeout: 3600s

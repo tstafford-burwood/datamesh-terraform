@@ -3,7 +3,7 @@ steps:
 # RESEARCHER PROJECTS WITH DAGS
 - id: "researcher projects - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  dir: 'environment/deployments/researcher-projects'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -12,7 +12,7 @@ steps:
 
 - id: "researcher projects - plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  dir: 'environment/deployments/researcher-projects'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
@@ -21,7 +21,7 @@ steps:
 
 - id: "researcher projects - destroy"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/researcher-projects'
+  dir: 'environment/deployments/researcher-projects'
   args: [
   'destroy',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

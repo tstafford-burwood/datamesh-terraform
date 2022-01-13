@@ -36,13 +36,14 @@ resource "google_cloudbuild_trigger" "srde_plan_triggers" {
   filename       = format("cloudbuild/deployments/-%s-plan.yaml", each.value)
   included_files = formatlist("environment/deployments/%s/terraform.tfvars", each.value)
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_plan_trigger_repo_name
-  #  invert_regex = var.srde_plan_trigger_invert_regex
-  #  branch_name  = var.srde_plan_branch_name
-  #}
-
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -82,12 +83,14 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
   filename       = format("cloudbuild/deployments/%s-apply.yaml", each.value)
   included_files = formatlist("environment/deployments/%s/env/terraform.tfvars", each.value)
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -124,13 +127,14 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   filename       = "cloudbuild/deployments/composer-plan.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_plan_trigger_repo_name
-  #  invert_regex = var.srde_plan_trigger_invert_regex
-  #  branch_name  = var.srde_plan_branch_name
-  #}
-
+/*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+*/
 
   github {
     owner = var.github_owner
@@ -167,12 +171,14 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
   filename       = "cloudbuild/deployments/composer-apply.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -209,12 +215,14 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
   filename       = "cloudbuild/foundation/access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_plan_trigger_repo_name
-  #  invert_regex = var.srde_plan_trigger_invert_regex
-  #  branch_name  = var.srde_plan_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -250,12 +258,14 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
   filename       = "cloudbuild/foundation/access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -289,12 +299,14 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
   filename       = "cloudbuild/foundation/admin-access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_plan_trigger_repo_name
-  #  invert_regex = var.srde_plan_trigger_invert_regex
-  #  branch_name  = var.srde_plan_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -328,12 +340,14 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
   filename       = "cloudbuild/foundation/admin-access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -367,12 +381,14 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   filename       = "cloudbuild/foundation/packer-deep-learning-image.yaml"
   included_files = ["environment/foundation/packer-project/researcher-vm-image-build/deep-learning-startup-image-script.sh"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -405,12 +421,14 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
   filename       = "cloudbuild/deployments/cloudbuild-packer-rhel-cis-image.yaml"
   included_files = ["environment/deployments/wcm-srde/packer-project/researcher-vm-image-build/rhel-startup-image-script.sh"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  # invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+   invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner
@@ -443,12 +461,14 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
   filename       = "cloudbuild/foundation/packer-container.yaml"
   included_files = ["environment/foundation/packer-project/packer-container/Dockerfile"]
 
-  #trigger_template {
-  #  project_id   = local.automation_project_id
-  #  repo_name    = var.srde_apply_trigger_repo_name
-  #  invert_regex = var.srde_apply_trigger_invert_regex
-  #  branch_name  = var.srde_apply_branch_name
-  #}
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_apply_trigger_repo_name
+    invert_regex = var.srde_apply_trigger_invert_regex
+    branch_name  = var.srde_apply_branch_name
+  }
+  */
 
   github {
     owner = var.github_owner

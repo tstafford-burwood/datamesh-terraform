@@ -28,7 +28,7 @@ resource "google_cloudbuild_trigger" "srde_plan_triggers" {
   for_each = toset(var.srde_plan_trigger_name)
 
   project = local.automation_project_id
-  name    = format("sde-%s-plan", each.value)
+  name    = format("%s-plan-sde", each.value)
 
   description    = format("Pipeline for SDE-%s created with Terraform", each.value)
   tags           = var.srde_plan_trigger_tags
@@ -74,7 +74,7 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
   for_each = toset(var.srde_apply_trigger_name)
 
   project = local.automation_project_id
-  name    = format("sde-%s-apply", each.value)
+  name    = format("%s-apply-sde", each.value)
 
   description    = format("Pipeline for %s created with Terraform", each.value)
   tags           = var.srde_plan_trigger_tags
@@ -116,7 +116,7 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
 resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-composer-plan"
+  name    = "cloudbuild-composer-plan-sde"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.composer_plan_trigger_tags
@@ -159,7 +159,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-composer-sde-apply"
+  name    = "cloudbuild-composer-apply-sde"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.srde_composer_apply_trigger_tags
@@ -201,7 +201,7 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-access-level-plan"
+  name    = "cloudbuild-access-level-plan-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.srde_cloudbuild_sa_access_level_plan_trigger_tags
@@ -242,7 +242,7 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 
   project = local.automation_project_id
-  name    = "cloudbuild-access-level-sde-apply"
+  name    = "cloudbuild-access-level-apply-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.srde_cloudbuild_sa_access_level_apply_trigger_tags
@@ -281,7 +281,7 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-srde-admin-access-level-plan"
+  name    = "cloudbuild-sde-admin-access-level-plan"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
   tags           = var.srde_admin_access_level_plan_trigger_tags
@@ -359,7 +359,7 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
 resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-deep-learning-vm-image-build"
+  name    = "deep-learning-vm-image-build-sde"
 
   description    = "Pipeline for Deep Learning VM Image build created with Terraform"
   tags           = var.srde_deep_learning_vm_image_build_trigger_tags
@@ -397,7 +397,7 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
 resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-rhel-cis-image-build"
+  name    = "rhel-cis-image-build-sde"
 
   description    = "Pipeline for RHEL CIS Image Build created with Terraform"
   tags           = var.srde_rhel_cis_image_build_trigger_tags
@@ -435,7 +435,7 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
 resource "google_cloudbuild_trigger" "packer_container_image" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-packer-container-image"
+  name    = "packer-container-image-sde"
 
   description    = "Pipeline for Packer container image created with Terraform"
   tags           = var.srde_packer_container_image_build_trigger_tags

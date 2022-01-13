@@ -66,6 +66,7 @@ steps:
   - '-c'
   - |
     terraform plan \
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     -target=module.researcher_workspace_disable_sa_creation \
     -target=module.bastion_project_disable_sa_creation \
     -var="enforce_researcher_workspace_disable_sa_creation=true" \
@@ -79,6 +80,7 @@ steps:
   - '-c'
   - |
     terraform apply -auto-approve \
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     -target=module.researcher_workspace_disable_sa_creation \
     -target=module.bastion_project_disable_sa_creation \
     -var="enforce_researcher_workspace_disable_sa_creation=true" \

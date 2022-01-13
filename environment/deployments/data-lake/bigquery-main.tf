@@ -7,7 +7,7 @@
 #---------------------------------------
 
 module "bigquery_data_lake" {
-  source = "../../../../modules/bigquery"
+  source = "../../../modules/bigquery"
 
   // REQUIRED
 
@@ -41,7 +41,7 @@ module "bigquery_data_lake" {
 #---------------------------------------
 
 module "bigquery_staging_data_lake_ingress" {
-  source = "../../../../modules/bigquery"
+  source = "../../../modules/bigquery"
 
   // REQUIRED
 

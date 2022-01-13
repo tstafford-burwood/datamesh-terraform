@@ -10,7 +10,7 @@ data "google_project" "staging_project_number" {
 #------------------
 
 module "constants" {
-  source = "../constants"
+  source = "../../foundation/constants"
 }
 
 // SET CONSTANT MODULE VALUES AS LOCALS
@@ -37,7 +37,7 @@ locals {
 #------------------
 
 module "data-lake-project" {
-  source = "../../../../modules/project_factory"
+  source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
   project_name       = format("%v-%v", var.data_lake_project_name, "data-lake")
@@ -64,7 +64,7 @@ module "data-lake-project" {
 #-----------------------------------------
 
 module "datalake_iam_custom_role" {
-  source = "../../../../modules/iam/project_iam_custom_role"
+  source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.data-lake-project.project_id
   project_iam_custom_role_description = var.datalake_iam_custom_role_description
@@ -94,7 +94,7 @@ resource "google_project_iam_member" "datalake_project" {
 # ----------------------------------------------------
 
 module "data_lake_regular_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/regular_service_perimeter"
+  source = "../../../modules/vpc_service_controls/regular_service_perimeter"
 
   // REQUIRED
   regular_service_perimeter_description = var.datalake_regular_service_perimeter_description
@@ -119,7 +119,7 @@ module "data_lake_regular_service_perimeter" {
 #--------------------------------------
 
 module "datalake_access_level_members" {
-  source = "../../../../modules/vpc_service_controls/access_levels"
+  source = "../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
   access_level_name  = var.datalake_access_level_name
@@ -140,7 +140,7 @@ module "datalake_access_level_members" {
 #----------------------------------------------------
 
 module "datalake_to_staging_bridge_service_perimeter" {
-  source = "../../../../modules/vpc_service_controls/bridge_service_perimeter"
+  source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
 
   // REQUIRED
 

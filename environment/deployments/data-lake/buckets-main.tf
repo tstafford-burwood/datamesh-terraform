@@ -5,7 +5,7 @@
 #---------------------------------
 
 module "gcs_bucket_staging_ingress" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = local.staging_project_id
@@ -22,12 +22,12 @@ module "gcs_bucket_staging_ingress" {
   bucket_force_destroy        = var.staging_ingress_bucket_force_destroy
   storage_bucket_labels       = var.staging_ingress_storage_bucket_labels
   #bucket_location             = var.staging_ingress_bucket_location
-  bucket_location             = local.data_lake_default_region
-  bucket_set_creator_roles    = var.staging_ingress_bucket_set_creator_roles
-  bucket_set_viewer_roles     = var.staging_ingress_bucket_set_viewer_roles
-  bucket_storage_class        = var.staging_ingress_bucket_storage_class
-  viewers                     = var.staging_ingress_bucket_viewers
-  depends_on                  = []
+  bucket_location          = local.data_lake_default_region
+  bucket_set_creator_roles = var.staging_ingress_bucket_set_creator_roles
+  bucket_set_viewer_roles  = var.staging_ingress_bucket_set_viewer_roles
+  bucket_storage_class     = var.staging_ingress_bucket_storage_class
+  viewers                  = var.staging_ingress_bucket_viewers
+  depends_on               = []
 }
 
 #---------------------------
@@ -35,7 +35,7 @@ module "gcs_bucket_staging_ingress" {
 #---------------------------
 
 module "gcs_bucket_data_lake" {
-  source = "../../../../modules/gcs_bucket"
+  source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
   project_id         = module.data-lake-project.project_id
@@ -52,10 +52,10 @@ module "gcs_bucket_data_lake" {
   bucket_force_destroy        = var.data_lake_ingress_bucket_force_destroy
   storage_bucket_labels       = var.data_lake_ingress_storage_bucket_labels
   #bucket_location             = var.data_lake_ingress_bucket_location
-  bucket_location             = local.data_lake_default_region
-  bucket_set_creator_roles    = var.data_lake_ingress_bucket_set_creator_roles
-  bucket_set_viewer_roles     = var.data_lake_ingress_bucket_set_viewer_roles
-  bucket_storage_class        = var.data_lake_ingress_bucket_storage_class
-  viewers                     = var.data_lake_ingress_bucket_viewers
-  depends_on                  = []
+  bucket_location          = local.data_lake_default_region
+  bucket_set_creator_roles = var.data_lake_ingress_bucket_set_creator_roles
+  bucket_set_viewer_roles  = var.data_lake_ingress_bucket_set_viewer_roles
+  bucket_storage_class     = var.data_lake_ingress_bucket_storage_class
+  viewers                  = var.data_lake_ingress_bucket_viewers
+  depends_on               = []
 }

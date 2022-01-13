@@ -58,6 +58,7 @@ resource "google_cloudbuild_trigger" "srde_plan_triggers" {
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -79,7 +80,7 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
   tags           = var.srde_plan_trigger_tags
   disabled       = var.srde_plan_trigger_disabled
   filename       = format("cloudbuild/deployments/%s-apply.yaml", each.value)
-  included_files = formatlist("environment/deployments/%s/terraform.tfvars", each.value)
+  included_files = formatlist("environment/deployments/%s/env/terraform.tfvars", each.value)
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -102,6 +103,7 @@ resource "google_cloudbuild_trigger" "srde_apply_triggers" {
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -120,7 +122,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   tags           = var.composer_plan_trigger_tags
   disabled       = var.composer_plan_trigger_disabled
   filename       = "cloudbuild/deployments/composer-plan.yaml"
-  included_files = ["environment/deployments/staging-project/cloud-composer/terraform.tfvars"]
+  included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -144,6 +146,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -156,13 +159,13 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-composer-apply"
+  name    = "cloudbuild-composer-sde-apply"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.srde_composer_apply_trigger_tags
   disabled       = var.srde_composer_apply_trigger_disabled
-  filename       = "cloudbuild/deployments/cloudbuild-composer-apply.yaml"
-  included_files = ["environment/deployments/wcm-srde/staging-project/cloud-composer/terraform.tfvars"]
+  filename       = "cloudbuild/deployments/env/cloudbuild-composer-apply.yaml"
+  included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -185,6 +188,7 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -203,7 +207,7 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
   tags           = var.srde_cloudbuild_sa_access_level_plan_trigger_tags
   disabled       = var.srde_cloudbuild_sa_access_level_plan_trigger_disabled
   filename       = "cloudbuild/foundation/cloudbuild-access-levels-plan.yaml"
-  included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/terraform.tfvars"]
+  included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -225,6 +229,7 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
     _BUCKET = var.terraform_state_bucket
     _PREFIX = var.terraform_state_prefix
     _TAG    = var.terraform_container_version
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -237,13 +242,13 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-access-level-apply"
+  name    = "cloudbuild-access-level-sde-apply"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.srde_cloudbuild_sa_access_level_apply_trigger_tags
   disabled       = var.srde_cloudbuild_sa_access_level_apply_trigger_disabled
   filename       = "cloudbuild/foundation/cloudbuild-access-levels-apply.yaml"
-  included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/terraform.tfvars"]
+  included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -265,6 +270,7 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
     _BUCKET = var.terraform_state_bucket
     _PREFIX = var.terraform_state_prefix
     _TAG    = var.terraform_container_version
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -281,7 +287,7 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
   tags           = var.srde_admin_access_level_plan_trigger_tags
   disabled       = var.srde_admin_access_level_plan_trigger_disabled
   filename       = "cloudbuild/foundation/cloudbuild-srde-admin-access-levels-plan.yaml"
-  included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/terraform.tfvars"]
+  included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -303,6 +309,7 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
     _BUCKET = var.terraform_state_bucket
     _PREFIX = var.terraform_state_prefix
     _TAG    = var.terraform_container_version
+    _TFVARS_FILE         = ""
   }
 }
 
@@ -313,13 +320,13 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
 
   project = local.automation_project_id
-  name    = "srde-cloudbuild-srde-admin-access-level-apply"
+  name    = "cloudbuild-sde-admin-access-level-apply"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
   tags           = var.srde_admin_access_level_apply_trigger_tags
   disabled       = var.srde_admin_access_level_apply_trigger_disabled
   filename       = "cloudbuild/foundation/cloudbuild-srde-admin-access-levels-apply.yaml"
-  included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/terraform.tfvars"]
+  included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   #trigger_template {
   #  project_id   = local.automation_project_id
@@ -341,6 +348,7 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
     _BUCKET = var.terraform_state_bucket
     _PREFIX = var.terraform_state_prefix
     _TAG    = var.terraform_container_version
+    _TFVARS_FILE         = ""
   }
 }
 

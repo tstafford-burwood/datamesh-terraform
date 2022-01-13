@@ -427,6 +427,7 @@ output "workspace_gcs_vm_access_bucket" {
 # RESEARCHER WORKSPACE VPC SC REGULAR SERVICE PERIMETER OUTPUTS
 #--------------------------------------------------------------
 
+/*
 output "workspace_regular_service_perimeter_resources" {
   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
   value       = module.researcher_workspace_regular_service_perimeter.regular_service_perimeter_resources
@@ -441,11 +442,13 @@ output "workspace_vpc_accessible_services" {
   description = "The API services accessible from a network within the VPC SC perimeter."
   value       = module.researcher_workspace_regular_service_perimeter.vpc_accessible_services
 }
+*/
 
 #--------------------------------------------------------------------
 # RESEARCHER BASTION PROJECT VPC SC REGULAR SERVICE PERIMETER OUTPUTS
 #--------------------------------------------------------------------
 
+/*
 output "bastion_project_regular_service_perimeter_resources" {
   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
   value       = module.researcher_bastion_project_regular_service_perimeter.regular_service_perimeter_resources
@@ -460,6 +463,7 @@ output "bastion_project_vpc_accessible_services" {
   description = "The API services accessible from a network within the VPC SC perimeter."
   value       = module.researcher_bastion_project_regular_service_perimeter.vpc_accessible_services
 }
+*/
 
 #----------------------------------------------------------
 # BIGQUERY DATASET - RESEARCHER DLP RESULTS STAGING PROJECT
@@ -483,6 +487,7 @@ output "researcher_workspace_bq_dataset" {
 # VPC SC RESEARCHER GROUP MEMBER ACCESS LEVELS OUTPUTS
 #-----------------------------------------------------
 
+/*
 output "vpc_sc_researcher_group_member_access_level_name" {
   description = "Description of the AccessLevel and its use. Does not affect behavior."
   value       = module.researcher_group_member_access_level.name
@@ -492,3 +497,4 @@ output "vpc_sc_researcher_group_member_access_level_name_id" {
   description = "The fully-qualified name of the Access Level. Format: accessPolicies/{policy_id}/accessLevels/{name}"
   value       = module.researcher_group_member_access_level.name_id
 }
+*/

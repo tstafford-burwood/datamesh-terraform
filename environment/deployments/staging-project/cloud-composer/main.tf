@@ -1,7 +1,7 @@
 // IMPORT CONSTANTS
 
 module "constants" {
-  source = "../../constants"
+  source = "../../../foundation/constants"
 }
 
 // SET LOCALS VALUES
@@ -30,7 +30,7 @@ resource "time_sleep" "wait_120_seconds" {
 #-----------------------
 
 module "cloud_composer" {
-  source = "../../../../../modules/cloud_composer"
+  source = "../../../../modules/cloud_composer"
 
   // REQUIRED
   composer_env_name = var.composer_env_name
@@ -77,7 +77,7 @@ module "cloud_composer" {
 
 module "composer_service_account" {
 
-  source = "../../../../../modules/service_account"
+  source = "../../../../modules/service_account"
 
   // REQUIRED
 
@@ -103,7 +103,7 @@ module "composer_service_account" {
 #--------------------------
 
 module "folder_iam_member" {
-  source = "../../../../../modules/iam/folder_iam"
+  source = "../../../../modules/iam/folder_iam"
 
   folder_id     = local.srde_folder_id
   iam_role_list = var.iam_role_list
@@ -118,7 +118,7 @@ module "folder_iam_member" {
 // FOR COMPOSER SERVICE ACCOUNT
 
 module "cloud_composer_access_level_members" {
-  source = "../../../../../modules/vpc_service_controls/access_levels"
+  source = "../../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
   #access_level_name  = var.access_level_name

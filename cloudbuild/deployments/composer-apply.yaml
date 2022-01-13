@@ -16,10 +16,11 @@ steps:
   dir: 'environment/deployments/staging-project/cloud-composer'
   args: [
     'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=enforce_staging_project_disable_sa_creation=false',
-    '-var=enforce_staging_project_vm_os_login=false',
-    '-var=enforce_staging_project_shielded_vms=false'
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
+    # 1-12-22 - Comment out because these policies are commented out.
+    # '-var=enforce_staging_project_disable_sa_creation=false',
+    # '-var=enforce_staging_project_vm_os_login=false',
+    # '-var=enforce_staging_project_shielded_vms=false'
   ]
 
 - id: "composer - first apply and disable org policies"
@@ -29,7 +30,7 @@ steps:
   args:
     - '-c'
     - |
-      if ! terraform apply -auto-approve -var="enforce_staging_project_disable_sa_creation=false" -var="enforce_staging_project_vm_os_login=false" -var="enforce_staging_project_shielded_vms=false" ; then
+      if ! terraform apply -auto-approve -var-file=env/${_TFVARS_FILE}.tfvars -var="enforce_staging_project_disable_sa_creation=false" -var="enforce_staging_project_vm_os_login=false" -var="enforce_staging_project_shielded_vms=false" ; then
         echo "Pipeline has failed, check terraform apply log output to determine error."
       fi
 
@@ -41,13 +42,13 @@ steps:
     - '-c'
     - |
       terraform plan \
-      -var-file=env/${_TFVARS_FILE}.tfvars \
-      -target=module.staging_project_disable_sa_creation \
-      -var="enforce_staging_project_disable_sa_creation=true" \
-      -target=module.staging_project_vm_os_login \
-      -var="enforce_staging_project_vm_os_login=true" \
-      -target=module.staging_project_shielded_vms \
-      -var="enforce_staging_project_shielded_vms=true" \
+      -var-file=env/${_TFVARS_FILE}.tfvars
+      # -target=module.staging_project_disable_sa_creation \
+      # -var="enforce_staging_project_disable_sa_creation=true" \
+      # -target=module.staging_project_vm_os_login \
+      # -var="enforce_staging_project_vm_os_login=true" \
+      # -target=module.staging_project_shielded_vms \
+      # -var="enforce_staging_project_shielded_vms=true" \
 
 - id: "composer - second apply and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
@@ -57,13 +58,13 @@ steps:
     - '-c'
     - |
       terraform apply -auto-approve \
-      -var-file=env/${_TFVARS_FILE}.tfvars \
-      -target=module.staging_project_disable_sa_creation \
-      -var="enforce_staging_project_disable_sa_creation=true" \
-      -target=module.staging_project_vm_os_login \
-      -var="enforce_staging_project_vm_os_login=true" \
-      -target=module.staging_project_shielded_vms \
-      -var="enforce_staging_project_shielded_vms=true" \
+      -var-file=env/${_TFVARS_FILE}.tfvars
+      # -target=module.staging_project_disable_sa_creation \
+      # -var="enforce_staging_project_disable_sa_creation=true" \
+      # -target=module.staging_project_vm_os_login \
+      # -var="enforce_staging_project_vm_os_login=true" \
+      # -target=module.staging_project_shielded_vms \
+      # -var="enforce_staging_project_shielded_vms=true" \
 
 - id: "staging project state pull - init"
   name: hashicorp/terraform:${_TAG}

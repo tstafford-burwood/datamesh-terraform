@@ -75,34 +75,34 @@ output "subscription_labels" {
 # SECURE STAGING PROJECT VPC SC REGULAR SERVICE PERIMETER OUTPUTS
 #----------------------------------------------------------------
 
-output "staging_project_regular_service_perimeter_resources" {
-  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-  value       = module.staging_project_regular_service_perimeter.regular_service_perimeter_resources
-}
+# output "staging_project_regular_service_perimeter_resources" {
+#   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
+#   value       = module.staging_project_regular_service_perimeter.regular_service_perimeter_resources
+# }
 
-output "staging_project_regular_service_perimeter_name" {
-  description = "The perimeter's name."
-  value       = module.staging_project_regular_service_perimeter.regular_service_perimeter_name
-}
+# output "staging_project_regular_service_perimeter_name" {
+#   description = "The perimeter's name."
+#   value       = module.staging_project_regular_service_perimeter.regular_service_perimeter_name
+# }
 
-output "staging_project_vpc_accessible_services" {
-  description = "The API services accessible from a network within the VPC SC perimeter."
-  value       = module.staging_project_regular_service_perimeter.vpc_accessible_services
-}
+# output "staging_project_vpc_accessible_services" {
+#   description = "The API services accessible from a network within the VPC SC perimeter."
+#   value       = module.staging_project_regular_service_perimeter.vpc_accessible_services
+# }
 
 #-----------------------------
 # VPC SC ACCESS LEVELS OUTPUTS
 #-----------------------------
 
-output "name" {
-  description = "Description of the AccessLevel and its use. Does not affect behavior."
-  value       = module.access_level_members.name
-}
+# output "name" {
+#   description = "Description of the AccessLevel and its use. Does not affect behavior."
+#   value       = module.access_level_members.name
+# }
 
-output "name_id" {
-  description = "The fully-qualified name of the Access Level. Format: accessPolicies/{policy_id}/accessLevels/{name}"
-  value       = module.access_level_members.name_id
-}
+# output "name_id" {
+#   description = "The fully-qualified name of the Access Level. Format: accessPolicies/{policy_id}/accessLevels/{name}"
+#   value       = module.access_level_members.name_id
+# }
 
 #--------------------------------------
 # BIGQUERY DATASET - GCS EVENTS OUTPUTS

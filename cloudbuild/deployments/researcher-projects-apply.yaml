@@ -1,14 +1,5 @@
 steps:
 
-- id: "disable organization policies"
-  name: gcr.io/google.com/cloudsdktool/cloud-sdk
-  entrypoit: 'gcloud'
-  args: [
-    '',
-    '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/researcher-projects'
-  ]
-
 # RESEARCHER PROJECTS WITH DAGS
 - id: "researcher projects - init"
   name: hashicorp/terraform:${_TAG}

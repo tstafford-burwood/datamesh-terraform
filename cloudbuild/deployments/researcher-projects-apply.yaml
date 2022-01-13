@@ -35,6 +35,19 @@ steps:
     '-var=enforce_bastion_project_disable_sa_creation=false'
   ]
 
+
+- id: "researcher projects - apply org policies enabled"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects'
+  args: [
+    'apply',
+    '-auto-approve',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-var=enforce_researcher_workspace_disable_sa_creation=true',
+    '-var=enforce_bastion_project_disable_sa_creation=true'
+  ]
+
+
 # Create output files to use when performing variable substitution in the Composer DAGs for this workspace
 
 - id: "output file creation - researcher projects"

@@ -19,6 +19,7 @@ steps:
   dir: 'environment/deployments/wcm-srde/staging-project'
   args: [
   'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-destroy'
   ]
 
@@ -27,5 +28,6 @@ steps:
   dir: 'environment/deployments/wcm-srde/staging-project'
   args: [
   'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]

@@ -21,7 +21,7 @@ locals {
 
     // STAGING PROJECT INFORMATION
 
-    staging_project_id = "" // CHANGE AFTER PROVISIONING STAGING PROJECT
+    staging_project_id = "aws-staging-b820" // CHANGE AFTER PROVISIONING STAGING PROJECT
     staging_default_region = "us-central1"
 
     // DATA LAKE PROJECT INFORMATION

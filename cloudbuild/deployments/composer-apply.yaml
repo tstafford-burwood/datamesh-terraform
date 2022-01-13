@@ -92,6 +92,15 @@ steps:
     'set_notify_envs.py'
   ]
 
+- id: "export bucket name"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/staging-project/cloud-composer'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    'terraform output gcs_bucket > /workspace/gcs_bucket.txt'
+  ]
+
 - id: "load DAG to GCS bucket"
   name: gcr.io/cloud-builders/gsutil
   dir: 'environment/deployments/staging-project/cloud-composer/composer-dag-files'
@@ -99,7 +108,7 @@ steps:
     'cp',
     '-n',
     '/workspace/srde_Notify.py',
-    'gs://${_COMPOSER_DAG_BUCKET}/dags/'
+    '$(cat /workspace/gcs_bucket.txt)'
   ]
 
 timeout: 3600s

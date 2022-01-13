@@ -1,4 +1,14 @@
 steps:
+
+- id: "disable organization policies"
+  name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoit: 'gcloud'
+  args: [
+    '',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/researcher-projects'
+  ]
+
 # RESEARCHER PROJECTS WITH DAGS
 - id: "researcher projects - init"
   name: hashicorp/terraform:${_TAG}
@@ -34,27 +44,28 @@ steps:
 
 # Second plan/apply disables two org policies at the project level and then provision everything else
 
-# - id: "researcher projects - second plan"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/deployments/researcher-projects'
-#   args: [
-#     'plan',
-#     '-var=enforce_researcher_workspace_disable_sa_creation=false',
-#     '-var=enforce_bastion_project_disable_sa_creation=false'
-#   ]
+- id: "researcher projects - second plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-var=enforce_researcher_workspace_disable_sa_creation=false',
+    '-var=enforce_bastion_project_disable_sa_creation=false'
+  ]
 
 # # Note: This step will always succeed to ensure that the next step always runs.
 
-# - id: "researcher projects - second apply and disable project policies"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/deployments/researcher-projects'
-#   entrypoint: /bin/sh
-#   args:
-#   - '-c'
-#   - |
-#     if ! terraform apply -auto-approve -var="enforce_researcher_workspace_disable_sa_creation=false" -var="enforce_bastion_project_disable_sa_creation=false" ; then
-#       echo "Pipeline has failed, check terraform apply log output to determine error."
-#     fi
+- id: "researcher projects - second apply and disable project policies"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects'
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    if ! terraform apply -auto-approve  -var-file=env/${_TFVARS_FILE}.tfvars -var="enforce_researcher_workspace_disable_sa_creation=false" -var="enforce_bastion_project_disable_sa_creation=false" ; then
+      echo "Pipeline has failed, check terraform apply log output to determine error."
+    fi
 
 # Third plan/apply re-enables two org policies at the project level
 

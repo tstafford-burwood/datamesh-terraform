@@ -35,34 +35,6 @@ steps:
     '-var=enforce_bastion_project_disable_sa_creation=false'
   ]
 
-# Third plan/apply re-enables two org policies at the project level
-
-- id: "researcher projects - third plan and ensure project policies are re-enabled"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-target=module.researcher_workspace_disable_sa_creation',
-    '-target=module.bastion_project_disable_sa_creation',
-    '-var=enforce_researcher_workspace_disable_sa_creation=true',
-    '-var=enforce_bastion_project_disable_sa_creation=true'
-  ]
-
-- id: "researcher projects - third apply and ensure project policies are re-enabled"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'apply',
-    '-auto-approve',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-target=module.researcher_workspace_disable_sa_creation',
-    '-target=module.bastion_project_disable_sa_creation',
-    '-var=enforce_researcher_workspace_disable_sa_creation=true',
-    '-var=enforce_bastion_project_disable_sa_creation=true'
-  ]
-
-
 # Create output files to use when performing variable substitution in the Composer DAGs for this workspace
 
 - id: "output file creation - researcher projects"

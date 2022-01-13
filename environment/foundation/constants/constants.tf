@@ -26,7 +26,7 @@ locals {
 
     // DATA LAKE PROJECT INFORMATION
 
-    data_lake_project_id = "" // CHANGE AFTER PROVISIONING DATA LAKE PROJECT
+    data_lake_project_id = "aaron3--data-lake-24c5" // CHANGE AFTER PROVISIONING DATA LAKE PROJECT
     data_lake_default_region = "us-central1" // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
 
     // WORKSPACE PROJECT INFORMATION

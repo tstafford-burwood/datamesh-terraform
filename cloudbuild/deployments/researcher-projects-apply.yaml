@@ -54,7 +54,7 @@ steps:
   args:
   - '-c'
   - |
-    if ! terraform apply -auto-approve  -var-file=env/${_TFVARS_FILE}.tfvars -var="enforce_researcher_workspace_disable_sa_creation=false" -var="enforce_bastion_project_disable_sa_creation=false" ; then
+    if ! terraform apply -auto-approve  -var-file=env/${_TFVARS_FILE}.tfvars -var=enforce_researcher_workspace_disable_sa_creation=false -var=enforce_bastion_project_disable_sa_creation=false ; then
       echo "Pipeline has failed, check terraform apply log output to determine error."
     fi
 

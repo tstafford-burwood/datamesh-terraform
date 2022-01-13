@@ -98,7 +98,7 @@ steps:
   entrypoint: /bin/sh
   args: [
     '-c',
-    'terraform output gcs_bucket > /workspace/gcs_bucket.txt
+    'terraform output gcs_bucket > /workspace/gcs_bucket.txt'
   ]
 
 - id: "load DAG to GCS bucket"

@@ -25,7 +25,13 @@ variable "srde_plan_trigger_project_id" {
   default     = ""
 }
 
-variable "srde_plan_trigger_name" {
+variable "plan_foundation_trigger_name" {
+  description = "Name of the trigger. Must be unique within the project."
+  type        = list(string)
+  default     = []
+}
+
+variable "plan_deployments_trigger_name" {
   description = "Name of the trigger. Must be unique within the project."
   type        = list(string)
   default     = []
@@ -87,6 +93,18 @@ variable "terraform_state_prefix" {
   default     = ""
 }
 
+variable "terraform_foundation_state_prefix" {
+  description = "The name of the foundation prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
+  type        = string
+  default     = ""
+}
+
+variable "terraform_deployments_state_prefix" {
+  description = "The name of the deployments prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
+  type        = string
+  default     = ""
+}
+
 variable "terraform_container_version" {
   description = "The container version of Terraform to use with this pipeline during a Cloud Build build."
   type        = string
@@ -109,7 +127,13 @@ variable "srde_apply_trigger_project_id" {
   default     = ""
 }
 
-variable "srde_apply_trigger_name" {
+variable "apply_foundation_trigger_name" {
+  description = "Name of the trigger. Must be unique within the project."
+  type        = list(string)
+  default     = []
+}
+
+variable "apply_deployments_trigger_name" {
   description = "Name of the trigger. Must be unique within the project."
   type        = list(string)
   default     = []

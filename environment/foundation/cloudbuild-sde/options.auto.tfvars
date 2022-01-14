@@ -4,11 +4,14 @@ terraform_container_version = "0.13.5" // TERRAFORM TAG
 # CLOUDBUILD TRIGGERS - PLAN TFVARS
 #----------------------------------
 
-srde_plan_trigger_name = [
+plan_foundation_trigger_name = [
   "packer-project",
+  "srde-folder-policies"
+]
+
+plan_deployments_trigger_name = [
   "researcher-projects",
   "staging-project",
-  "srde-folder-policies",
   "data-lake"
 ]
 
@@ -22,11 +25,14 @@ srde_plan_trigger_invert_regex = true
 # CLOUDBUILD TRIGGERS - APPLY TFVARS
 #-----------------------------------
 
-srde_apply_trigger_name = [
+apply_foundation_trigger_name = [
   "packer-project",
+  "srde-folder-policies"
+]
+
+apply_deployments_trigger_name = [
   "researcher-projects",
   "staging-project",
-  "srde-folder-policies",
   "data-lake"
 ]
 

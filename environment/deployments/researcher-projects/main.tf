@@ -13,17 +13,25 @@ data "google_project" "staging_project_number" {
   project_id = local.staging_project_id
 }
 
+data "terraform_remote_state" "staging_project" {
+  backend = "gcs"
+  config {
+    bucket = "terraform-state-sde-1292"
+    key = "staging_project_id"
+  }
+}
+
 // NULL RESOURCE TIMER
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
 // NEED TIME DELAY TO ALLOW POLICY CHANGE TO PROPAGATE
 
-resource "null_resource" "previous" {}
+#resource "null_resource" "previous" {}
 
-resource "time_sleep" "wait_130_seconds" {
-
-  create_duration = "130s"
-  depends_on      = [null_resource.previous]
-}
+#resource "time_sleep" "wait_130_seconds" {
+#
+#  create_duration = "130s"
+#  depends_on      = [null_resource.previous]
+#}
 
 
 // SET CONSTANT MODULE VALUES AS LOCALS

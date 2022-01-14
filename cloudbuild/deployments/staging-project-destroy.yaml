@@ -6,7 +6,7 @@ steps:
 
 - id: "staging projects - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -16,7 +16,7 @@ steps:
   
 - id: "staging project - destroy plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
@@ -25,7 +25,7 @@ steps:
 
 - id: "staging project - destroy all"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/staging-project'
+  dir: 'environment/deployments/staging-project'
   args: [
   'destroy',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

@@ -1,8 +1,12 @@
 // DATA BLOCK
 // RETRIEVE STAGING PROJECT NUMBER (I.E. 1234567890)
 
-data "google_project" "staging_project_number" {
-  project_id = local.staging_project_id
+data "terraform_remote_state" "staging_project" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = "deployments/staging-project"
+  }
 }
 
 #------------------
@@ -24,8 +28,8 @@ locals {
   cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
   srde_admin_access_level_name     = module.constants.value.srde_admin_access_level_name
   vpc_sc_all_restricted_apis       = module.constants.value.vpc_sc_all_restricted_apis
-  staging_project_id               = module.constants.value.staging_project_id
-  staging_project_number           = data.google_project.staging_project_number.number
+  staging_project_id               = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_number           = data.terraform_remote_state.staging_project.outputs.staging_project_number
   custom_iam_role_name = {
     custom_iam_role_name = module.datalake_iam_custom_role.name
   }

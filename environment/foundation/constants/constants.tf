@@ -11,6 +11,7 @@ locals {
     srde_folder_id             = "398150021301" // CHANGE BEFORE FIRST DEPLOYMENT
     automation_project_id      = "automation-dan-sde" // CHANGE BEFORE FIRST DEPLOYMEN
     cloudbuild_service_account = "547140210872@cloudbuild.gserviceaccount.com" // CHANGE BEFORE FIRST DEPLOYMENT
+    terraform_state_bucket     = "terraform-state-sde-1292" // CHANGE BEFORE FIRST DEPLOYMENT
 
     // PACKER PROJECT INFORMATION
 

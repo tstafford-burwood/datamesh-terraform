@@ -9,40 +9,19 @@ module "constants" {
 // DATA BLOCK
 // RETRIEVE STAGING PROJECT NUMBER (I.E. 1234567890)
 
-#data "google_project" "staging_project_number" {
-#  project_id = local.staging_project_id
-#}
-
 data "terraform_remote_state" "staging_project" {
   backend = "gcs"
   config = {
-    bucket = "terraform-state-sde-1292"
+    bucket = module.constants.value.terraform_state_bucket
     prefix = "cloudbuild-sde/staging-project"
-    #staging_project_id = ""
   }
 }
-
-
-// NULL RESOURCE TIMER
-// USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
-// NEED TIME DELAY TO ALLOW POLICY CHANGE TO PROPAGATE
-
-#resource "null_resource" "previous" {}
-
-#resource "time_sleep" "wait_130_seconds" {
-#
-#  create_duration = "130s"
-#  depends_on      = [null_resource.previous]
-#}
-
 
 // SET CONSTANT MODULE VALUES AS LOCALS
 
 locals {
-  #staging_project_id       = module.constants.value.staging_project_id
   staging_project_id       = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  #staging_project_number   = data.google_project.staging_project_number.number
-  staging_project_number       = data.terraform_remote_state.staging_project.outputs.staging_project_number
+  staging_project_number   = data.terraform_remote_state.staging_project.outputs.staging_project_number
   org_id                   = module.constants.value.org_id
   billing_account_id       = module.constants.value.billing_account_id
   srde_folder_id           = module.constants.value.srde_folder_id

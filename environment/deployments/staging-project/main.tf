@@ -1,6 +1,6 @@
-#-----------------
+#----------------------------------------------------------------------------
 # IMPORT CONSTANTS
-#-----------------
+#----------------------------------------------------------------------------
 
 module "constants" {
   source = "../../foundation/constants"
@@ -14,9 +14,15 @@ locals {
   srde_folder_id     = module.constants.value.srde_folder_id
 }
 
-#-----------------------
+
+data "google_storage_project_service_account" "gcs_account" {
+  # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
+  project = module.secure-staging-project.project_id
+}
+
+# ---------------------------------------------------------------------------
 # SECURE STAGING PROJECT
-#-----------------------
+# ---------------------------------------------------------------------------
 
 module "secure-staging-project" {
   source = "../../../modules/project_factory"
@@ -41,10 +47,9 @@ module "secure-staging-project" {
   random_project_id           = var.random_project_id
 }
 
-
-#--------------------------
+# ---------------------------------------------------------------------------
 # SECURE STAGING VPC MODULE
-#--------------------------
+#----------------------------------------------------------------------------
 
 module "vpc" {
   source = "../../../modules/vpc"
@@ -63,40 +68,29 @@ module "vpc" {
   routes                                 = var.routes
 }
 
-#----------------------
+#----------------------------------------------------------------------------
 # PUB/SUB TOPIC MODULE
-#----------------------
+#----------------------------------------------------------------------------
 
 module "pub_sub_topic" {
   source = "../../../modules/pub_sub/pub_sub_topic"
 
-  // REQUIRED
-
   topic_name                  = var.topic_name
   project_id                  = module.secure-staging-project.project_id
   allowed_persistence_regions = var.allowed_persistence_regions
-
-  // OPTIONAL
-
-  kms_key_name = var.kms_key_name
-  topic_labels = var.topic_labels
+  kms_key_name                = var.kms_key_name
+  topic_labels                = var.topic_labels
 }
 
-#----------------------------
+#----------------------------------------------------------------------------
 # PUB/SUB SUBSCRIPTION MODULE
-#----------------------------
+#----------------------------------------------------------------------------
 
 module "pub_sub_subscription" {
   source = "../../../modules/pub_sub/pub_sub_subscription"
-
-  // REQUIRED
-
   subscription_name       = var.subscription_name
   project_id              = module.secure-staging-project.project_id
   subscription_topic_name = module.pub_sub_topic.topic_name
-
-  // OPTIONAL
-
   ack_deadline_seconds       = var.ack_deadline_seconds
   dead_letter_topic          = var.dead_letter_topic
   enable_message_ordering    = var.enable_message_ordering
@@ -121,20 +115,12 @@ module "pub_sub_subscription" {
 // ENABLES PUBLISHING GCS NOTIFICATIONS TO A PUB/SUB TOPIC
 // LOCAL.STAGING_PROJECT_ID LOCATED IN MAIN.TF OF THIS DIRECTORY
 
-// DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
-
-data "google_storage_project_service_account" "gcs_account" {
-  project = module.secure-staging-project.project_id
-}
-
-#--------------------------------
+#----------------------------------------------------------------------------
 # PUB/SUB TOPIC IAM MEMBER MODULE
-#--------------------------------
+#----------------------------------------------------------------------------
 
 module "pub_sub_topic_iam_binding" {
   source = "../../../modules/pub_sub/pub_sub_topic/pub_sub_topic_iam_member"
-
-  // REQUIRED
 
   project_id = module.secure-staging-project.project_id
   topic_name = module.pub_sub_topic.topic_name
@@ -143,21 +129,10 @@ module "pub_sub_topic_iam_binding" {
 }
 
 
-#-------------------------------------------------
-# FOLDER IAM MEMBER MODULE - DLP API SERVICE AGENT
-#-------------------------------------------------
 
-module "folder_iam_member" {
-  source = "../../../modules/iam/folder_iam"
-
-  folder_id     = local.srde_folder_id
-  iam_role_list = var.dlp_service_agent_iam_role_list
-  folder_member = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
-}
-
-#---------------------------------------
+#----------------------------------------------------------------------------
 # STAGING PROJECT IAM CUSTOM ROLE MODULE
-#---------------------------------------
+#----------------------------------------------------------------------------
 
 module "staging_project_iam_custom_role" {
   source = "../../../modules/iam/project_iam_custom_role"
@@ -170,11 +145,10 @@ module "staging_project_iam_custom_role" {
   project_iam_custom_role_stage       = var.project_iam_custom_role_stage
 }
 
-// DEFINE DATA STEWARDS THAT WILL BE GIVEN THE SRDE CUSTOM ROLE AT THE PROJECT LEVEL
-
-#----------------------------------------------------
+#----------------------------------------------------------------------------
 # DATA STEWARDS - PROJECT IAM MEMBER CUSTOM SRDE ROLE
-#----------------------------------------------------
+# DEFINE DATA STEWARDS THAT WILL BE GIVEN THE SRDE CUSTOM ROLE AT THE PROJECT LEVEL
+#----------------------------------------------------------------------------
 
 resource "google_project_iam_member" "staging_project_custom_srde_role" {
 
@@ -185,11 +159,10 @@ resource "google_project_iam_member" "staging_project_custom_srde_role" {
   member  = each.value
 }
 
-// DEFINE DATA STEWARDS THAT WILL BE GIVEN roles/composer.user AT THE PROJECT LEVEL
-
-#-------------------------------------------------------
+#----------------------------------------------------------------------------
 # DATA STEWARDS - PROJECT IAM MEMBER roles/composer.user
-#-------------------------------------------------------
+# DEFINE DATA STEWARDS THAT WILL BE GIVEN roles/composer.user AT THE PROJECT LEVEL
+#----------------------------------------------------------------------------
 
 resource "google_project_iam_member" "staging_project_composer_user_role" {
 
@@ -198,4 +171,24 @@ resource "google_project_iam_member" "staging_project_composer_user_role" {
   project = module.secure-staging-project.project_id
   role    = "roles/composer.user"
   member  = each.value
+}
+
+#----------------------------------------------------------------------------
+# IAM MEMBER MODULE - DLP API SERVICE AGENT
+#----------------------------------------------------------------------------
+
+# module "folder_iam_member" {
+#   source = "../../../modules/iam/folder_iam"
+
+#   folder_id     = local.srde_folder_id
+#   iam_role_list = var.dlp_service_agent_iam_role_list
+#   folder_member = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
+# }
+
+resource "google_project_iam_member" "dlp_service_account_iam" {
+  for_each = toset(var.dlp_service_agent_iam_role_list)
+  project  = module.secure-staging-project.project_id
+  role     = each.value
+  member   = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
+  depends_on = [ data.external.dlp_agent ]
 }

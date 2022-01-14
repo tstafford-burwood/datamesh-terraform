@@ -1,80 +1,38 @@
+timeout: 1200s
+
 steps:
-# # PRE-COMMIT
-# - id: "first pre-commit"
-#   name: 'gcr.io/automation-wcm-aaron-334118/pre-commit:latest'
-#   args: [
-#     'run','-a'
-#   ]
-
-# PACKER PROJECT
-
-- id: "packer project - init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  args: [
-    'init',
+- id: Terraform Init
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/packer-project'
+  args: ['init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/packer-project'
+    '-backend-config=prefix=${_PREFIX}/packer-project']
+
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/packer-project'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/packer-project'
+  args: ['validate',
+    '-no-color'
+    ]
+
+- id: Terraform Plan
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/packer-project'
+  args: ['plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
-
-- id: "packer project - first plan and disable project policies"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  args: [
-    'plan',
-    '-var=enforce_packer_project_disable_sa_creation=false',
-    '--out',
-    '/workspace/tfplan.tfplan'
-  ]
-
-- id: "convert tf plan to json for terraform validator"
-  name: gcr.io/wcm-automation-aaron2/terraform-validator:b7a71715-b452-43a3-b75e-2dc74b7f2c14
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  entrypoint: "/bin/bash"
-  args: ['-c', 'terraform show -json /workspace/tfplan.tfplan > /workspace/tfplan.json']
-
-#- id: "show json"
-#  name: gcr.io/wcm-automation-aaron2/terraform-validator:b7a71715-b452-43a3-b75e-2dc74b7f2c14
-#  dir: 'environment/deployments/wcm-srde/packer-project'
-#  entrypoint: "/bin/bash"
-#  args: ['-c', 'terraform show -json /workspace/tfplan.tfplan']
-    
-- id: "terraform validator"
-  name: gcr.io/wcm-automation-aaron2/terraform-validator:c99d5a10-32ad-41f0-88e4-5affa830cf0a
-  dir: 'containers/terraform-validator'
-  args: ['gcloud', 'alpha', 'resource-config', 'validate', 'terraform', '/workspace/tfplan.json', '--policy-library=tf-policies']
-
-- id: "packer project - first apply and disable project policies "
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    if ! terraform apply -auto-approve -var="enforce_packer_project_disable_sa_creation=false" ; then
-      echo "Pipeline has failed, check terraform apply log output to determine error."
-    fi
-
-- id: "packer project - second plan and ensure project policies are re-enabled"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    terraform plan \
-    -target=module.packer_project_disable_sa_creation \
-    -var="enforce_packer_project_disable_sa_creation=true" \
-
-- id: "packer project - second apply and ensure project policies are re-enabled"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/wcm-srde/packer-project'
-  entrypoint: /bin/sh
-  args:
-  - '-c'
-  - |
-    terraform apply -auto-approve \
-    -target=module.packer_project_disable_sa_creation \
-    -var="enforce_packer_project_disable_sa_creation=true"
-
-timeout: 3600s
+      
+- id: Terraform Apply
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/packer-project'
+  args: ['apply',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-auto-approve'
+    ]

@@ -77,9 +77,26 @@ sed -i "s/AUTOMATION_PROJECT_ID_REPLACE/${AUTOMATION_PROJECT_ID}/g" ../environme
 # Set Cloudbuild account
 PROJECT_NUMBER=$(gcloud projects describe automation-dan-sde  --format='value(projectNumber)')
 
-# Add Cloudbuild SA Account to Folder
+sed -i "s/CLOUDBUILD_SA_REPLACE/${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com/g" ../environment/foundation/constants/constants.tf
+
+# Add Cloudbuild SA Account to Folder Admin
 gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} \
     --role roles/resourcemanager.folderAdmin \
     --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
 
-sed -i "s/CLOUDBUILD_SA_REPLACE/${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com/g" ../environment/foundation/constants/constants.tf
+# Add Cloudbuild SA to Project Creator for Folder
+gcloud resource-manager folders add-iam-policy-binding ${FOLDER_ID} \
+    --role roles/resourcemanager.projectCreator \
+    --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
+
+# Add Cloudbuild SA Account Organization Policy Admin
+gcloud organizations add-iam-policy-binding ${ORG_ID} \
+    --role roles/orgpolicy.policyAdmin \
+    --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
+
+# Add Cloudbuild SA to Access Context manager Admin
+gcloud organizations add-iam-policy-binding ${ORG_ID} \
+    --role roles/accesscontextmanager.policyAdmin \
+    --member "serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com"
+
+

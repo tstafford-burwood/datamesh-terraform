@@ -13,15 +13,14 @@ module "constants" {
 #  project_id = local.staging_project_id
 #}
 
-#data "terraform_remote_state" "staging_project" {
-#  backend = "gcs"
-#  config = {
-#    bucket = "terraform-state-sde-1292"
-#    prefix = "cloudbuild-sde/staging-project"
-#    #prefix = "staging_project_id"
-#    staging_project_id = ""
-#  }
-#}
+data "terraform_remote_state" "staging_project" {
+  backend = "gcs"
+  config = {
+    bucket = "terraform-state-sde-1292"
+    prefix = "cloudbuild-sde/staging-project"
+    #staging_project_id = ""
+  }
+}
 
 
 // NULL RESOURCE TIMER
@@ -41,8 +40,9 @@ module "constants" {
 
 locals {
   #staging_project_id       = module.constants.value.staging_project_id
- # staging_project_id       = data.terraform_remote_state.staging_project.staging_project_id
+  staging_project_id       = data.terraform_remote_state.staging_project.outputs.staging_project_id
   #staging_project_number   = data.google_project.staging_project_number.number
+  staging_project_number       = data.terraform_remote_state.staging_project.outputs.staging_project_number
   org_id                   = module.constants.value.org_id
   billing_account_id       = module.constants.value.billing_account_id
   srde_folder_id           = module.constants.value.srde_folder_id

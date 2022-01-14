@@ -15,11 +15,13 @@ data "google_project" "staging_project_number" {
 
 data "terraform_remote_state" "staging_project" {
   backend = "gcs"
-  config {
+  config = {
     bucket = "terraform-state-sde-1292"
-    key = "staging_project_id"
+    prefix = "cloudbuild-sde/staging-project"
+    #prefix = "staging_project_id"
   }
 }
+
 
 // NULL RESOURCE TIMER
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
@@ -37,7 +39,8 @@ data "terraform_remote_state" "staging_project" {
 // SET CONSTANT MODULE VALUES AS LOCALS
 
 locals {
-  staging_project_id       = module.constants.value.staging_project_id
+  #staging_project_id       = module.constants.value.staging_project_id
+  staging_project_id       = data.terraform_remote_state.staging_project.staging_project_id
   staging_project_number   = data.google_project.staging_project_number.number
   org_id                   = module.constants.value.org_id
   billing_account_id       = module.constants.value.billing_account_id

@@ -16,6 +16,7 @@ steps:
   dir: 'environment/deployments/wcm-srde/packer-project'
   args: [
     'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-destroy'
   ]
 
@@ -24,6 +25,7 @@ steps:
   dir: 'environment/deployments/wcm-srde/packer-project'
   args: [
   'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 

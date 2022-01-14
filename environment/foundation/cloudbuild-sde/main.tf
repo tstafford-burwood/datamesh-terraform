@@ -33,7 +33,7 @@ resource "google_cloudbuild_trigger" "plan_foundation_triggers" {
   description    = format("Pipeline for SDE-%s created with Terraform", each.value)
   tags           = var.srde_plan_trigger_tags
   disabled       = var.srde_plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/-%s-plan.yaml", each.value)
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", each.value)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", each.value)
 
   /*
@@ -73,7 +73,7 @@ resource "google_cloudbuild_trigger" "plan_deployments_triggers" {
   description    = format("Pipeline for SDE-%s created with Terraform", each.value)
   tags           = var.srde_plan_trigger_tags
   disabled       = var.srde_plan_trigger_disabled
-  filename       = format("cloudbuild/deployments/-%s-plan.yaml", each.value)
+  filename       = format("cloudbuild/deployments/%s-plan.yaml", each.value)
   included_files = formatlist("environment/deployments/%s/env/terraform.tfvars", each.value)
 
   /*

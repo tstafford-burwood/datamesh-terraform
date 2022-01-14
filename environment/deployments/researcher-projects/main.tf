@@ -270,7 +270,7 @@ module "workspace_deeplearning_vm_service_account" {
   service_account_names = var.workspace_deeplearning_vm_sa_service_account_names
   org_id                = local.org_id
   prefix                = var.workspace_deeplearning_vm_sa_prefix
-  depends_on            = [time_sleep.wait_130_seconds]
+  #depends_on            = [time_sleep.wait_130_seconds]
 }
 
 #--------------------------------------------------
@@ -662,7 +662,7 @@ module "bastion_project_service_account" {
   service_account_names = var.bastion_project_sa_service_account_names
   org_id                = local.org_id
   prefix                = var.bastion_project_sa_prefix
-  depends_on            = [time_sleep.wait_130_seconds]
+  #depends_on            = [time_sleep.wait_130_seconds]
 }
 
 #------------------------------------------------------------------

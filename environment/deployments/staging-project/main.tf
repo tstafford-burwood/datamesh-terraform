@@ -190,5 +190,4 @@ resource "google_project_iam_member" "dlp_service_account_iam" {
   project  = module.secure-staging-project.project_id
   role     = each.value
   member   = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
-  depends_on = [ data.external.dlp_agent ]
 }

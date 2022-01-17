@@ -37,7 +37,11 @@ variable "data_lake_project_trigger_name" {
   default     = "data-lake-project"
 }
 
-
+variable "researcher_workspace_project_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "researcher-workspace-project"
+}
 
 variable "srde_plan_trigger_project_id" {
   description = "The ID of the project in which the resource belongs and ID of the project that owns the Cloud Source Repository. If it is not provided, the provider project is used."

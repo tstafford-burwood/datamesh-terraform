@@ -9,7 +9,6 @@ plan_foundation_trigger_name = [
 ]
 
 plan_deployments_trigger_name = [
-  "researcher-projects"
 ]
 
 srde_plan_trigger_tags     = []
@@ -27,7 +26,6 @@ apply_foundation_trigger_name = [
 ]
 
 apply_deployments_trigger_name = [
-  "researcher-projects"
 ]
 
 srde_apply_trigger_tags     = []

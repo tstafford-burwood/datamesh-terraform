@@ -64,4 +64,4 @@ researcher_data_egress_regular_service_perimeter_name = "group2_external_egress_
 # RESEARCHER EXTERNAL EGRESS & STAGING PROEJCT VPC SC BRIDGE PERIMETER TFVARS
 #---------------------------------------------------------------------------- 
 
-external_egress_and_staging_bridge_service_perimeter_name = "group2_egress_staging_project_bridge_aaron" // CHANGE WITH EACH NEW PROJECT
+external_egress_and_staging_bridge_service_perimeter_name = "group2_egress_staging_project_bridge_aaron" // CHANGE WITH EACH NEW PROJECT 

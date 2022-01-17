@@ -18,20 +18,20 @@ locals {
 
 
 # Foundation
-resource "google_folder" "foundation-sde" {
-  display_name = "Foundation"
+resource "google_folder" "foundation_sde" {
+  display_name = "Foundation SDE"
   parent       = local.parent_folder_id
 }
 
 # Deployments
-resource "google_folder" "researcher-workspaces-parent" {
-  display_name = "Researcher Workspaces"
+resource "google_folder" "deployments_sde_parent" {
+  display_name = "Deployments SDE"
   parent       = local.parent_folder_id
 }
 
-# Group 2 Folder
+# Researcher Workspaces
 resource "google_folder" "researcher-workspaces" {
   for_each = toset(var.researcher_workspace_names)
   display_name = "${each.value}${local.suffix}"
-  parent       = google_folder.researcher-workspaces-parent.name
+  parent       = google_folder.deployments_sde_parent.name
 }

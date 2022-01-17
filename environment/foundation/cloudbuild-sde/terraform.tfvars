@@ -3,7 +3,6 @@
 # CHANGE AFTER THE AUTOMATION PROJECT IS UP AND HAS A BUCKET AND PREFIX
 # ---------------------------------------------------------
 
-terraform_state_bucket = "terraform-state-sde-1292" // CHANGE BEFORE FIRST DEPLOYMENT
 
 # ---------------------------------------------------------
 # STEP 2:
@@ -17,7 +16,7 @@ packer_project_id = "aaron3-packer-ba08" // CHANGE AFTER PACKER PROJECT IS UP
 # CHANGE AFTER STAGING AND CLOUD COMPOSER ARE UP
 # ---------------------------------------------------------
 
-composer_dag_bucket = "us-central1-composer-all-pr-77f45ed9-bucket" // CHANGE AFTER CLOUD COMPOSER IS UP
+#composer_dag_bucket = "us-central1-composer-all-pr-77f45ed9-bucket" // CHANGE AFTER CLOUD COMPOSER IS UP
 
 # ---------------------------------------------------------
 # CHANGE BASED ON WHAT CODE REPO IS BEING USED.

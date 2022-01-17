@@ -27,6 +27,7 @@ locals {
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   automation_project_id      = module.constants.value.automation_project_id
   packer_default_region      = module.constants.value.packer_default_region
+  terraform_state_bucket     = module.constants.value.terraform_state_bucket
   # Check if the composer state file is present, if so format the output else an empty string
   composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
 }
@@ -66,7 +67,7 @@ resource "google_cloudbuild_trigger" "packer_project_plan" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -107,7 +108,7 @@ resource "google_cloudbuild_trigger" "packer_project_apply" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -149,7 +150,7 @@ resource "google_cloudbuild_trigger" "staging_project_plan" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -190,7 +191,7 @@ resource "google_cloudbuild_trigger" "staging_project_apply" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -232,7 +233,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
@@ -274,7 +275,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
@@ -317,7 +318,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
@@ -359,7 +360,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
@@ -402,7 +403,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
@@ -445,7 +446,7 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
+    _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
@@ -488,7 +489,7 @@ resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_plan" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -530,7 +531,7 @@ resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_apply" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -571,7 +572,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_plan" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
@@ -612,7 +613,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_apply" {
   }
 
   substitutions = {
-    _BUCKET      = var.terraform_state_bucket
+    _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""

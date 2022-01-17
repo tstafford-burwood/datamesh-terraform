@@ -10,7 +10,7 @@ module "researcher_bastion_vpc_restrict_vpc_peering_to_workspace_vpc" {
   policy_for        = "project"
   project_id        = module.researcher-bastion-access-project.project_id
   enforce           = null
-  allow             = ["projects/${module.researcher-workspace-project.project_id}/global/networks/${module.workspace_vpc.network_name}"]
+  allow             = ["projects/${module.workspace_project.project_id}/global/networks/${module.workspace_vpc.network_name}"]
   allow_list_length = 1
   depends_on        = [module.researcher_bastion_to_workspace_vpc_peer, module.researcher_workspace_to_bastion_vpc_peer]
 }
@@ -25,7 +25,7 @@ module "researcher_workspace_vpc_restrict_vpc_peering_to_bastion_vpc" {
   constraint        = "constraints/compute.restrictVpcPeering"
   policy_type       = "list"
   policy_for        = "project"
-  project_id        = module.researcher-workspace-project.project_id
+  project_id        = module.workspace_project.project_id
   enforce           = null
   allow             = ["projects/${module.researcher-bastion-access-project.project_id}/global/networks/${module.bastion_project_vpc.network_name}"]
   allow_list_length = 1
@@ -45,7 +45,7 @@ module "researcher_workspace_disable_sa_creation" {
   constraint  = "constraints/iam.disableServiceAccountCreation"
   policy_type = "boolean"
   policy_for  = "project"
-  project_id  = module.researcher-workspace-project.project_id
+  project_id  = module.workspace_project.project_id
   enforce     = var.enforce_researcher_workspace_disable_sa_creation
 }
 

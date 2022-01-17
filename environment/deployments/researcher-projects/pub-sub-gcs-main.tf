@@ -36,7 +36,7 @@ module "gcs_pub_sub_notification" {
 // DATA BLOCK TO RETRIEVE WORKSPACE PROJECT'S GCS SERVICE ACCOUNT
 
 data "google_storage_project_service_account" "workspace_gcs_account" {
-  project = module.researcher-workspace-project.project_id
+  project = module.workspace_project.project_id
 }
 
 // DATA BLOCK TO RETRIEVE RESEARCHER EXTERNAL DATA EGRESS PROJECT'S GCS SERVICE ACCOUNT

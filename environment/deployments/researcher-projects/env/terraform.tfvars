@@ -1,58 +1,40 @@
-#------------------------------------
-# RESEARCHER WORKSPACE PROJECT TFVARS
-#------------------------------------ 
-
-workspace_project_name = "aaron2-rsch" // CHANGE WITH EACH NEW PROJECT
-
 #-------------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM MEMBER BINDING TFVARS
 #-------------------------------------------------------
 
-workspace_project_member = "group:srde-datagroup@prorelativity.com" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH FROM BASTION TO WORKSPACE VM
-
-#----------------------------------
-# RESEARCHER BASTION PROJECT TFVARS
-#----------------------------------
-
-bastion_project_name = "group2-srde" // CHANGE WITH EACH NEW PROJECT
+workspace_project_member = "user:dspeck@sde.burwood.io" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH FROM BASTION TO WORKSPACE VM
 
 #------------------------------------------------------
 # RESEARCHER BASTION PROJECT IAM MEMBER BINDING TFVARS
 #------------------------------------------------------
 
-bastion_project_member = "group:srde-datagroup@prorelativity.com" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH INTO BASTION
-
-#--------------------------------------
-# RESEARCHER DATA EGRESS PROJECT TFVARS
-#--------------------------------------
-
-data_egress_project_name = "group2-srde" // CHANGE WITH EACH NEW PROJECT
+bastion_project_member = "user:dspeck@sde.burwood.io" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH INTO BASTION
 
 #----------------------------------------
 # STAGING PROJECT - INGRESS BUCKET TFVARS
 #----------------------------------------
 
-staging_ingress_bucket_admins = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
+staging_ingress_bucket_admins = ["user:dspeck@sde.burwood.io"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
 
 #----------------------------------------
 # STAGING PROJECT - EGRESS BUCKET TFVARS
 #----------------------------------------
 
-staging_egress_bucket_viewers = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
+staging_egress_bucket_viewers = ["user:dspeck@sde.burwood.io"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
 
 #----------------------------------------------------
 # VPC SC RESEARCHER GROUP MEMBER ACCESS LEVELS TFVARS
 #----------------------------------------------------
 
 access_level_name    = "group2_access_level_wcm_aaron"
-access_level_members = ["user:astrong@prorelativity.com", "user:janderson@prorelativity.com","user:datasteward@prorelativity.com"]
+access_level_members = ["user:dspeck@sde.burwood.io"]
 
 #-----------------------------------------------------
 # RESEARCHER WORKSPACE VPC SC REGULAR PERIMETER TFVARS
 #-----------------------------------------------------
 
 researcher_workspace_regular_service_perimeter_name                       = "group2_workspace_regular_service_perimeter_aaron" // CHANGE WITH EACH NEW PROJECT
-researcher_workspace_regular_service_perimeter_egress_policies_identities = ["user:astrong@prorelativity.com","user:datasteward@prorelativity.com"]
+researcher_workspace_regular_service_perimeter_egress_policies_identities = ["user:dspeck@sde.burwood.io"]
 
 #----------------------------------------------------------------------
 # RESEARCHER WORKSPACE & STAGING PROJECT VPC SC BRIDGE PERIMETER TFVARS 

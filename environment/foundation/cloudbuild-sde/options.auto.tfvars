@@ -4,32 +4,21 @@ terraform_container_version = "0.13.5" // TERRAFORM TAG
 # CLOUDBUILD TRIGGERS - PLAN TFVARS
 #----------------------------------
 
-plan_foundation_trigger_name = [
-]
+plan_trigger_tags     = []
+plan_trigger_disabled = false
 
-plan_deployments_trigger_name = [
-]
-
-srde_plan_trigger_tags     = []
-srde_plan_trigger_disabled = false
-
-srde_plan_trigger_invert_regex = true
+plan_trigger_invert_regex = true
 
 
 #-----------------------------------
 # CLOUDBUILD TRIGGERS - APPLY TFVARS
 #-----------------------------------
 
-apply_foundation_trigger_name = [
-]
 
-apply_deployments_trigger_name = [
-]
+apply_trigger_tags     = []
+apply_trigger_disabled = false
 
-srde_apply_trigger_tags     = []
-srde_apply_trigger_disabled = false
-
-srde_apply_trigger_invert_regex = false
+apply_trigger_invert_regex = false
 
 
 #-------------------------------------------
@@ -43,72 +32,58 @@ composer_plan_trigger_disabled = false
 # CLOUDBUILD TRIGGERS - COMPOSER APPLY TFVARS
 #-------------------------------------------
 
-srde_composer_apply_trigger_tags     = []
-srde_composer_apply_trigger_disabled = false
+composer_apply_trigger_tags     = []
+composer_apply_trigger_disabled = false
 
 #--------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL PLAN TFVARS
 #--------------------------------------------------------------------------
 
-srde_cloudbuild_sa_access_level_plan_trigger_tags     = []
-srde_cloudbuild_sa_access_level_plan_trigger_disabled = false
+cloudbuild_sa_access_level_plan_trigger_tags     = []
+cloudbuild_sa_access_level_plan_trigger_disabled = false
 
 #---------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL APPLY TFVARS
 #---------------------------------------------------------------------------
 
-srde_cloudbuild_sa_access_level_apply_trigger_tags     = []
-srde_cloudbuild_sa_access_level_apply_trigger_disabled = false
+cloudbuild_sa_access_level_apply_trigger_tags     = []
+cloudbuild_sa_access_level_apply_trigger_disabled = false
 
 #--------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN TFVARS
 #--------------------------------------------------------------------------
 
-srde_admin_access_level_plan_trigger_tags     = []
-srde_admin_access_level_plan_trigger_disabled = false
+admin_access_level_plan_trigger_tags     = []
+admin_access_level_plan_trigger_disabled = false
 
 #-----------------------------------------------------------
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY TFVARS
 #-----------------------------------------------------------
 
-srde_admin_access_level_apply_trigger_tags     = []
-srde_admin_access_level_apply_trigger_disabled = false
+admin_access_level_apply_trigger_tags     = []
+admin_access_level_apply_trigger_disabled = false
 
 #-------------------------------------------------------
 # CLOUDBUILD TRIGGERS - DEEP LEARNING IMAGE BUILD TFVARS
 #-------------------------------------------------------
 
-srde_deep_learning_vm_image_build_trigger_tags     = []
-srde_deep_learning_vm_image_build_trigger_disabled = false
-srde_packer_image_tag                              = "1.7.3"
+deep_learning_vm_image_build_trigger_tags     = []
+deep_learning_vm_image_build_trigger_disabled = false
+packer_image_tag                              = "1.7.3"
 
 #--------------------------------------------------
 # CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD TFVARS
 #--------------------------------------------------
 
-srde_rhel_cis_image_build_trigger_tags     = []
-srde_rhel_cis_image_build_trigger_disabled = false
+rhel_cis_image_build_trigger_tags     = []
+rhel_cis_image_build_trigger_disabled = false
 
 #----------------------------------------------------
 # CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE TFVARS
 #----------------------------------------------------
 
-srde_packer_container_image_build_trigger_tags     = []
-srde_packer_container_image_build_trigger_disabled = false
-
-#-----------------------------------------------------
-# CLOUDBUILD TRIGGERS - PATH ML CONTAINER IMAGE TFVARS
-#-----------------------------------------------------
-
-srde_path_ml_container_image_build_trigger_tags     = []
-srde_path_ml_container_image_build_trigger_disabled = false
-
-#-----------------------------------------------------
-# CLOUDBUILD TRIGGERS - PATH ML CONTAINER IMAGE TFVARS
-#-----------------------------------------------------
-
-srde_terraform_validator_container_image_build_trigger_tags     = []
-srde_terraform_validator_container_image_build_trigger_disabled = false
+packer_container_image_build_trigger_tags     = []
+packer_container_image_build_trigger_disabled = false
 
 #-------------------------
 # FOLDER IAM MEMBER TFVARS

@@ -8,7 +8,7 @@ locals {
 
     org_id                     = "645343216837"                                // CHANGE BEFORE FIRST DEPLOYMENT
     billing_account_id         = "01EF01-627C10-7CD2DF"                        // CHANGE BEFORE FIRST DEPLOYMENT
-    srde_folder_id             = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    sde_folder_id             = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
     parent_folder_id           = "folders/398150021301"                        // CHANGE BEFORE FIRST DEPLOYMENT
     folder_foundation_id       = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
     folder_research_group_id   = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT

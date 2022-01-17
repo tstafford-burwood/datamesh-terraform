@@ -15,10 +15,6 @@ variable "github_repo_name" {
   default     = ""
 }
 
-#-------------------------------------
-# CLOUDBUILD TRIGGERS - PLAN VARAIBLES
-#-------------------------------------
-
 variable "packer_project_trigger_name" {
   description = "Name of packer project trigger"
   type        = string
@@ -43,51 +39,53 @@ variable "researcher_workspace_project_trigger_name" {
   default     = "researcher-workspace-project"
 }
 
-variable "srde_plan_trigger_project_id" {
+#-------------------------------------
+# CLOUDBUILD TRIGGERS - PLAN VARAIBLES
+#-------------------------------------
+
+variable "plan_trigger_project_id" {
   description = "The ID of the project in which the resource belongs and ID of the project that owns the Cloud Source Repository. If it is not provided, the provider project is used."
   type        = string
   default     = ""
 }
 
-variable "srde_plan_trigger_tags" {
+variable "plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_plan_trigger_disabled" {
+variable "plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
 }
 
-variable "srde_plan_trigger_filename" {
+variable "plan_trigger_filename" {
   description = "Path, from the source root, to a file whose contents is used for the template. Either a filename or build template must be provided."
   type        = string
   default     = ""
 }
 
-variable "srde_plan_trigger_included_files" {
+variable "plan_trigger_included_files" {
   description = "ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match extended with support for **. If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is empty, then as far as this filter is concerned, we should trigger the build. If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is not empty, then we make sure that at least one of those files matches a includedFiles glob. If not, then we do not trigger a build."
   type        = string
   default     = ""
 }
 
-variable "srde_plan_trigger_repo_name" {
+variable "plan_trigger_repo_name" {
   description = "Name of the Cloud Source Repository. If omitted, the name `default` is assumed."
   type        = string
   default     = ""
 }
 
-
-
-variable "srde_plan_trigger_invert_regex" {
+variable "plan_trigger_invert_regex" {
   description = "Only trigger a build if the revision regex does NOT match the revision regex."
   type        = bool
   default     = false
 }
 
-variable "srde_plan_branch_name" {
+variable "plan_branch_name" {
   description = "Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided. The syntax of the regular expressions accepted is the syntax accepted by RE2 and described at https://github.com/google/re2/wiki/Syntax"
   type        = string
   default     = ""
@@ -123,7 +121,7 @@ variable "terraform_container_version" {
   default     = ""
 }
 
-variable "srde_composer_dag_bucket" {
+variable "composer_dag_bucket" {
   description = "The name of the Cloud Composer DAG bucket. This will be necessary for some pipelines and not all pipelines. This value is obtained after the Cloud Composer instance is provisioned since it is a GCP managed resource."
   type        = string
   default     = ""
@@ -133,61 +131,49 @@ variable "srde_composer_dag_bucket" {
 # CLOUDBUILD TRIGGERS - APPLY VARAIBLES
 #--------------------------------------
 
-variable "srde_apply_trigger_project_id" {
+variable "apply_trigger_project_id" {
   description = "The ID of the project in which the resource belongs and ID of the project that owns the Cloud Source Repository. If it is not provided, the provider project is used."
   type        = string
   default     = ""
 }
 
-variable "apply_foundation_trigger_name" {
-  description = "Name of the trigger. Must be unique within the project."
-  type        = list(string)
-  default     = []
-}
-
-variable "apply_deployments_trigger_name" {
-  description = "Name of the trigger. Must be unique within the project."
-  type        = list(string)
-  default     = []
-}
-
-variable "srde_apply_trigger_tags" {
+variable "apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_apply_trigger_disabled" {
+variable "apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
 }
 
-variable "srde_apply_trigger_filename" {
+variable "apply_trigger_filename" {
   description = "Path, from the source root, to a file whose contents is used for the template. Either a filename or build template must be provided."
   type        = string
   default     = ""
 }
 
-variable "srde_apply_trigger_included_files" {
+variable "apply_trigger_included_files" {
   description = "ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match extended with support for **. If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is empty, then as far as this filter is concerned, we should trigger the build. If any of the files altered in the commit pass the ignoredFiles filter and includedFiles is not empty, then we make sure that at least one of those files matches a includedFiles glob. If not, then we do not trigger a build."
   type        = string
   default     = ""
 }
 
-variable "srde_apply_trigger_repo_name" {
+variable "apply_trigger_repo_name" {
   description = "Name of the Cloud Source Repository. If omitted, the name `default` is assumed."
   type        = string
   default     = ""
 }
 
-variable "srde_apply_trigger_invert_regex" {
+variable "apply_trigger_invert_regex" {
   description = "Only trigger a build if the revision regex does NOT match the revision regex."
   type        = bool
   default     = false
 }
 
-variable "srde_apply_branch_name" {
+variable "apply_branch_name" {
   description = "Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided. The syntax of the regular expressions accepted is the syntax accepted by RE2 and described at https://github.com/google/re2/wiki/Syntax"
   type        = string
   default     = ""
@@ -213,13 +199,13 @@ variable "composer_plan_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - COMPOSER APPLY VARIABLES
 #-----------------------------------------------
 
-variable "srde_composer_apply_trigger_tags" {
+variable "composer_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_composer_apply_trigger_disabled" {
+variable "composer_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -229,13 +215,13 @@ variable "srde_composer_apply_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL PLAN VARIABLES
 #-----------------------------------------------------------------------------
 
-variable "srde_cloudbuild_sa_access_level_plan_trigger_tags" {
+variable "cloudbuild_sa_access_level_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_cloudbuild_sa_access_level_plan_trigger_disabled" {
+variable "cloudbuild_sa_access_level_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -245,13 +231,13 @@ variable "srde_cloudbuild_sa_access_level_plan_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL APPLY VARIABLES
 #------------------------------------------------------------------------------
 
-variable "srde_cloudbuild_sa_access_level_apply_trigger_tags" {
+variable "cloudbuild_sa_access_level_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_cloudbuild_sa_access_level_apply_trigger_disabled" {
+variable "cloudbuild_sa_access_level_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -261,13 +247,13 @@ variable "srde_cloudbuild_sa_access_level_apply_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN VARIABLES
 #-------------------------------------------------------------
 
-variable "srde_admin_access_level_plan_trigger_tags" {
+variable "admin_access_level_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_admin_access_level_plan_trigger_disabled" {
+variable "admin_access_level_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -277,13 +263,13 @@ variable "srde_admin_access_level_plan_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY VARIABLES
 #--------------------------------------------------------------
 
-variable "srde_admin_access_level_apply_trigger_tags" {
+variable "admin_access_level_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_admin_access_level_apply_trigger_disabled" {
+variable "admin_access_level_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -293,25 +279,25 @@ variable "srde_admin_access_level_apply_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - DEEP LEARNING VM IMAGE BUILD VARIABLES
 #-------------------------------------------------------------
 
-variable "srde_deep_learning_vm_image_build_trigger_tags" {
+variable "deep_learning_vm_image_build_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_deep_learning_vm_image_build_trigger_disabled" {
+variable "deep_learning_vm_image_build_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
 }
 
-variable "srde_packer_project_id" {
+variable "packer_project_id" {
   description = "The ID of the Packer project after it is provisioned."
   type        = string
   default     = ""
 }
 
-variable "srde_packer_image_tag" {
+variable "packer_image_tag" {
   description = "The container image tag of Packer that was provisioned."
   type        = string
   default     = ""
@@ -321,13 +307,13 @@ variable "srde_packer_image_tag" {
 # CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD VARIABLES
 #-----------------------------------------------------
 
-variable "srde_rhel_cis_image_build_trigger_tags" {
+variable "rhel_cis_image_build_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_rhel_cis_image_build_trigger_disabled" {
+variable "rhel_cis_image_build_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -337,49 +323,18 @@ variable "srde_rhel_cis_image_build_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE VARIABLES
 #-------------------------------------------------------
 
-variable "srde_packer_container_image_build_trigger_tags" {
+variable "packer_container_image_build_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "srde_packer_container_image_build_trigger_disabled" {
+variable "packer_container_image_build_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
 }
 
-#--------------------------------------------------------
-# CLOUDBUILD TRIGGERS - PATH ML CONTAINER IMAGE VARIABLES
-#--------------------------------------------------------
-
-variable "srde_path_ml_container_image_build_trigger_tags" {
-  description = "Tags for annotation of a BuildTrigger"
-  type        = list(string)
-  default     = []
-}
-
-variable "srde_path_ml_container_image_build_trigger_disabled" {
-  description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
-  type        = bool
-  default     = false
-}
-
-#--------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - terraform-validator CONTAINER IMAGE VARIABLES
-#--------------------------------------------------------------------
-
-variable "srde_terraform_validator_container_image_build_trigger_tags" {
-  description = "Tags for annotation of a BuildTrigger"
-  type        = list(string)
-  default     = []
-}
-
-variable "srde_terraform_validator_container_image_build_trigger_disabled" {
-  description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
-  type        = bool
-  default     = false
-}
 
 #----------------------------
 # FOLDER IAM MEMBER VARIABLES

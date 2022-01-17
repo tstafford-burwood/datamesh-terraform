@@ -23,7 +23,7 @@ data "terraform_remote_state" "cloud_composer" {
 #------------------------------------------------------------------------
 
 locals {
-  srde_folder_id             = module.constants.value.srde_folder_id
+  folder_id                  = module.constants.value.sde_folder_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   automation_project_id      = module.constants.value.automation_project_id
   packer_default_region      = module.constants.value.packer_default_region
@@ -39,20 +39,20 @@ locals {
 resource "google_cloudbuild_trigger" "packer_project_plan" {
 
   project = local.automation_project_id
-  name    =  format("%s-plan-sde", var.packer_project_trigger_name)
+  name    = format("%s-plan-sde", var.packer_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan.yaml", var.packer_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -60,16 +60,16 @@ resource "google_cloudbuild_trigger" "packer_project_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
-    _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
@@ -80,20 +80,20 @@ resource "google_cloudbuild_trigger" "packer_project_plan" {
 resource "google_cloudbuild_trigger" "packer_project_apply" {
 
   project = local.automation_project_id
-  name    =  format("%s-apply-sde", var.packer_project_trigger_name)
+  name    = format("%s-apply-sde", var.packer_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-apply.yaml", var.packer_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -101,16 +101,16 @@ resource "google_cloudbuild_trigger" "packer_project_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
-    _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
@@ -122,20 +122,20 @@ resource "google_cloudbuild_trigger" "packer_project_apply" {
 resource "google_cloudbuild_trigger" "staging_project_plan" {
 
   project = local.automation_project_id
-  name    =  format("%s-plan-sde", var.staging_project_trigger_name)
+  name    = format("%s-plan-sde", var.staging_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan.yaml", var.staging_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -143,16 +143,16 @@ resource "google_cloudbuild_trigger" "staging_project_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
-    _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
@@ -163,20 +163,20 @@ resource "google_cloudbuild_trigger" "staging_project_plan" {
 resource "google_cloudbuild_trigger" "staging_project_apply" {
 
   project = local.automation_project_id
-  name    =  format("%s-apply-sde", var.staging_project_trigger_name)
+  name    = format("%s-apply-sde", var.staging_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-apply.yaml", var.staging_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -184,16 +184,16 @@ resource "google_cloudbuild_trigger" "staging_project_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
   substitutions = {
-    _BUCKET              = var.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
-    _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
@@ -205,20 +205,20 @@ resource "google_cloudbuild_trigger" "staging_project_apply" {
 resource "google_cloudbuild_trigger" "data_lake_project_plan" {
 
   project = local.automation_project_id
-  name    =  format("%s-plan-sde", var.data_lake_project_trigger_name)
+  name    = format("%s-plan-sde", var.data_lake_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan.yaml", var.data_lake_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -226,8 +226,8 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -247,20 +247,20 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan" {
 resource "google_cloudbuild_trigger" "data_lake_project_apply" {
 
   project = local.automation_project_id
-  name    =  format("%s-apply-sde", var.data_lake_project_trigger_name)
+  name    = format("%s-apply-sde", var.data_lake_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-apply.yaml", var.data_lake_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -268,8 +268,8 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -290,20 +290,20 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply" {
 resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
 
   project = local.automation_project_id
-  name    =  format("%s-plan-sde", var.researcher_workspace_project_trigger_name)
+  name    = format("%s-plan-sde", var.researcher_workspace_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan.yaml", var.researcher_workspace_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -311,8 +311,8 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -332,20 +332,20 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
 resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 
   project = local.automation_project_id
-  name    =  format("%s-apply-sde", var.researcher_workspace_project_trigger_name)
+  name    = format("%s-apply-sde", var.researcher_workspace_project_trigger_name)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
-  tags           = var.srde_plan_trigger_tags
-  disabled       = var.srde_plan_trigger_disabled
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-apply.yaml", var.researcher_workspace_project_trigger_name)
   included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -353,8 +353,8 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -386,9 +386,9 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
 */
 
@@ -396,8 +396,8 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -421,17 +421,17 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
   name    = "composer-apply-sde"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
-  tags           = var.srde_composer_apply_trigger_tags
-  disabled       = var.srde_composer_apply_trigger_disabled
+  tags           = var.composer_apply_trigger_tags
+  disabled       = var.composer_apply_trigger_disabled
   filename       = "cloudbuild/deployments/composer-apply.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-    invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -439,8 +439,8 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
@@ -458,23 +458,23 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 # THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
+resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_plan" {
 
   project = local.automation_project_id
   name    = "access-level-plan-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
-  tags           = var.srde_cloudbuild_sa_access_level_plan_trigger_tags
-  disabled       = var.srde_cloudbuild_sa_access_level_plan_trigger_disabled
+  tags           = var.cloudbuild_sa_access_level_plan_trigger_tags
+  disabled       = var.cloudbuild_sa_access_level_plan_trigger_disabled
   filename       = "cloudbuild/foundation/access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -482,8 +482,8 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -500,23 +500,23 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 # THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
+resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_apply" {
 
   project = local.automation_project_id
   name    = "access-level-apply-sde"
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
-  tags           = var.srde_cloudbuild_sa_access_level_apply_trigger_tags
-  disabled       = var.srde_cloudbuild_sa_access_level_apply_trigger_disabled
+  tags           = var.cloudbuild_sa_access_level_apply_trigger_tags
+  disabled       = var.cloudbuild_sa_access_level_apply_trigger_disabled
   filename       = "cloudbuild/foundation/access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/cloudbuild-access-levels/env/terraform.tfvars"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-    invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -524,8 +524,8 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
@@ -541,23 +541,23 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
+resource "google_cloudbuild_trigger" "admin_access_level_plan" {
 
   project = local.automation_project_id
   name    = "admin-access-level-plan-sde"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
-  tags           = var.srde_admin_access_level_plan_trigger_tags
-  disabled       = var.srde_admin_access_level_plan_trigger_disabled
+  tags           = var.admin_access_level_plan_trigger_tags
+  disabled       = var.admin_access_level_plan_trigger_disabled
   filename       = "cloudbuild/foundation/admin-access-levels-plan.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_plan_trigger_repo_name
-    invert_regex = var.srde_plan_trigger_invert_regex
-    branch_name  = var.srde_plan_branch_name
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
   }
   */
 
@@ -565,8 +565,8 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_plan_trigger_invert_regex
-      branch       = var.srde_plan_branch_name
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
     }
   }
 
@@ -582,23 +582,23 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
+resource "google_cloudbuild_trigger" "admin_access_level_apply" {
 
   project = local.automation_project_id
   name    = "admin-access-level-apply-sde"
 
   description    = "Pipeline for SRDE Admin Access Level created with Terraform"
-  tags           = var.srde_admin_access_level_apply_trigger_tags
-  disabled       = var.srde_admin_access_level_apply_trigger_disabled
+  tags           = var.admin_access_level_apply_trigger_tags
+  disabled       = var.admin_access_level_apply_trigger_disabled
   filename       = "cloudbuild/foundation/admin-access-levels-apply.yaml"
   included_files = ["environment/foundation/vpc-service-controls/srde-admin-access-levels/env/terraform.tfvars"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-    invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -606,8 +606,8 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
@@ -629,17 +629,17 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   name    = "deep-learning-vm-image-build-sde"
 
   description    = "Pipeline for Deep Learning VM Image build created with Terraform"
-  tags           = var.srde_deep_learning_vm_image_build_trigger_tags
-  disabled       = var.srde_deep_learning_vm_image_build_trigger_disabled
+  tags           = var.deep_learning_vm_image_build_trigger_tags
+  disabled       = var.deep_learning_vm_image_build_trigger_disabled
   filename       = "cloudbuild/foundation/packer-deep-learning-image.yaml"
   included_files = ["environment/foundation/packer-project/researcher-vm-image-build/deep-learning-startup-image-script.sh"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-    invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -647,14 +647,14 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.srde_packer_project_id
-    _PACKER_IMAGE_TAG  = var.srde_packer_image_tag
+    _PACKER_PROJECT_ID = var.packer_project_id
+    _PACKER_IMAGE_TAG  = var.packer_image_tag
     _REGION            = local.packer_default_region
   }
 }
@@ -669,17 +669,17 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
   name    = "rhel-cis-image-build-sde"
 
   description    = "Pipeline for RHEL CIS Image Build created with Terraform"
-  tags           = var.srde_rhel_cis_image_build_trigger_tags
-  disabled       = var.srde_rhel_cis_image_build_trigger_disabled
+  tags           = var.rhel_cis_image_build_trigger_tags
+  disabled       = var.rhel_cis_image_build_trigger_disabled
   filename       = "cloudbuild/deployments/cloudbuild-packer-rhel-cis-image.yaml"
   included_files = ["environment/deployments/wcm-srde/packer-project/researcher-vm-image-build/rhel-startup-image-script.sh"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-   invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+   invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -687,14 +687,14 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.srde_packer_project_id
-    _PACKER_IMAGE_TAG  = var.srde_packer_image_tag
+    _PACKER_PROJECT_ID = var.packer_project_id
+    _PACKER_IMAGE_TAG  = var.packer_image_tag
     _REGION            = local.packer_default_region
   }
 }
@@ -709,17 +709,17 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
   name    = "packer-container-image-sde"
 
   description    = "Pipeline for Packer container image created with Terraform"
-  tags           = var.srde_packer_container_image_build_trigger_tags
-  disabled       = var.srde_packer_container_image_build_trigger_disabled
+  tags           = var.packer_container_image_build_trigger_tags
+  disabled       = var.packer_container_image_build_trigger_disabled
   filename       = "cloudbuild/foundation/packer-container.yaml"
   included_files = ["environment/foundation/packer-project/packer-container/Dockerfile"]
 
   /*
   trigger_template {
     project_id   = local.automation_project_id
-    repo_name    = var.srde_apply_trigger_repo_name
-    invert_regex = var.srde_apply_trigger_invert_regex
-    branch_name  = var.srde_apply_branch_name
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
   }
   */
 
@@ -727,13 +727,13 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.srde_apply_trigger_invert_regex
-      branch       = var.srde_apply_branch_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.srde_packer_project_id
+    _PACKER_PROJECT_ID = var.packer_project_id
     _REGION            = local.packer_default_region
   }
 }
@@ -749,7 +749,7 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
 module "folder_iam_member" {
   source = "../../../modules/iam/folder_iam"
 
-  folder_id     = local.srde_folder_id
+  folder_id     = local.folder_id
   iam_role_list = var.iam_role_list
   folder_member = "serviceAccount:${local.cloudbuild_service_account}"
 }

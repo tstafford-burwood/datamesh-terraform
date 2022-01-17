@@ -1,3 +1,5 @@
+researcher_workspace_name = "dev"
+
 #-------------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM MEMBER BINDING TFVARS
 #-------------------------------------------------------

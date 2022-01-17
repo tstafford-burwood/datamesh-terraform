@@ -1,18 +1,26 @@
+variable "bucket_suffix" {
+  description = "The suffix/ending name for the bucket."
+  type        = list(string)
+  default     = ["research1"]
+}
+
+
 #-------------------------------------------
 # STAGING PROJECT - INGRESS BUCKET VARIABLES
 #-------------------------------------------
 
 // REQUIRED VARIABLES
 
-variable "staging_ingress_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "staging_ingress_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "staging_ingress_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "staging_ingress_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES
@@ -20,7 +28,7 @@ variable "staging_ingress_bucket_prefix_name" {
 variable "staging_ingress_bucket_set_admin_roles" {
   description = "Grant roles/storage.objectAdmin role to admins and bucket_admins."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "staging_ingress_bucket_admins" {
@@ -101,15 +109,16 @@ variable "staging_ingress_bucket_viewers" {
 
 // REQUIRED VARIABLES
 
-variable "staging_egress_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "staging_egress_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "staging_egress_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "staging_egress_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES
@@ -177,7 +186,7 @@ variable "staging_egress_bucket_set_creator_roles" {
 variable "staging_egress_bucket_set_viewer_roles" {
   description = "Grant roles/storage.objectViewer role to viewers and bucket_viewers."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "staging_egress_bucket_storage_class" {
@@ -198,15 +207,16 @@ variable "staging_egress_bucket_viewers" {
 
 // REQUIRED VARIABLES
 
-variable "workspace_ingress_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "workspace_ingress_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "workspace_ingress_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "workspace_ingress_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES
@@ -295,15 +305,16 @@ variable "workspace_ingress_bucket_viewers" {
 
 // REQUIRED VARIABLES
 
-variable "workspace_egress_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "workspace_egress_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "workspace_egress_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "workspace_egress_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES
@@ -392,15 +403,16 @@ variable "workspace_egress_bucket_viewers" {
 
 // REQUIRED VARIABLES
 
-variable "researcher_data_egress_project_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "researcher_data_egress_project_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "researcher_data_egress_project_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "researcher_data_egress_project_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES
@@ -489,15 +501,16 @@ variable "researcher_data_egress_project_bucket_viewers" {
 
 // REQUIRED VARIABLES
 
-variable "workspace_vm_access_bucket_suffix_name" {
-  description = "The suffix/ending name for the bucket."
-  type        = list(string)
-}
+# variable "workspace_vm_access_bucket_suffix_name" {
+#   description = "The suffix/ending name for the bucket."
+#   type        = list(string)
+#   default = ["researcher1"]
+# }
 
-variable "workspace_vm_access_bucket_prefix_name" {
-  description = "The prefix/beginning used to generate the bucket."
-  type        = string
-}
+# variable "workspace_vm_access_bucket_prefix_name" {
+#   description = "The prefix/beginning used to generate the bucket."
+#   type        = string
+# }
 
 
 // OPTIONAL VARIABLES

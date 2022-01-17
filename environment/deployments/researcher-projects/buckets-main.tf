@@ -12,8 +12,6 @@ locals {
   }
 }
 
-// LOCAL.STAGING_PROJECT_ID SET IN MAIN.TF OF THIS DIRECTORY
-
 #---------------------------------
 # STAGING PROJECT - INGRESS BUCKET
 #---------------------------------
@@ -23,8 +21,8 @@ module "gcs_bucket_staging_ingress" {
 
   // REQUIRED FIELDS
   project_id         = local.staging_project_id
-  bucket_suffix_name = formatlist("%v-%v", var.staging_ingress_bucket_suffix_name, "staging-ingress")
-  bucket_prefix_name = var.staging_ingress_bucket_prefix_name
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "staging-ingress")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.staging_ingress_bucket_set_admin_roles
@@ -35,13 +33,12 @@ module "gcs_bucket_staging_ingress" {
   bucket_folders              = var.staging_ingress_bucket_folders
   bucket_force_destroy        = var.staging_ingress_bucket_force_destroy
   storage_bucket_labels       = var.staging_ingress_storage_bucket_labels
-  # bucket_location             = var.staging_ingress_bucket_location
-  bucket_location          = local.staging_default_region
-  bucket_set_creator_roles = var.staging_ingress_bucket_set_creator_roles
-  bucket_set_viewer_roles  = var.staging_ingress_bucket_set_viewer_roles
-  bucket_storage_class     = var.staging_ingress_bucket_storage_class
-  viewers                  = var.staging_ingress_bucket_viewers
-  depends_on               = []
+  bucket_location             = local.staging_default_region
+  bucket_set_creator_roles    = var.staging_ingress_bucket_set_creator_roles
+  bucket_set_viewer_roles     = var.staging_ingress_bucket_set_viewer_roles
+  bucket_storage_class        = var.staging_ingress_bucket_storage_class
+  viewers                     = var.staging_ingress_bucket_viewers
+  depends_on                  = []
 }
 
 #--------------------------------
@@ -53,8 +50,8 @@ module "gcs_bucket_staging_egress" {
 
   // REQUIRED FIELDS
   project_id         = local.staging_project_id
-  bucket_suffix_name = formatlist("%v-%v", var.staging_egress_bucket_suffix_name, "staging-egress")
-  bucket_prefix_name = var.staging_egress_bucket_prefix_name
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "staging-egress")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.staging_egress_bucket_set_admin_roles
@@ -70,9 +67,7 @@ module "gcs_bucket_staging_egress" {
   bucket_set_viewer_roles     = var.staging_egress_bucket_set_viewer_roles
   bucket_storage_class        = var.staging_egress_bucket_storage_class
   viewers                     = var.staging_egress_bucket_viewers
-  depends_on                  = []
 }
-
 
 #--------------------------------------
 # RESEARCHER WORKSPACE - INGRESS BUCKET
@@ -82,9 +77,9 @@ module "gcs_bucket_researcher_workspace_ingress" {
   source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
-  project_id         = module.researcher-workspace-project.project_id
-  bucket_suffix_name = formatlist("%v-%v", var.workspace_ingress_bucket_suffix_name, "workspace-ingress")
-  bucket_prefix_name = var.workspace_ingress_bucket_prefix_name
+  project_id         = module.workspace_project.project_id
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "workspace-ingress")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.workspace_ingress_bucket_set_admin_roles
@@ -95,13 +90,11 @@ module "gcs_bucket_researcher_workspace_ingress" {
   bucket_folders              = var.workspace_ingress_bucket_folders
   bucket_force_destroy        = var.workspace_ingress_bucket_force_destroy
   storage_bucket_labels       = var.workspace_ingress_storage_bucket_labels
-  #bucket_location             = var.workspace_ingress_bucket_location
-  bucket_location          = local.workspace_default_region
-  bucket_set_creator_roles = var.workspace_ingress_bucket_set_creator_roles
-  bucket_set_viewer_roles  = var.workspace_ingress_bucket_set_viewer_roles
-  bucket_storage_class     = var.workspace_ingress_bucket_storage_class
-  viewers                  = var.workspace_ingress_bucket_viewers
-  depends_on               = []
+  bucket_location             = local.workspace_default_region
+  bucket_set_creator_roles    = var.workspace_ingress_bucket_set_creator_roles
+  bucket_set_viewer_roles     = var.workspace_ingress_bucket_set_viewer_roles
+  bucket_storage_class        = var.workspace_ingress_bucket_storage_class
+  viewers                     = var.workspace_ingress_bucket_viewers
 }
 
 #-------------------------------------
@@ -112,9 +105,9 @@ module "gcs_bucket_researcher_workspace_egress" {
   source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
-  project_id         = module.researcher-workspace-project.project_id
-  bucket_suffix_name = formatlist("%v-%v", var.workspace_egress_bucket_suffix_name, "workspace-egress")
-  bucket_prefix_name = var.workspace_egress_bucket_prefix_name
+  project_id         = module.workspace_project.project_id
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "workspace-egress")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.workspace_egress_bucket_set_admin_roles
@@ -130,7 +123,6 @@ module "gcs_bucket_researcher_workspace_egress" {
   bucket_set_viewer_roles     = var.workspace_egress_bucket_set_viewer_roles
   bucket_storage_class        = var.workspace_egress_bucket_storage_class
   viewers                     = var.workspace_egress_bucket_viewers
-  depends_on                  = []
 }
 
 
@@ -145,8 +137,8 @@ module "gcs_bucket_researcher_data_egress" {
 
   // REQUIRED FIELDS
   project_id         = module.researcher-data-egress-project.project_id
-  bucket_suffix_name = formatlist("%v-%v", var.researcher_data_egress_project_bucket_suffix_name, "external-collaboration-egress")
-  bucket_prefix_name = var.researcher_data_egress_project_bucket_prefix_name
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "external-collab-egress")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.researcher_data_egress_project_bucket_set_admin_roles
@@ -157,13 +149,11 @@ module "gcs_bucket_researcher_data_egress" {
   bucket_folders              = var.researcher_data_egress_project_bucket_folders
   bucket_force_destroy        = var.researcher_data_egress_project_bucket_force_destroy
   storage_bucket_labels       = var.researcher_data_egress_project_storage_bucket_labels
-  #bucket_location             = var.researcher_data_egress_project_bucket_location
-  bucket_location          = local.workspace_default_region
-  bucket_set_creator_roles = var.researcher_data_egress_project_bucket_set_creator_roles
-  bucket_set_viewer_roles  = var.researcher_data_egress_project_bucket_set_viewer_roles
-  bucket_storage_class     = var.researcher_data_egress_project_bucket_storage_class
-  viewers                  = var.researcher_data_egress_project_bucket_viewers
-  depends_on               = []
+  bucket_location             = local.workspace_default_region
+  bucket_set_creator_roles    = var.researcher_data_egress_project_bucket_set_creator_roles
+  bucket_set_viewer_roles     = var.researcher_data_egress_project_bucket_set_viewer_roles
+  bucket_storage_class        = var.researcher_data_egress_project_bucket_storage_class
+  viewers                     = var.researcher_data_egress_project_bucket_viewers
 }
 
 #-------------------------------------
@@ -174,9 +164,9 @@ module "gcs_bucket_researcher_workspace_vm_access" {
   source = "../../../modules/gcs_bucket"
 
   // REQUIRED FIELDS
-  project_id         = module.researcher-workspace-project.project_id
-  bucket_suffix_name = formatlist("%v-%v", var.workspace_vm_access_bucket_suffix_name, "workspace-vm-access")
-  bucket_prefix_name = var.workspace_vm_access_bucket_prefix_name
+  project_id         = module.workspace_project.project_id
+  bucket_suffix_name = formatlist("%v-%v", var.bucket_suffix, "workspace-vm-access")
+  bucket_prefix_name = local.researcher_workspace_name
 
   // OPTIONAL FIELDS
   bucket_set_admin_roles      = var.workspace_vm_access_bucket_set_admin_roles
@@ -187,11 +177,9 @@ module "gcs_bucket_researcher_workspace_vm_access" {
   bucket_folders              = var.workspace_vm_access_bucket_folders
   bucket_force_destroy        = var.workspace_vm_access_bucket_force_destroy
   storage_bucket_labels       = var.workspace_vm_access_storage_bucket_labels
-  #bucket_location             = var.workspace_vm_access_bucket_location
-  bucket_location          = local.workspace_default_region
-  bucket_set_creator_roles = var.workspace_vm_access_bucket_set_creator_roles
-  bucket_set_viewer_roles  = var.workspace_vm_access_bucket_set_viewer_roles
-  bucket_storage_class     = var.workspace_vm_access_bucket_storage_class
-  viewers                  = var.workspace_vm_access_bucket_viewers
-  depends_on               = []
+  bucket_location             = local.workspace_default_region
+  bucket_set_creator_roles    = var.workspace_vm_access_bucket_set_creator_roles
+  bucket_set_viewer_roles     = var.workspace_vm_access_bucket_set_viewer_roles
+  bucket_storage_class        = var.workspace_vm_access_bucket_storage_class
+  viewers                     = var.workspace_vm_access_bucket_viewers
 }

@@ -3,31 +3,7 @@
 #------------------------------------
 
 // RESEARCHER WORKSPACE TFVARS - OPTIONAL
-workspace_activate_apis = [
-  "compute.googleapis.com",
-  "serviceusage.googleapis.com",
-  "oslogin.googleapis.com",
-  "iap.googleapis.com",
-  "bigquery.googleapis.com",
-  "dns.googleapis.com",
-  "tpu.googleapis.com",
-  "sourcerepo.googleapis.com",
-  "osconfig.googleapis.com"
-]
-
-workspace_auto_create_network         = false
-workspace_create_project_sa           = false
-workspace_default_service_account     = "keep"
-workspace_disable_dependent_services  = true
-workspace_disable_services_on_destroy = true
-workspace_group_name                  = ""
-workspace_group_role                  = ""
-workspace_lien                        = false
-workspace_random_project_id           = true
-
-workspace_project_labels = {
-  "researcher1-project" : "workspace" // CHANGE LABEL WITH EACH NEW PROJECT
-}
+workspace_default_service_account = "keep"
 
 #--------------------------------------
 # GOOGLE CLOUD SOURCE REPOSITORY TFVARS
@@ -51,25 +27,10 @@ workspace_project_iam_role_list = [
 # RESEARCHER WORKSPACE VPC TFVARS
 #--------------------------------
 
-workspace_vpc_network_name                           = "group1-workspace-vpc" // CHANGE WITH EACH NEW PROJECT
-workspace_vpc_auto_create_subnetworks                = false
 workspace_vpc_delete_default_internet_gateway_routes = true
 workspace_vpc_firewall_rules                         = []
 workspace_vpc_routing_mode                           = "GLOBAL"
 workspace_vpc_mtu                                    = 1460
-
-#workspace_vpc_subnets = [
-#  {
-#    subnet_name               = "workspace-us-central1-subnet"
-#    subnet_ip                 = "10.0.0.0/16"
-#    subnet_region             = "us-central1"
-#    subnet_flow_logs          = "true"
-#    subnet_flow_logs_interval = "INTERVAL_10_MIN"
-#    subnet_flow_logs_sampling = 0.7
-#    subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
-#    subnet_private_access     = "true"
-#  }
-#]
 
 workspace_vpc_routes = [
   {
@@ -78,32 +39,32 @@ workspace_vpc_routes = [
     tags              = "deep-learning-vm"
     destination_range = "199.36.153.8/30"
     next_hop_internet = "true"
-    priority          = 1
+    priority          = 10
   },
-  {
-    name              = "srde-private-google-apis-custom-route"
-    description       = "Custom VPC Route for Private Google API."
-    tags              = "path-ml-vm"
-    destination_range = "199.36.153.8/30"
-    next_hop_internet = "true"
-    priority          = 1
-  },
+  # {
+  #   name              = "srde-private-google-apis-custom-route"
+  #   description       = "Custom VPC Route for Private Google API."
+  #   tags              = "path-ml-vm"
+  #   destination_range = "199.36.153.8/30"
+  #   next_hop_internet = "true"
+  #   priority          = 10
+  # },
   {
     name              = "deep-learning-vm-ping-8-8-8-8"
     description       = "Custom VPC Route used to ping 8.8.8.8/32"
     tags              = "deep-learning-vm"
     destination_range = "8.8.8.8/32"
     next_hop_internet = "true"
-    priority          = 2
+    priority          = 20
   },
-  {
-    name              = "path-ml-vm-ping-8-8-8-8"
-    description       = "Custom VPC Route used to ping 8.8.8.8/32"
-    tags              = "path-ml-vm"
-    destination_range = "8.8.8.8/32"
-    next_hop_internet = "true"
-    priority          = 3
-  }
+  # {
+  #   name              = "path-ml-vm-ping-8-8-8-8"
+  #   description       = "Custom VPC Route used to ping 8.8.8.8/32"
+  #   tags              = "path-ml-vm"
+  #   destination_range = "8.8.8.8/32"
+  #   next_hop_internet = "true"
+  #   priority          = 30
+  # }
 ]
 
 #-----------------------------------------------------
@@ -218,7 +179,7 @@ workspace_artifact_registry_cloud_dns_target_network     = ""
 workspace_artifact_registry_cloud_dns_zone_type          = "private"
 
 #-----------------------------------------
-# RESEARCHER WORKSPACE VPC FIREWALL TFVARS
+# WORKSPACE FIREWALL
 #-----------------------------------------
 
 workspace_firewall_custom_rules = {
@@ -238,30 +199,30 @@ workspace_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 0
+      "priority" : 5
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
-  path-ml-vm-allow-egress-to-private-google-apis = {
-    description          = "Allow egress from Path ML Workspace VM to Private Google APIs Virtual IP."
-    direction            = "EGRESS"
-    action               = "allow"
-    ranges               = ["199.36.153.8/30"]
-    sources              = []
-    targets              = ["path-ml-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "tcp"
-        ports    = ["443"]
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 0
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  },
+  # path-ml-vm-allow-egress-to-private-google-apis = {
+  #   description          = "Allow egress from Path ML Workspace VM to Private Google APIs Virtual IP."
+  #   direction            = "EGRESS"
+  #   action               = "allow"
+  #   ranges               = ["199.36.153.8/30"]
+  #   sources              = []
+  #   targets              = ["path-ml-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "tcp"
+  #       ports    = ["443"]
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 5
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # },
   deep-learning-vm-allow-8-8-8-8-icmp = {
     description          = "Allow Deep Learning Workspace VM to ping 8.8.8.8/32."
     direction            = "EGRESS"
@@ -278,30 +239,30 @@ workspace_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 1
+      "priority" : 10
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
-  path-ml-vm-allow-8-8-8-8-icmp = {
-    description          = "Allow Path ML Workspace VM to ping 8.8.8.8/32."
-    direction            = "EGRESS"
-    action               = "allow"
-    ranges               = ["8.8.8.8/32"]
-    sources              = []
-    targets              = ["path-ml-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "icmp"
-        ports    = []
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 1
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  },
+  # path-ml-vm-allow-8-8-8-8-icmp = {
+  #   description          = "Allow Path ML Workspace VM to ping 8.8.8.8/32."
+  #   direction            = "EGRESS"
+  #   action               = "allow"
+  #   ranges               = ["8.8.8.8/32"]
+  #   sources              = []
+  #   targets              = ["path-ml-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "icmp"
+  #       ports    = []
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 10
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # },
   all-workspace-vm-deny-all-other-egress = {
     description          = "Block all other egress from any VM in the Workspace project."
     direction            = "EGRESS"
@@ -318,7 +279,7 @@ workspace_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 2
+      "priority" : 50
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -326,7 +287,7 @@ workspace_firewall_custom_rules = {
     description          = "Allow SSH connection into Workspace VM."
     direction            = "INGRESS"
     action               = "allow"
-    ranges               = ["11.0.0.2/32"]
+    ranges               = ["10.10.0.2/32"]
     sources              = ["bastion-vm"]
     targets              = ["deep-learning-vm"]
     use_service_accounts = false
@@ -338,7 +299,7 @@ workspace_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 3
+      "priority" : 5
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -358,101 +319,91 @@ workspace_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 4
+      "priority" : 40
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
-  path-ml-vm-ingress-ssh-from-deep-learning-vm = {
-    description          = "Allow ingress to path ml vm from deep learning vm."
-    direction            = "INGRESS"
-    action               = "allow"
-    ranges               = []
-    sources              = ["deep-learning-vm"]
-    targets              = ["path-ml-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "tcp"
-        ports    = ["22"]
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 0
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  },
-  deep-learning-vm-ssh-egress-to-path-ml-vm = {
-    description          = "Allow egress from deep learning vm to path ml vm"
-    direction            = "EGRESS"
-    action               = "allow"
-    ranges               = ["10.0.0.3/32"]
-    sources              = []
-    targets              = ["deep-learning-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "tcp"
-        ports    = ["22"]
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 0
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  },
-  allow-iap-ingress-to-pathml-container = {
-    description          = "Allow IAP ingress to the path ml JupyterLab container."
-    direction            = "INGRESS"
-    action               = "allow"
-    ranges               = ["35.235.240.0/20"]
-    sources              = []
-    targets              = ["path-ml-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "tcp"
-        ports    = ["8888"]
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 1
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  },
-  allow-egress-pathml-container = {
-    description          = "Allow egress from the path ml JupyterLab container."
-    direction            = "EGRESS"
-    action               = "allow"
-    ranges               = ["0.0.0.0/0"]
-    sources              = []
-    targets              = ["path-ml-vm"]
-    use_service_accounts = false
-    rules = [
-      {
-        protocol = "tcp"
-        ports    = ["8888"]
-      }
-    ]
-    extra_attributes = {
-      "disabled" : false
-      "priority" : 1
-    }
-    flow_logs_metadata = "INCLUDE_ALL_METADATA"
-  }
+  # path-ml-vm-ingress-ssh-from-deep-learning-vm = {
+  #   description          = "Allow ingress to path ml vm from deep learning vm."
+  #   direction            = "INGRESS"
+  #   action               = "allow"
+  #   ranges               = []
+  #   sources              = ["deep-learning-vm"]
+  #   targets              = ["path-ml-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "tcp"
+  #       ports    = ["22"]
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 5
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # },
+  # deep-learning-vm-ssh-egress-to-path-ml-vm = {
+  #   description          = "Allow egress from deep learning vm to path ml vm"
+  #   direction            = "EGRESS"
+  #   action               = "allow"
+  #   ranges               = ["10.0.0.3/32"]
+  #   sources              = []
+  #   targets              = ["deep-learning-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "tcp"
+  #       ports    = ["22"]
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 5
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # },
+  # allow-iap-ingress-to-pathml-container = {
+  #   description          = "Allow IAP ingress to the path ml JupyterLab container."
+  #   direction            = "INGRESS"
+  #   action               = "allow"
+  #   ranges               = ["35.235.240.0/20"]
+  #   sources              = []
+  #   targets              = ["path-ml-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "tcp"
+  #       ports    = ["8888"]
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 10
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # },
+  # allow-egress-pathml-container = {
+  #   description          = "Allow egress from the path ml JupyterLab container."
+  #   direction            = "EGRESS"
+  #   action               = "allow"
+  #   ranges               = ["0.0.0.0/0"]
+  #   sources              = []
+  #   targets              = ["path-ml-vm"]
+  #   use_service_accounts = false
+  #   rules = [
+  #     {
+  #       protocol = "tcp"
+  #       ports    = ["8888"]
+  #     }
+  #   ]
+  #   extra_attributes = {
+  #     "disabled" : false
+  #     "priority" : 10
+  #   }
+  #   flow_logs_metadata = "INCLUDE_ALL_METADATA"
+  # }
 }
-
-#---------------------------------------------------
-# RESEARCHER WORKSPACE TO BASTION VPC PEERING TFVARS
-#---------------------------------------------------
-
-researcher_workspace_to_bastion_vpc_peering_name                    = "researcher-workspace-to-bastion-project-vpc-peering"
-researcher_workspace_to_bastion_export_custom_routes                = true
-researcher_workspace_to_bastion_import_custom_routes                = true
-researcher_workspace_to_bastion_export_subnet_routes_with_public_ip = true
-researcher_workspace_to_bastion_import_subnet_routes_with_public_ip = true
 
 #-------------------------------------------------------------
 # RESEARCHER WORKSPACE DEEP LEARNING VM SERVICE ACCOUNT TFVARS
@@ -462,25 +413,7 @@ researcher_workspace_to_bastion_import_subnet_routes_with_public_ip = true
 
 workspace_deeplearning_vm_sa_description           = "Researcher Workspace Project VM Service Account"
 workspace_deeplearning_vm_sa_display_name          = "Terraform-managed service account"
-workspace_deeplearning_vm_sa_generate_keys         = false
-workspace_deeplearning_vm_sa_grant_billing_role    = false
-workspace_deeplearning_vm_sa_grant_xpn_roles       = false
 workspace_deeplearning_vm_sa_service_account_names = ["group1-deeplearning-vm-sa"] // CHANGE WITH EACH NEW PROJECT
-workspace_deeplearning_vm_sa_prefix                = ""
-
-#-------------------------------------------------------
-# RESEARCHER WORKSPACE PATH ML VM SERVICE ACCOUNT TFVARS
-#-------------------------------------------------------
-
-// OPTIONAL TFVARS
-
-workspace_path_ml_vm_sa_description           = "Researcher Workspace Data Lake Service Account"
-workspace_path_ml_vm_sa_display_name          = "Terraform-managed service account"
-workspace_path_ml_vm_sa_generate_keys         = false
-workspace_path_ml_vm_sa_grant_billing_role    = false
-workspace_path_ml_vm_sa_grant_xpn_roles       = false
-workspace_path_ml_vm_sa_service_account_names = ["group1-path-ml-vm-sa"] // CHANGE WITH EACH NEW PROJECT
-workspace_path_ml_vm_sa_prefix                = ""
 
 #----------------------------------------------------
 # RESEARCHER WORKSPACE PROJECT IAM CUSTOM ROLE TFVARS
@@ -509,10 +442,9 @@ workspace_deeplearning_vm_metadata = {
   "enable-oslogin" : "TRUE"
 }
 
-workspace_deeplearning_vm_machine_type = "n2-standard-4"
-workspace_deeplearning_vm_name         = "deep-learning-vm1"
-workspace_deeplearning_vm_tags         = ["deep-learning-vm"]
-#workspace_deeplearning_vm_zone             = "us-central1-b"
+workspace_deeplearning_vm_machine_type     = "n2-standard-4"
+workspace_deeplearning_vm_name             = "deep-learning-vm1"
+workspace_deeplearning_vm_tags             = ["deep-learning-vm"]
 workspace_deeplearning_vm_auto_delete_disk = true
 
 // NETWORK INTERFACE
@@ -529,64 +461,20 @@ workspace_deeplearning_vm_enable_secure_boot          = true
 workspace_deeplearning_vm_enable_vtpm                 = true
 workspace_deeplearning_vm_enable_integrity_monitoring = true
 
-#--------------------------------------------------
-# RESEARCHER WORKSPACE PATH ML VM PRIVATE IP TFVARS
-#--------------------------------------------------
-
-workspace_path_ml_vm_allow_stopping_for_update = true
-workspace_path_ml_vm_description               = "Path ML VM created with Terraform"
-workspace_path_ml_vm_desired_status            = "RUNNING"
-workspace_path_ml_vm_deletion_protection       = false
-
-workspace_path_ml_vm_labels = {
-  "researcher1" : "path-ml-vm" // CHANGE WITH EACH NEW PROJECT
-}
-
-workspace_path_ml_vm_metadata = {
-  "enable-oslogin" : "TRUE"
-}
-
-workspace_path_ml_vm_machine_type = "n2-standard-4"
-workspace_path_ml_vm_name         = "path-ml-vm1"
-workspace_path_ml_vm_tags         = ["path-ml-vm"]
-#workspace_path_ml_vm_zone             = "us-central1-b"
-workspace_path_ml_vm_auto_delete_disk = true
-
-// NETWORK INTERFACE
-
-workspace_path_ml_vm_network_ip = "10.0.0.3"
-
-// SERVICE ACCOUNT
-
-workspace_path_ml_vm_service_account_scopes = ["compute-ro"]
-
-// SHIELDED INSTANCE CONFIG
-
-workspace_path_ml_vm_enable_secure_boot          = true
-workspace_path_ml_vm_enable_vtpm                 = true
-workspace_path_ml_vm_enable_integrity_monitoring = true
-
 #-----------------------------------
 # RESEARCHER WORKSPACE - REGIONAL EXTERNAL STATIC IP TFVARS
 #-----------------------------------
-
-// REQUIRED
-researcher_workspace_regional_external_static_ip_name = "researcher-workspace-external-ip-for-nat"
 
 // OPTIONAL
 researcher_workspace_regional_external_static_ip_address_type = "EXTERNAL"
 researcher_workspace_regional_external_static_ip_description  = "Regional External Static IP for Researcher Workspace to use with Cloud NAT."
 researcher_workspace_regional_external_static_ip_network_tier = "PREMIUM"
-#researcher_workspace_regional_external_static_ip_region       = "us-central1"
 
 #----------------------------------------
 # RESEARCHER WORKSPACE - CLOUD NAT TFVARS
 #----------------------------------------
 
-researcher_workspace_create_router  = true
-researcher_workspace_cloud_nat_name = "researcher-workspace-cloud-nat"
-#researcher_workspace_region                              = "us-central1"
-researcher_workspace_router_name                         = "researcher-workspace-cloud-router"
+researcher_workspace_create_router                       = true
 researcher_workspace_router_asn                          = "64514"
 researcher_workspace_enable_endpoint_independent_mapping = null
 researcher_workspace_icmp_idle_timeout_sec               = "30"
@@ -611,15 +499,8 @@ bastion_project_activate_apis = [
   "osconfig.googleapis.com"
 ]
 
-bastion_project_auto_create_network         = false
-bastion_project_create_project_sa           = false
-bastion_project_default_service_account     = "delete"
-bastion_project_disable_dependent_services  = true
-bastion_project_disable_services_on_destroy = true
-bastion_project_group_name                  = ""
-bastion_project_group_role                  = ""
-bastion_project_lien                        = false
-bastion_project_random_project_id           = true
+bastion_project_default_service_account = "delete"
+bastion_project_lien                    = false
 bastion_project_labels = {
   "researcher1-project" : "bastion-project" // CHANGE LABEL WITH EACH NEW PROJECT
 }
@@ -627,6 +508,7 @@ bastion_project_labels = {
 #------------------------------------------------------
 # RESEARCHER BASTION PROJECT IAM MEMBER BINDING TFVARS
 #------------------------------------------------------
+
 bastion_project_iam_role_list = [
   "roles/browser",
   "roles/compute.osLogin",
@@ -648,11 +530,7 @@ bastion_project_iam_custom_role_stage       = "GA"
 # RESEARCHER BASTION PROJECT VPC TFVARS
 #--------------------------------------
 
-bastion_project_vpc_network_name                           = "researcher1-bastion-vpc" // CHANGE WITH EACH NEW PROJECT
-bastion_project_vpc_auto_create_subnetworks                = false
 bastion_project_vpc_delete_default_internet_gateway_routes = true
-bastion_project_vpc_firewall_rules                         = []
-bastion_project_vpc_routing_mode                           = "GLOBAL"
 bastion_project_vpc_mtu                                    = 1460
 
 # bastion_project_vpc_subnets = [
@@ -670,12 +548,12 @@ bastion_project_vpc_mtu                                    = 1460
 
 bastion_project_vpc_routes = [
   {
-    name              = "srde-ping-8-8-8-8"
+    name              = "sde-ping-8-8-8-8"
     description       = "Custom VPC Route used to ping 8.8.8.8/32"
     tags              = "bastion-vm"
     destination_range = "8.8.8.8/32"
     next_hop_internet = "true"
-    priority          = 2
+    priority          = 20
   }
 ]
 
@@ -700,7 +578,7 @@ bastion_project_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 0
+      "priority" : 5
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -720,7 +598,7 @@ bastion_project_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 1
+      "priority" : 10
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -740,7 +618,7 @@ bastion_project_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 2
+      "priority" : 5
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -760,7 +638,7 @@ bastion_project_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 3
+      "priority" : 40
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   },
@@ -780,21 +658,11 @@ bastion_project_firewall_custom_rules = {
     ]
     extra_attributes = {
       "disabled" : false
-      "priority" : 4
+      "priority" : 50
     }
     flow_logs_metadata = "INCLUDE_ALL_METADATA"
   }
 }
-
-#---------------------------------------------------
-# RESEARCHER BASTION TO WORKSPACE VPC PEERING TFVARS
-#---------------------------------------------------
-
-researcher_bastion_to_workspace_vpc_peering_name                    = "researcher-bastion-project-to-workspace-vpc-peering"
-researcher_bastion_to_workspace_export_custom_routes                = true
-researcher_bastion_to_workspace_import_custom_routes                = true
-researcher_bastion_to_workspace_export_subnet_routes_with_public_ip = true
-researcher_bastion_to_workspace_import_subnet_routes_with_public_ip = true
 
 #-----------------------------------------------------
 # RESEARCHER BASTION PROJECT VM SERVICE ACCOUNT TFVARS
@@ -802,13 +670,7 @@ researcher_bastion_to_workspace_import_subnet_routes_with_public_ip = true
 
 // OPTIONAL TFVARS
 
-bastion_project_sa_description           = "Researcher Bastion Project VM Service Account"
-bastion_project_sa_display_name          = "Terraform-managed service account"
-bastion_project_sa_generate_keys         = false
-bastion_project_sa_grant_billing_role    = false
-bastion_project_sa_grant_xpn_roles       = false
 bastion_project_sa_service_account_names = ["researcher-bastion-vm-sa"] // CHANGE WITH EACH NEW PROJECT
-bastion_project_sa_prefix                = ""
 
 #-----------------------------------------------------------------------
 # RESEARCHER BASTION VM SERVICE ACCOUNT PROJECT IAM MEMBER MODULE TFVARS
@@ -833,15 +695,14 @@ bastion_vm_metadata = {
   "enable-oslogin" : "TRUE"
 }
 
-bastion_vm_machine_type = "n2-standard-4"
-bastion_vm_name         = "bastion-vm-cis-rhel1"
-bastion_vm_tags         = ["allow-iap", "bastion-vm"] // NETWORK TAG APPLIED TO VM FOR FIREWALL FILTERING AND USED WITH IAP FW RULE
-#bastion_vm_zone             = "us-central1-b"
+bastion_vm_machine_type     = "n2-standard-4"
+bastion_vm_name             = "bastion-vm-cis-rhel1"
+bastion_vm_tags             = ["allow-iap", "bastion-vm"] // NETWORK TAG APPLIED TO VM FOR FIREWALL FILTERING AND USED WITH IAP FW RULE
 bastion_vm_auto_delete_disk = true
 
 // NETWORK INTERFACE
 
-bastion_vm_network_ip = "11.0.0.2"
+bastion_vm_network_ip = "10.10.0.2"
 
 // SERVICE ACCOUNT
 
@@ -856,24 +717,14 @@ bastion_vm_enable_integrity_monitoring = true
 #-----------------------------------------------------
 # BASTION PROJECT - REGIONAL EXTERNAL STATIC IP TFVARS
 #-----------------------------------------------------
-
-// REQUIRED
-bastion_project_regional_external_static_ip_name = "bastion-project-external-ip-for-nat"
-
 // OPTIONAL
-bastion_project_regional_external_static_ip_address_type = "EXTERNAL"
-bastion_project_regional_external_static_ip_description  = "Regional External Static IP for Bastion Project to use with Cloud NAT."
-bastion_project_regional_external_static_ip_network_tier = "PREMIUM"
-#bastion_project_regional_external_static_ip_region       = "us-central1"
+
+bastion_project_regional_external_static_ip_description = "Regional External Static IP for Bastion Project to use with Cloud NAT."
 
 #----------------------------------------
 # BASTION PROJECT - CLOUD NAT TFVARS
 #----------------------------------------
 
-bastion_project_create_router  = true
-bastion_project_cloud_nat_name = "bastion-project-cloud-nat"
-#bastion_project_region                              = "us-central1"
-bastion_project_router_name                         = "bastion-project-cloud-router"
 bastion_project_router_asn                          = "64514"
 bastion_project_enable_endpoint_independent_mapping = null
 bastion_project_icmp_idle_timeout_sec               = "30"
@@ -904,88 +755,7 @@ host_project               = ""
 
 // RESEARCHER DATA EGRESS PROJECT TFVARS - OPTIONAL
 
-egress_activate_apis               = ["storage.googleapis.com"]
-egress_auto_create_network         = false
-egress_create_project_sa           = false
-egress_default_service_account     = "disable"
-egress_disable_dependent_services  = true
-egress_disable_services_on_destroy = true
-egress_group_name                  = ""
-egress_group_role                  = ""
-
-egress_project_labels = {
-  "researcher1-project" : "data-egress" // CHANGE WITH EACH NEW PROJECT
-}
-
-egress_lien              = false
-egress_random_project_id = true
-
-#----------------------------------------
-# STAGING PROJECT - INGRESS BUCKET TFVARS
-#----------------------------------------
-// STAGING PROJECT INGRESS TFVARS - REQUIRED
-staging_ingress_bucket_suffix_name     = ["researcher1"] // CHANGE WITH EACH NEW PROJECT
-staging_ingress_bucket_prefix_name     = "wcm"
-staging_ingress_bucket_set_admin_roles = true
-
-// STAGING PROJECT INGRESS TFVARS - OPTIONAL
-#staging_ingress_bucket_location = "us-central1"
-
-#----------------------------------------
-# STAGING PROJECT - EGRESS BUCKET TFVARS
-#----------------------------------------
-
-// STAGING PROJECT EGRESS TFVARS - REQUIRED
-staging_egress_bucket_suffix_name      = ["researcher1"] // CHANGE WITH EACH NEW PROJECT
-staging_egress_bucket_prefix_name      = "wcm"
-staging_egress_bucket_set_viewer_roles = true
-
-// STAGING PROJECT EGRESS TFVARS - OPTIONAL
-#staging_egress_bucket_location = "us-central1"
-
-#---------------------------------------------
-# RESEARCHER WORKSPACE - INGRESS BUCKET TFVARS
-#---------------------------------------------
-
-// RESEARCHER WORKSPACE INGRESS TFVARS - REQUIRED
-workspace_ingress_bucket_suffix_name = ["researcher1"] // CHANGE WITH EACH NEW PROJECT
-workspace_ingress_bucket_prefix_name = "wcm"
-
-// RESEARCHER WORKSPACE INGRESS TFVARS - OPTIONAL
-#workspace_ingress_bucket_location = "us-central1"
-
-#---------------------------------------------
-# RESEARCHER WORKSPACE - EGRESS BUCKET TFVARS
-#---------------------------------------------
-
-// RESEARCHER WORKSPACE EGRESS TFVARS - REQUIRED
-workspace_egress_bucket_suffix_name = ["researcher1"] // CHANGE WITH EACH NEW PROJECT
-workspace_egress_bucket_prefix_name = "wcm"
-
-// RESEARCHER WORKSPACE EGRESS TFVARS - OPTIONAL
-#workspace_egress_bucket_location = "us-central1"
-
-#------------------------------------------------------
-# RESEARCHER DATA EGRESS PROJECT - EGRESS BUCKET TFVARS
-#------------------------------------------------------
-
-// RESEARCHER DATA EGRESS PROJECT - EGRESS BUCKET TFVARS - REQUIRED
-researcher_data_egress_project_bucket_suffix_name = ["researcher1"] // CHANGE RESEARCHER WITH EACH NEW PROJECT
-researcher_data_egress_project_bucket_prefix_name = "wcm"
-
-// RESEARCHER DATA EGRESS PROJECT - EGRESS BUCKET TFVARS - OPTIONAL
-#researcher_data_egress_project_bucket_location = "us-central1"
-
-#---------------------------------------------------
-# RESEARCHER WORKSPACE - GCS BUCKET VM ACCESS TFVARS
-#---------------------------------------------------
-
-// RESEARCHER WORKSPACE EGRESS TFVARS - REQUIRED
-workspace_vm_access_bucket_suffix_name = ["researcher1"] // CHANGE WITH EACH NEW PROJECT
-workspace_vm_access_bucket_prefix_name = "wcm"
-
-// RESEARCHER WORKSPACE EGRESS TFVARS - OPTIONAL
-#workspace_vm_access_bucket_location = "us-central1"
+egress_default_service_account = "disable"
 
 #--------------------------------
 # PUB/SUB GCS NOTIFICATION TFVARS
@@ -1020,15 +790,10 @@ role       = "roles/pubsub.publisher"
 # BIGQUERY DATASET - RESEARCHER DLP RESULTS STAGING PROJECT TFVARS
 #-----------------------------------------------------------------
 
-// REQUIRED TFVARS
-
-bq_researcher_dlp_dataset_id = "group1_dlp_result_dataset" // CHANGE WITH EACH NEW PROJECT
-
 // OPTIONAL TFVARS
 
 bq_researcher_dlp_bigquery_access              = []
 bq_researcher_dlp_dataset_labels               = { "group1_name" : "dlp_dataset" } // CHANGE WITH EACH NEW PROJECT
-bq_researcher_dlp_dataset_name                 = "group1-dlp-result-dataset"       // CHANGE WITH EACH NEW PROJECT
 bq_researcher_dlp_default_table_expiration_ms  = null
 bq_researcher_dlp_delete_contents_on_destroy   = true
 bq_researcher_dlp_bigquery_deletion_protection = false
@@ -1044,15 +809,10 @@ bq_researcher_dlp_views                        = []
 # BIGQUERY DATASET - RESEARCHER WORKSPACE DATASET TFVARS
 #-------------------------------------------------------
 
-// REQUIRED TFVARS
-
-bq_workspace_dataset_id = "group1_workspace_dataset" // CHANGE WITH EACH NEW PROJECT
-
 // OPTIONAL TFVARS
 
 bq_workspace_bigquery_access              = []
 bq_workspace_dataset_labels               = { "group1_name" : "workspace_dataset" } // CHANGE WITH EACH NEW PROJECT
-bq_workspace_dataset_name                 = "group1-workspace-dataset"              // CHANGE WITH EACH NEW PROJECT
 bq_workspace_default_table_expiration_ms  = null
 bq_workspace_delete_contents_on_destroy   = true
 bq_workspace_bigquery_deletion_protection = false
@@ -1070,22 +830,22 @@ bq_workspace_views                        = []
 
 // OPTIONAL TFVARS - NON PREMIUM
 
-combining_function       = "OR"
-access_level_description = "Researcher Group 1 Access Level"
-ip_subnetworks           = []
+# combining_function       = "OR"
+# access_level_description = "Researcher Group 1 Access Level"
+# ip_subnetworks           = []
 
-negate                 = false
-regions                = []
-required_access_levels = []
+# negate                 = false
+# regions                = []
+# required_access_levels = []
 
 // OPTIONAL TFVARS - DEVICE POLICY (PREMIUM)
 
-allowed_device_management_levels = []
-allowed_encryption_statuses      = []
-minimum_version                  = ""
-os_type                          = "OS_UNSPECIFIED"
-require_corp_owned               = false
-require_screen_lock              = false
+# allowed_device_management_levels = []
+# allowed_encryption_statuses      = []
+# minimum_version                  = ""
+# os_type                          = "OS_UNSPECIFIED"
+#require_corp_owned               = false
+#require_screen_lock = false
 
 #-----------------------------------------------------
 # RESEARCHER WORKSPACE VPC SC REGULAR PERIMETER TFVARS
@@ -1135,15 +895,6 @@ researcher_bastion_project_regular_service_perimeter_description = "Group 1 Bast
 
 researcher_bastion_project_regular_service_perimeter_enable_restriction = true
 researcher_bastion_project_regular_service_perimeter_allowed_services   = []
-
-#----------------------------------------------------------------
-# RESEARCHER EXTERNAL DATA EGRESS VPC SC REGULAR PERIMETER TFVARS
-#----------------------------------------------------------------
-
-// REQUIRED TFVARS
-
-researcher_data_egress_regular_service_perimeter_description = "Group 1 External Data Egress Regular Service Perimeter" // CHANGE WITH EACH NEW PROJECT
-researcher_data_egress_regular_service_perimeter_name        = "group1_external_egress_perimeter_aaron"                 // CHANGE WITH EACH NEW PROJECT
 
 #----------------------------------------------------------------------------
 # RESEARCHER EXTERNAL EGRESS & STAGING PROEJCT VPC SC BRIDGE PERIMETER TFVARS

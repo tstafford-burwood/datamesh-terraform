@@ -2,10 +2,9 @@
 // LOCAL.STAGING_PROJECT_ID IS SET IN MAIN.TF OF THIS WORKING DIRECTORY
 //
 
-// THIS MODULE IS FOR A BQ DATASET FOR THE RESEARCHER IN THE STAGING PROJECT
-
 #----------------------------------------------------------
 # BIGQUERY DATASET - RESEARCHER DLP RESULTS STAGING PROJECT
+# THIS MODULE IS FOR A BQ DATASET FOR THE RESEARCHER IN THE STAGING PROJECT
 #----------------------------------------------------------
 
 module "bigquery_researcher_dlp" {
@@ -13,14 +12,14 @@ module "bigquery_researcher_dlp" {
 
   // REQUIRED
 
-  dataset_id = var.bq_researcher_dlp_dataset_id
+  dataset_id = format("%s_%s", local.researcher_workspace_name, var.bq_researcher_dlp_dataset_id)
   project_id = local.staging_project_id
 
   // OPTIONAL
 
   bigquery_access              = var.bq_researcher_dlp_bigquery_access
   dataset_labels               = var.bq_researcher_dlp_dataset_labels
-  dataset_name                 = var.bq_researcher_dlp_dataset_name
+  dataset_name                 = format("%s-%s", local.researcher_workspace_name, var.bq_researcher_dlp_dataset_name)
   default_table_expiration_ms  = var.bq_researcher_dlp_default_table_expiration_ms
   delete_contents_on_destroy   = var.bq_researcher_dlp_delete_contents_on_destroy
   bigquery_deletion_protection = var.bq_researcher_dlp_bigquery_deletion_protection
@@ -33,10 +32,9 @@ module "bigquery_researcher_dlp" {
   views                        = var.bq_researcher_dlp_views
 }
 
-// THIS MODULE IS FOR A BQ DATASET IN THE RESEARCHER WORKSPACE PROJECT
-
 #----------------------------------------
 # BIGQUERY DATASET - RESEARCHER WORKSPACE
+# THIS MODULE IS FOR A BQ DATASET IN THE RESEARCHER WORKSPACE PROJECT
 #----------------------------------------
 
 module "bigquery_researcher_workspace" {
@@ -44,14 +42,14 @@ module "bigquery_researcher_workspace" {
 
   // REQUIRED
 
-  dataset_id = var.bq_workspace_dataset_id
-  project_id = module.researcher-workspace-project.project_id
+  dataset_id = format("%s_%s", local.researcher_workspace_name, var.bq_workspace_dataset_id)
+  project_id = module.workspace_project.project_id
 
   // OPTIONAL
 
   bigquery_access              = var.bq_workspace_bigquery_access
   dataset_labels               = var.bq_workspace_dataset_labels
-  dataset_name                 = var.bq_workspace_dataset_name
+  dataset_name                 = format("%s-%s", local.researcher_workspace_name, var.bq_workspace_dataset_name)
   default_table_expiration_ms  = var.bq_workspace_default_table_expiration_ms
   delete_contents_on_destroy   = var.bq_workspace_delete_contents_on_destroy
   bigquery_deletion_protection = var.bq_workspace_bigquery_deletion_protection

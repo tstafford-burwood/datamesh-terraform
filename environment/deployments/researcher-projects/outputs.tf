@@ -4,19 +4,19 @@
 
 output "workspace_enabled_apis" {
   description = "Enabled APIs in the project"
-  value       = module.researcher-workspace-project.enabled_apis
+  value       = module.workspace_project.enabled_apis
 }
 
 output "workspace_project_id" {
-  value = module.researcher-workspace-project.project_id
+  value = module.workspace_project.project_id
 }
 
 output "workspace_project_name" {
-  value = module.researcher-workspace-project.project_name
+  value = module.workspace_project.project_name
 }
 
 output "workspace_project_number" {
-  value = module.researcher-workspace-project.project_number
+  value = module.workspace_project.project_number
 }
 
 #----------------------------------------
@@ -197,37 +197,18 @@ output "workspace_project_custom_role_id" {
 
 output "workspace_deeplearning_vm_instance_id" {
   description = "The server-assigned unique identifier of this instance."
-  value       = module.researcher_workspace_deeplearning_vm_private_ip.instance_id
+  value       = module.researcher_workspace_deeplearning_vm_private_ip.*.instance_id
 }
 
 output "workspace_deeplearning_vm_self_link" {
   description = "The URI of the instance that was created."
-  value       = module.researcher_workspace_deeplearning_vm_private_ip.self_link
+  value       = module.researcher_workspace_deeplearning_vm_private_ip.*.self_link
 }
 
 output "workspace_deeplearning_vm_tags" {
   description = "The tags applied to the VM instance."
-  value       = module.researcher_workspace_deeplearning_vm_private_ip.tags
+  value       = module.researcher_workspace_deeplearning_vm_private_ip.*.tags
 }
-
-#-----------------------------------------------------
-# RESEARCHER WORKSPACE PATH ML VM - PRIVATE IP OUTPUTS
-#-----------------------------------------------------
-
-# output "workspace_path_ml_vm_instance_id" {
-#   description = "The server-assigned unique identifier of this instance."
-#   value       = module.researcher_workspace_path_ml_vm_private_ip.instance_id
-# }
-
-# output "workspace_path_ml_vm_self_link" {
-#   description = "The URI of the instance that was created."
-#   value       = module.researcher_workspace_path_ml_vm_private_ip.self_link
-# }
-
-# output "workspace_path_ml_vm_tags" {
-#   description = "The tags applied to the VM instance."
-#   value       = module.researcher_workspace_path_ml_vm_private_ip.tags
-# }
 
 #-----------------------------------------------------------
 # RESEARCHER WORKSPACE - REGIONAL EXTERNAL STATIC IP OUTPUTS
@@ -346,17 +327,18 @@ output "bastion_project_service_accounts" {
 
 output "bastion_instance_id" {
   description = "The server-assigned unique identifier of this instance."
-  value       = module.researcher_bastion_vm_private_ip.instance_id
+  value       = module.researcher_bastion_vm_private_ip.*.instance_id
 }
 
 output "bastion_self_link" {
   description = "The URI of the instance that was created."
-  value       = module.researcher_bastion_vm_private_ip.self_link
+  value       = module.researcher_bastion_vm_private_ip.*.self_link
 }
 
 output "bastion_tags" {
   description = "The tags applied to the VM instance."
-  value       = module.researcher_bastion_vm_private_ip.tags
+
+  value = module.researcher_bastion_vm_private_ip.*.tags
 }
 
 #-----------------------------------------------------------
@@ -423,48 +405,6 @@ output "workspace_gcs_vm_access_bucket" {
   value       = module.gcs_bucket_researcher_workspace_vm_access.bucket_name
 }
 
-#--------------------------------------------------------------
-# RESEARCHER WORKSPACE VPC SC REGULAR SERVICE PERIMETER OUTPUTS
-#--------------------------------------------------------------
-
-/*
-output "workspace_regular_service_perimeter_resources" {
-  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-  value       = module.researcher_workspace_regular_service_perimeter.regular_service_perimeter_resources
-}
-
-output "workspace_regular_service_perimeter_name" {
-  description = "The perimeter's name."
-  value       = module.researcher_workspace_regular_service_perimeter.regular_service_perimeter_name
-}
-
-output "workspace_vpc_accessible_services" {
-  description = "The API services accessible from a network within the VPC SC perimeter."
-  value       = module.researcher_workspace_regular_service_perimeter.vpc_accessible_services
-}
-*/
-
-#--------------------------------------------------------------------
-# RESEARCHER BASTION PROJECT VPC SC REGULAR SERVICE PERIMETER OUTPUTS
-#--------------------------------------------------------------------
-
-/*
-output "bastion_project_regular_service_perimeter_resources" {
-  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-  value       = module.researcher_bastion_project_regular_service_perimeter.regular_service_perimeter_resources
-}
-
-output "bastion_project_regular_service_perimeter_name" {
-  description = "The perimeter's name."
-  value       = module.researcher_bastion_project_regular_service_perimeter.regular_service_perimeter_name
-}
-
-output "bastion_project_vpc_accessible_services" {
-  description = "The API services accessible from a network within the VPC SC perimeter."
-  value       = module.researcher_bastion_project_regular_service_perimeter.vpc_accessible_services
-}
-*/
-
 #----------------------------------------------------------
 # BIGQUERY DATASET - RESEARCHER DLP RESULTS STAGING PROJECT
 #----------------------------------------------------------
@@ -482,19 +422,3 @@ output "researcher_workspace_bq_dataset" {
   description = "Bigquery dataset resource."
   value       = module.bigquery_researcher_workspace.bigquery_dataset
 }
-
-#-----------------------------------------------------
-# VPC SC RESEARCHER GROUP MEMBER ACCESS LEVELS OUTPUTS
-#-----------------------------------------------------
-
-/*
-output "vpc_sc_researcher_group_member_access_level_name" {
-  description = "Description of the AccessLevel and its use. Does not affect behavior."
-  value       = module.researcher_group_member_access_level.name
-}
-
-output "vpc_sc_researcher_group_member_access_level_name_id" {
-  description = "The fully-qualified name of the Access Level. Format: accessPolicies/{policy_id}/accessLevels/{name}"
-  value       = module.researcher_group_member_access_level.name_id
-}
-*/

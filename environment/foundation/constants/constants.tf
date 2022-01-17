@@ -6,29 +6,32 @@ locals {
 
     // DOMAIN INFORMATION
 
-    org_id                     = "645343216837" // CHANGE BEFORE FIRST DEPLOYMENT
-    billing_account_id         = "01EF01-627C10-7CD2DF" // CHANGE BEFORE FIRST DEPLOYMENT
-    srde_folder_id             = "398150021301" // CHANGE BEFORE FIRST DEPLOYMENT
-    automation_project_id      = "automation-dan-sde" // CHANGE BEFORE FIRST DEPLOYMEN
+    org_id                     = "645343216837"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    billing_account_id         = "01EF01-627C10-7CD2DF"                        // CHANGE BEFORE FIRST DEPLOYMENT
+    srde_folder_id             = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    parent_folder_id           = "folders/398150021301"                        // CHANGE BEFORE FIRST DEPLOYMENT
+    folder_foundation_id       = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    folder_research_group_id   = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    automation_project_id      = "automation-dan-sde"                          // CHANGE BEFORE FIRST DEPLOYMEN
     cloudbuild_service_account = "547140210872@cloudbuild.gserviceaccount.com" // CHANGE BEFORE FIRST DEPLOYMENT
-    terraform_state_bucket     = "terraform-state-sde-1292" // CHANGE BEFORE FIRST DEPLOYMENT
+    terraform_state_bucket     = "terraform-state-sde-1292"                    // CHANGE BEFORE FIRST DEPLOYMENT
 
     // PACKER PROJECT INFORMATION
 
     packer_project_id                 = "aaron3-packer-9c1b" //CHANGE AFTER PROVISIONING PACKER PROJECT
-    packer_base_image_id_bastion      = "packer-1642018453" // CHANGE AFTER NEW IMAGE IS CREATED
-    packer_base_image_id_deeplearning = "packer-1642018799" // CHANGE AFTER NEW IMAGE IS CREATED
-    packer_default_region             = "us-central1" // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
+    packer_base_image_id_bastion      = "packer-1642018453"  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_base_image_id_deeplearning = "packer-1642018799"  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_default_region             = "us-central1"        // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
 
     // STAGING PROJECT INFORMATION
 
-    staging_project_id = "aws-staging-b820" // CHANGE AFTER PROVISIONING STAGING PROJECT
+    staging_project_id     = "aws-staging-b820" // CHANGE AFTER PROVISIONING STAGING PROJECT
     staging_default_region = "us-central1"
 
     // DATA LAKE PROJECT INFORMATION
 
-    data_lake_project_id = "aaron3--data-lake-24c5" // CHANGE AFTER PROVISIONING DATA LAKE PROJECT
-    data_lake_default_region = "us-central1" // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
+    data_lake_project_id     = "aaron3--data-lake-24c5" // CHANGE AFTER PROVISIONING DATA LAKE PROJECT
+    data_lake_default_region = "us-central1"            // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
 
     // WORKSPACE PROJECT INFORMATION
 
@@ -41,11 +44,11 @@ locals {
     // VPC SERVICE CONTROL INFORMATION
 
     # Use gcloud cmd to create access policy (https://cloud.google.com/access-context-manager/docs/create-access-policy#gcloud)
-    parent_access_policy_id          = "709551633793" // CHANGE BEFORE FIRST DEPLOYMENT (one time setup at Org Level - deployed with gcloud cmd)
+    parent_access_policy_id          = "709551633793"                     // CHANGE BEFORE FIRST DEPLOYMENT (one time setup at Org Level - deployed with gcloud cmd)
     cloudbuild_access_level_name     = "aar4_cloud_build_service_account" // CHANGE AFTER PROVISIONING CLOUDBUILD VPC SC ACCESS LEVEL
-    srde_admin_access_level_name     = "aar4_group_members" // CHANGE AFTER ACCESS LEVEL IS PROVISIONED
-    cloud_composer_access_level_name = "" // CHANGE AFTER VPC SC ACCESS LEVEL IS PROVISIONED
-    
+    srde_admin_access_level_name     = "aar4_group_members"               // CHANGE AFTER ACCESS LEVEL IS PROVISIONED
+    cloud_composer_access_level_name = ""                                 // CHANGE AFTER VPC SC ACCESS LEVEL IS PROVISIONED
+
 
 
     vpc_sc_all_restricted_apis = [

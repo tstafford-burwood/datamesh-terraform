@@ -28,7 +28,7 @@ locals {
   staging_project_number    = data.terraform_remote_state.staging_project.outputs.staging_project_number
   org_id                    = module.constants.value.org_id
   billing_account_id        = module.constants.value.billing_account_id
-  srde_folder_id            = module.constants.value.srde_folder_id
+  srde_folder_id            = module.constants.value.sde_folder_id
   workspace_default_region  = module.constants.value.workspace_default_region
   bastion_default_region    = module.constants.value.bastion_default_region
   staging_default_region    = module.constants.value.staging_default_region

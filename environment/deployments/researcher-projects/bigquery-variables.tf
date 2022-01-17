@@ -7,7 +7,7 @@
 variable "bq_researcher_dlp_dataset_id" {
   description = "Unique ID for the dataset being provisioned."
   type        = string
-  default     = ""
+  default     = "dlp_result_dataset"
 }
 
 // OPTIONAL VARIABLES
@@ -32,7 +32,7 @@ variable "bq_researcher_dlp_dataset_labels" {
 variable "bq_researcher_dlp_dataset_name" {
   description = "Friendly name for the dataset being provisioned."
   type        = string
-  default     = ""
+  default     = "dlp-result-dataset"
 }
 
 variable "bq_researcher_dlp_default_table_expiration_ms" {
@@ -169,7 +169,7 @@ variable "bq_researcher_dlp_views" {
 variable "bq_workspace_dataset_id" {
   description = "Unique ID for the dataset being provisioned."
   type        = string
-  default     = ""
+  default     = "workspace_dataset"
 }
 
 // OPTIONAL VARIABLES
@@ -194,7 +194,7 @@ variable "bq_workspace_dataset_labels" {
 variable "bq_workspace_dataset_name" {
   description = "Friendly name for the dataset being provisioned."
   type        = string
-  default     = ""
+  default     = "workspace-dataset"
 }
 
 variable "bq_workspace_default_table_expiration_ms" {

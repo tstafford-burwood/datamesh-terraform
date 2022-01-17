@@ -174,7 +174,7 @@ variable "srde_project_domain_restricted_sharing_allow" {
 variable "srde_project_resource_location_restriction_allow" {
   description = "This list constraint defines the set of locations where location-based GCP resources can be created."
   type        = list(string)
-  default     = []
+  default     = ["in:us-locations"]
 }
 
 variable "enforce" {

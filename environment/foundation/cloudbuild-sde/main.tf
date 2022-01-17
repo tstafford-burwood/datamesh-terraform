@@ -1,27 +1,42 @@
-#------------------
+#------------------------------------------------------------------------
 # IMPORT CONSTANTS
-#------------------
+#------------------------------------------------------------------------
 
 module "constants" {
   source = "../constants"
 }
 
-// SET LOCAL VALUES
+#------------------------------------------------------------------------
+# RETRIEVE COMPOSER TF STATE
+#------------------------------------------------------------------------
+
+data "terraform_remote_state" "cloud_composer" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_state_prefix, "cloud-composer")
+  }
+}
+
+#------------------------------------------------------------------------
+# SET LOCALS
+#------------------------------------------------------------------------
 
 locals {
   srde_folder_id             = module.constants.value.srde_folder_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   automation_project_id      = module.constants.value.automation_project_id
   packer_default_region      = module.constants.value.packer_default_region
+  # Check if the composer state file is present, if so format the output else an empty string
+  composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
 }
 
-// THIS WILL PROVISION PIPELINES THAT ARE DEFINED IN var.srde_plan_trigger_name
-// THIS DOES NOT INCLUDE PIPELINE PROVISIONING FOR COMPOSER OR VPC SERVICE CONTROLS IN environment/foundation
-// ADDITIONAL PIPELINES ARE PROVISIONED FURTHER BELOW IN THIS FILE
-
-#---------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - PLAN
-#---------------------------
+# THIS WILL PROVISION PIPELINES THAT ARE DEFINED IN var.srde_plan_trigger_name
+# THIS DOES NOT INCLUDE PIPELINE PROVISIONING FOR COMPOSER OR VPC SERVICE CONTROLS IN environment/foundation
+# ADDITIONAL PIPELINES ARE PROVISIONED FURTHER BELOW IN THIS FILE
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "plan_foundation_triggers" {
 
@@ -58,7 +73,7 @@ resource "google_cloudbuild_trigger" "plan_foundation_triggers" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
@@ -98,18 +113,16 @@ resource "google_cloudbuild_trigger" "plan_deployments_triggers" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_deployments_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
 
-
-// THIS WILL PROVISION PIPELINES THAT ARE DEFINED IN var.srde_plan_trigger_name
-// THIS DOES NOT INCLUDE PIPELINE PROVISIONING FOR COMPOSER OR VPC SERVICE CONTROLS IN environment/foundation
-
-#----------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - APPLY
-#----------------------------
+# THIS WILL PROVISION PIPELINES THAT ARE DEFINED IN var.srde_plan_trigger_name
+# THIS DOES NOT INCLUDE PIPELINE PROVISIONING FOR COMPOSER OR VPC SERVICE CONTROLS IN environment/foundation
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "apply_foundation_triggers" {
 
@@ -146,7 +159,7 @@ resource "google_cloudbuild_trigger" "apply_foundation_triggers" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
@@ -186,17 +199,18 @@ resource "google_cloudbuild_trigger" "apply_deployments_triggers" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_deployments_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
 
 
-// THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 
-#------------------------------------
+
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - COMPOSER PLAN
-#------------------------------------
+# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 
@@ -209,7 +223,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   filename       = "cloudbuild/deployments/composer-plan.yaml"
   included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
 
-/*
+  /*
   trigger_template {
     project_id   = local.automation_project_id
     repo_name    = var.srde_plan_trigger_repo_name
@@ -231,16 +245,15 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
 
-// THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
-
-#-------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - COMPOSER APPLY
-#-------------------------------------
+# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
@@ -275,16 +288,15 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
     _BUCKET              = var.terraform_state_bucket
     _PREFIX              = var.terraform_state_prefix
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = var.srde_composer_dag_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
   }
 }
 
-// THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
-
-#-------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL PLAN
-#-------------------------------------------------------------------
+#------------------------------------------------------------------------
+# CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL PLAN\
+# THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
 
@@ -316,18 +328,17 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_plan" {
   }
 
   substitutions = {
-    _BUCKET = var.terraform_state_bucket
-    _PREFIX = var.terraform_state_prefix
-    _TAG    = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
-// THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
-
-#--------------------------------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL APPLY
-#--------------------------------------------------------------------
+# THIS WILL PROVISION A PIPELINE FOR THE VPC SERVICE CONTROL ACCESS LEVELS LOCATED IN environment/foundation/vpc-service-controls/
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
 
@@ -359,16 +370,16 @@ resource "google_cloudbuild_trigger" "srde_cloudbuild_sa_access_level_apply" {
   }
 
   substitutions = {
-    _BUCKET = var.terraform_state_bucket
-    _PREFIX = var.terraform_state_prefix
-    _TAG    = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
-#---------------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN
-#---------------------------------------------------
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
 
@@ -400,16 +411,16 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_plan" {
   }
 
   substitutions = {
-    _BUCKET = var.terraform_state_bucket
-    _PREFIX = var.terraform_state_prefix
-    _TAG    = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
-#----------------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY
-#----------------------------------------------------
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
 
@@ -441,16 +452,16 @@ resource "google_cloudbuild_trigger" "srde_admin_access_level_apply" {
   }
 
   substitutions = {
-    _BUCKET = var.terraform_state_bucket
-    _PREFIX = var.terraform_state_prefix
-    _TAG    = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _BUCKET      = var.terraform_state_bucket
+    _PREFIX      = var.terraform_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
   }
 }
 
-#---------------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - DEEP LEARNING VM IMAGE BUILD
-#---------------------------------------------------
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
 
@@ -488,9 +499,9 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   }
 }
 
-#-------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD 
-#-------------------------------------------
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
 
@@ -528,9 +539,9 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
   }
 }
 
-#---------------------------------------------
+#------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE
-#---------------------------------------------
+#------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "packer_container_image" {
 
@@ -571,9 +582,9 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
 
 # TODO: Create a new Cloud Build pipeline to apply this TF, which will provision all of the other pipelines.
 
-#--------------------------
+#------------------------------------------------------------------------
 # FOLDER IAM MEMBER MODULE
-#--------------------------
+#------------------------------------------------------------------------
 
 module "folder_iam_member" {
   source = "../../../modules/iam/folder_iam"

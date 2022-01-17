@@ -5,14 +5,11 @@ terraform_container_version = "0.13.5" // TERRAFORM TAG
 #----------------------------------
 
 plan_foundation_trigger_name = [
-  "packer-project",
   "srde-folder-policies"
 ]
 
 plan_deployments_trigger_name = [
-  "researcher-projects",
-  "staging-project",
-  "data-lake"
+  "researcher-projects"
 ]
 
 srde_plan_trigger_tags     = []
@@ -26,14 +23,11 @@ srde_plan_trigger_invert_regex = true
 #-----------------------------------
 
 apply_foundation_trigger_name = [
-  "packer-project",
   "srde-folder-policies"
 ]
 
 apply_deployments_trigger_name = [
-  "researcher-projects",
-  "staging-project",
-  "data-lake"
+  "researcher-projects"
 ]
 
 srde_apply_trigger_tags     = []

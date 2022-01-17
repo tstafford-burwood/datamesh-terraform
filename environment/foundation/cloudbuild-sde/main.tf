@@ -31,6 +31,256 @@ locals {
   composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
 }
 
+
+#------------------------------------------------------------------------
+# STAGING PROJECT PLAN TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "staging_project_plan" {
+
+  project = local.automation_project_id
+  name    =  format("%s-plan-sde", var.staging_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.staging_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+  }
+}
+
+#------------------------------------------------------------------------
+# STAGING PROJECT APPLY TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "staging_project_apply" {
+
+  project = local.automation_project_id
+  name    =  format("%s-apply-sde", var.staging_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.staging_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+  }
+}
+
+
+#------------------------------------------------------------------------
+# DATA LAKE PROJECT PLAN TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "data_lake_project_plan" {
+
+  project = local.automation_project_id
+  name    =  format("%s-plan-sde", var.data_lake_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.data_lake_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+#------------------------------------------------------------------------
+# DATA LAKE PROJECT APPLY TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "data_lake_project_apply" {
+
+  project = local.automation_project_id
+  name    =  format("%s-apply-sde", var.data_lake_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.data_lake_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+#------------------------------------------------------------------------
+# PACKER PROJECT PLAN TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "packer_project_plan" {
+
+  project = local.automation_project_id
+  name    =  format("%s-plan-sde", var.packer_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.packer_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+  }
+}
+
+#------------------------------------------------------------------------
+# PACKER PROJECT APPLY TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "packer_project_apply" {
+
+  project = local.automation_project_id
+  name    =  format("%s-apply-sde", var.packer_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
+  tags           = var.srde_plan_trigger_tags
+  disabled       = var.srde_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.packer_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.srde_plan_trigger_repo_name
+    invert_regex = var.srde_plan_trigger_invert_regex
+    branch_name  = var.srde_plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.srde_plan_trigger_invert_regex
+      branch       = var.srde_plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = var.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+  }
+}
+
 #------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - PLAN
 # THIS WILL PROVISION PIPELINES THAT ARE DEFINED IN var.srde_plan_trigger_name

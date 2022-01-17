@@ -1,6 +1,6 @@
-#-------------------------------------
+#-----------------------------------------
 # CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
-#-------------------------------------
+#-----------------------------------------
 
 
 variable "github_owner" {
@@ -18,6 +18,26 @@ variable "github_repo_name" {
 #-------------------------------------
 # CLOUDBUILD TRIGGERS - PLAN VARAIBLES
 #-------------------------------------
+
+variable "packer_project_trigger_name" {
+  description = "Name of packer project trigger"
+  type        = string
+  default     = ""
+}
+
+variable "staging_project_trigger_name" {
+  description = "Name of staging project trigger"
+  type        = string
+  default     = ""
+}
+
+variable "data_lake_project_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = ""
+}
+
+
 
 variable "srde_plan_trigger_project_id" {
   description = "The ID of the project in which the resource belongs and ID of the project that owns the Cloud Source Repository. If it is not provided, the provider project is used."

@@ -5,7 +5,6 @@ terraform_container_version = "0.13.5" // TERRAFORM TAG
 #----------------------------------
 
 plan_foundation_trigger_name = [
-  "srde-folder-policies"
 ]
 
 plan_deployments_trigger_name = [
@@ -22,7 +21,6 @@ srde_plan_trigger_invert_regex = true
 #-----------------------------------
 
 apply_foundation_trigger_name = [
-  "srde-folder-policies"
 ]
 
 apply_deployments_trigger_name = [

@@ -49,18 +49,6 @@ variable "srde_plan_trigger_project_id" {
   default     = ""
 }
 
-variable "plan_foundation_trigger_name" {
-  description = "Name of the trigger. Must be unique within the project."
-  type        = list(string)
-  default     = []
-}
-
-variable "plan_deployments_trigger_name" {
-  description = "Name of the trigger. Must be unique within the project."
-  type        = list(string)
-  default     = []
-}
-
 variable "srde_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)

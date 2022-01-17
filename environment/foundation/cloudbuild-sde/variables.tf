@@ -2,6 +2,11 @@
 # CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
 #-----------------------------------------
 
+variable "data_lake_project_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "data-lake-project"
+}
 
 variable "github_owner" {
   description = "GitHub Organization Name"
@@ -21,22 +26,46 @@ variable "packer_project_trigger_name" {
   default     = "packer-project"
 }
 
+variable "researcher_workspace_project_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "researcher-workspace-project"
+}
+
 variable "staging_project_trigger_name" {
   description = "Name of staging project trigger"
   type        = string
   default     = "staging-project"
 }
 
-variable "data_lake_project_trigger_name" {
-  description = "Name of data lake project trigger"
+variable "terraform_state_bucket" {
+  description = "The name of the state bucket where Terraform state will be stored."
   type        = string
-  default     = "data-lake-project"
+  default     = ""
 }
 
-variable "researcher_workspace_project_trigger_name" {
-  description = "Name of data lake project trigger"
+variable "terraform_state_prefix" {
+  description = "The name of the prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
   type        = string
-  default     = "researcher-workspace-project"
+  default     = "cloudbuild-sde"
+}
+
+variable "terraform_foundation_state_prefix" {
+  description = "The name of the foundation prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
+  type        = string
+  default     = "foundation"
+}
+
+variable "terraform_deployments_state_prefix" {
+  description = "The name of the deployments prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
+  type        = string
+  default     = "deployments"
+}
+
+variable "terraform_container_version" {
+  description = "The container version of Terraform to use with this pipeline during a Cloud Build build."
+  type        = string
+  default     = ""
 }
 
 #-------------------------------------
@@ -87,36 +116,6 @@ variable "plan_trigger_invert_regex" {
 
 variable "plan_branch_name" {
   description = "Regex matching branches to build. Exactly one a of branch name, tag, or commit SHA must be provided. The syntax of the regular expressions accepted is the syntax accepted by RE2 and described at https://github.com/google/re2/wiki/Syntax"
-  type        = string
-  default     = ""
-}
-
-variable "terraform_state_bucket" {
-  description = "The name of the state bucket where Terraform state will be stored."
-  type        = string
-  default     = ""
-}
-
-variable "terraform_state_prefix" {
-  description = "The name of the prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
-  type        = string
-  default     = ""
-}
-
-variable "terraform_foundation_state_prefix" {
-  description = "The name of the foundation prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
-  type        = string
-  default     = ""
-}
-
-variable "terraform_deployments_state_prefix" {
-  description = "The name of the deployments prefix to create in the state bucket. This will end up creating additional sub-directories to store state files in an orderly fashion. The additional sub-directories are generally created as a declaration inside of the Cloud Build YAML file of each pipeline."
-  type        = string
-  default     = ""
-}
-
-variable "terraform_container_version" {
-  description = "The container version of Terraform to use with this pipeline during a Cloud Build build."
   type        = string
   default     = ""
 }

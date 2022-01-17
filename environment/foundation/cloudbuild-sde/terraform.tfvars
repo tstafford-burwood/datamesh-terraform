@@ -4,14 +4,6 @@
 # ---------------------------------------------------------
 
 terraform_state_bucket = "terraform-state-sde-1292" // CHANGE BEFORE FIRST DEPLOYMENT
-terraform_state_prefix = "cloudbuild-sde"           // CHANGE BEFORE FIRST DEPLOYMENT
-
-terraform_foundation_state_prefix  = "foundation"
-terraform_deployments_state_prefix = "deployments"
-
-#packer_project_trigger_name = "packer-project"
-#staging_project_trigger_name = "staging-project"
-#data_lake_project_trigger_name = "staging-project"
 
 # ---------------------------------------------------------
 # STEP 2:

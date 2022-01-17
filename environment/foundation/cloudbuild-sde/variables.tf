@@ -22,19 +22,19 @@ variable "github_repo_name" {
 variable "packer_project_trigger_name" {
   description = "Name of packer project trigger"
   type        = string
-  default     = ""
+  default     = "packer-project"
 }
 
 variable "staging_project_trigger_name" {
   description = "Name of staging project trigger"
   type        = string
-  default     = ""
+  default     = "staging-project"
 }
 
 variable "data_lake_project_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
-  default     = ""
+  default     = "data-lake-project"
 }
 
 

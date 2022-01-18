@@ -14,7 +14,7 @@ data "terraform_remote_state" "staging_project" {
 #------------------
 
 module "constants" {
-  source = "../../foundation/constants"
+  source = "../constants"
 }
 
 // SET CONSTANT MODULE VALUES AS LOCALS

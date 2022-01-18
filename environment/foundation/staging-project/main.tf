@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------------
 
 module "constants" {
-  source = "../../foundation/constants"
+  source = "../constants"
 }
 
 // SET CONSTANTS VALUES

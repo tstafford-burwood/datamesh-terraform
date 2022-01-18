@@ -8,6 +8,12 @@ variable "data_lake_project_trigger_name" {
   default     = "data-lake-project"
 }
 
+variable "folders_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "folders"
+}
+
 variable "github_owner" {
   description = "GitHub Organization Name"
   type        = string

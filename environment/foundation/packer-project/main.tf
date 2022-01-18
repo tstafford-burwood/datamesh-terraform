@@ -2,12 +2,7 @@
 # SETUP LOCALS
 #----------------------------------------------------------------------------
 
-locals {
-  org_id                = module.constants.value.org_id
-  billing_account_id    = module.constants.value.billing_account_id
-  srde_folder_id        = module.constants.value.srde_folder_id
-  packer_default_region = module.constants.value.packer_default_region
-}
+
 
 // NULL RESOURCE TIMER
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
@@ -21,6 +16,14 @@ locals {
 #   depends_on      = [module.packer_project_disable_sa_creation]
 # }
 
+data "terraform_remote_state" "folders" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_state_prefix, "folders")
+  }
+}
+
 #----------------------------------------------------------------------------
 # IMPORT CONSTANTS
 #----------------------------------------------------------------------------
@@ -28,6 +31,15 @@ locals {
 module "constants" {
   source = "../constants"
 }
+
+
+locals {
+  org_id                = module.constants.value.org_id
+  billing_account_id    = module.constants.value.billing_account_id
+  folder_id             = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  packer_default_region = module.constants.value.packer_default_region
+}
+
 
 #----------------------------------------------------------------------------
 # PACKER PROJECT MODULE
@@ -48,7 +60,7 @@ module "packer-project" {
   default_service_account     = "keep"
   disable_dependent_services  = var.disable_dependent_services
   disable_services_on_destroy = var.disable_services_on_destroy
-  folder_id                   = local.srde_folder_id
+  folder_id                   = local.folder_id
   group_name                  = var.group_name
   group_role                  = var.group_role
   project_labels              = var.project_labels

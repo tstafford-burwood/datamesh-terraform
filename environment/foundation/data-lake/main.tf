@@ -1,4 +1,15 @@
 // DATA BLOCK
+
+// RETRIEVE FOLDER ID
+
+data "terraform_remote_state" "folders" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = "foundation/folders"
+  }
+}
+
 // RETRIEVE STAGING PROJECT NUMBER (I.E. 1234567890)
 
 data "terraform_remote_state" "staging_project" {
@@ -20,9 +31,9 @@ module "constants" {
 // SET CONSTANT MODULE VALUES AS LOCALS
 
 locals {
-  org_id                           = module.constants.value.org_id
-  billing_account_id               = module.constants.value.billing_account_id
-  srde_folder_id                   = module.constants.value.srde_folder_id
+  org_id             = module.constants.value.org_id
+  billing_account_id = module.constants.value.billing_account_id
+  folder_id                        = data.terraform_remote_state.folders.outputs.foundation_folder_id
   parent_access_policy_id          = module.constants.value.parent_access_policy_id
   cloudbuild_access_level_name     = module.constants.value.cloudbuild_access_level_name
   cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
@@ -47,7 +58,7 @@ module "data-lake-project" {
   project_name       = format("%v-%v", var.data_lake_project_name, "data-lake")
   org_id             = local.org_id
   billing_account_id = local.billing_account_id
-  folder_id          = local.srde_folder_id
+  folder_id          = local.folder_id
 
   // OPTIONAL FIELDS
   activate_apis               = var.data_lake_activate_apis

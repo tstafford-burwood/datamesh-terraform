@@ -1,4 +1,24 @@
 #----------------------------------------------------------------------------
+# TERRAFORM STATE IMPORTS
+#----------------------------------------------------------------------------
+
+data "terraform_remote_state" "folders" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = "foundation/folders"
+  }
+}
+
+data "google_storage_project_service_account" "gcs_account" {
+  # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
+  project = module.secure-staging-project.project_id
+}
+
+
+
+
+#----------------------------------------------------------------------------
 # IMPORT CONSTANTS
 #----------------------------------------------------------------------------
 
@@ -11,14 +31,10 @@ module "constants" {
 locals {
   org_id             = module.constants.value.org_id
   billing_account_id = module.constants.value.billing_account_id
-  srde_folder_id     = module.constants.value.srde_folder_id
+  folder_id     = data.terraform_remote_state.folders.outputs.foundation_folder_id
 }
 
 
-data "google_storage_project_service_account" "gcs_account" {
-  # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
-  project = module.secure-staging-project.project_id
-}
 
 # ---------------------------------------------------------------------------
 # SECURE STAGING PROJECT
@@ -39,7 +55,7 @@ module "secure-staging-project" {
   default_service_account     = var.default_service_account
   disable_dependent_services  = var.disable_dependent_services
   disable_services_on_destroy = var.disable_services_on_destroy
-  folder_id                   = local.srde_folder_id
+  folder_id                   = local.folder_id
   group_name                  = var.group_name
   group_role                  = var.group_role
   project_labels              = var.project_labels
@@ -180,7 +196,7 @@ resource "google_project_iam_member" "staging_project_composer_user_role" {
 # module "folder_iam_member" {
 #   source = "../../../modules/iam/folder_iam"
 
-#   folder_id     = local.srde_folder_id
+#   folder_id     = local.folder_id
 #   iam_role_list = var.dlp_service_agent_iam_role_list
 #   folder_member = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
 # }

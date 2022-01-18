@@ -102,8 +102,8 @@ resource "google_cloudbuild_trigger" "folders_apply" {
     owner = var.github_owner
     name  = var.github_repo_name
     push {
-      invert_regex = var.plan_apply_invert_regex
-      branch       = var.plan_apply_name
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
     }
   }
 

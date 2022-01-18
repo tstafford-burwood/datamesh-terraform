@@ -34,6 +34,90 @@ locals {
 
 
 #------------------------------------------------------------------------
+# FOLDERS PLAN TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "folders_plan" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde", var.folders_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.folders_trigger_name)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.folders_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.folders_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
+  }
+}
+
+#------------------------------------------------------------------------
+# FOLDERS APPLY TRIGGER
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "folders_apply" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde", var.folders_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.folders_trigger_name)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.folders_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.folders_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = ""
+  }
+}
+
+
+
+#------------------------------------------------------------------------
 # PACKER PROJECT PLAN TRIGGER
 #------------------------------------------------------------------------
 

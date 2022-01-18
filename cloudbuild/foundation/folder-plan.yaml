@@ -1,0 +1,22 @@
+steps:
+
+
+# SRDE FOLDERS PLAN
+
+- id: "folder init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/folders'
+  ]
+
+- id: "folder plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+    'plan'
+  ]
+
+timeout: 1800s

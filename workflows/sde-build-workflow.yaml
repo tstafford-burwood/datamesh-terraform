@@ -1,0 +1,86 @@
+main:
+  steps:
+    - init:
+        assign:
+        - automation_project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+        - cloudbuildTrigger: projects/automation-dan-sde/locations/global/triggers/3dca454c-88ef-4f0a-b1ce-589f55202095
+        - foldersTrigger: projects/automation-dan-sde/locations/global/triggers/32b4c041-4ccf-4539-a47f-ee421ac9e6da
+        - packerProjectTrigger: projects/automation-dan-sde/locations/global/triggers/60fcb119-5d60-4331-a9ca-3101e1668023
+        - stagingProjectTrigger: projects/automation-dan-sde/locations/global/triggers/969fff98-ef60-4a9d-a50c-c4ba016afcac
+        - dataLakeProjectTrigger: projects/automation-dan-sde/locations/global/triggers/b3f4daed-28f0-460a-a900-ba45a92e6f69
+        - researchProjectTrigger: projects/automation-dan-sde/locations/global/triggers/2b2d3e10-79f1-4ffe-b02a-7f8ee439cad6
+        - branch: main
+    - folders_create:
+        call: googleapis.cloudbuild.v1.projects.locations.triggers.run
+        args:
+          name: ${foldersTrigger}
+          body:
+            source:
+              branchName: ${branch}
+        result: foldersResponse
+    - log_folders_create:
+        call: sys.log
+        args:
+          data: ${foldersResponse}
+    - packer_project_create:
+        call: googleapis.cloudbuild.v1.projects.locations.triggers.run
+        args:
+          name: ${packerProjectTrigger}
+          body:
+            source:
+              branchName: ${branch}
+              substitutions:
+                _TFVARS_FILE: "terraform"
+        result: packerProjectResponse
+    - log_packer_project_create:
+        call: sys.log
+        args:
+          data: ${packerProjectResponse}
+    - staging_project_create:
+        call: googleapis.cloudbuild.v1.projects.locations.triggers.run
+        args:
+          name: ${stagingProjectTrigger}
+          body:
+            source:
+              branchName: ${branch}
+              substitutions:
+                _TFVARS_FILE: "terraform"
+        result: stagingProjectResponse
+    - log_staging_project_create:
+        call: sys.log
+        args:
+          data: ${stagingProjectResponse}
+    - data_lake_project_create:
+        call: googleapis.cloudbuild.v1.projects.locations.triggers.run
+        args:
+          name: ${stagingProjectTrigger}
+          body:
+            source:
+              branchName: ${branch}
+              substitutions:
+                _TFVARS_FILE: "terraform"
+        result: dataLakeProjectResponse
+    - log_data_lake_project_create:
+        call: sys.log
+        args:
+          data: ${dataLakeProjectResponse}
+    - researcher_workspace_project_create:
+        call: googleapis.cloudbuild.v1.projects.locations.triggers.run
+        args:
+          name: ${stagingProjectTrigger}
+          body:
+            source:
+              branchName: ${branch}
+              substitutions:
+                _TFVARS_FILE: "group2"
+        result: researcherProjectResponse
+    - log_researcher_workspace_project_create:
+        call: sys.log
+        args:
+          data: ${researcherProjectResponse}
+
+
+
+    - the_end:
+        return: "SUCCESS"
+# [END cloudbuild_tf_workflow]

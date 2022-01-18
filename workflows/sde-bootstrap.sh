@@ -25,6 +25,8 @@ gcloud services enable iam.googleapis.com
 gcloud services enable accesscontextmanager.googleapis.com
 gcloud services enable oslogin.googleapis.com
 
+gcloud services enable workflows.googleapis.com
+
 # Grant Cloudbuild SA permissions
 
 if ! gcloud beta builds triggers describe cloudbuild-sde-plan ; then

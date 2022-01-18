@@ -9,14 +9,12 @@
 # CHANGE AFTER PACKER PROJECT IS UP
 # ---------------------------------------------------------
 
-packer_project_id = "aaron3-packer-ba08" // CHANGE AFTER PACKER PROJECT IS UP
+#packer_project_id = "aaron3-packer-ba08" // CHANGE AFTER PACKER PROJECT IS UP
 
 # ---------------------------------------------------------
 # STEP 3
 # CHANGE AFTER STAGING AND CLOUD COMPOSER ARE UP
 # ---------------------------------------------------------
-
-#composer_dag_bucket = "us-central1-composer-all-pr-77f45ed9-bucket" // CHANGE AFTER CLOUD COMPOSER IS UP
 
 # ---------------------------------------------------------
 # CHANGE BASED ON WHAT CODE REPO IS BEING USED.

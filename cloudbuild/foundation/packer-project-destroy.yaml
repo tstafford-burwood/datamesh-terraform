@@ -13,7 +13,7 @@ steps:
 
 - id: "packer project - destroy plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-projectt'
+  dir: 'environment/foundation/packer-project'
   args: [
     'plan',
     '-var-file=env/${_TFVARS_FILE}.tfvars',

@@ -6,7 +6,7 @@ steps:
 
 - id: "staging project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -15,7 +15,7 @@ steps:
 
 - id: "staging project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

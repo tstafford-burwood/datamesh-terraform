@@ -1,0 +1,32 @@
+timeout: 2700s
+
+steps:
+
+# CLOUD COMPOSER
+
+- id: "composer init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/staging-project/cloud-composer'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/cloud-composer'
+  ]
+
+- id: "composer plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/staging-project/cloud-composer'
+  args: [
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-destroy'
+  ]
+
+- id: "composer destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/staging-project/cloud-composer'
+  args: [
+  'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-auto-approve'
+  ]

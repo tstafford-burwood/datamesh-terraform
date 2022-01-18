@@ -1,0 +1,114 @@
+steps:
+
+# CLOUD COMPOSER WITH DAGS
+
+- id: "composer init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/cloud-composer'
+  ]
+
+- id: "composer - first plan and disable project policies"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
+    # 1-12-22 - Comment out because these policies are commented out.
+    # '-var=enforce_staging_project_disable_sa_creation=false',
+    # '-var=enforce_staging_project_vm_os_login=false',
+    # '-var=enforce_staging_project_shielded_vms=false'
+  ]
+
+- id: "composer - first apply and disable org policies"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      if ! terraform apply -auto-approve -var-file=env/${_TFVARS_FILE}.tfvars -var="enforce_staging_project_disable_sa_creation=false" -var="enforce_staging_project_vm_os_login=false" -var="enforce_staging_project_shielded_vms=false" ; then
+        echo "Pipeline has failed, check terraform apply log output to determine error."
+      fi
+
+- id: "composer - second plan and ensure project policies are re-enabled"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      terraform plan \
+      -var-file=env/${_TFVARS_FILE}.tfvars
+      # -target=module.staging_project_disable_sa_creation \
+      # -var="enforce_staging_project_disable_sa_creation=true" \
+      # -target=module.staging_project_vm_os_login \
+      # -var="enforce_staging_project_vm_os_login=true" \
+      # -target=module.staging_project_shielded_vms \
+      # -var="enforce_staging_project_shielded_vms=true" \
+
+- id: "composer - second apply and ensure project policies are re-enabled"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+      terraform apply -auto-approve \
+      -var-file=env/${_TFVARS_FILE}.tfvars
+      # -target=module.staging_project_disable_sa_creation \
+      # -var="enforce_staging_project_disable_sa_creation=true" \
+      # -target=module.staging_project_vm_os_login \
+      # -var="enforce_staging_project_vm_os_login=true" \
+      # -target=module.staging_project_shielded_vms \
+      # -var="enforce_staging_project_shielded_vms=true" \
+
+- id: "staging project state pull - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/staging-project'
+  ]
+
+- id: "output file creation - staging project"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    'terraform output -json > /workspace/output.json && cat /workspace/output.json'
+  ]
+
+- id: "load variables for notify DAG"
+  name: gcr.io/cloud-builders/gcloud
+  dir: 'environment/foundation/staging-project/cloud-composer/composer-dag-files'
+  entrypoint: python
+  args: [
+    'set_notify_envs.py'
+  ]
+
+- id: "export bucket name"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    'terraform output gcs_bucket > /workspace/gcs_bucket.txt'
+  ]
+
+- id: "load DAG to GCS bucket"
+  name: gcr.io/cloud-builders/gsutil
+  dir: 'environment/foundation/staging-project/cloud-composer/composer-dag-files'
+  args: [
+    'cp',
+    '-n',
+    '/workspace/srde_Notify.py',
+    '$(cat /workspace/gcs_bucket.txt)'
+  ]
+
+timeout: 3600s

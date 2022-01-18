@@ -378,11 +378,11 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
   project = local.automation_project_id
   name    = "composer-plan-sde"
 
-  description    = "Pipeline for SRDE-Composer created with Terraform"
+  description    = "Pipeline for SDE-Composer created with Terraform"
   tags           = var.composer_plan_trigger_tags
   disabled       = var.composer_plan_trigger_disabled
-  filename       = "cloudbuild/deployments/composer-plan.yaml"
-  included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
+  filename       = "cloudbuild/foundation/composer-plan.yaml"
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/terraform.tfvars"]
 
   /*
   trigger_template {
@@ -404,7 +404,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = var.terraform_state_prefix
+    _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
@@ -424,8 +424,8 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.composer_apply_trigger_tags
   disabled       = var.composer_apply_trigger_disabled
-  filename       = "cloudbuild/deployments/composer-apply.yaml"
-  included_files = ["environment/deployments/staging-project/cloud-composer/env/terraform.tfvars"]
+  filename       = "cloudbuild/foundation/composer-apply.yaml"
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/terraform.tfvars"]
 
   /*
   trigger_template {
@@ -447,7 +447,7 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = var.terraform_state_prefix
+    _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = ""
@@ -490,7 +490,7 @@ resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_plan" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_state_prefix
+    _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
   }
@@ -532,7 +532,7 @@ resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_apply" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_state_prefix
+    _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
   }
@@ -573,7 +573,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_plan" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_state_prefix
+    _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
   }
@@ -614,7 +614,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_apply" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_state_prefix
+    _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = ""
   }

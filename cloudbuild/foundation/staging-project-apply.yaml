@@ -6,7 +6,7 @@ steps:
 
 - id: "staging project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -15,7 +15,7 @@ steps:
 
 - id: "staging project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
@@ -24,7 +24,7 @@ steps:
 
 - id: "staging project - first apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'apply',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
@@ -36,7 +36,7 @@ steps:
 
 - id: "staging project - output"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   entrypoint: /bin/sh
   args: [
   '-c',
@@ -48,7 +48,7 @@ steps:
 
 - id: "staging project - enable DLP API service agent"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   entrypoint: "bash"
   args:
     - "-c"
@@ -67,7 +67,7 @@ steps:
 
 - id: "staging project - copy table_schema_gcs_events.json"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/deployments/staging-project/bigquery-table-schema'
+  dir: 'environment/foundation/staging-project/bigquery-table-schema'
   entrypoint: /bin/sh
   args: [
   '-c',
@@ -78,7 +78,7 @@ steps:
 
 - id: "staging project - second plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars'
@@ -86,7 +86,7 @@ steps:
 
 - id: "staging project - second apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
   'apply',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

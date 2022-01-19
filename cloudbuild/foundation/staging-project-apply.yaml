@@ -71,7 +71,7 @@ steps:
   entrypoint: /bin/sh
   args: [
   '-c',
-  'cp table_schema_gcs_events.json /workspace/environment/deployments/staging-project'
+  'cp table_schema_gcs_events.json /workspace/environment/foundation/staging-project'
   ]
 
 # The following steps provision everything else.

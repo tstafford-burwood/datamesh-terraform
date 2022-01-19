@@ -34,19 +34,19 @@ locals {
 
 
 #------------------------------------------------------------------------
-# FOLDERS PLAN TRIGGER
+# FOLDERS PLAN TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "folders_plan" {
+resource "google_cloudbuild_trigger" "folders_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde", var.folders_trigger_name)
+  name    = format("%s-plan-sde-%s", var.folders_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.folders_trigger_name)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.folders_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.folders_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.folders_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.folders_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -70,67 +70,25 @@ resource "google_cloudbuild_trigger" "folders_plan" {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
-  }
-}
-
-#------------------------------------------------------------------------
-# FOLDERS APPLY TRIGGER
-#------------------------------------------------------------------------
-
-resource "google_cloudbuild_trigger" "folders_apply" {
-
-  project = local.automation_project_id
-  name    = format("%s-apply-sde", var.folders_trigger_name)
-
-  description    = format("Pipeline for SDE-%s created with Terraform", var.folders_trigger_name)
-  tags           = var.plan_trigger_tags
-  disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.folders_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.folders_trigger_name)
-
-  /*
-  trigger_template {
-    project_id   = local.automation_project_id
-    repo_name    = var.plan_trigger_repo_name
-    invert_regex = var.plan_trigger_invert_regex
-    branch_name  = var.plan_branch_name
-  }
-  */
-
-  github {
-    owner = var.github_owner
-    name  = var.github_repo_name
-    push {
-      invert_regex = var.apply_trigger_invert_regex
-      branch       = var.apply_branch_name
-    }
-  }
-
-  substitutions = {
-    _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
-    _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_dev
   }
 }
 
 
-
 #------------------------------------------------------------------------
-# PACKER PROJECT PLAN TRIGGER
+# FOLDERS PLAN TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_plan" {
+resource "google_cloudbuild_trigger" "folders_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde", var.packer_project_trigger_name)
+  name    = format("%s-plan-sde-%s", var.folders_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.packer_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.folders_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.folders_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -154,24 +112,25 @@ resource "google_cloudbuild_trigger" "packer_project_plan" {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_prod
   }
 }
 
+
 #------------------------------------------------------------------------
-# PACKER PROJECT APPLY TRIGGER
+# FOLDERS APPLY TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_apply" {
+resource "google_cloudbuild_trigger" "folders_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde", var.packer_project_trigger_name)
+  name    = format("%s-apply-sde-%s", var.folders_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.packer_project_trigger_name)
+  description    = format("Dev Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.packer_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.packer_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.folders_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.folders_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -195,25 +154,67 @@ resource "google_cloudbuild_trigger" "packer_project_apply" {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_dev
   }
 }
 
 
 #------------------------------------------------------------------------
-# STAGING PROJECT PLAN TRIGGER
+# FOLDERS APPLY TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "staging_project_plan" {
+resource "google_cloudbuild_trigger" "folders_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde", var.staging_project_trigger_name)
+  name    = format("%s-apply-sde-%s", var.folders_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
+  description    = format("Dev Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.staging_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.folders_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.folders_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+
+#------------------------------------------------------------------------
+# PACKER PROJECT PLAN TRIGGER - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "packer_project_plan_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde-%s", var.packer_project_trigger_name, var.env_name_dev)
+
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.packer_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -237,24 +238,65 @@ resource "google_cloudbuild_trigger" "staging_project_plan" {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_dev
   }
 }
 
 #------------------------------------------------------------------------
-# STAGING PROJECT APPLY TRIGGER
+# PACKER PROJECT PLAN TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "staging_project_apply" {
+resource "google_cloudbuild_trigger" "packer_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde", var.staging_project_trigger_name)
+  name    = format("%s-plan-sde-%s", var.packer_project_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.staging_project_trigger_name)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.staging_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.staging_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.packer_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# PACKER PROJECT APPLY TRIGGER - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "packer_project_apply_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde-%s", var.packer_project_trigger_name, var.env_name_dev)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.packer_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -278,25 +320,230 @@ resource "google_cloudbuild_trigger" "staging_project_apply" {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_dev
+  }
+}
+
+#------------------------------------------------------------------------
+# PACKER PROJECT APPLY TRIGGER - PROD
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "packer_project_apply_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde-%s", var.packer_project_trigger_name, var.env_name_prod)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.packer_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# STAGING PROJECT PLAN TRIGGER - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "staging_project_plan_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde-%s", var.staging_project_trigger_name, var.env_name_dev)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_dev)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.staging_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.staging_project_trigger_name, var.env_name_dev)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_dev
+  }
+}
+
+#------------------------------------------------------------------------
+# STAGING PROJECT PLAN TRIGGER - PROD
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "staging_project_plan_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde-%s", var.staging_project_trigger_name, var.env_name_prod)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_prod)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.staging_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.staging_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# STAGING PROJECT APPLY TRIGGER - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "staging_project_apply_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde-%s", var.staging_project_trigger_name, var.env_name_dev)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_dev)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.staging_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.staging_project_trigger_name, var.env_name_dev)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_dev
   }
 }
 
 
 #------------------------------------------------------------------------
-# DATA LAKE PROJECT PLAN TRIGGER
+# STAGING PROJECT APPLY TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data_lake_project_plan" {
+resource "google_cloudbuild_trigger" "staging_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde", var.data_lake_project_trigger_name)
+  name    = format("%s-apply-sde-%s", var.staging_project_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.data_lake_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.staging_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.staging_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = var.terraform_foundation_state_prefix
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# DATA LAKE PROJECT PLAN TRIGGER - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "data_lake_project_plan_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde-%s", var.data_lake_project_trigger_name, var.env_name_dev)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_dev)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data_lake_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_lake_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -320,25 +567,68 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _TFVARS_FILE         = var.env_name_dev
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+
+#------------------------------------------------------------------------
+# DATA LAKE PROJECT PLAN TRIGGER - PROD
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "data_lake_project_plan_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-sde-%s", var.data_lake_project_trigger_name, var.env_name_prod)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data_lake_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_lake_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = var.env_name_prod
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
   }
 }
 
 #------------------------------------------------------------------------
-# DATA LAKE PROJECT APPLY TRIGGER
+# DATA LAKE PROJECT APPLY TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data_lake_project_apply" {
+resource "google_cloudbuild_trigger" "data_lake_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde", var.data_lake_project_trigger_name)
+  name    = format("%s-apply-sde-%s", var.data_lake_project_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE-%s created with Terraform", var.data_lake_project_trigger_name)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.data_lake_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.data_lake_project_trigger_name)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data_lake_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_lake_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -362,7 +652,49 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = ""
+    _TFVARS_FILE         = var.env_name_dev
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+#------------------------------------------------------------------------
+# DATA LAKE PROJECT APPLY TRIGGER - PROD
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde-%s", var.data_lake_project_trigger_name, var.env_name_prod)
+
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data_lake_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_lake_project_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = var.env_name_prod
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
   }
 }

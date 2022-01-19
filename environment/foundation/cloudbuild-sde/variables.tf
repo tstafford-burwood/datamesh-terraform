@@ -8,6 +8,20 @@ variable "data_lake_project_trigger_name" {
   default     = "data-lake-project"
 }
 
+
+variable "env_name_dev" {
+  description = "Name of development environment to append to triggers"
+  type        = string
+  default     = "dev"
+}
+
+variable "env_name_prod" {
+  description = "Name of production environment to append to triggers"
+  type        = string
+  default     = "prod"
+}
+
+
 variable "folders_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
@@ -31,6 +45,8 @@ variable "packer_project_trigger_name" {
   type        = string
   default     = "packer-project"
 }
+
+
 
 variable "researcher_workspace_project_trigger_name" {
   description = "Name of data lake project trigger"

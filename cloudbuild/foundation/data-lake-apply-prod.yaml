@@ -1,0 +1,76 @@
+steps:
+
+# DATA LAKE PROJECT
+
+- id: "datalake project - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-lake'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/data-lake'
+  ]
+
+- id: "datalake project - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-lake'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
+  ]
+
+- id: "datalake project - apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation//data-lake'
+  args: [
+    'apply',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-auto-approve'
+  ]
+
+- id: "output file creation - datalake projects"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-lake'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    'terraform output -json > /workspace/data-lake-output.json && cat /workspace/data-lake-output.json'
+  ]
+
+- id: "staging project state pull - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/staging-project'
+  ]
+
+- id: "output file creation - staging project"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    'terraform output -json > /workspace/staging-output.json && cat /workspace/staging-output.json'
+  ]
+
+- id: "load variables for Datalake DAG envs"
+  name: gcr.io/cloud-builders/gcloud
+  dir: 'environment/foundation/data-lake/cloud-composer/composer-dag-files'
+  entrypoint: python
+  args: [
+    'set_data_lake_dag_envs.py'
+  ]
+
+- id: "load DAG to GCS bucket"
+  name: gcr.io/cloud-builders/gsutil
+  dir: 'environment/foundation/data-lake/cloud-composer/composer-dag-files'
+  args: [
+    'cp',
+    '-n',
+    '/workspace/*_DAG.py',
+    'gs://${_COMPOSER_DAG_BUCKET}/dags/'
+  ]
+
+timeout: 3600s

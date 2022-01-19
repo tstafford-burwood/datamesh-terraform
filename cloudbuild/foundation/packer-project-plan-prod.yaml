@@ -1,0 +1,22 @@
+steps:
+
+# PACKER PROJECT
+
+- id: "terraform init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/packer-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/packer-project'
+  ]
+
+- id: "terraform plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/packer-project'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+  ]
+
+timeout: 3600s

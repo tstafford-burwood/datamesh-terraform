@@ -1,0 +1,20 @@
+steps:
+
+# DATA LAKE PROJECT
+
+- id: "datalake project - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-lake'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/data-lake'
+  ]
+
+- id: "datalake project - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-lake'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
+  ]

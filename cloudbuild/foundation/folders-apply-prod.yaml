@@ -1,0 +1,30 @@
+steps:
+
+
+# SDE FOLDERS APPLY
+
+- id: "folder init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/folders'
+  ]
+
+- id: "folders plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'plan'
+  ]
+
+- id: "folders apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'apply',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

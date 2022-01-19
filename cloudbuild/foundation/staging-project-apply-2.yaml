@@ -1,0 +1,94 @@
+timeout: 3600s
+
+steps:
+
+# SECURE DATA STAGING PROJECT
+
+- id: "staging project - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/staging-project'
+  ]
+
+- id: "staging project - first plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-target=module.secure-staging-project'
+  ]
+
+- id: "staging project - first apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+  'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-target=module.secure-staging-project',
+  '-auto-approve'
+  ]
+
+# Get staging project ID in order to enable the DLP API service agent
+
+- id: "staging project - output"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  entrypoint: /bin/sh
+  args: [
+  '-c',
+  'terraform output staging_project_id > _STAGING_PROJECT_ID && cat _STAGING_PROJECT_ID'
+  ]
+
+
+# Need to enable here in order to perform IAM role assignments
+
+- id: "staging project - enable DLP API service agent"
+  name: gcr.io/cloud-builders/gcloud
+  dir: 'environment/foundation/staging-project'
+  entrypoint: "bash"
+  args:
+    - "-c"
+    - |
+        RESPONSE=$(curl -i --request POST \
+        "https://dlp.googleapis.com/v2/projects/$(cat _STAGING_PROJECT_ID)/locations/us-central1/content:inspect" \
+        --header "X-Goog-User-Project: $(cat _STAGING_PROJECT_ID)" \
+        --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+        --header 'Accept: application/json' \
+        --header 'Content-Type: application/json' \
+        --data '{"item":{"value":"google@google.com"}}' \
+        --compressed) \
+    - echo "$$RESPONSE"
+
+# Need to copy json file w/ BQ table definition for GCS Events from a sub-directory into the staging project directory
+
+- id: "staging project - copy table_schema_gcs_events.json"
+  name: gcr.io/cloud-builders/gcloud
+  dir: 'environment/foundation/staging-project/bigquery-table-schema'
+  entrypoint: /bin/sh
+  args: [
+  '-c',
+  'cp table_schema_gcs_events.json /workspace/environment/deployments/staging-project'
+  ]
+
+# The following steps provision everything else.
+
+- id: "staging project - second plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
+  ]
+
+- id: "staging project - second apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/staging-project'
+  args: [
+  'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-auto-approve'
+  ]

@@ -1,0 +1,32 @@
+steps:
+
+# PACKER PROJECT
+
+- id: "packer project - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/packer-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/packer-project'
+  ]
+
+- id: "packer project - destroy plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/packer-project'
+  args: [
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars',
+    '-destroy'
+  ]
+
+- id: "packer project - destroy apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/packer-project'
+  args: [
+  'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-auto-approve'
+  ]
+
+timeout: 3600s

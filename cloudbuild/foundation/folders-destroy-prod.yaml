@@ -1,0 +1,31 @@
+steps:
+
+
+# SDE FOLDERS DESTROY
+
+- id: "folders init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/folders'
+  ]
+
+- id: "folders destroy plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'plan',
+  '-destroy'
+  ]
+
+- id: "folders destroy
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/folders'
+  args: [
+  'destroy',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

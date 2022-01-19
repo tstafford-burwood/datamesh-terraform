@@ -82,7 +82,7 @@ resource "google_cloudbuild_trigger" "folders_plan_dev" {
 resource "google_cloudbuild_trigger" "folders_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.folders_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.folders_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -124,7 +124,7 @@ resource "google_cloudbuild_trigger" "folders_plan_prod" {
 resource "google_cloudbuild_trigger" "folders_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.folders_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.folders_trigger_name, var.env_name_dev)
 
   description    = format("Dev Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -166,7 +166,7 @@ resource "google_cloudbuild_trigger" "folders_apply_dev" {
 resource "google_cloudbuild_trigger" "folders_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.folders_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.folders_trigger_name, var.env_name_prod)
 
   description    = format("Dev Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -208,7 +208,7 @@ resource "google_cloudbuild_trigger" "folders_apply_prod" {
 resource "google_cloudbuild_trigger" "packer_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.packer_project_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.packer_project_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -249,7 +249,7 @@ resource "google_cloudbuild_trigger" "packer_project_plan_dev" {
 resource "google_cloudbuild_trigger" "packer_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.packer_project_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.packer_project_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -290,7 +290,7 @@ resource "google_cloudbuild_trigger" "packer_project_plan_prod" {
 resource "google_cloudbuild_trigger" "packer_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.packer_project_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.packer_project_trigger_name, var.env_name_dev)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -331,7 +331,7 @@ resource "google_cloudbuild_trigger" "packer_project_apply_dev" {
 resource "google_cloudbuild_trigger" "packer_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.packer_project_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.packer_project_trigger_name, var.env_name_prod)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -372,7 +372,7 @@ resource "google_cloudbuild_trigger" "packer_project_apply_prod" {
 resource "google_cloudbuild_trigger" "staging_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.staging_project_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.staging_project_trigger_name, var.env_name_dev)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -413,7 +413,7 @@ resource "google_cloudbuild_trigger" "staging_project_plan_dev" {
 resource "google_cloudbuild_trigger" "staging_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.staging_project_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.staging_project_trigger_name, var.env_name_prod)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -454,7 +454,7 @@ resource "google_cloudbuild_trigger" "staging_project_plan_prod" {
 resource "google_cloudbuild_trigger" "staging_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.staging_project_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.staging_project_trigger_name, var.env_name_dev)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -496,7 +496,7 @@ resource "google_cloudbuild_trigger" "staging_project_apply_dev" {
 resource "google_cloudbuild_trigger" "staging_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.staging_project_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.staging_project_trigger_name, var.env_name_prod)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.staging_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -537,7 +537,7 @@ resource "google_cloudbuild_trigger" "staging_project_apply_prod" {
 resource "google_cloudbuild_trigger" "data_lake_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.data_lake_project_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.data_lake_project_trigger_name, var.env_name_dev)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -580,7 +580,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan_dev" {
 resource "google_cloudbuild_trigger" "data_lake_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.data_lake_project_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.data_lake_project_trigger_name, var.env_name_prod)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
@@ -622,7 +622,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan_prod" {
 resource "google_cloudbuild_trigger" "data_lake_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.data_lake_project_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.data_lake_project_trigger_name, var.env_name_dev)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
@@ -664,7 +664,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_dev" {
 resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.data_lake_project_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.data_lake_project_trigger_name, var.env_name_prod)
 
   description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags

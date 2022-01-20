@@ -1,0 +1,22 @@
+steps:
+
+
+# Build Foundation Worklfows
+
+- id: "folder init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/build_workflow'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/build_workflow'
+  ]
+
+- id: "folders plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/build_workflow'
+  args: [
+  'plan'
+  ]
+
+timeout: 1800s

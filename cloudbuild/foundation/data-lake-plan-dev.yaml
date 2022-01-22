@@ -18,3 +18,34 @@ steps:
     'plan',
     '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
+  
+  # EXAMPLE OF USING TERRAFORM-VALIDATOR
+  # CODE COMMENTED OUT BECAUSE IT NEEDS TO BE TESTED
+  
+#   - id: "datalake project - plan"
+#     name: hashicorp/terraform:${_TAG}
+#     dir: 'environment/foundation/data-lake'
+#     args: [
+#       'plan',
+#       '--out',
+#       '/workspace/tfplan.tfplan'
+#     ]
+
+#   - id: "convert tf plan to json for terraform validator"
+#     name: hashicorp/terraform:${_TAG}
+#     dir: 'environment/foundation/data-lake'
+#     entrypoint: 'sh'
+#     args:
+#       - '-c'
+#       - |-
+#         terraform show -json /workspace/tfplan.tfplan > /workspace/tfplan.json
+      
+#  - id: "terraform validator"
+#    name: 'us-central1-docker.pkg.dev/packer-deploy-16ee/terraform-validator/terraform-validator:latest'
+#    dir: 'terraform-validator/'
+#    args: [
+#     'terraform-validator',
+#     'validate',
+#     '/workspace/tfplan.json',
+#     '--policy-path=./'
+#   ]

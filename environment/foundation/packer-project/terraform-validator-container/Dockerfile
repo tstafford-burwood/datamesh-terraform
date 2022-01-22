@@ -4,6 +4,8 @@ FROM google/cloud-sdk:alpine
 
 # UPDATE REPOSITORIES
 RUN apk update
+RUN apk upgrade
+RUN apk add bash
 
 # INSTALL WGET, UNZIP
 RUN apk add wget unzip
@@ -14,10 +16,11 @@ RUN mv terraform /usr/local/bin/
 
 # DOWNLOAD terraform-validator FROM PUBLIC GCS BUCKET
 # gsutil ls -r gs://terraform-validator/releases/v*
-RUN gsutil cp gs://terraform-validator/releases/v0.9.1/terraform-validator_linux_amd64-0.9.1.tar.gz . && tar -xzvf terraform-validator_linux_amd64-0.9.1.tar.gz
+RUN gsutil cp gs://terraform-validator/releases/v0.12.1/terraform-validator_linux_amd64-0.12.1.tar.gz . \
+    && tar -xzvf terraform-validator_linux_amd64-0.12.1.tar.gz \
+    && chmod 755 terraform-validator
 
-# CHANGE MODE ON terraform-validator
-RUN chmod 755 terraform-validator
+RUN ./terraform-validator version
 
-# MOVE terraform-validator INTO PATH
+# MOVE terraform-validator INTO PATH 
 RUN mv terraform-validator /usr/local/bin

@@ -5,7 +5,7 @@ steps:
 
 - id: "folder init"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/build_workflow'
+  dir: 'environment/foundation/vpc-service-controls/test'
   args: [
   'init',
   '-backend-config=bucket=terraform-state-sde-1292',
@@ -14,14 +14,14 @@ steps:
 
 - id: "folders plan"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/scp_test'
+  dir: 'environment/foundation/vpc-service-controls/test'
   args: [
   'plan'
   ]
 
 - id: "folders apply"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/scp_test'
+  dir: 'environment/foundation/vpc-service-controls/test'
   args: [
   'apply',
   '-auto-approve'

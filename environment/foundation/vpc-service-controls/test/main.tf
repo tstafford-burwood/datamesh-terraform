@@ -29,7 +29,7 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
 
     vpc_accessible_services {
      enable_restriction = true
-    allowed_services = ["storage.googleapis.com"]
+     allowed_services = ["storage.googleapis.com"]
     }
   }
 

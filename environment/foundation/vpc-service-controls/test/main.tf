@@ -26,11 +26,18 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
   title  = "sde_scp"
   status {
     restricted_services = ["storage.googleapis.com"]
+
+    vpc_accessible_services {
+     enable_restriction = true
+    allowed_services = ["storage.googleapis.com"]
+    }
   }
 
   lifecycle {
     ignore_changes = [status[0].resources]
   }
+
+
 }
 
 #resource "google_access_context_manager_access_policy" "access-policy" {

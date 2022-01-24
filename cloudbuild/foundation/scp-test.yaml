@@ -3,7 +3,7 @@ steps:
 
 # Build Foundation Worklfows
 
-- id: "folder init"
+- id: "scp init"
   name: hashicorp/terraform:0.13.5
   dir: 'environment/foundation/vpc-service-controls/test'
   args: [
@@ -12,14 +12,14 @@ steps:
   '-backend-config=prefix=foundation/scp_test'
   ]
 
-- id: "folders plan"
+- id: "scp plan"
   name: hashicorp/terraform:0.13.5
   dir: 'environment/foundation/vpc-service-controls/test'
   args: [
   'plan'
   ]
 
-- id: "folders apply"
+- id: "scp apply"
   name: hashicorp/terraform:0.13.5
   dir: 'environment/foundation/vpc-service-controls/test'
   args: [

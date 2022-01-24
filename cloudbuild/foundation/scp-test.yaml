@@ -1,0 +1,30 @@
+steps:
+
+
+# Build Foundation Worklfows
+
+- id: "folder init"
+  name: hashicorp/terraform:0.13.5
+  dir: 'environment/foundation/build_workflow'
+  args: [
+  'init',
+  '-backend-config=bucket=terraform-state-sde-1292',
+  '-backend-config=prefix=foundation/scp_test'
+  ]
+
+- id: "folders plan"
+  name: hashicorp/terraform:0.13.5
+  dir: 'environment/foundation/scp_test'
+  args: [
+  'plan'
+  ]
+
+- id: "folders apply"
+  name: hashicorp/terraform:0.13.5
+  dir: 'environment/foundation/scp_test'
+  args: [
+  'apply',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

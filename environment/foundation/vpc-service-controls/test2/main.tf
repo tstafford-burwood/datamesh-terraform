@@ -63,7 +63,7 @@ module "regular_service_perimeter_1" {
   egress_policies = [{
        "from" = {
         "identity_type" = ""
-        "identities"    = ["some_user_identity or service account"]
+        "identities"    = [""]
       },
        "to" = {
         "resources" = ["*"]

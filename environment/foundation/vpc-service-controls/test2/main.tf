@@ -38,7 +38,7 @@ module "regular_service_perimeter_1" {
           ]
         },
         "identity_type" = ""
-        "identities"    = ["some_user_identity or service account"]
+        "identities"    = [""]
       }
       "to" = {
         "operations" = {

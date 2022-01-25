@@ -9,6 +9,10 @@ bastion_project_numbers = [
   "projects/228514599584"
 ]
 
+data_ops_egress_project_numbers = [
+   "projects/521667747291"
+]
+
 restricted_services = [
   "bigquery.googleapis.com",
   "storage.googleapis.com"

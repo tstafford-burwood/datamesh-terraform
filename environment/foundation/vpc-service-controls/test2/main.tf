@@ -57,6 +57,9 @@ module "regular_service_perimeter_1" {
     "from" = {
       "identity_type" = ""
       "identities"    = ["serviceAccount:staging-scp-temp@automation-dan-sde.iam.gserviceaccount.com"]
+      "sources" = {
+         resources = var.data_ops_egress_project_numbers
+      }
     },
     "to" = {
       "resources" = ["*"]

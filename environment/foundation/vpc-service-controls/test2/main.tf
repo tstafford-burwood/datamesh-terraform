@@ -56,7 +56,7 @@ module "regular_service_perimeter_1" {
   egress_policies = [{
     "from" = {
       "identity_type" = "ANY_SERVICE_ACCOUNT"
-      "identities"    = ["staging-scp-temp@automation-dan-sde.iam.gserviceaccount.com"]
+      "identities"    = ["serviceAccount:staging-scp-temp@automation-dan-sde.iam.gserviceaccount.com"]
     },
     "to" = {
       "resources" = ["*"]

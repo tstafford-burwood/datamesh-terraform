@@ -17,69 +17,66 @@ locals {
 
 module "regular_service_perimeter_1" {
   source         = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
-  version        =  "3.1.0"
-  policy         =  local.parent_access_policy_id
+  version        = "3.1.0"
+  policy         = local.parent_access_policy_id
   perimeter_name = "sde_scp_2"
   description    = "Secure Data VPC Service Perimeter"
-  resources      = ["207846422464"]
+  resources      = var.resources
 
-  restricted_services = ["bigquery.googleapis.com", "storage.googleapis.com"]
+  restricted_services = var.restricted_services
 
   ingress_policies = [{
-      "from" = {
-        "sources" = {
-          resources = [
-            "projects/810291290728",
-            "projects/947222372583"
+    "from" = {
+      "sources" = {
+        resources = var.bastion_project_numbers
+      },
+      "identity_type" = ""
+      "identities"    = [""]
+    }
+    "to" = {
+      "operations" = {
+        "bigquery.googleapis.com" = {
+          "methods" = [
+            "BigQueryStorage.ReadRows",
+            "TableService.ListTables"
+          ],
+          "permissions" = [
+            "bigquery.jobs.get"
           ]
-        },
-        "identity_type" = ""
-        "identities"    = [""]
-      }
-      "to" = {
-        "operations" = {
-          "bigquery.googleapis.com" = {
-            "methods" = [
-              "BigQueryStorage.ReadRows",
-              "TableService.ListTables"
-            ],
-            "permissions" = [
-              "bigquery.jobs.get"
-            ]
-          }
-          "storage.googleapis.com" = {
-            "methods" = [
-              "google.storage.objects.create"
-            ]
-          }
+        }
+        "storage.googleapis.com" = {
+          "methods" = [
+            "google.storage.objects.create"
+          ]
         }
       }
+    }
     },
   ]
   egress_policies = [{
-       "from" = {
-        "identity_type" = ""
-        "identities"    = [""]
-      },
-       "to" = {
-        "resources" = ["*"]
-        "operations" = {
-          "bigquery.googleapis.com" = {
-            "methods" = [
-              "BigQueryStorage.ReadRows",
-              "TableService.ListTables"
-            ],
-            "permissions" = [
-              "bigquery.jobs.get"
-            ]
-          }
-          "storage.googleapis.com" = {
-            "methods" = [
-              "google.storage.objects.create"
-            ]
-          }
+    "from" = {
+      "identity_type" = ""
+      "identities"    = [""]
+    },
+    "to" = {
+      "resources" = ["*"]
+      "operations" = {
+        "bigquery.googleapis.com" = {
+          "methods" = [
+            "BigQueryStorage.ReadRows",
+            "TableService.ListTables"
+          ],
+          "permissions" = [
+            "bigquery.jobs.get"
+          ]
+        }
+        "storage.googleapis.com" = {
+          "methods" = [
+            "google.storage.objects.create"
+          ]
         }
       }
+    }
     },
   ]
 }

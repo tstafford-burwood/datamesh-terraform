@@ -18,8 +18,7 @@ locals {
 module "regular_service_perimeter_1" {
   source         = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
   version        =  "3.1.0"
-  #policy         = module.org_policy.policy_id
-  policy         = "548853993361"
+  policy         =  local.parent_access_policy_id
   perimeter_name = "sde_scp_2"
   description    = "Secure Data VPC Service Perimeter"
   resources      = ["207846422464"]
@@ -32,9 +31,6 @@ module "regular_service_perimeter_1" {
           resources = [
             "projects/810291290728",
             "projects/947222372583"
-          ],
-          access_levels = [
-              "access_level_sde_2"
           ]
         },
         "identity_type" = ""

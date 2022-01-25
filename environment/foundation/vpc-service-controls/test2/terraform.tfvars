@@ -6,7 +6,7 @@ resources = [
 ]
 
 bastion_project_numbers = [
-  "228514599584"
+  "projects/228514599584"
 ]
 
 restricted_services = [

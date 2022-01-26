@@ -6,8 +6,8 @@ resources = [
 ]
 
 scp_perimeter_projects = [
-  "207846422464",
-  "810291290728",
+  "projects/207846422464",
+  "projects/810291290728",
 ]
 
 bastion_project_numbers = [

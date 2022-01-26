@@ -15,9 +15,6 @@ data "google_storage_project_service_account" "gcs_account" {
   project = module.secure-staging-project.project_id
 }
 
-
-
-
 #----------------------------------------------------------------------------
 # IMPORT CONSTANTS
 #----------------------------------------------------------------------------
@@ -31,10 +28,8 @@ module "constants" {
 locals {
   org_id             = module.constants.value.org_id
   billing_account_id = module.constants.value.billing_account_id
-  folder_id     = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  folder_id          = data.terraform_remote_state.folders.outputs.foundation_folder_id
 }
-
-
 
 # ---------------------------------------------------------------------------
 # SECURE STAGING PROJECT
@@ -103,10 +98,10 @@ module "pub_sub_topic" {
 #----------------------------------------------------------------------------
 
 module "pub_sub_subscription" {
-  source = "../../../modules/pub_sub/pub_sub_subscription"
-  subscription_name       = var.subscription_name
-  project_id              = module.secure-staging-project.project_id
-  subscription_topic_name = module.pub_sub_topic.topic_name
+  source                     = "../../../modules/pub_sub/pub_sub_subscription"
+  subscription_name          = var.subscription_name
+  project_id                 = module.secure-staging-project.project_id
+  subscription_topic_name    = module.pub_sub_topic.topic_name
   ack_deadline_seconds       = var.ack_deadline_seconds
   dead_letter_topic          = var.dead_letter_topic
   enable_message_ordering    = var.enable_message_ordering

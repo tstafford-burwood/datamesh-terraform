@@ -4,18 +4,20 @@
 
 project_name = "aws2-staging" // CHANGE BEFORE FIRST DEPLOYMENT
 
+gcs_events_bigquery_access              = []
+
 #-------------------------------------
 # BIGQUERY DATASET - GCS EVENTS TFVARS
 #-------------------------------------
 
-gcs_events_dataset_id = "srde_gcs_events"
+#gcs_events_dataset_id = "srde_gcs_events"
 
 #--------------------------------------------
 # VPC SC ACCESS LEVELS TFVARS - DATA STEWARDS
 #--------------------------------------------
 
-access_level_name    = "aar2_staging_data_stewards"                                 // CHANGE NAME IF NEEDED, DATA STEWARDS ACCESS
-access_level_members = ["user:dspeck@sde.burwood.io"] // CHANGE AS NEEDED WITH DATA STEWARD INDIVIDUALS
+#access_level_name    = "aar2_staging_data_stewards"                                 // CHANGE NAME IF NEEDED, DATA STEWARDS ACCESS
+#access_level_members = ["user:dspeck@sde.burwood.io"] // CHANGE AS NEEDED WITH DATA STEWARD INDIVIDUALS
 
 #---------------------------------------------------------
 # VPC SC REGULAR PERIMETER TFVARS - SECURE STAGING PROJECT
@@ -25,7 +27,7 @@ access_level_members = ["user:dspeck@sde.burwood.io"] // CHANGE AS NEEDED WITH D
 
 // REQUIRED TFVARS
 
-staging_project_regular_service_perimeter_name = "aar2n_staging_project_perimeter"
+#staging_project_regular_service_perimeter_name = "aar2n_staging_project_perimeter"
 
 #------------------------------------------
 # DATA STEWARDS - PROJECT IAM MEMBER TFVARS

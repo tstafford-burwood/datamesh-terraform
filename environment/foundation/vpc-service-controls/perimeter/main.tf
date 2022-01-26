@@ -25,23 +25,42 @@ module "regular_service_perimeter_1" {
 
   restricted_services = var.restricted_services
 
-  ingress_policies = [{
-    "from" = {
-      "sources" = {
-        resources = var.data_ingress_project_numbers
+  ingress_policies = [
+    {
+      "from" = {
+        "sources" = {
+          resources = var.data_ingress_project_numbers
+        },
+        "identity_type" = "ANY_IDENTITY"
+        "identities"    = [""]
       },
-      "identity_type" = "ANY_IDENTITY"
-      "identities"    = [""]
-    }
-    "to" = {
-      "operations" = {
-        "storage.googleapis.com" = {
-          "methods" = [
-            "google.storage.objects.create"
-          ]
+      "to" = {
+        "operations" = {
+          "storage.googleapis.com" = {
+            "methods" = [
+              "google.storage.objects.create"
+            ]
+          }
         }
       }
-    }
+    },
+    {
+      "from" = {
+        "sources" = {
+          resources = var.data_ingress_project_numbers
+        },
+        "identity_type" = "ANY_IDENTITY"
+        "identities"    = [""]
+      },
+      "to" = {
+        "operations" = {
+          "storage.googleapis.com" = {
+            "methods" = [
+              "google.storage.objects.create"
+            ]
+          }
+        }
+      }
     },
   ]
   egress_policies = [{

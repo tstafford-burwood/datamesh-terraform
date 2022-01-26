@@ -32,11 +32,11 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
       allowed_services   = ["storage.googleapis.com"]
     }
 
+    #cloudbuild access
     ingress_policies {
 
-      #cloudbuild access
       ingress_from {
-        identity_type = ""
+        identity_type = "ANY_SERVICE_ACCOUNT"
         identities    = [""]
         sources {
           access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
@@ -44,6 +44,25 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
       }
       ingress_to {
         resources = [ "*" ]
+      }
+    }
+
+    #storage ingress
+    ingress_policies {
+       
+      ingress_from {
+        identity_type = "ANY_SERVICE_ACCOUNT"
+        identities    = [""]
+      }
+      ingress_to {
+        resources = var.data_ingress_project_numbers
+        operations {
+          service_name = "storage.googleapis.com"
+
+          method_selectors {
+            method = "google.storage.objects.create"
+          }
+        }
       }
     }
   }

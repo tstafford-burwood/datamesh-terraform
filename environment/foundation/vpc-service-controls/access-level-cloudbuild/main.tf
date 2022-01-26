@@ -3,15 +3,15 @@
 #-----------------
 
 module "constants" {
-  source = "../../../deployments/wcm-srde/constants"
+  source = "../../constants"
 }
+
 
 // SET LOCAL VALUES
 
 locals {
   parent_access_policy_id      = module.constants.value.parent_access_policy_id
   cloudbuild_service_account   = module.constants.value.cloudbuild_service_account
-  cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
 }
 
 
@@ -28,7 +28,7 @@ module "cloudbuild_access_level" {
 
   // REQUIRED
   # access_level_name  = var.access_level_name
-  access_level_name  = local.cloudbuild_access_level_name
+  access_level_name  = var.cloudbuild_access_level_name
   parent_policy_name = local.parent_access_policy_id
 
   // OPTIONAL - NON PREMIUM

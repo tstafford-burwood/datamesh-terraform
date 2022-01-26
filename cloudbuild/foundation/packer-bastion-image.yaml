@@ -1,6 +1,3 @@
-# Deep learning images are based off of Debian. Have to specify a different project and source iamge
-# https://cloud.google.com/deep-learning-vm/docs/images
-
 timeout: 1800s
 
 steps:
@@ -14,16 +11,19 @@ steps:
     - |
       cat <<END>packer.json
       {
+      "variables": {
+        "working_dir": "/opt",
+        "src_folder": "src_files"
+      },
       "builders": [
         {
           "type": "googlecompute",
           "instance_name": "packer-builder-vm-$SHORT_SHA",
           "disk_size": "50",
           "project_id": "${_PACKER_PROJECT_ID}",
-          "source_image_project_id": "deeplearning-platform-release",
-          "source_image": "pytorch-1-9-xla-notebooks-v20210905-ubuntu-1804",
-          "image_name": "deeplearning-image-$SHORT_SHA",
-          "image_family": "packer-deeplearning-image",
+          "source_image_family": "${_IMAGE_FAMILY}",
+          "image_name": "custom-image-$SHORT_SHA",
+          "image_family": "packer-custom-image",
           "image_description": "created-with-packer",
           "communicator": "ssh",
           "ssh_username": "ubuntu",
@@ -41,7 +41,16 @@ steps:
             "https://www.googleapis.com/auth/logging.admin"
           ]
         }
-        ]
+        ],
+      "provisioners": [
+        {
+          "type": "shell",
+          "inline": [
+            "sudo apt-get update -qq",
+            "sudo apt-get upgrade -qq"
+          ]
+        }
+      ]
       }
       END
 

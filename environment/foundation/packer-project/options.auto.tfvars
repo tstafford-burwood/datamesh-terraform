@@ -3,28 +3,28 @@
 #----------------------------------------------------------------------------
 
 // OPTIONAL TFVARS
-activate_apis = [
-  "cloudbuild.googleapis.com",
-  "artifactregistry.googleapis.com",
-  "deploymentmanager.googleapis.com",
-  "runtimeconfig.googleapis.com",
-  "oslogin.googleapis.com",
-  "compute.googleapis.com"
-]
-auto_create_network         = false
-create_project_sa           = false
-default_service_account     = "keep"
-disable_dependent_services  = true
-disable_services_on_destroy = true
-group_name                  = ""
-group_role                  = ""
+# activate_apis = [
+#   "cloudbuild.googleapis.com",
+#   "artifactregistry.googleapis.com",
+#   "deploymentmanager.googleapis.com",
+#   "runtimeconfig.googleapis.com",
+#   "oslogin.googleapis.com",
+#   "compute.googleapis.com"
+# ]
+# auto_create_network         = false
+# create_project_sa           = false
+# default_service_account     = "keep"
+# disable_dependent_services  = true
+# disable_services_on_destroy = true
+# group_name                  = ""
+# group_role                  = ""
 
-project_labels = {
-  "srde" : "packer-project"
-}
+# project_labels = {
+#   "srde" : "packer-project"
+# }
 
-lien              = false
-random_project_id = true
+# lien              = false
+# random_project_id = true
 
 #----------------------------------------------------------------------------
 # GCS BUCKET MODULE TFVARS
@@ -41,11 +41,11 @@ uniform_bucket_level_access = true
 # Change this value, other files will need to be updated.
 #----------------------------------------------------------------------------
 
-vpc_network_name        = "packer-vpc"
-auto_create_subnetworks = false
-firewall_rules          = []
-routing_mode            = "GLOBAL"
-mtu                     = 1460
+# vpc_network_name        = "packer-vpc"
+# auto_create_subnetworks = false
+# firewall_rules          = []
+# routing_mode            = "GLOBAL"
+# mtu                     = 1460
 
 subnets = [
   {

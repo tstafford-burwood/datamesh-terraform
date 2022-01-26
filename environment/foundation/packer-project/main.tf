@@ -2,8 +2,6 @@
 # SETUP LOCALS
 #----------------------------------------------------------------------------
 
-
-
 // NULL RESOURCE TIMER
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
 // NEED TIME DELAY TO ALLOW POLICY CHANGE TO PROPAGATE
@@ -32,14 +30,13 @@ module "constants" {
   source = "../constants"
 }
 
-
 locals {
   org_id                = module.constants.value.org_id
   billing_account_id    = module.constants.value.billing_account_id
   folder_id             = data.terraform_remote_state.folders.outputs.foundation_folder_id
   packer_default_region = module.constants.value.packer_default_region
+  function              = "image-factory"
 }
-
 
 #----------------------------------------------------------------------------
 # PACKER PROJECT MODULE
@@ -49,23 +46,25 @@ module "packer-project" {
   source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
-  project_name       = var.project_name
+  project_name       = format("%v-%v", var.environment, local.function)
   org_id             = local.org_id
   billing_account_id = local.billing_account_id
+  folder_id          = local.folder_id
 
   // OPTIONAL FIELDS
-  activate_apis               = var.activate_apis
-  auto_create_network         = var.auto_create_network
-  create_project_sa           = var.create_project_sa
+  random_project_id           = true
+  auto_create_network         = false
+  activate_apis               = ["cloudbuild.googleapis.com", "artifactregistry.googleapis.com", "deploymentmanager.googleapis.com", "runtimeconfig.googleapis.com", "oslogin.googleapis.com", "compute.googleapis.com", "secretmanager.googleapis.com", "storage-api.googleapis.com", "servicemanagement.googleapis.com", "cloudapis.googleapis.com"]
   default_service_account     = "keep"
-  disable_dependent_services  = var.disable_dependent_services
-  disable_services_on_destroy = var.disable_services_on_destroy
-  folder_id                   = local.folder_id
-  group_name                  = var.group_name
-  group_role                  = var.group_role
-  project_labels              = var.project_labels
-  lien                        = var.lien
-  random_project_id           = var.random_project_id
+  disable_dependent_services  = true
+  disable_services_on_destroy = true
+  lien                        = false
+  create_project_sa           = var.create_project_sa
+  project_labels = {
+    environment      = var.environment
+    application_name = "packer"
+    primary_contact  = "example1"
+  }
 }
 
 #----------------------------------------------------------------------------
@@ -90,7 +89,7 @@ module "packer-project" {
 resource "google_storage_bucket" "cloudbuild_gcs_bucket" {
 
   project                     = module.packer-project.project_id
-  name                        = "${module.packer-project.project_id}_cloudbuild"
+  name                        = "${var.environment}-${module.packer-project.project_id}_cloudbuild"
   force_destroy               = var.bucket_force_destroy
   labels                      = var.storage_bucket_labels
   location                    = var.bucket_location
@@ -119,17 +118,43 @@ module "packer_vpc" {
   source = "../../../modules/vpc"
 
   project_id                             = module.packer-project.project_id
-  vpc_network_name                       = var.vpc_network_name
-  auto_create_subnetworks                = var.auto_create_subnetworks
-  delete_default_internet_gateway_routes = var.delete_default_internet_gateway_routes
-  firewall_rules                         = var.firewall_rules
-  routing_mode                           = var.routing_mode
-  vpc_description                        = var.vpc_description
-  shared_vpc_host                        = var.shared_vpc_host
-  mtu                                    = var.mtu
-  subnets                                = var.subnets
-  secondary_ranges                       = var.secondary_ranges
-  routes                                 = var.routes
+  vpc_network_name                       = format("%v-%v-vpc", var.environment, local.function)
+  auto_create_subnetworks                = false
+  delete_default_internet_gateway_routes = false
+  routing_mode                           = "GLOBAL"
+  vpc_description                        = format("%s VPC for %s managed by Terraform.", var.environment, local.function)
+  shared_vpc_host                        = false
+  mtu                                    = 1460
+  #firewall_rules                         = var.firewall_rules
+  subnets          = var.subnets
+  secondary_ranges = var.secondary_ranges
+  routes           = var.routes
+}
+
+module "firewall" {
+  source       = "terraform-google-modules/network/google//modules/firewall-rules"
+  version      = "~> 4.1.0"
+  project_id   = module.packer-project.project_id
+  network_name = module.packer_vpc.network_name
+  rules = [{
+    name                    = "allow-ssh-ingress"
+    description             = null
+    direction               = "INGRESS"
+    priority                = 1000
+    ranges                  = ["0.0.0.0/0"]
+    source_tags             = ["packer"]
+    source_service_accounts = null
+    target_tags             = null
+    target_service_accounts = null
+    allow = [{
+      protocol = "tcp"
+      ports    = ["22"]
+    }]
+    deny = []
+    log_config = {
+      metadata = "INCLUDE_ALL_METADATA"
+    }
+  }]
 }
 
 // PROVISION ARTIFACT REGISTRY REPOSITORY IN PACKER PROJECT FOR PACKER CONTAINER IMAGE

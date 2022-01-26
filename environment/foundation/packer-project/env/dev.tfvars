@@ -3,5 +3,5 @@
 # CHANGE THE BELOW VALUES
 # ---------------------------------------------------------
 
-project_name             = "aaron3-packer" // CHANGE BEFORE FIRST DEPLOYMENT
+environment              = "dev"
 deploymentmanager_editor = "group:srde-packer-admins@prorelativity.com" // CHANGE BEFORE FIRST DEPLOYMENT: use user{} or group{}

@@ -1,4 +1,6 @@
-// IMPORT CONSTANTS
+#----------------------------------------------------------------------------
+# IMPORT CONSTANTS
+#----------------------------------------------------------------------------
 
 module "constants" {
   source = "../../../foundation/constants"
@@ -7,13 +9,17 @@ module "constants" {
 // SET LOCALS VALUES
 
 locals {
-  billing_account_id               = module.constants.value.billing_account_id
   org_id                           = module.constants.value.org_id
-  staging_project_id               = module.constants.value.staging_project_id
-  parent_access_policy_id          = module.constants.value.parent_access_policy_id
+  billing_account_id               = module.constants.value.billing_account_id
   srde_folder_id                   = module.constants.value.srde_folder_id
-  cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
+  staging_project_id               = module.constants.value.staging_project_id
+  #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
+  #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
+
+#----------------------------------------------------------------------------
+# CLOUD COMPOSER MODULE
+#----------------------------------------------------------------------------
 
 // NULL RESOURCE TIMER
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
@@ -25,9 +31,9 @@ resource "time_sleep" "wait_120_seconds" {
   #depends_on      = [module.staging_project_shielded_vms, module.staging_project_disable_sa_creation, module.staging_project_vm_os_login]
 }
 
-#-----------------------
+#----------------------------------------------------------------------------
 # CLOUD COMPOSER MODULE
-#-----------------------
+#----------------------------------------------------------------------------
 
 module "cloud_composer" {
   source = "../../../../modules/cloud_composer"
@@ -71,9 +77,9 @@ module "cloud_composer" {
   depends_on = [module.composer_service_account]
 }
 
-#--------------------------------------
+#----------------------------------------------------------------------------
 # CLOUD COMPOSER SERVICE ACCOUNT MODULE
-#--------------------------------------
+#----------------------------------------------------------------------------
 
 module "composer_service_account" {
 
@@ -98,9 +104,9 @@ module "composer_service_account" {
   depends_on            = [time_sleep.wait_120_seconds]
 }
 
-#--------------------------
+#----------------------------------------------------------------------------
 # FOLDER IAM MEMBER MODULE
-#--------------------------
+#----------------------------------------------------------------------------
 
 module "folder_iam_member" {
   source = "../../../../modules/iam/folder_iam"

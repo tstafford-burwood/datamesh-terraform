@@ -7,22 +7,25 @@ module "bigquery_dataset_gcs_events" {
 
   // REQUIRED
 
-  dataset_id = var.gcs_events_dataset_id
+  #dataset_id = var.gcs_events_dataset_id
+  dataset_id = format("%v-%v", var.environment, "sde_gcs_events")
   project_id = module.secure-staging-project.project_id
 
   // OPTIONAL
 
-  bigquery_access              = var.gcs_events_bigquery_access
-  dataset_labels               = var.gcs_events_dataset_labels
-  dataset_name                 = var.gcs_events_dataset_name
-  default_table_expiration_ms  = var.gcs_events_default_table_expiration_ms
-  delete_contents_on_destroy   = var.gcs_events_delete_contents_on_destroy
-  bigquery_deletion_protection = var.gcs_events_bigquery_deletion_protection
-  bigquery_description         = var.gcs_events_bigquery_description
-  encryption_key               = var.gcs_events_encryption_key
-  external_tables              = var.gcs_events_external_tables
+  bigquery_access = var.gcs_events_bigquery_access
+  dataset_labels  = { "bq-dataset" : format("%v-%v-project", var.environment, local.function) }
+  #dataset_name                 = var.gcs_events_dataset_name
+  dataset_name                 = format("%s_sde_gcs_events", var.environment)
+  default_table_expiration_ms  = null
+  delete_contents_on_destroy   = true
+  bigquery_deletion_protection = false
+  bigquery_description         = format("BigQuery %s Dataset created with Terraform for GCS events to be written to.", var.environment)
+  encryption_key               = null
+  external_tables              = []
   location                     = var.gcs_events_location
-  routines                     = var.gcs_events_routines
+  routines                     = []
+  views                        = []
   tables = [{
     table_id = "gcs_events"
     schema   = file("./bigquery-table-schema/table_schema_gcs_events.json") // LOCATED IN ./bigquery-table-schema
@@ -39,5 +42,5 @@ module "bigquery_dataset_gcs_events" {
       "srde" : "gcs_events"
     }
   }]
-  views = var.gcs_events_views
+
 }

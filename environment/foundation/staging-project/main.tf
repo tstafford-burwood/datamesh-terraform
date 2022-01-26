@@ -15,9 +15,6 @@ data "google_storage_project_service_account" "gcs_account" {
   project = module.secure-staging-project.project_id
 }
 
-
-
-
 #----------------------------------------------------------------------------
 # IMPORT CONSTANTS
 #----------------------------------------------------------------------------
@@ -31,10 +28,11 @@ module "constants" {
 locals {
   org_id             = module.constants.value.org_id
   billing_account_id = module.constants.value.billing_account_id
-  folder_id     = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  folder_id          = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  default_region     = module.constants.value.staging_default_region
+  function           = "data-ops"
+  primary_contact    = "example1"
 }
-
-
 
 # ---------------------------------------------------------------------------
 # SECURE STAGING PROJECT
@@ -44,23 +42,25 @@ module "secure-staging-project" {
   source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
-  project_name       = var.project_name
+  project_name       = format("%v-%v", var.environment, local.function)
   org_id             = local.org_id
   billing_account_id = local.billing_account_id
+  folder_id          = local.folder_id
 
   // OPTIONAL FIELDS
-  activate_apis               = var.activate_apis
-  auto_create_network         = var.auto_create_network
-  create_project_sa           = var.create_project_sa
+  activate_apis               = ["compute.googleapis.com", "pubsub.googleapis.com", "bigquery.googleapis.com", "composer.googleapis.com", "dlp.googleapis.com"]
+  auto_create_network         = false
+  create_project_sa           = false
   default_service_account     = var.default_service_account
-  disable_dependent_services  = var.disable_dependent_services
-  disable_services_on_destroy = var.disable_services_on_destroy
-  folder_id                   = local.folder_id
-  group_name                  = var.group_name
-  group_role                  = var.group_role
-  project_labels              = var.project_labels
-  lien                        = var.lien
-  random_project_id           = var.random_project_id
+  disable_dependent_services  = true
+  disable_services_on_destroy = true
+  lien                        = false
+  random_project_id           = true
+  project_labels = {
+    environment      = var.environment
+    application_name = local.function
+    primary_contact  = local.primary_contact
+  }
 }
 
 # ---------------------------------------------------------------------------
@@ -71,14 +71,13 @@ module "vpc" {
   source = "../../../modules/vpc"
 
   project_id                             = module.secure-staging-project.project_id
-  vpc_network_name                       = var.vpc_network_name
-  auto_create_subnetworks                = var.auto_create_subnetworks
-  delete_default_internet_gateway_routes = var.delete_default_internet_gateway_routes
-  firewall_rules                         = var.firewall_rules
-  routing_mode                           = var.routing_mode
-  vpc_description                        = var.vpc_description
-  shared_vpc_host                        = var.shared_vpc_host
-  mtu                                    = var.mtu
+  vpc_network_name                       = format("%v-%v-vpc", var.environment, local.function)
+  auto_create_subnetworks                = false
+  delete_default_internet_gateway_routes = false
+  mtu                                    = 1460
+  routing_mode                           = "GLOBAL"
+  vpc_description                        = format("%s VPC for %s managed by Terraform.", var.environment, local.function)
+  shared_vpc_host                        = false
   subnets                                = var.subnets
   secondary_ranges                       = var.secondary_ranges
   routes                                 = var.routes
@@ -91,11 +90,14 @@ module "vpc" {
 module "pub_sub_topic" {
   source = "../../../modules/pub_sub/pub_sub_topic"
 
-  topic_name                  = var.topic_name
+  #topic_name                  = var.topic_name
+  topic_name                  = format("%v-%v-topic", var.environment, local.function)
   project_id                  = module.secure-staging-project.project_id
-  allowed_persistence_regions = var.allowed_persistence_regions
+  allowed_persistence_regions = [local.default_region]
   kms_key_name                = var.kms_key_name
-  topic_labels                = var.topic_labels
+  topic_labels = {
+    "pub_sub_topic" : format("%v-%v-project", var.environment, local.function)
+  }
 }
 
 #----------------------------------------------------------------------------
@@ -104,35 +106,35 @@ module "pub_sub_topic" {
 
 module "pub_sub_subscription" {
   source = "../../../modules/pub_sub/pub_sub_subscription"
-  subscription_name       = var.subscription_name
-  project_id              = module.secure-staging-project.project_id
-  subscription_topic_name = module.pub_sub_topic.topic_name
-  ack_deadline_seconds       = var.ack_deadline_seconds
-  dead_letter_topic          = var.dead_letter_topic
-  enable_message_ordering    = var.enable_message_ordering
-  expiration_policy_ttl      = var.expiration_policy_ttl
-  filter                     = var.filter
-  maximum_backoff            = var.maximum_backoff
-  minimum_backoff            = var.minimum_backoff
-  max_delivery_attempts      = var.max_delivery_attempts
-  message_retention_duration = var.message_retention_duration
-  retain_acked_messages      = var.retain_acked_messages
-  subscription_labels        = var.subscription_labels
+
+  subscription_name          = format("%v-%v-subscription", var.environment, local.function)
+  project_id                 = module.secure-staging-project.project_id
+  subscription_topic_name    = module.pub_sub_topic.topic_name
+  ack_deadline_seconds       = 10
+  dead_letter_topic          = null
+  enable_message_ordering    = true
+  expiration_policy_ttl      = ""
+  filter                     = null
+  maximum_backoff            = null
+  minimum_backoff            = null
+  max_delivery_attempts      = null
+  message_retention_duration = null
+  retain_acked_messages      = false
+  subscription_labels        = {}
 
   // PUSH CONFIGURATION - OPTIONAL
 
-  audience              = var.audience
-  push_endpoint         = var.push_endpoint
-  push_attributes       = var.push_attributes
-  service_account_email = var.service_account_email
+  audience              = null
+  push_endpoint         = ""
+  push_attributes       = {}
+  service_account_email = ""
 }
 
-// USED TO SET THE DEFINED IAM ROLE TO A PROJECT'S GCS SERVICE ACCOUNT AT THE PUB/SUB TOPIC LEVEL
-// ENABLES PUBLISHING GCS NOTIFICATIONS TO A PUB/SUB TOPIC
-// LOCAL.STAGING_PROJECT_ID LOCATED IN MAIN.TF OF THIS DIRECTORY
-
 #----------------------------------------------------------------------------
-# PUB/SUB TOPIC IAM MEMBER MODULE
+# PUB/SUB TOPIC IAM MEMBER
+# USED TO SET THE DEFINED IAM ROLE TO A PROJECT'S GCS SERVICE ACCOUNT AT THE PUB/SUB TOPIC LEVEL
+# ENABLES PUBLISHING GCS NOTIFICATIONS TO A PUB/SUB TOPIC
+# LOCAL.STAGING_PROJECT_ID LOCATED IN MAIN.TF OF THIS DIRECTORY
 #----------------------------------------------------------------------------
 
 module "pub_sub_topic_iam_binding" {
@@ -141,10 +143,8 @@ module "pub_sub_topic_iam_binding" {
   project_id = module.secure-staging-project.project_id
   topic_name = module.pub_sub_topic.topic_name
   iam_member = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
-  role       = var.role
+  role       = "roles/pubsub.publisher"
 }
-
-
 
 #----------------------------------------------------------------------------
 # STAGING PROJECT IAM CUSTOM ROLE MODULE
@@ -154,9 +154,9 @@ module "staging_project_iam_custom_role" {
   source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.secure-staging-project.project_id
-  project_iam_custom_role_description = var.project_iam_custom_role_description
+  project_iam_custom_role_description = "Custom SDE Role for storage.buckets.list operation."
+  project_iam_custom_role_title       = "[Custom] SDE Storage Buckets List Role"
   project_iam_custom_role_id          = var.project_iam_custom_role_id
-  project_iam_custom_role_title       = var.project_iam_custom_role_title
   project_iam_custom_role_permissions = var.project_iam_custom_role_permissions
   project_iam_custom_role_stage       = var.project_iam_custom_role_stage
 }

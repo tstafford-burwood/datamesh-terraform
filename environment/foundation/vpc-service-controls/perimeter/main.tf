@@ -2,7 +2,6 @@
 # IMPORT CONSTANTS
 #------------------
 
-
 #provider "google" {
 # project = "automation-dan-sde"
 #}
@@ -10,6 +9,18 @@
 module "constants" {
   source = "../../constants"
 }
+
+#------------------------------------------------------------------------
+# RETRIEVE COMPOSER TF STATE
+#------------------------------------------------------------------------
+
+//data "terraform_remote_state" "cloud_composer" {
+//  backend = "gcs"
+//  config = {
+//    bucket = module.constants.value.terraform_state_bucket
+//    prefix = format("%s/%s", var.terraform_state_prefix, "cloud-composer")
+//  }
+//}
 
 // SET LOCAL VALUES
 
@@ -19,10 +30,9 @@ locals {
   #cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
 }
 
-
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
-  parent = "accessPolicies/548853993361"
-  name   = "accessPolicies/548853993361/servicePerimeters/restrict_all"
+  parent = format("accessPolicies/%s", local.parent_access_policy_id)
+  name   = format("accessPolicies/%s/servicePerimeters/sde_scp_3", local.parent_access_policy_id)
   title  = "sde_scp_3"
   status {
     restricted_services = var.restricted_services
@@ -43,13 +53,13 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
         }
       }
       ingress_to {
-        resources = [ "*" ]
+        resources = ["*"]
       }
     }
 
     #data ingress
     ingress_policies {
-       
+
       ingress_from {
         identity_type = "ANY_SERVICE_ACCOUNT"
         identities    = [""]
@@ -91,34 +101,34 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
           }
           method_selectors {
             method = "DatasetService.PatchDataset"
-          } 
+          }
           method_selectors {
             method = "DatasetService.UpdateDataset"
-          } 
+          }
           method_selectors {
             method = "JobService.CancelJob"
-          } 
+          }
           method_selectors {
             method = "JobService.DeleteJob"
-          } 
+          }
           method_selectors {
             method = "JobService.GetJob"
-          } 
+          }
           method_selectors {
             method = "JobService.GetQueryResults"
-          } 
+          }
           method_selectors {
             method = "JobService.InsertJob"
-          } 
+          }
           method_selectors {
             method = "JobService.ListJobs"
-          } 
+          }
           method_selectors {
             method = "JobService.Query"
-          } 
+          }
           method_selectors {
             method = "TableService.DeleteTable"
-          } 
+          }
           method_selectors {
             method = "TableService.GetTable"
           }
@@ -133,51 +143,51 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
           }
           method_selectors {
             method = "TableService.UpdateTable"
-          }                       
+          }
         }
-      operations {
-        service_name = "storage.googleapis.com"
+        operations {
+          service_name = "storage.googleapis.com"
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.buckets.create"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.buckets.delete"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.buckets.get"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.buckets.list"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.buckets.update"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.objects.create"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.objects.delete"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.objects.get"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.objects.list"
-        }
+          }
 
-        method_selectors {
+          method_selectors {
             method = "google.storage.objects.update"
+          }
         }
-      }
       }
 
     }
@@ -194,8 +204,6 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
 #  parent = "organizations/645343216837"
 #  title  = "access-policy-sde"
 #}
-
-
 
 resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
   perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name

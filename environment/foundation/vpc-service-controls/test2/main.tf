@@ -62,8 +62,17 @@ module "regular_service_perimeter_1" {
       "resources" = var.data_ops_egress_project_numbers
       "operations" = {
         "bigquery.googleapis.com" = {
+          "methods" = [
+            "*"
+          ],
+          "permissions" = [
+            "*"
+          ]
         }
         "storage.googleapis.com" = {
+          "methods" = [
+            "google.storage.objects.create"
+          ]
         }
       }
     }

@@ -3,5 +3,10 @@
 # Can only use individuals, no Google Groups
 #---------------------------- 
 
-#access_level_name = "aaron_burwood_group_member" // CHANGE BEFORE FIRST DEPLOYMENT
-access_level_members = ["user:astrong@prorelativity.com", "user:janderson@burwood.com","user:datasteward@prorelativity.com"] // CHANGE AS NEEDED
+access_level_name = "admin_users" // CHANGE BEFORE FIRST DEPLOYMENT
+access_level_members = [
+    "user:astrong@burwood.com",
+    "user:janderson@burwood.com",
+    "user:dspeck@burwood.com",
+    "user:dspeck@sde.burwood.io"
+] // CHANGE AS NEEDED

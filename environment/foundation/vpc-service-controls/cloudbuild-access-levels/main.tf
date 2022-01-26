@@ -3,8 +3,9 @@
 #-----------------
 
 module "constants" {
-  source = "../../../deployments/wcm-srde/constants"
+  source = "../../constants"
 }
+
 
 // SET LOCAL VALUES
 

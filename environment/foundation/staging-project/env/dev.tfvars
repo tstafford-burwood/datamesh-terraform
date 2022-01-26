@@ -6,6 +6,8 @@ project_name = "aws2-staging" // CHANGE BEFORE FIRST DEPLOYMENT
 
 gcs_events_bigquery_access              = []
 
+environment = dev
+
 #-------------------------------------
 # BIGQUERY DATASET - GCS EVENTS TFVARS
 #-------------------------------------

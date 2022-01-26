@@ -13,6 +13,8 @@ data_ingress_project_numbers = [
   "projects/207846422464"
 ]
 
+data_ingress_project_number = "projects/207846422464"
+
 data_ops_egress_project_numbers = [
   "projects/521667747291"
 ]

@@ -86,7 +86,98 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
           method_selectors {
             method = "DatasetService.ListDatasets"
           }
+          method_selectors {
+            method = "DatasetService.ListDatasets"
+          }
+          method_selectors {
+            method = "DatasetService.PatchDataset"
+          } 
+          method_selectors {
+            method = "DatasetService.UpdateDataset"
+          } 
+          method_selectors {
+            method = "JobService.CancelJob"
+          } 
+          method_selectors {
+            method = "JobService.DeleteJob"
+          } 
+          method_selectors {
+            method = "JobService.GetJob"
+          } 
+          method_selectors {
+            method = "JobService.GetQueryResults"
+          } 
+          method_selectors {
+            method = "JobService.InsertJob"
+          } 
+          method_selectors {
+            method = "JobService.ListJobs"
+          } 
+          method_selectors {
+            method = "JobService.Query"
+          } 
+          method_selectors {
+            method = "TableService.DeleteTable"
+          } 
+          method_selectors {
+            method = "TableService.GetTable"
+          }
+          method_selectors {
+            method = "TableService.InsertTable"
+          }
+          method_selectors {
+            method = "TableService.ListTables"
+          }
+          method_selectors {
+            method = "TableService.PatchTable"
+          }
+          method_selectors {
+            method = "TableService.UpdateTable"
+          }                       
         }
+      operations {
+        service_name = "storage.googleapis.com"
+
+        method_selectors {
+            method = "google.storage.buckets.create"
+        }
+
+        method_selectors {
+            method = "google.storage.buckets.delete"
+        }
+
+        method_selectors {
+            method = "google.storage.buckets.get"
+        }
+
+        method_selectors {
+            method = "google.storage.buckets.list"
+        }
+
+        method_selectors {
+            method = "google.storage.buckets.update"
+        }
+
+        method_selectors {
+            method = "google.storage.objects.create"
+        }
+
+        method_selectors {
+            method = "google.storage.objects.delete"
+        }
+
+        method_selectors {
+            method = "google.storage.objects.get"
+        }
+
+        method_selectors {
+            method = "google.storage.objects.list"
+        }
+
+        method_selectors {
+            method = "google.storage.objects.update"
+        }
+      }
       }
 
     }

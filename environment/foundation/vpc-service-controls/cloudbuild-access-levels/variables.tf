@@ -4,7 +4,7 @@
 
 // REQUIRED VARIABLES
 
-variable "access_level_name" {
+variable "cloudbuild_access_level_name" {
   description = "Description of the AccessLevel and its use. Does not affect behavior."
   type        = string
   default     = ""

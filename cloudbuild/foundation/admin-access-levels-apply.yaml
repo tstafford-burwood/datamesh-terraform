@@ -3,27 +3,27 @@ timeout: 1800s
 steps:
 
 
-# SRDE ADMIN ACCESS LEVEL
+# SDE ADMIN ACCESS LEVEL
 
-- id: "srde admin access levels - init"
+- id: "sde admin access levels - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/srde-admin-access-levels'
+  dir: 'environment/foundation/vpc-service-controls/admin-access-level'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/srde-admin-access-levels'
+  '-backend-config=prefix=${_PREFIX}/admin-access-level'
   ]
 
-- id: "srde admin access levels - plan"
+- id: "sde admin access levels - plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/srde-admin-access-levels'
+  dir: 'environment/foundation/vpc-service-controls/admin-access-level'
   args: [
   'plan'
   ]
 
-- id: "srde admin access levels - apply"
+- id: "sde admin access levels - apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/srde-admin-access-levels'
+  dir: 'environment/foundation/vpc-service-controls/admin-access-level'
   args: [
   'apply',
   '-auto-approve'

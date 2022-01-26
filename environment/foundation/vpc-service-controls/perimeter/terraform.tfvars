@@ -10,7 +10,7 @@ bastion_project_numbers = [
 ]
 
 data_ingress_project_numbers = [
-  "projects/207846422464"
+  "projects/810291290728"
 ]
 
 data_ingress_project_number = "projects/810291290728"

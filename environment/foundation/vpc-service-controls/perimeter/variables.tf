@@ -33,3 +33,9 @@ variable "resources" {
   type        = list(string)
   default     = []
 }
+
+variable "scp_perimeter_projects" {
+  description = "List of projects in scp perimeter"
+  type        = list(string)
+  default     = []
+}

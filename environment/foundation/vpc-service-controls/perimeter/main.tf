@@ -30,18 +30,20 @@ locals {
   #cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
 }
 
-resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
-  perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name
-  resource       = "projects/207846422464"
-}
+#resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
+#  perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name
+#  resource       = "projects/207846422464"
+#}
 
 
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = format("accessPolicies/%s", local.parent_access_policy_id)
   name   = format("accessPolicies/%s/servicePerimeters/sde_scp_3", local.parent_access_policy_id)
   title  = "sde_scp_3"
+  perimeter_type = "PERIMETER_TYPE_REGULAR"
   status {
     restricted_services = var.restricted_services
+    resources = var.scp_perimeter_projects
 
     vpc_accessible_services {
       enable_restriction = true

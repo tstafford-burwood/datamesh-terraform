@@ -5,6 +5,11 @@ resources = [
   "810291290728",
 ]
 
+scp_perimeter_projects = [
+  "207846422464",
+  "810291290728",
+]
+
 bastion_project_numbers = [
   "projects/228514599584"
 ]

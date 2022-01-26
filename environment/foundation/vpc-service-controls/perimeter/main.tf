@@ -30,6 +30,12 @@ locals {
   #cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
 }
 
+resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
+  perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name
+  resource       = "projects/207846422464"
+}
+
+
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = format("accessPolicies/%s", local.parent_access_policy_id)
   name   = format("accessPolicies/%s/servicePerimeters/sde_scp_3", local.parent_access_policy_id)
@@ -205,7 +211,3 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
 #  title  = "access-policy-sde"
 #}
 
-resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
-  perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name
-  resource       = "projects/207846422464"
-}

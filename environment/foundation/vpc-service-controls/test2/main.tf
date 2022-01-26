@@ -30,7 +30,7 @@ module "regular_service_perimeter_1" {
       "sources" = {
       },
       "identity_type" = "ANY_IDENTITY"
-      "identities"    = ["*"]
+      "identities"    = [""]
     }
     "to" = {
       "operations" = {

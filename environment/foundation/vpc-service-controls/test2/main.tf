@@ -28,22 +28,12 @@ module "regular_service_perimeter_1" {
   ingress_policies = [{
     "from" = {
       "sources" = {
-        resources = var.bastion_project_numbers
       },
-      "identity_type" = ""
-      "identities"    = [""]
+      "identity_type" = "ANY_IDENTITY"
+      "identities"    = ["*"]
     }
     "to" = {
       "operations" = {
-        "bigquery.googleapis.com" = {
-          "methods" = [
-            "BigQueryStorage.ReadRows",
-            "TableService.ListTables"
-          ],
-          "permissions" = [
-            "bigquery.jobs.get"
-          ]
-        }
         "storage.googleapis.com" = {
           "methods" = [
             "google.storage.objects.create"

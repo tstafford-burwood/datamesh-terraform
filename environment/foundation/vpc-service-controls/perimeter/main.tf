@@ -23,7 +23,7 @@ locals {
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = "accessPolicies/548853993361"
   name   = "accessPolicies/548853993361/servicePerimeters/restrict_all"
-  title  = "sde_scp_2"
+  title  = "sde_scp_3"
   status {
     restricted_services = var.restricted_services
 

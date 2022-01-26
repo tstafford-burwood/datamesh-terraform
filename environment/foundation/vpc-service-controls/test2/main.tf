@@ -63,15 +63,38 @@ module "regular_service_perimeter_1" {
       "operations" = {
         "bigquery.googleapis.com" = {
           "methods" = [
-            "*"
-          ],
-          "permissions" = [
-            "*"
+            "DatasetService.GetDataset",
+            "DatasetService.InsertDataset",
+            "DatasetService.ListDatasets",
+            "DatasetService.PatchDataset",
+            "DatasetService.UpdateDataset",
+            "JobService.CancelJob",
+            "JobService.DeleteJob",
+            "JobService.GetJob",
+            "JobService.GetQueryResults",
+            "JobService.InsertJob",
+            "JobService.ListJobs",
+            "JobService.Query",
+            "TableService.DeleteTable",
+            "TableService.GetTable",
+            "TableService.InsertTable",
+            "TableService.ListTables",
+            "TableService.PatchTable",
+            "TableService.UpdateTable"
           ]
         }
         "storage.googleapis.com" = {
           "methods" = [
-            "google.storage.objects.create"
+            "google.storage.buckets.create",
+            "google.storage.buckets.delete",
+            "google.storage.buckets.get",
+            "google.storage.buckets.list",
+            "google.storage.buckets.update",
+            "google.storage.objects.create",
+            "google.storage.objects.delete",
+            "google.storage.objects.get",
+            "google.storage.objects.list",
+            "google.storage.objects.update"
           ]
         }
       }

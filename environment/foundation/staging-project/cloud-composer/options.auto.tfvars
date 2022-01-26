@@ -9,35 +9,35 @@ subnetwork        = "subnet-01"
 
 // OPTIONAL
 
-airflow_config_overrides = { "webserver-rbac" = "True" }
-allowed_ip_range         = [] // CHANGE IF NEEDED
+#airflow_config_overrides = { "webserver-rbac" = "True" }
+#allowed_ip_range         = [] // CHANGE IF NEEDED
 
 cloud_sql_ipv4_cidr              = "10.4.0.0/24"
-database_machine_type            = "db-n1-standard-4"
-disk_size                        = "50"
-enable_private_endpoint          = true
-env_variables                    = {}
-image_version                    = null
-labels                           = {}
-gke_machine_type                 = "n1-standard-2"
-master_ipv4_cidr                 = null
-node_count                       = 3
-oauth_scopes                     = ["https://www.googleapis.com/auth/cloud-platform"]
+#database_machine_type            = "db-n1-standard-4"
+#disk_size                        = "50"
+#enable_private_endpoint          = true
+#env_variables                    = {}
+#image_version                    = null
+#labels                           = {}
+#gke_machine_type                 = "n1-standard-2"
+#master_ipv4_cidr                 = null
+#node_count                       = 3
+#oauth_scopes                     = ["https://www.googleapis.com/auth/cloud-platform"]
 pod_ip_allocation_range_name     = "kubernetes-pods"
-pypi_packages                    = {}
-python_version                   = "3"
-region                           = "us-central1"
+#pypi_packages                    = {}
+#python_version                   = "3"
+#region                           = "us-central1"
 service_ip_allocation_range_name = "kubernetes-services"
-tags                             = []
-use_ip_aliases                   = true
+#tags                             = []
+#use_ip_aliases                   = true
 web_server_ipv4_cidr             = "10.3.0.0/29"
-web_server_machine_type          = "composer-n1-webserver-4"
-zone                             = "us-central1-a"
+#web_server_machine_type          = "composer-n1-webserver-4"
+#zone                             = "us-central1-a"
 
 // SHARED VPC SUPPORT
 
-network_project_id = ""
-subnetwork_region  = ""
+#network_project_id = ""
+#subnetwork_region  = ""
 
 #--------------------------------------
 # CLOUD COMPOSER SERVICE ACCOUNT TFVARS

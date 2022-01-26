@@ -4,10 +4,10 @@
 
 // REQUIRED
 
-variable "composer_env_name" {
-  description = "Name of Cloud Composer Environment"
-  type        = string
-}
+# variable "composer_env_name" {
+#   description = "Name of Cloud Composer Environment"
+#   type        = string
+# }
 
 variable "network" {
   type        = string
@@ -24,7 +24,7 @@ variable "subnetwork" {
 variable "airflow_config_overrides" {
   description = "Airflow configuration properties to override. Property keys contain the section and property names, separated by a hyphen, for example \"core-dags_are_paused_at_creation\"."
   type        = map(string)
-  default     = {}
+  default     = { "webserver-rbac" = "True" }
 }
 
 variable "allowed_ip_range" {
@@ -51,7 +51,7 @@ variable "composer_service_account" {
 variable "database_machine_type" {
   description = "The machine type to setup for the SQL database in the Cloud Composer environment."
   type        = string
-  default     = "db-n1-standard-2"
+  default     = "db-n1-standard-4"
 }
 
 variable "disk_size" {
@@ -63,7 +63,7 @@ variable "disk_size" {
 variable "enable_private_endpoint" {
   description = "Configure the ability to have public access to the cluster endpoint. If private endpoint is enabled, connecting to the cluster will need to be done with a VM in the same VPC and region as the Composer environment. Additional details can be found [here](https://cloud.google.com/composer/docs/concepts/private-ip#cluster)."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "env_variables" {
@@ -87,7 +87,7 @@ variable "labels" {
 variable "gke_machine_type" {
   description = "Machine type of Cloud Composer nodes."
   type        = string
-  default     = "n1-standard-8"
+  default     = "n1-standard-2"
 }
 
 variable "master_ipv4_cidr" {
@@ -126,11 +126,11 @@ variable "python_version" {
   default     = "3"
 }
 
-variable "region" {
-  description = "Region where the Cloud Composer Environment is created."
-  type        = string
-  default     = "us-central1"
-}
+# variable "region" {
+#   description = "Region where the Cloud Composer Environment is created."
+#   type        = string
+#   default     = "us-central1"
+# }
 
 variable "service_ip_allocation_range_name" {
   description = "The name of the services' secondary range used to allocate IP addresses to the cluster."
@@ -147,7 +147,7 @@ variable "tags" {
 variable "use_ip_aliases" {
   description = "Enable Alias IPs in the GKE cluster. If true, a VPC-native cluster is created."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "web_server_ipv4_cidr" {
@@ -159,7 +159,7 @@ variable "web_server_ipv4_cidr" {
 variable "web_server_machine_type" {
   description = "The machine type to setup for the Apache Airflow Web Server UI."
   type        = string
-  default     = "composer-n1-webserver-2"
+  default     = "composer-n1-webserver-4"
 }
 
 variable "zone" {

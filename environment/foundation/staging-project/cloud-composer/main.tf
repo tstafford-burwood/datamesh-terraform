@@ -13,6 +13,7 @@ locals {
   billing_account_id               = module.constants.value.billing_account_id
   srde_folder_id                   = module.constants.value.srde_folder_id
   staging_project_id               = module.constants.value.staging_project_id
+  default_region                   = module.constants.value.staging_default_region
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
@@ -39,7 +40,8 @@ module "cloud_composer" {
   source = "../../../../modules/cloud_composer"
 
   // REQUIRED
-  composer_env_name = var.composer_env_name
+  #composer_env_name = var.composer_env_name
+  composer_env_name = format("%v-%v", var.environment, "composer-private")
   network           = var.network
   project_id        = local.staging_project_id
   subnetwork        = var.subnetwork
@@ -62,13 +64,13 @@ module "cloud_composer" {
   pod_ip_allocation_range_name     = var.pod_ip_allocation_range_name
   pypi_packages                    = var.pypi_packages
   python_version                   = var.python_version
-  region                           = var.region
+  region                           = local.default_region
   service_ip_allocation_range_name = var.service_ip_allocation_range_name
   tags                             = var.tags
   use_ip_aliases                   = var.use_ip_aliases
   web_server_ipv4_cidr             = var.web_server_ipv4_cidr
   web_server_machine_type          = var.web_server_machine_type
-  zone                             = var.zone
+  zone                             = "${local.default_region}-b"
 
   // SHARED VPC SUPPORT
   network_project_id = var.network_project_id

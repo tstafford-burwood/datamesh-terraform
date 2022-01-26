@@ -8,7 +8,7 @@ module "bigquery_dataset_gcs_events" {
   // REQUIRED
 
   #dataset_id = var.gcs_events_dataset_id
-  dataset_id = format("%v-%v", var.environment, "sde_gcs_events")
+  dataset_id = format("%v_%v", var.environment, "sde_gcs_events")
   project_id = module.secure-staging-project.project_id
 
   // OPTIONAL

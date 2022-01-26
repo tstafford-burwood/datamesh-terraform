@@ -7,14 +7,22 @@ module "constants" {
 }
 
 #------------------------------------------------------------------------
-# RETRIEVE COMPOSER TF STATE
+# RETRIEVE TF STATE
 #------------------------------------------------------------------------
 
 data "terraform_remote_state" "cloud_composer" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_state_prefix, "cloud-composer")
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "cloud-composer")
+  }
+}
+
+data "terraform_remote_state" "packer_project" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "packer-project")
   }
 }
 
@@ -28,6 +36,10 @@ locals {
   automation_project_id      = module.constants.value.automation_project_id
   packer_default_region      = module.constants.value.packer_default_region
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
+
+  # Check if the packer project has been deployed, if not default to empty string
+  packer_project_id = try(data.terraform_remote_state.packer_project.outputs.project_id, "")
+
   # Check if the composer state file is present, if so format the output else an empty string
   composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
 }
@@ -777,7 +789,8 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
+    _PREFIX              = var.terraform_deployments_state_prefix
+    _PREFIX_FOUNDATION  = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
@@ -1070,26 +1083,27 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.packer_project_id
+    _PACKER_PROJECT_ID = local.packer_project_id
     _PACKER_IMAGE_TAG  = var.packer_image_tag
     _REGION            = local.packer_default_region
+    _IMAGE_ZONE        = "${local.packer_default_region}-b"
   }
 }
 
 #------------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD 
+# CLOUDBUILD TRIGGERS - bastion CIS IMAGE BUILD 
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
+resource "google_cloudbuild_trigger" "bastion_cis_image_build" {
 
   project = local.automation_project_id
-  name    = "rhel-cis-image-build-sde"
+  name    = "bastion-vm-image"
 
-  description    = "Pipeline for RHEL CIS Image Build created with Terraform"
-  tags           = var.rhel_cis_image_build_trigger_tags
-  disabled       = var.rhel_cis_image_build_trigger_disabled
-  filename       = "cloudbuild/deployments/cloudbuild-packer-rhel-cis-image.yaml"
-  included_files = ["environment/deployments/wcm-srde/packer-project/researcher-vm-image-build/rhel-startup-image-script.sh"]
+  description    = "Pipeline for bastion CIS Image Build created with Terraform"
+  tags           = var.bastion_cis_image_build_trigger_tags
+  disabled       = var.bastion_cis_image_build_trigger_disabled
+  filename       = "cloudbuild/foundation/packer-bastion-image.yaml"
+  included_files = ["cloudbuild/foundation/packer-bastion-image.yaml"]
 
   /*
   trigger_template {
@@ -1110,9 +1124,11 @@ resource "google_cloudbuild_trigger" "rhel_cis_image_build" {
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.packer_project_id
+    _PACKER_PROJECT_ID = local.packer_project_id
     _PACKER_IMAGE_TAG  = var.packer_image_tag
     _REGION            = local.packer_default_region
+    _IMAGE_FAMILY      = "ubuntu-1804-lts"
+    _IMAGE_ZONE        = "${local.packer_default_region}-b"
   }
 }
 
@@ -1154,10 +1170,6 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
     _REGION            = local.packer_default_region
   }
 }
-
-# TODO: Add Cloud Build pipelines for: 1) cloudbuild-packer-deep-learning-image.yaml; 2) cloudbuild-packer-rhel-cis-image.yaml; 3) cloudbuild-pathml-container.yaml; and 4) cloudbuild-packer-container.yaml
-
-# TODO: Create a new Cloud Build pipeline to apply this TF, which will provision all of the other pipelines.
 
 #------------------------------------------------------------------------
 # FOLDER IAM MEMBER MODULE

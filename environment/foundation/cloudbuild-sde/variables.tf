@@ -5,9 +5,8 @@
 variable "data_lake_project_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
-  default     = "data-lake-project"
+  default     = "data-lake"
 }
-
 
 variable "env_name_dev" {
   description = "Name of development environment to append to triggers"
@@ -20,7 +19,6 @@ variable "env_name_prod" {
   type        = string
   default     = "prod"
 }
-
 
 variable "folders_trigger_name" {
   description = "Name of data lake project trigger"
@@ -45,8 +43,6 @@ variable "packer_project_trigger_name" {
   type        = string
   default     = "packer-project"
 }
-
-
 
 variable "researcher_workspace_project_trigger_name" {
   description = "Name of data lake project trigger"
@@ -325,16 +321,16 @@ variable "packer_image_tag" {
 }
 
 #-----------------------------------------------------
-# CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD VARIABLES
+# CLOUDBUILD TRIGGERS - bastion CIS IMAGE BUILD VARIABLES
 #-----------------------------------------------------
 
-variable "rhel_cis_image_build_trigger_tags" {
+variable "bastion_cis_image_build_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "rhel_cis_image_build_trigger_disabled" {
+variable "bastion_cis_image_build_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false

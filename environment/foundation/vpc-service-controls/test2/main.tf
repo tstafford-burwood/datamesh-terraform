@@ -57,26 +57,13 @@ module "regular_service_perimeter_1" {
     "from" = {
       "identity_type" = ""
       "identities"    = ["serviceAccount:staging-scp-temp@automation-dan-sde.iam.gserviceaccount.com"]
-      "sources" = {
-         resources = var.data_ops_egress_project_numbers
-      }
     },
     "to" = {
-      "resources" = ["*"]
+      "resources" = var.data_ops_egress_project_numbers
       "operations" = {
         "bigquery.googleapis.com" = {
-          "methods" = [
-            "BigQueryStorage.ReadRows",
-            "TableService.ListTables"
-          ],
-          "permissions" = [
-            "bigquery.jobs.get"
-          ]
         }
         "storage.googleapis.com" = {
-          "methods" = [
-            "google.storage.objects.create"
-          ]
         }
       }
     }

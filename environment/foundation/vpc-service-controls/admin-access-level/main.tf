@@ -10,7 +10,6 @@ module "constants" {
 
 locals {
   parent_access_policy_id      = module.constants.value.parent_access_policy_id
-  srde_admin_access_level_name = module.constants.value.srde_admin_access_level_name
 }
 
 #-----------------------------
@@ -21,8 +20,7 @@ module "access_level_members" {
   source = "../../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
-  # access_level_name  = var.access_level_name
-  access_level_name  = local.srde_admin_access_level_name
+  access_level_name  = var.admin_access_level_name
   parent_policy_name = local.parent_access_policy_id
 
   // OPTIONAL - NON PREMIUM

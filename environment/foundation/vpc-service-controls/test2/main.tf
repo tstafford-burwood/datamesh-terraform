@@ -28,6 +28,7 @@ module "regular_service_perimeter_1" {
   ingress_policies = [{
     "from" = {
       "sources" = {
+        resources = var.data_ingress_project_numbers
       },
       "identity_type" = "ANY_IDENTITY"
       "identities"    = [""]

@@ -4,6 +4,12 @@ variable "bastion_project_numbers" {
   default     = []
 }
 
+variable "data_ingress_project_numbers" {
+  description = "List of data data ingress project numbers"
+  type        = list(string)
+  default     = []
+}
+
 variable "data_ops_egress_project_numbers" {
   description = "List of data ops egress project numbers"
   type        = list(string)

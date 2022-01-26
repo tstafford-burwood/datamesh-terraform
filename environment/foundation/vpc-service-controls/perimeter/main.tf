@@ -47,7 +47,7 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
       }
     }
 
-    #storage ingress
+    #data ingress
     ingress_policies {
        
       ingress_from {
@@ -64,6 +64,31 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
           }
         }
       }
+    }
+
+    # data egress
+    egress_policies {
+      egress_from {
+        identity_type = ""
+        identities    = ["serviceAccount:staging-scp-temp@automation-dan-sde.iam.gserviceaccount.com"]
+      }
+      egress_to {
+        resources = var.data_ops_egress_project_numbers
+        operations {
+          service_name = "bigquery.googleapis.com"
+
+          method_selectors {
+            method = "DatasetService.GetDataset"
+          }
+          method_selectors {
+            method = "DatasetService.InsertDataset"
+          }
+          method_selectors {
+            method = "DatasetService.ListDatasets"
+          }
+        }
+      }
+
     }
   }
 

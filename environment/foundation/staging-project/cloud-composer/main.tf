@@ -33,7 +33,7 @@ locals {
   staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
   staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
   staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
-  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets[0]
+  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }

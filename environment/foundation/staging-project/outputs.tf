@@ -43,6 +43,11 @@ output "subnets_self_links" {
   value       = module.vpc.subnets_self_links
 }
 
+output "subnets_secondary_ranges" {
+  description = "The secondary ranges associated with these subnets."
+  value       = module.vpc.subnets_secondary_ranges
+}
+
 #----------------------
 # PUB/SUB TOPIC OUTPUTS
 #----------------------

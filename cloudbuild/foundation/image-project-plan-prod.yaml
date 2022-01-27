@@ -4,16 +4,16 @@ steps:
 
 - id: "terraform init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-project'
+  dir: 'environment/foundation/image-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/packer-project'
+    '-backend-config=prefix=${_PREFIX}/image-project'
   ]
 
 - id: "terraform plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-project'
+  dir: 'environment/foundation/image-project'
   args: [
     'plan',
     '-var-file=env/${_TFVARS_FILE}.tfvars',

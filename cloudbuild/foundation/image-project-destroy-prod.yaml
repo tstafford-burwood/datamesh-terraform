@@ -2,27 +2,27 @@ steps:
 
 # PACKER PROJECT
 
-- id: "packer project - init"
+- id: "image project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-project'
+  dir: 'environment/foundation/image-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/packer-project'
+    '-backend-config=prefix=${_PREFIX}/image-project'
   ]
 
-- id: "packer project - destroy plan"
+- id: "image project - destroy plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-project'
+  dir: 'environment/foundation/image-project'
   args: [
     'plan',
     '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-destroy'
   ]
 
-- id: "packer project - destroy apply"
+- id: "image project - destroy apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/packer-project'
+  dir: 'environment/foundation/image-project'
   args: [
   'destroy',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

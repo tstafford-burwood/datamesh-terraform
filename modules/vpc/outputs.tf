@@ -4,7 +4,7 @@
 
 output "network_id" {
   description = "The ID of the VPC being created."
-  value       = module.vpc.id
+  value       = module.vpc.network_id
 }
 
 output "network_name" {

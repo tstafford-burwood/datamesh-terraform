@@ -34,6 +34,7 @@ locals {
   staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
   staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
   staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
+  pod_ip_allocation_range_name = data.terraform_remote_statestaging_project.outputs.subnets_secondary_ranges[0]["range_name"]
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
@@ -81,7 +82,8 @@ module "cloud_composer" {
   master_ipv4_cidr                 = var.master_ipv4_cidr
   node_count                       = var.node_count
   oauth_scopes                     = var.oauth_scopes
-  pod_ip_allocation_range_name     = var.pod_ip_allocation_range_name
+  #pod_ip_allocation_range_name     = var.pod_ip_allocation_range_name
+  pod_ip_allocation_range_name     = local.pod_ip_allocation_range_name
   pypi_packages                    = var.pypi_packages
   python_version                   = var.python_version
   region                           = local.default_region

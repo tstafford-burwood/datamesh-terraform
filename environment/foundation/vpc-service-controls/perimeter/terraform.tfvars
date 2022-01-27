@@ -8,10 +8,7 @@ resources = [
 scp_perimeter_projects = [
   "projects/207846422464",
   "projects/810291290728",
-]
-
-bastion_project_numbers = [
-  "projects/228514599584"
+  "projects/1057120082517"
 ]
 
 data_ingress_project_numbers = [
@@ -26,7 +23,11 @@ data_ops_egress_project_numbers = [
 
 restricted_services = [
   "bigquery.googleapis.com",
-  "storage.googleapis.com",
+  "bigtable.googleapis.com",
+  "genomics.googleapis.com",
+  "healthcare.googleapis.com",
+  "sql-component.googleapis.com",
+  "storage.googleapis.com"
 
 ]
 

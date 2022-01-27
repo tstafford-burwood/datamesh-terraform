@@ -1,5 +1,6 @@
 steps:
 
+timeout: 1800s
 
 # SDE FOLDERS APPLY
 
@@ -12,11 +13,26 @@ steps:
   '-backend-config=prefix=${_PREFIX}/folders'
   ]
 
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/folders'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/folders'
+  args: ['validate',
+    '-no-color'
+    ]
+
 - id: "folders plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/folders'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 - id: "folders apply"
@@ -24,7 +40,6 @@ steps:
   dir: 'environment/foundation/folders'
   args: [
   'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
-
-timeout: 1800s

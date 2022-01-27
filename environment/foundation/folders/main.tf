@@ -15,20 +15,12 @@ locals {
   parent_folder_id = format("%s/%s", "folders", module.constants.value.parent_folder_id)
 }
 
-variable "environment_folder_list" {
-  description = "Top level, folder environment list."
-  default = [
-    "dev"
-  ]
-}
-
 #----------------------------------------------------------------------------
 # SETUP FOLDER STRUCTURE
 #----------------------------------------------------------------------------
 
 # Environment Folder
 resource "google_folder" "environment" {
-  for_each = toset(var.environment_folder_list)
   display_name = upper(var.environment)
   parent       = local.parent_folder_id
 }

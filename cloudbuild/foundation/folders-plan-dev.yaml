@@ -1,7 +1,8 @@
+timeout: 1800s
+
 steps:
 
-
-# SRDE FOLDERS PLAN
+# SDE FOLDERS PLAN
 
 - id: "folder init"
   name: hashicorp/terraform:${_TAG}
@@ -12,11 +13,24 @@ steps:
     '-backend-config=prefix=${_PREFIX}/folders'
   ]
 
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/folders'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/folders'
+  args: ['validate',
+    '-no-color'
+    ]
+
 - id: "folder plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/folders'
   args: [
-    'plan'
+    'plan',
+    '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
-
-timeout: 1800s

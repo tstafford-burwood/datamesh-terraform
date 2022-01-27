@@ -67,20 +67,20 @@ module "cloud_composer" {
   subnetwork        = local.staging_subnetwork
 
   // OPTIONAL
-  airflow_config_overrides = var.airflow_config_overrides
-  allowed_ip_range         = var.allowed_ip_range
-  cloud_sql_ipv4_cidr      = var.cloud_sql_ipv4_cidr
-  composer_service_account = module.composer_service_account.email
-  database_machine_type    = var.database_machine_type
-  disk_size                = var.disk_size
-  enable_private_endpoint  = var.enable_private_endpoint
-  env_variables            = var.env_variables
-  image_version            = var.image_version
-  labels                   = var.labels
-  gke_machine_type         = var.gke_machine_type
-  master_ipv4_cidr         = var.master_ipv4_cidr
-  node_count               = var.node_count
-  oauth_scopes             = var.oauth_scopes
+  airflow_config_overrides         = var.airflow_config_overrides
+  allowed_ip_range                 = var.allowed_ip_range
+  cloud_sql_ipv4_cidr              = var.cloud_sql_ipv4_cidr
+  composer_service_account         = module.composer_service_account.email
+  database_machine_type            = var.database_machine_type
+  disk_size                        = var.disk_size
+  enable_private_endpoint          = var.enable_private_endpoint
+  env_variables                    = var.env_variables
+  image_version                    = var.image_version
+  labels                           = var.labels
+  gke_machine_type                 = var.gke_machine_type
+  master_ipv4_cidr                 = var.master_ipv4_cidr
+  node_count                       = var.node_count
+  oauth_scopes                     = var.oauth_scopes
   pod_ip_allocation_range_name     = var.pod_ip_allocation_range_name
   pypi_packages                    = var.pypi_packages
   python_version                   = var.python_version

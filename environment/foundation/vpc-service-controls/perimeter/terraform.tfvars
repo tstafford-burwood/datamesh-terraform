@@ -25,7 +25,6 @@ restricted_services = [
   "bigquery.googleapis.com",
   "bigtable.googleapis.com",
   "healthcare.googleapis.com",
-  "sql-component.googleapis.com",
   "storage.googleapis.com"
 
 ]

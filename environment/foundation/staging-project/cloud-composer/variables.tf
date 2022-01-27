@@ -2,6 +2,12 @@
 # CLOUD COMPOSER VARIABLES
 #-------------------------
 
+
+variable "environment" {
+  description = "Environment name."
+  type        = string
+}
+
 // REQUIRED
 
 # variable "composer_env_name" {

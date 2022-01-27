@@ -18,11 +18,11 @@ data "terraform_remote_state" "cloud_composer" {
   }
 }
 
-data "terraform_remote_state" "packer_project" {
+data "terraform_remote_state" "image_project" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "packer-project")
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "image-project")
   }
 }
 
@@ -34,11 +34,11 @@ locals {
   folder_id                  = module.constants.value.sde_folder_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   automation_project_id      = module.constants.value.automation_project_id
-  packer_default_region      = module.constants.value.packer_default_region
+  image_default_region      = module.constants.value.image_default_region
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
 
-  # Check if the packer project has been deployed, if not default to empty string
-  packer_project_id = try(data.terraform_remote_state.packer_project.outputs.project_id, "")
+  # Check if the image project has been deployed, if not default to empty string
+  image_project_id = try(data.terraform_remote_state.image_project.outputs.project_id, "")
 
   # Check if the composer state file is present, if so format the output else an empty string
   composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
@@ -80,7 +80,7 @@ resource "google_cloudbuild_trigger" "folders_plan_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
@@ -122,7 +122,7 @@ resource "google_cloudbuild_trigger" "folders_plan_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
@@ -164,7 +164,7 @@ resource "google_cloudbuild_trigger" "folders_apply_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
@@ -206,7 +206,7 @@ resource "google_cloudbuild_trigger" "folders_apply_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
@@ -214,19 +214,19 @@ resource "google_cloudbuild_trigger" "folders_apply_prod" {
 
 
 #------------------------------------------------------------------------
-# PACKER PROJECT PLAN TRIGGER - DEV
+# IMAGE PROJECT PLAN TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_plan_dev" {
+resource "google_cloudbuild_trigger" "image_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.packer_project_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.image_project_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.image_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.packer_project_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_dev)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.image_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.image_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -248,26 +248,26 @@ resource "google_cloudbuild_trigger" "packer_project_plan_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
 }
 
 #------------------------------------------------------------------------
-# PACKER PROJECT PLAN TRIGGER - PROD
+# IMAGE PROJECT PLAN TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_plan_prod" {
+resource "google_cloudbuild_trigger" "image_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.packer_project_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.image_project_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.image_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.packer_project_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_prod)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.image_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.image_project_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -289,26 +289,26 @@ resource "google_cloudbuild_trigger" "packer_project_plan_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
 }
 
 #------------------------------------------------------------------------
-# PACKER PROJECT APPLY TRIGGER - DEV
+# IMAGE PROJECT APPLY TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_apply_dev" {
+resource "google_cloudbuild_trigger" "image_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.packer_project_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.image_project_trigger_name, var.env_name_dev)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_dev)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.image_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.packer_project_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_dev)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.image_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.image_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -330,26 +330,26 @@ resource "google_cloudbuild_trigger" "packer_project_apply_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
 }
 
 #------------------------------------------------------------------------
-# PACKER PROJECT APPLY TRIGGER - PROD
+# IMAGE PROJECT APPLY TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_project_apply_prod" {
+resource "google_cloudbuild_trigger" "image_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.packer_project_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.image_project_trigger_name, var.env_name_prod)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.packer_project_trigger_name, var.env_name_prod)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.image_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.packer_project_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.packer_project_trigger_name, var.env_name_prod)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.image_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.image_project_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -371,7 +371,7 @@ resource "google_cloudbuild_trigger" "packer_project_apply_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
@@ -412,7 +412,7 @@ resource "google_cloudbuild_trigger" "staging_project_plan_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
@@ -453,7 +453,7 @@ resource "google_cloudbuild_trigger" "staging_project_plan_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
@@ -494,7 +494,7 @@ resource "google_cloudbuild_trigger" "staging_project_apply_dev" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_dev
   }
@@ -536,7 +536,7 @@ resource "google_cloudbuild_trigger" "staging_project_apply_prod" {
 
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_prod)
     _TAG         = var.terraform_container_version
     _TFVARS_FILE = var.env_name_prod
   }
@@ -920,8 +920,9 @@ resource "google_cloudbuild_trigger" "cloudbuild_sa_access_level_plan" {
   substitutions = {
     _BUCKET      = local.terraform_state_bucket
     _PREFIX      = var.terraform_foundation_state_prefix
+    _PREFIX      = format("%s/%s",var.terraform_foundation_state_prefix,var.env_name_dev)
     _TAG         = var.terraform_container_version
-    _TFVARS_FILE = ""
+    _TFVARS_FILE = var.env_name_dev
   }
 }
 
@@ -1061,8 +1062,8 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   description    = "Pipeline for Deep Learning VM Image build created with Terraform"
   tags           = var.deep_learning_vm_image_build_trigger_tags
   disabled       = var.deep_learning_vm_image_build_trigger_disabled
-  filename       = "cloudbuild/foundation/packer-deep-learning-image.yaml"
-  included_files = ["environment/foundation/packer-project/researcher-vm-image-build/deep-learning-startup-image-script.sh"]
+  filename       = "cloudbuild/foundation/image-deep-learning-image.yaml"
+  included_files = ["environment/foundation/image-project/researcher-vm-image-build/deep-learning-startup-image-script.sh"]
 
   /*
   trigger_template {
@@ -1083,10 +1084,10 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build" {
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = local.packer_project_id
-    _PACKER_IMAGE_TAG  = var.packer_image_tag
-    _REGION            = local.packer_default_region
-    _IMAGE_ZONE        = "${local.packer_default_region}-b"
+    _IMAGE_PROJECT_ID = local.image_project_id
+    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _REGION            = local.image_default_region
+    _IMAGE_ZONE        = "${local.image_default_region}-b"
   }
 }
 
@@ -1102,8 +1103,8 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build" {
   description    = "Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
   disabled       = var.bastion_cis_image_build_trigger_disabled
-  filename       = "cloudbuild/foundation/packer-bastion-image.yaml"
-  included_files = ["cloudbuild/foundation/packer-bastion-image.yaml"]
+  filename       = "cloudbuild/foundation/image-bastion-image.yaml"
+  included_files = ["cloudbuild/foundation/image-bastion-image.yaml"]
 
   /*
   trigger_template {
@@ -1124,16 +1125,16 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build" {
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = local.packer_project_id
-    _PACKER_IMAGE_TAG  = var.packer_image_tag
-    _REGION            = local.packer_default_region
+    _IMAGE_PROJECT_ID = local.image_project_id
+    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _REGION            = local.image_default_region
     _IMAGE_FAMILY      = "ubuntu-1804-lts"
-    _IMAGE_ZONE        = "${local.packer_default_region}-b"
+    _IMAGE_ZONE        = "${local.image_default_region}-b"
   }
 }
 
 #------------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE
+# CLOUDBUILD TRIGGERS - IMAGE CONTAINER IMAGE
 #------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "packer_container_image" {
@@ -1144,8 +1145,8 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
   description    = "Pipeline for Packer container image created with Terraform"
   tags           = var.packer_container_image_build_trigger_tags
   disabled       = var.packer_container_image_build_trigger_disabled
-  filename       = "cloudbuild/foundation/packer-container.yaml"
-  included_files = ["environment/foundation/packer-project/packer-container/Dockerfile"]
+  filename       = "cloudbuild/foundation/image-container.yaml"
+  included_files = ["environment/foundation/image-project/packer-container/Dockerfile"]
 
   /*
   trigger_template {
@@ -1166,8 +1167,8 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
   }
 
   substitutions = {
-    _PACKER_PROJECT_ID = var.packer_project_id
-    _REGION            = local.packer_default_region
+    _IMAGE_PROJECT_ID = var.image_project_id
+    _REGION            = local.image_default_region
   }
 }
 

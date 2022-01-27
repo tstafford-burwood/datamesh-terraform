@@ -35,7 +35,7 @@ locals {
   staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
   staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
   #pod_ip_allocation_range_name = element(lookup(data.terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, "range_name", "kubes-pods"), 0)
-  pod_ip_allocation_range_name = lookup(element(terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, 0), "range_name", "kubespods")
+  pod_ip_allocation_range_name = lookup(element(data.terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, 0), "range_name", "kubespods")
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }

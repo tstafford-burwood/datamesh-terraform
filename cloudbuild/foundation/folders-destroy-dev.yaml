@@ -1,3 +1,5 @@
+timeout: 1800s
+
 steps:
 
 # SDE FOLDERS DESTROY
@@ -16,15 +18,16 @@ steps:
   dir: 'environment/foundation/folders'
   args: [
   'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-destroy'
   ]
 
-- id: "folders destroy
+- id: "folders destroy"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/folders'
   args: [
   'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 
-timeout: 1800s

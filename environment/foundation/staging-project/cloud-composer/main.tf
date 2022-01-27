@@ -1,4 +1,21 @@
 #----------------------------------------------------------------------------
+# TERRAFORM STATE IMPORTS
+#----------------------------------------------------------------------------
+
+data "terraform_remote_state" "staging_project" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
+  }
+}
+
+# data "google_storage_project_service_account" "gcs_account" {
+#   # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
+#   project = module.secure-staging-project.project_id
+# }
+
+#----------------------------------------------------------------------------
 # IMPORT CONSTANTS
 #----------------------------------------------------------------------------
 
@@ -9,10 +26,14 @@ module "constants" {
 // SET LOCALS VALUES
 
 locals {
-  org_id                           = module.constants.value.org_id
-  billing_account_id               = module.constants.value.billing_account_id
-  srde_folder_id                   = module.constants.value.srde_folder_id
-  staging_project_id               = module.constants.value.staging_project_id
+  org_id               = module.constants.value.org_id
+  billing_account_id   = module.constants.value.billing_account_id
+  srde_folder_id       = module.constants.value.sde_folder_id
+  default_region       = module.constants.value.staging_default_region
+  staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
+  staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
+  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
@@ -39,10 +60,11 @@ module "cloud_composer" {
   source = "../../../../modules/cloud_composer"
 
   // REQUIRED
-  composer_env_name = var.composer_env_name
-  network           = var.network
+  #composer_env_name = var.composer_env_name
   project_id        = local.staging_project_id
-  subnetwork        = var.subnetwork
+  composer_env_name = format("%v-%v", var.environment, "composer-private")
+  network           = local.staging_network_name
+  subnetwork        = local.staging_subnetwork
 
   // OPTIONAL
   airflow_config_overrides         = var.airflow_config_overrides
@@ -62,17 +84,17 @@ module "cloud_composer" {
   pod_ip_allocation_range_name     = var.pod_ip_allocation_range_name
   pypi_packages                    = var.pypi_packages
   python_version                   = var.python_version
-  region                           = var.region
+  region                           = local.default_region
   service_ip_allocation_range_name = var.service_ip_allocation_range_name
   tags                             = var.tags
   use_ip_aliases                   = var.use_ip_aliases
   web_server_ipv4_cidr             = var.web_server_ipv4_cidr
   web_server_machine_type          = var.web_server_machine_type
-  zone                             = var.zone
+  zone                             = "${local.default_region}-b"
 
   // SHARED VPC SUPPORT
-  network_project_id = var.network_project_id
-  subnetwork_region  = var.subnetwork_region
+  # network_project_id = var.network_project_id
+  # subnetwork_region  = var.subnetwork_region
 
   depends_on = [module.composer_service_account]
 }
@@ -92,14 +114,14 @@ module "composer_service_account" {
   // OPTIONAL
 
   billing_account_id    = local.billing_account_id
-  description           = var.description
-  display_name          = var.display_name
-  generate_keys         = var.generate_keys
-  grant_billing_role    = var.grant_billing_role
-  grant_xpn_roles       = var.grant_xpn_roles
-  service_account_names = var.service_account_names
+  description           = format("%s Cloud Composer Service Account made with Terraform.", var.environment)
+  display_name          = "Terraform-managed service account"
+  generate_keys         = false
+  grant_billing_role    = false
+  grant_xpn_roles       = false
+  service_account_names = ["${local.staging_project_name}-composer-sa"]
   org_id                = local.org_id
-  prefix                = var.prefix
+  prefix                = var.environment
   project_roles         = var.project_roles
   depends_on            = [time_sleep.wait_120_seconds]
 }

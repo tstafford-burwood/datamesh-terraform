@@ -4,17 +4,32 @@ steps:
 
 - id: "composer init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/staging-project/cloud-composer'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
   '-backend-config=prefix=${_PREFIX}/cloud-composer'
   ]
 
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/staging-project/cloud-composer'
+  args: ['validate',
+    '-no-color'
+    ]
+
 - id: "composer plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/staging-project/cloud-composer'
   args: [
   'plan',
-  '-var-file=env/${_TFVARS_FILE}.tfvars'
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-var=terraform_foundation_state_prefix=${_PREFIX}'
   ]

@@ -18,7 +18,7 @@ data "terraform_remote_state" "folders" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = "foundation/folders"
+    prefix = "foundation/${var.environment}/folders"
   }
 }
 

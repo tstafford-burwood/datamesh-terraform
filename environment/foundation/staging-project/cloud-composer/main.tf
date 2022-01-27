@@ -10,10 +10,10 @@ data "terraform_remote_state" "staging_project" {
   }
 }
 
-data "google_storage_project_service_account" "gcs_account" {
-  # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
-  project = module.secure-staging-project.project_id
-}
+# data "google_storage_project_service_account" "gcs_account" {
+#   # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
+#   project = module.secure-staging-project.project_id
+# }
 
 #----------------------------------------------------------------------------
 # IMPORT CONSTANTS

@@ -8,6 +8,12 @@ variable "environment" {
   type        = string
 }
 
+variable "terraform_foundation_state_prefix" {
+  description = "The name of the foundation prefix to create in the state bucket. Set in during the pipeline."
+  type        = string
+  #default     = "foundation"
+}
+
 // REQUIRED
 
 # variable "composer_env_name" {

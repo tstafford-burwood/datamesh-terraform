@@ -31,11 +31,11 @@ module "constants" {
 }
 
 locals {
-  org_id                = module.constants.value.org_id
-  billing_account_id    = module.constants.value.billing_account_id
-  folder_id             = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  org_id               = module.constants.value.org_id
+  billing_account_id   = module.constants.value.billing_account_id
+  folder_id            = data.terraform_remote_state.folders.outputs.foundation_folder_id
   image_default_region = module.constants.value.image_default_region
-  function              = "image-factory"
+  function             = "image-factory"
 }
 
 #----------------------------------------------------------------------------

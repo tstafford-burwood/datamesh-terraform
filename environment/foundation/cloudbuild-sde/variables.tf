@@ -6,13 +6,13 @@
 variable "access_level_admin_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
-  default     = "admin_access_level"
+  default     = "admin-access-level"
 }
 
 variable "access_level_cloudbuild_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
-  default     = "cloudbuild_access_level"
+  default     = "cloudbuild-access-level"
 }
 
 variable "data_lake_project_trigger_name" {

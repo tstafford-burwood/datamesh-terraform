@@ -39,7 +39,7 @@ resource "google_folder" "deployments_sde_parent" {
 
 # Researcher Workspaces
 resource "google_folder" "researcher-workspaces" {
-  for_each = toset(var.researcher_workspace_names)
+  for_each     = toset(var.researcher_workspace_names)
   display_name = "${each.value}${local.suffix}"
   parent       = google_folder.deployments_sde_parent.name
 }

@@ -6,7 +6,7 @@ data "terraform_remote_state" "folders" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.environment, "folders")
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "folders")
   }
 }
 

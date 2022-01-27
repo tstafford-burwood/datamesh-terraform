@@ -1,3 +1,8 @@
+variable "environment" {
+  description = "Environment name."
+  type        = string
+}
+
 variable "researcher_workspace_names" {
   description = "list of researcher workspace names"
   type        = list(string)

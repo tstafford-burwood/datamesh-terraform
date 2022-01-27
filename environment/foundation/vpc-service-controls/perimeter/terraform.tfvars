@@ -4,6 +4,10 @@ resources = [
   "810291290728",
 ]
 
+access_levels = [
+  "accessPolicies/548853993361/accessLevels/cloudbuild"
+]
+
 scp_perimeter_projects = [
   "projects/207846422464",
   "projects/810291290728",

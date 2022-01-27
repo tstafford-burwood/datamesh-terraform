@@ -1,4 +1,10 @@
 
+variable "access_levels" {
+  description = "List of access levels allowed in service perimeter"
+  type        = list(string)
+  default     = []
+}
+
 variable "data_ingress_project_numbers" {
   description = "List of data data ingress project numbers"
   type        = list(string)

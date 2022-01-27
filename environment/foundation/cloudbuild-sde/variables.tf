@@ -2,6 +2,19 @@
 # CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
 #-----------------------------------------
 
+
+variable "access_level_admin_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "admin_access_level"
+}
+
+variable "access_level_cloudbuild_trigger_name" {
+  description = "Name of data lake project trigger"
+  type        = string
+  default     = "cloudbuild_access_level"
+}
+
 variable "data_lake_project_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
@@ -232,13 +245,13 @@ variable "composer_apply_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL PLAN VARIABLES
 #-----------------------------------------------------------------------------
 
-variable "cloudbuild_sa_access_level_plan_trigger_tags" {
+variable "access_level_cloudbuild_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "cloudbuild_sa_access_level_plan_trigger_disabled" {
+variable "access_level_cloudbuild_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -248,13 +261,13 @@ variable "cloudbuild_sa_access_level_plan_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL APPLY VARIABLES
 #------------------------------------------------------------------------------
 
-variable "cloudbuild_sa_access_level_apply_trigger_tags" {
+variable "access_level_cloudbuild_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "cloudbuild_sa_access_level_apply_trigger_disabled" {
+variable "access_level_cloudbuild_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -264,13 +277,13 @@ variable "cloudbuild_sa_access_level_apply_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN VARIABLES
 #-------------------------------------------------------------
 
-variable "admin_access_level_plan_trigger_tags" {
+variable "access_level_admin_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "admin_access_level_plan_trigger_disabled" {
+variable "access_level_admin_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -280,13 +293,13 @@ variable "admin_access_level_plan_trigger_disabled" {
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY VARIABLES
 #--------------------------------------------------------------
 
-variable "admin_access_level_apply_trigger_tags" {
+variable "access_level_admin_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "admin_access_level_apply_trigger_disabled" {
+variable "access_level_admin_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false

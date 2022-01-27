@@ -4,7 +4,7 @@ steps:
 
 - id: "composer init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/staging-project/cloud-composer'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
@@ -13,7 +13,7 @@ steps:
 
 - id: "composer plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/staging-project/cloud-composer'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

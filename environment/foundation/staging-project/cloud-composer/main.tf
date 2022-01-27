@@ -26,15 +26,16 @@ module "constants" {
 // SET LOCALS VALUES
 
 locals {
-  org_id                       = module.constants.value.org_id
-  billing_account_id           = module.constants.value.billing_account_id
-  srde_folder_id               = module.constants.value.sde_folder_id
-  default_region               = module.constants.value.staging_default_region
-  staging_project_id           = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  staging_project_name         = data.terraform_remote_state.staging_project.outputs.staging_project_name
-  staging_network_name         = data.terraform_remote_state.staging_project.outputs.network_name
-  staging_subnetwork           = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
-  pod_ip_allocation_range_name = element(lookup(data.terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, "range_name", "kubes-pods"), 0)
+  org_id               = module.constants.value.org_id
+  billing_account_id   = module.constants.value.billing_account_id
+  srde_folder_id       = module.constants.value.sde_folder_id
+  default_region       = module.constants.value.staging_default_region
+  staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
+  staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
+  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
+  #pod_ip_allocation_range_name = element(lookup(data.terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, "range_name", "kubes-pods"), 0)
+  pod_ip_allocation_range_name = lookup(element(terraform_remote_state.staging_project.outputs.subnets_secondary_ranges, 0), "range_name", "kubespods")
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }

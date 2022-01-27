@@ -52,7 +52,7 @@ locals {
 resource "google_cloudbuild_trigger" "folders_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.folders_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.folders_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.folders_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags

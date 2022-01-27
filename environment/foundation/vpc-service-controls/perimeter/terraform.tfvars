@@ -1,5 +1,4 @@
 
-
 resources = [
   "207846422464",
   "810291290728",
@@ -24,8 +23,12 @@ data_ops_egress_project_numbers = [
 restricted_services = [
   "bigquery.googleapis.com",
   "bigtable.googleapis.com",
+  "cloudbuild.googleapis.com",
   "healthcare.googleapis.com",
   "storage.googleapis.com"
 
 ]
 
+vpc_accessible_services = [
+  "storage.googleapis.com"
+]

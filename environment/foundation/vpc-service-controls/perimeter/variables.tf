@@ -34,3 +34,9 @@ variable "scp_perimeter_projects" {
   type        = list(string)
   default     = []
 }
+
+variable "vpc_accessible_services" {
+  description = "Accessible services from VPC Perimeter"
+  type        = list(string)
+  default     = []
+}

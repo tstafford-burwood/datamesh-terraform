@@ -27,13 +27,13 @@ resource "google_folder" "environment" {
 
 # Foundation
 resource "google_folder" "foundation_sde" {
-  display_name = "Foundation SDE"
+  display_name = format("%s-%s", "Foundation SDE", var.environment)
   parent       = google_folder.environment.name
 }
 
 # Deployments
 resource "google_folder" "deployments_sde_parent" {
-  display_name = "Deployments SDE"
+  display_name = format("%s-%s", "Deployments SDE", var.environment)
   parent       = google_folder.environment.name
 }
 

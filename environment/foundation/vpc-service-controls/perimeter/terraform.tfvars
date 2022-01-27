@@ -24,7 +24,6 @@ data_ops_egress_project_numbers = [
 restricted_services = [
   "bigquery.googleapis.com",
   "bigtable.googleapis.com",
-  "genomics.googleapis.com",
   "healthcare.googleapis.com",
   "sql-component.googleapis.com",
   "storage.googleapis.com"

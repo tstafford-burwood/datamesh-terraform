@@ -34,15 +34,15 @@ locals {
   org_id                = module.constants.value.org_id
   billing_account_id    = module.constants.value.billing_account_id
   folder_id             = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  packer_default_region = module.constants.value.packer_default_region
+  image_default_region = module.constants.value.image_default_region
   function              = "image-factory"
 }
 
 #----------------------------------------------------------------------------
-# PACKER PROJECT MODULE
+# IMAGE PROJECT MODULE
 #----------------------------------------------------------------------------
 
-module "packer-project" {
+module "image-project" {
   source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
@@ -73,9 +73,9 @@ module "packer-project" {
 
 # resource "google_project_iam_member" "compute_sa" {
 
-#   project = module.packer-project.project_id
+#   project = module.image-project.project_id
 #   role    = "roles/editor"
-#   member  = "serviceAccount:${module.packer-project.project_number}-compute@developer.gserviceaccount.com"
+#   member  = "serviceAccount:${module.image-project.project_number}-compute@developer.gserviceaccount.com"
 #   depends_on = [
 #     google_project_service.enable_packer_project_apis
 #   ]
@@ -88,8 +88,8 @@ module "packer-project" {
 
 resource "google_storage_bucket" "cloudbuild_gcs_bucket" {
 
-  project                     = module.packer-project.project_id
-  name                        = "${var.environment}-${module.packer-project.project_id}_cloudbuild"
+  project                     = module.image-project.project_id
+  name                        = "${var.environment}-${module.image-project.project_id}_cloudbuild"
   force_destroy               = var.bucket_force_destroy
   labels                      = var.storage_bucket_labels
   location                    = var.bucket_location
@@ -103,7 +103,7 @@ resource "google_storage_bucket" "cloudbuild_gcs_bucket" {
 
 # resource "google_project_service" "enable_packer_project_apis" {
 
-#   project                    = module.packer-project.project_id
+#   project                    = module.image-project.project_id
 #   service                    = "compute.googleapis.com"
 #   disable_dependent_services = false
 #   disable_on_destroy         = false
@@ -114,10 +114,10 @@ resource "google_storage_bucket" "cloudbuild_gcs_bucket" {
 # PACKER PROJECT VPC MODULE
 #----------------------------------------------------------------------------
 
-module "packer_vpc" {
+module "image_vpc" {
   source = "../../../modules/vpc"
 
-  project_id                             = module.packer-project.project_id
+  project_id                             = module.image-project.project_id
   vpc_network_name                       = format("%v-%v-vpc", var.environment, local.function)
   auto_create_subnetworks                = false
   delete_default_internet_gateway_routes = false
@@ -134,15 +134,15 @@ module "packer_vpc" {
 module "firewall" {
   source       = "terraform-google-modules/network/google//modules/firewall-rules"
   version      = "~> 4.1.0"
-  project_id   = module.packer-project.project_id
-  network_name = module.packer_vpc.network_name
+  project_id   = module.image-project.project_id
+  network_name = module.image_vpc.network_name
   rules = [{
     name                    = "allow-ssh-ingress"
     description             = null
     direction               = "INGRESS"
     priority                = 1000
     ranges                  = ["0.0.0.0/0"]
-    source_tags             = ["packer"]
+    source_tags             = ["image"]
     source_service_accounts = null
     target_tags             = null
     target_service_accounts = null
@@ -166,10 +166,10 @@ module "firewall" {
 module "packer_container_artifact_registry_repository" {
   source = "../../../modules/artifact_registry"
 
-  artifact_repository_project_id  = module.packer-project.project_id
+  artifact_repository_project_id  = module.image-project.project_id
   artifact_repository_name        = var.packer_container_artifact_repository_name
   artifact_repository_format      = var.packer_container_artifact_repository_format
-  artifact_repository_location    = local.packer_default_region
+  artifact_repository_location    = local.image_default_region
   artifact_repository_description = var.packer_container_artifact_repository_description
   artifact_repository_labels      = var.packer_container_artifact_repository_labels
 }
@@ -182,10 +182,10 @@ module "packer_container_artifact_registry_repository" {
 module "terraform_validator_container_artifact_registry_repository" {
   source = "../../../modules/artifact_registry"
 
-  artifact_repository_project_id  = module.packer-project.project_id
+  artifact_repository_project_id  = module.image-project.project_id
   artifact_repository_name        = var.terraform_validator_container_artifact_repository_name
   artifact_repository_format      = var.terraform_validator_container_artifact_repository_format
-  artifact_repository_location    = local.packer_default_region
+  artifact_repository_location    = local.image_default_region
   artifact_repository_description = var.terraform_validator_container_artifact_repository_description
   artifact_repository_labels      = var.terraform_validator_container_artifact_repository_labels
 }
@@ -205,7 +205,7 @@ module "terraform_validator_container_artifact_registry_repository" {
 #   constraint  = "constraints/iam.disableServiceAccountCreation"
 #   policy_type = "boolean"
 #   policy_for  = "project"
-#   project_id  = module.packer-project.project_id
+#   project_id  = module.image-project.project_id
 #   enforce     = var.enforce_packer_project_disable_sa_creation
 # }
 
@@ -218,7 +218,7 @@ module "terraform_validator_container_artifact_registry_repository" {
 module "project_iam_marketplace_role" {
   source = "../../../modules/iam/project_iam"
 
-  project_id            = module.packer-project.project_id
+  project_id            = module.image-project.project_id
   project_member        = var.deploymentmanager_editor
-  project_iam_role_list = var.packer_project_iam_roles
+  project_iam_role_list = var.image_project_iam_roles
 }

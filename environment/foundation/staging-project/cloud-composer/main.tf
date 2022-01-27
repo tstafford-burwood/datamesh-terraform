@@ -26,14 +26,14 @@ module "constants" {
 // SET LOCALS VALUES
 
 locals {
-  org_id                           = module.constants.value.org_id
-  billing_account_id               = module.constants.value.billing_account_id
-  srde_folder_id                   = module.constants.value.sde_folder_id
-  default_region                   = module.constants.value.staging_default_region
-  staging_project_id               = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  staging_project_name             = data.terraform_remote_state.staging_project.outputs.staging_project_name
-  staging_network_name             = data.terraform_remote_state.staging_project.outputs.network_name
-  staging_subnetwork                = data.terraform_remote_state.staging_project.outputs.subnets[0]
+  org_id               = module.constants.value.org_id
+  billing_account_id   = module.constants.value.billing_account_id
+  srde_folder_id       = module.constants.value.sde_folder_id
+  default_region       = module.constants.value.staging_default_region
+  staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
+  staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
+  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets[0]
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
@@ -63,7 +63,7 @@ module "cloud_composer" {
   #composer_env_name = var.composer_env_name
   project_id        = local.staging_project_id
   composer_env_name = format("%v-%v", var.environment, "composer-private")
-  network           = local.staging_network_name  
+  network           = local.staging_network_name
   subnetwork        = local.staging_subnetwork
 
   // OPTIONAL

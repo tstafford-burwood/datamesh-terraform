@@ -261,13 +261,13 @@ variable "project_roles" {
 variable "iam_role_list" {
   description = "The IAM role(s) to assign to the member at the defined folder."
   type        = list(string)
-  default     = [
-  "roles/composer.worker",
-  "roles/iam.serviceAccountUser",
-  "roles/bigquery.dataOwner",
-  "roles/dlp.jobsEditor",
-  "roles/storage.objectAdmin"
-]
+  default = [
+    "roles/composer.worker",
+    "roles/iam.serviceAccountUser",
+    "roles/bigquery.dataOwner",
+    "roles/dlp.jobsEditor",
+    "roles/storage.objectAdmin"
+  ]
 }
 
 

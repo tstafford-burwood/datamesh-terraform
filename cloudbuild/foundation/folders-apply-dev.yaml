@@ -1,6 +1,6 @@
-steps:
-
 timeout: 1800s
+
+steps:
 
 # SDE FOLDERS APPLY
 

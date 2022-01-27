@@ -1,6 +1,5 @@
 steps:
 
-
 # SDE FOLDERS DESTROY
 
 - id: "folders init"

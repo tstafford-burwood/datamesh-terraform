@@ -8,7 +8,7 @@ resources = [
 scp_perimeter_projects = [
   "projects/207846422464",
   "projects/810291290728",
-  "projects/1057120082517"
+  "projects/794345683869"
 ]
 
 data_ingress_project_numbers = [

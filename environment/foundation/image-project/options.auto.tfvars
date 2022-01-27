@@ -49,7 +49,7 @@ uniform_bucket_level_access = true
 
 subnets = [
   {
-    subnet_name               = "packer-us-central1-subnet" // CHANGE NAME, OTHER FILES MUST BE UPDATED
+    subnet_name               = "image-us-central1-subnet" // CHANGE NAME, OTHER FILES MUST BE UPDATED
     subnet_ip                 = "10.0.0.0/24"
     subnet_region             = "us-central1"
     subnet_flow_logs          = "true"

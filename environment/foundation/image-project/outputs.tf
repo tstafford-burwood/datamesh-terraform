@@ -4,24 +4,24 @@
 
 output "enabled_apis" {
   description = "Enabled APIs in the project"
-  value       = module.packer-project.enabled_apis
+  value       = module.image-project.enabled_apis
 }
 
 output "project_id" {
-  value = module.packer-project.project_id
+  value = module.image-project.project_id
 }
 
 output "project_name" {
-  value = module.packer-project.project_name
+  value = module.image-project.project_name
 }
 
 output "project_number" {
-  value = module.packer-project.project_number
+  value = module.image-project.project_number
 }
 
 output "service_account_email" {
   description = "The email of the default service account"
-  value       = module.packer-project.service_account_email
+  value       = module.image-project.service_account_email
 }
 
 #----------------------------------------------------------------------------
@@ -30,27 +30,27 @@ output "service_account_email" {
 
 output "network_name" {
   description = "The name of the VPC being created"
-  value       = module.packer_vpc.network_name
+  value       = module.image_vpc.network_name
 }
 
 output "network_self_link" {
   description = "The URI of the VPC being created"
-  value       = module.packer_vpc.network_self_link
+  value       = module.image_vpc.network_self_link
 }
 
 output "subnets_names" {
   description = "The names of the subnets being created"
-  value       = module.packer_vpc.subnets_names
+  value       = module.image_vpc.subnets_names
 }
 
 output "subnets_self_links" {
   description = "The self-links of subnets being created"
-  value       = module.packer_vpc.subnets_self_links
+  value       = module.image_vpc.subnets_self_links
 }
 
 output "route_names" {
   description = "The routes associated with this VPC."
-  value       = module.packer_vpc.route_names
+  value       = module.image_vpc.route_names
 }
 
 #----------------------------------------------------------------------------

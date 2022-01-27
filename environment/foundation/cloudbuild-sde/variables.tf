@@ -38,10 +38,10 @@ variable "github_repo_name" {
   default     = ""
 }
 
-variable "packer_project_trigger_name" {
-  description = "Name of packer project trigger"
+variable "image_project_trigger_name" {
+  description = "Name of image project trigger"
   type        = string
-  default     = "packer-project"
+  default     = "image-project"
 }
 
 variable "researcher_workspace_project_trigger_name" {
@@ -308,14 +308,14 @@ variable "deep_learning_vm_image_build_trigger_disabled" {
   default     = false
 }
 
-variable "packer_project_id" {
-  description = "The ID of the Packer project after it is provisioned."
+variable "image_project_id" {
+  description = "The ID of the Image project after it is provisioned."
   type        = string
   default     = ""
 }
 
-variable "packer_image_tag" {
-  description = "The container image tag of Packer that was provisioned."
+variable "image_image_tag" {
+  description = "The container image tag of Image that was provisioned."
   type        = string
   default     = ""
 }
@@ -337,7 +337,7 @@ variable "bastion_cis_image_build_trigger_disabled" {
 }
 
 #-------------------------------------------------------
-# CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE VARIABLES
+# CLOUDBUILD TRIGGERS - IMAGE CONTAINER IMAGE VARIABLES
 #-------------------------------------------------------
 
 variable "packer_container_image_build_trigger_tags" {

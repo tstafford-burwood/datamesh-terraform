@@ -1,0 +1,30 @@
+steps:
+
+
+# CLOUDBUILD ACCESS LEVELS
+
+- id: "access levels cloudbuild terraform init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/access-level-cloudbuild'
+  ]
+
+- id: "access levels cloudbuild terraform plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
+  args: [
+  'plan'
+  ]
+
+- id: "access levels cloudbuild apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
+  args: [
+  'apply',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

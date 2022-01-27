@@ -14,8 +14,8 @@ module "constants" {
 // SET LOCAL VALUES
 
 locals {
-  parent_access_policy_id      = module.constants.value.parent_access_policy_id
-  cloudbuild_service_account   = module.constants.value.cloudbuild_service_account
+  parent_access_policy_id    = module.constants.value.parent_access_policy_id
+  cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   #cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
 }
 
@@ -28,8 +28,18 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
     restricted_services = ["storage.googleapis.com"]
 
     vpc_accessible_services {
-     enable_restriction = true
-     allowed_services = ["storage.googleapis.com"]
+      enable_restriction = true
+      allowed_services   = ["storage.googleapis.com"]
+    }
+
+    ingress_policies {
+      ingress_from {
+        identity_type = ""
+        identities    = [""]
+        sources {
+          resource = "projects/547140210872"
+        }
+      }
     }
   }
 
@@ -49,5 +59,5 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
 
 resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
   perimeter_name = google_access_context_manager_service_perimeter.service-perimeter-resource.name
-  resource = "projects/207846422464"
+  resource       = "projects/207846422464"
 }

@@ -2,8 +2,8 @@ output "folders_apply_trigger_dev" {
     value = google_cloudbuild_trigger.folders_apply_dev.trigger_id
 }
 
-output "packer_project_apply_trigger_dev" {
-    value = google_cloudbuild_trigger.packer_project_apply_dev.trigger_id
+output "image_project_apply_trigger_dev" {
+    value = google_cloudbuild_trigger.image_project_apply_dev.trigger_id
 }
 
 output "staging_project_apply_trigger_dev" {

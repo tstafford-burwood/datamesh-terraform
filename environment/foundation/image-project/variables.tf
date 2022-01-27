@@ -308,7 +308,7 @@ variable "deploymentmanager_editor" {
   type        = string
 }
 
-variable "packer_project_iam_roles" {
+variable "image_project_iam_roles" {
   description = "The IAM role(s) to assign to the member at the defined project."
   type        = list(string)
   default = [

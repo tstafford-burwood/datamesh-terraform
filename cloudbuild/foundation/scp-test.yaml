@@ -5,7 +5,7 @@ steps:
 
 - id: "scp init"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/vpc-service-controls/test'
+  dir: 'environment/foundation/vpc-service-controls/test2'
   args: [
   'init',
   '-backend-config=bucket=terraform-state-sde-1292',
@@ -14,14 +14,14 @@ steps:
 
 - id: "scp plan"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/vpc-service-controls/test'
+  dir: 'environment/foundation/vpc-service-controls/test2'
   args: [
   'plan'
   ]
 
 - id: "scp apply"
   name: hashicorp/terraform:0.13.5
-  dir: 'environment/foundation/vpc-service-controls/test'
+  dir: 'environment/foundation/vpc-service-controls/test2'
   args: [
   'apply',
   '-auto-approve'

@@ -90,7 +90,6 @@ module "vpc" {
 module "pub_sub_topic" {
   source = "../../../modules/pub_sub/pub_sub_topic"
 
-  #topic_name                  = var.topic_name
   topic_name                  = format("%v-%v-topic", var.environment, local.function)
   project_id                  = module.secure-staging-project.project_id
   allowed_persistence_regions = [local.default_region]
@@ -193,17 +192,11 @@ resource "google_project_iam_member" "staging_project_composer_user_role" {
 # IAM MEMBER MODULE - DLP API SERVICE AGENT
 #----------------------------------------------------------------------------
 
-# module "folder_iam_member" {
-#   source = "../../../modules/iam/folder_iam"
-
-#   folder_id     = local.folder_id
-#   iam_role_list = var.dlp_service_agent_iam_role_list
-#   folder_member = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
-# }
-
 resource "google_project_iam_member" "dlp_service_account_iam" {
+
   for_each = toset(var.dlp_service_agent_iam_role_list)
-  project  = module.secure-staging-project.project_id
-  role     = each.value
-  member   = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
+
+  project = module.secure-staging-project.project_id
+  role    = each.value
+  member  = "serviceAccount:service-${module.secure-staging-project.project_number}@dlp-api.iam.gserviceaccount.com"
 }

@@ -7,15 +7,13 @@ module "bigquery_dataset_gcs_events" {
 
   // REQUIRED
 
-  #dataset_id = var.gcs_events_dataset_id
   dataset_id = format("%v_%v", var.environment, "sde_gcs_events")
   project_id = module.secure-staging-project.project_id
 
   // OPTIONAL
 
-  bigquery_access = var.gcs_events_bigquery_access
-  dataset_labels  = { "bq-dataset" : format("%v-%v-project", var.environment, local.function) }
-  #dataset_name                 = var.gcs_events_dataset_name
+  bigquery_access              = var.gcs_events_bigquery_access
+  dataset_labels               = { "bq-dataset" : format("%v-%v-project", var.environment, local.function) }
   dataset_name                 = format("%s_sde_gcs_events", var.environment)
   default_table_expiration_ms  = null
   delete_contents_on_destroy   = true
@@ -42,5 +40,4 @@ module "bigquery_dataset_gcs_events" {
       "srde" : "gcs_events"
     }
   }]
-
 }

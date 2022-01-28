@@ -42,6 +42,7 @@ locals {
   staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
   staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
   staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
+  policy_for           = "project"
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
 }
@@ -145,4 +146,32 @@ module "folder_iam_member" {
   iam_role_list = var.iam_role_list
   folder_member = module.composer_service_account.iam_email
   depends_on    = [module.composer_service_account]
+}
+
+
+
+#----------------------------------------------
+# DISABLE SRDE FOLDER SERVICE ACCOUNT CREATION check
+#----------------------------------------------
+module "srde_project_disable_sa_creation" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 3.0.2"
+  constraint  = "constraints/iam.disableServiceAccountCreation"
+  policy_type = "boolean"
+  policy_for  = local.policy_for
+  project_id  = local.staging_project_id
+  enforce     = var.enforce
+}
+
+#--------------------------------------
+# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
+#--------------------------------------
+module "srde_project_vm_os_login" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 3.0.2"
+  constraint  = "constraints/compute.requireOsLogin"
+  policy_type = "boolean"
+  policy_for  = local.policy_for
+  project_id  = local.staging_project_id
+  enforce     = var.enforce
 }

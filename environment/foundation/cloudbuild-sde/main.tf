@@ -57,8 +57,8 @@ locals {
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
 
   # Check if the image project has been deployed, if not default to empty string
-  image_project_id_dev  = try(data.terraform_remote_state.image_project.outputs.project_id, "")
-  image_project_id_prod = try(data.terraform_remote_state.image_project.outputs.project_id, "")
+  image_project_id_dev  = try(data.terraform_remote_state.image_project_dev.outputs.project_id, "")
+  image_project_id_prod = try(data.terraform_remote_state.image_project_prod.outputs.project_id, "")
 
   # Check if the composer state file is present, if so format the output else an empty string
   composer_gcs_bucket_dev  = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer_dev.outputs.gcs_bucket, "gs://"), "/dags"), "")

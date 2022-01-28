@@ -68,6 +68,12 @@ variable "data_ops_project_trigger_name" {
   default     = "data-ops-project"
 }
 
+variable "service_perimeter_trigger_name" {
+  description = "Name of service perimeter trigger"
+  type        = string
+  default     = "service-perimeter"
+}
+
 variable "terraform_state_bucket" {
   description = "The name of the state bucket where Terraform state will be stored."
   type        = string

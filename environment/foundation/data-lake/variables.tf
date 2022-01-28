@@ -130,7 +130,18 @@ variable "terraform_foundation_state_prefix" {
 variable "datalake_project_member" {
   description = "The member to apply the IAM role to. Possible options use the following syntax: user:{emailid}, serviceAccount:{emailid}, group:{emailid}, domain:{domain}."
   type        = string
-  default     = ""
+  #default     = ""
+}
+
+variable "member_prefix" {
+  description = "Prefix member or group or serviceaccount."
+  type        = string
+  default     = "group"
+
+  validation {
+    condition     = contains(["user", "serviceAccount", "group"])
+    error_message = "Valie values for var: member_prefix are (user, seserviceAccount, group)."
+  }
 }
 
 #-----------------------------------------------

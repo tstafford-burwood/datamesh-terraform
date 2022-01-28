@@ -112,12 +112,10 @@ module "datalake_iam_custom_role" {
 #-----------------------------------
 
 resource "google_project_iam_member" "datalake_project" {
-
   for_each = local.custom_iam_role_name
-
-  project = module.data-lake-project.project_id
-  role    = each.value
-  member  = var.datalake_project_member
+  project  = module.data-lake-project.project_id
+  role     = each.value
+  member   = "${var.member_prefix}:${var.datalake_project_member}"
 }
 
 # ----------------------------------------------------

@@ -24,9 +24,6 @@ steps:
     '-no-color'
     ]
 
-# First plan/apply provision only the workspace and bastion projects
-
-# Second plan/apply disables two org policies at the project level and then provision everything else
 
 - id: "researcher projects - plan org policies disabled"
   name: hashicorp/terraform:${_TAG}
@@ -51,7 +48,6 @@ steps:
     '-var=enforce_bastion_project_disable_sa_creation=false'
   ]
 
-
 - id: "researcher projects - apply org policies enabled"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
@@ -66,6 +62,7 @@ steps:
 
 
 # Create output files to use when performing variable substitution in the Composer DAGs for this workspace
+# Changing the workspace paths below will effect the Composer DAG Python scripts
 
 - id: "output file creation - researcher projects"
   name: hashicorp/terraform:${_TAG}

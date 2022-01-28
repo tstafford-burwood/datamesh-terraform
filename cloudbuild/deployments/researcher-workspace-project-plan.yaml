@@ -7,7 +7,7 @@ steps:
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/researcher-projects'
+  '-backend-config=prefix=${_PREFIX}/researcher-projects/${_TFVARS_FILE}'
   ]
 
 - id: Terraform Format

@@ -453,7 +453,7 @@ workspace_deeplearning_vm_network_ip = "10.0.0.2"
 
 // SERVICE ACCOUNT
 
-workspace_deeplearning_vm_service_account_scopes = ["compute-rw"]
+workspace_deeplearning_vm_service_account_scopes = ["cloud-platform"]
 
 // SHIELDED INSTANCE CONFIG
 
@@ -706,7 +706,7 @@ bastion_vm_network_ip = "10.10.0.2"
 
 // SERVICE ACCOUNT
 
-bastion_vm_service_account_scopes = []
+bastion_vm_service_account_scopes = ["cloud-platform"]
 
 // SHIELDED INSTANCE CONFIG
 

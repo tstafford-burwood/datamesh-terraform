@@ -737,10 +737,10 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
 # RESEARCHER WORKSPACE PROJECT PLAN TRIGGER
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
+resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde", var.researcher_workspace_project_trigger_name)
+  name    = format("%s-plan-%s", var.researcher_workspace_project_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
   tags           = var.plan_trigger_tags
@@ -768,10 +768,10 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
 
@@ -780,7 +780,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_prod" {
   project = local.automation_project_id
   name    = format("%s-plan-%s", var.researcher_workspace_project_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE-%s %s created with Terraform", var.researcher_workspace_project_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan.yaml", var.researcher_workspace_project_trigger_name)
@@ -817,10 +817,10 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_prod" {
 # RESEARCHER WORKSPACE PROJECT APPLY TRIGGER
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
+resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde", var.researcher_workspace_project_trigger_name)
+  name    = format("%s-apply-%s", var.researcher_workspace_project_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
   tags           = var.plan_trigger_tags
@@ -859,7 +859,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde", var.researcher_workspace_project_trigger_name)
+  name    = format("%s-apply-%s", var.researcher_workspace_project_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
   tags           = var.plan_trigger_tags

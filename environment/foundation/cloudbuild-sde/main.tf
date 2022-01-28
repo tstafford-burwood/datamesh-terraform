@@ -768,7 +768,45 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = var.terraform_foundation_state_prefix
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-%s", var.researcher_workspace_project_trigger_name, var.env_name_prod)
+
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.researcher_workspace_project_trigger_name, var.env_name_prod)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.researcher_workspace_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
@@ -810,8 +848,47 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = var.terraform_deployments_state_prefix
-    _PREFIX_FOUNDATION   = var.terraform_foundation_state_prefix
+    _PREFIX              = format("%s/%s", var.terraform_deployments_state_prefix, var.env_name_dev)
+    _PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _TAG                 = var.terraform_container_version
+    _TFVARS_FILE         = ""
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+  }
+}
+
+resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-apply-sde", var.researcher_workspace_project_trigger_name)
+
+  description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
+  tags           = var.plan_trigger_tags
+  disabled       = var.plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply.yaml", var.researcher_workspace_project_trigger_name)
+  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = format("%s/%s", var.terraform_deployments_state_prefix, var.env_name_prod)
+    _PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket

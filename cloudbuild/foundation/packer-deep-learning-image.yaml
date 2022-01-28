@@ -2,10 +2,27 @@
 # https://cloud.google.com/deep-learning-vm/docs/images
 
 timeout: 1800s
-
 steps:
 
-steps:
+- id: "image project state pull - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/image-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/image-project'
+  ]
+
+- id: output file creation - image project
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/image-project'
+  entrypoint: /bin/sh
+  args: [
+    '-c',
+    #'terraform output subnets_names[0] > /workspace/subnets_names.txt',
+    'terraform output project_id > /workspace/project_id.txt'
+  ]
+
 - name: ubuntu 
   id: 'create_image_spec'
   entrypoint: "bash"
@@ -19,7 +36,7 @@ steps:
           "type": "googlecompute",
           "instance_name": "packer-builder-vm-$SHORT_SHA",
           "disk_size": "50",
-          "project_id": "${_PACKER_PROJECT_ID}",
+          "project_id": "$(cat /workspace/project_id.txt)",
           "source_image_project_id": "deeplearning-platform-release",
           "source_image": "pytorch-1-9-xla-notebooks-v20210905-ubuntu-1804",
           "image_name": "deeplearning-image-$SHORT_SHA",
@@ -27,7 +44,7 @@ steps:
           "image_description": "created-with-packer",
           "communicator": "ssh",
           "ssh_username": "ubuntu",
-          "subnetwork" : "projects/${_PACKER_PROJECT_ID}/regions/${_REGION}/subnetworks/packer-us-central1-subnet",
+          "subnetwork" : "projects/$(cat /workspace/project_id.txt)/regions/${_REGION}/subnetworks/image-us-central1-subnet",
           "zone": "${_IMAGE_ZONE}",
           "tags": ["packer"],
           "use_os_login":true,
@@ -46,9 +63,9 @@ steps:
       END
 
 - id: 'VM Build and Image Creation'
-  name: '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:${_PACKER_IMAGE_TAG}'
+  name: '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:${_IMAGE_TAG}'
   args:
     - build
     - -var
-    - project_id=${_PACKER_PROJECT_ID}
+    - project_id=${_IMAGE_PROJECT_ID}
     - packer.json

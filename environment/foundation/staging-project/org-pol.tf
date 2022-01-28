@@ -114,47 +114,36 @@ module "srde_project_vm_allowed_external_ip" {
 }
 
 #---------------------------------------
-# SRDE FOLDER DOMAIN RESTRICTED SHARING
+# SDE DOMAIN RESTRICTED SHARING
 #---------------------------------------
-# module "srde_project_domain_restricted_sharing" {
-#   source            = "terraform-google-modules/org-policy/google"
-#   version           = "~> 3.0.2"
-#   constraint        = "constraints/iam.allowedPolicyMemberDomains"
-#   policy_type       = "list"
-#   policy_for        = local.policy_for
-#   project_id        = local.project_id
-#   enforce           = var.enforce
-#   allow             = var.srde_project_domain_restricted_sharing_allow
-#   allow_list_length = length(var.srde_project_domain_restricted_sharing_allow)
-# }
 
-# resource "google_project_organization_policy" "domain_restricted_shared" {
-#   # Loop through any values
-#   for_each   = var.srde_project_domain_restricted_sharing_allow != [] ? toset(var.srde_project_domain_restricted_sharing_allow) : []
-#   project    = local.project_id
-#   constraint = "iam.allowedPolicyMemberDomains"
-#   list_policy {
-#     allow {
-#       values = [each.value]
-#     }
-#   }
-# }
+resource "google_project_organization_policy" "domain_restricted_shared" {
+  # Loop through any values
+  for_each   = var.srde_project_domain_restricted_sharing_allow != [] ? toset(var.srde_project_domain_restricted_sharing_allow) : []
+  project    = local.project_id
+  constraint = "iam.allowedPolicyMemberDomains"
+  list_policy {
+    allow {
+      values = [each.value]
+    }
+  }
+}
 
 #-------------------------------------------
 # SRDE FOLDER RESOURCE LOCATION RESTRICTION
 #-------------------------------------------
 
-module "srde_project_resource_location_restriction" {
-  source            = "terraform-google-modules/org-policy/google"
-  version           = "~> 3.0.2"
-  constraint        = "constraints/gcp.resourceLocations"
-  policy_type       = "list"
-  policy_for        = local.policy_for
-  project_id        = local.project_id
-  enforce           = var.enforce
-  allow             = var.srde_project_resource_location_restriction_allow
-  allow_list_length = length(var.srde_project_resource_location_restriction_allow)
-}
+# module "srde_project_resource_location_restriction" {
+#   source            = "terraform-google-modules/org-policy/google"
+#   version           = "~> 3.0.2"
+#   constraint        = "constraints/gcp.resourceLocations"
+#   policy_type       = "list"
+#   policy_for        = local.policy_for
+#   project_id        = local.project_id
+#   enforce           = var.enforce
+#   allow             = var.srde_project_resource_location_restriction_allow
+#   allow_list_length = length(var.srde_project_resource_location_restriction_allow)
+# }
 
 # ------------------------------------------
 # VARIABLES

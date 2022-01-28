@@ -443,7 +443,7 @@ workspace_deeplearning_vm_metadata = {
 }
 
 workspace_deeplearning_vm_machine_type     = "n2-standard-4"
-workspace_deeplearning_vm_name             = "deep-learning-vm1"
+workspace_deeplearning_vm_name             = "deep-learning-vm"
 workspace_deeplearning_vm_tags             = ["deep-learning-vm"]
 workspace_deeplearning_vm_auto_delete_disk = true
 

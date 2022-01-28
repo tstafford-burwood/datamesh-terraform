@@ -1,0 +1,2 @@
+google-cloud-dlp==1.0.0
+google-cloud-core

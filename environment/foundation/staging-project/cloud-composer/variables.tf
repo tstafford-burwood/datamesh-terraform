@@ -398,3 +398,13 @@ variable "iam_role_list" {
 #   type        = bool
 #   default     = true
 # }
+
+# ----------------------------------------------------
+# ORG POLICY VARAIBLES
+# ----------------------------------------------------
+
+variable "enforce" {
+  description = "Whether this policy is enforced."
+  type        = bool
+  default     = true
+}

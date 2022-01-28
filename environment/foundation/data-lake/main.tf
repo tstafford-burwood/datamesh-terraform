@@ -89,18 +89,22 @@ module "data-lake-project" {
 
 #-----------------------------------------
 # DATA LAKE PROJECT IAM CUSTOM ROLE MODULE
+# Create a unique custom role
 #-----------------------------------------
+
+resource "random_id" "custom_role_unique_id" {
+  byte_length = 4
+}
 
 module "datalake_iam_custom_role" {
   source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.data-lake-project.project_id
   project_iam_custom_role_description = format("Custom SDE Role for %s Data Lake Storage Operations.", upper(var.environment))
-  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations"
-  project_iam_custom_role_title       = format("[%s Custom] SRDE Data Lake Storage Operations Role", var.environment)
+  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations-${radom_id.custom_role_unique_id.id}"
+  project_iam_custom_role_title       = format("[%s Custom %s] SRDE Data Lake Storage Operations Role", var.environment, radom_id.custom_role_unique_id.id)
   project_iam_custom_role_permissions = ["storage.buckets.list", "storage.objects.list", "storage.objects.get"] # TODO: Update as needed
   project_iam_custom_role_stage       = "GA"
-  #depends_on                          = [module.data-lake-project]
 }
 
 #-----------------------------------
@@ -114,7 +118,6 @@ resource "google_project_iam_member" "datalake_project" {
   project = module.data-lake-project.project_id
   role    = each.value
   member  = var.datalake_project_member
-  #depends_on = [module.datalake_iam_custom_role]
 }
 
 # ----------------------------------------------------

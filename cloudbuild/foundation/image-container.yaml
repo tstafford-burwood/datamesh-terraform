@@ -17,7 +17,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     dir: 'environment/foundation/packer-project/packer-container'
-    args: ['build', '-t', '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:latest',
+    args: ['build', '-t', '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:latest',
           '-t', '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:${_PACKER_VERSION}',
            '--build-arg', 'PACKER_VERSION=${_PACKER_VERSION}',
            '--build-arg', 'PACKER_VERSION_SHA256SUM=${_PACKER_VERSION_SHA256SUM}',

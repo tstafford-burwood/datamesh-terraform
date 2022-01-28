@@ -62,10 +62,16 @@ variable "researcher_workspace_project_trigger_name" {
   default     = "researcher-workspace-project"
 }
 
-variable "staging_project_trigger_name" {
-  description = "Name of staging project trigger"
+variable "data_ops_project_trigger_name" {
+  description = "Name of data ops project trigger"
   type        = string
-  default     = "staging-project"
+  default     = "data-ops-project"
+}
+
+variable "service_perimeter_trigger_name" {
+  description = "Name of service perimeter trigger"
+  type        = string
+  default     = "service-perimeter"
 }
 
 variable "terraform_state_bucket" {
@@ -257,7 +263,7 @@ variable "access_level_cloudbuild_plan_trigger_disabled" {
 }
 
 #------------------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - CLOUDBUILD SERVICE ACCOUNT ACCESS LEVEL APPLY VARIABLES
+# ACCESS LEVEL CLOUDBUILD APPLY VARIABLES
 #------------------------------------------------------------------------------
 
 variable "access_level_cloudbuild_apply_trigger_tags" {
@@ -273,7 +279,7 @@ variable "access_level_cloudbuild_apply_trigger_disabled" {
 }
 
 #-------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL PLAN VARIABLES
+# ACCESS LEVEL ADMIN PLAN VARIABLES
 #-------------------------------------------------------------
 
 variable "access_level_admin_plan_trigger_tags" {
@@ -289,7 +295,7 @@ variable "access_level_admin_plan_trigger_disabled" {
 }
 
 #--------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY VARIABLES
+# ACCESS LEVEL ADMIN APPLY VARIABLES
 #--------------------------------------------------------------
 
 variable "access_level_admin_apply_trigger_tags" {
@@ -299,6 +305,38 @@ variable "access_level_admin_apply_trigger_tags" {
 }
 
 variable "access_level_admin_apply_trigger_disabled" {
+  description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
+  type        = bool
+  default     = false
+}
+
+#--------------------------------------------------------------
+# SERVICE PERIMETER PLAN VARIABLES
+#--------------------------------------------------------------
+
+variable "service_perimeter_plan_trigger_tags" {
+  description = "Tags for annotation of a BuildTrigger"
+  type        = list(string)
+  default     = []
+}
+
+variable "service_perimeter_plan_trigger_disabled" {
+  description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
+  type        = bool
+  default     = false
+}
+
+#--------------------------------------------------------------
+# SERVICE PERIMETER APPLY VARIABLES
+#--------------------------------------------------------------
+
+variable "service_perimeter_apply_trigger_tags" {
+  description = "Tags for annotation of a BuildTrigger"
+  type        = list(string)
+  default     = []
+}
+
+variable "service_perimeter_apply_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -326,8 +364,8 @@ variable "image_project_id" {
   default     = ""
 }
 
-variable "image_image_tag" {
-  description = "The container image tag of Image that was provisioned."
+variable "packer_image_tag" {
+  description = "The container packer tag of Image that was provisioned."
   type        = string
   default     = ""
 }

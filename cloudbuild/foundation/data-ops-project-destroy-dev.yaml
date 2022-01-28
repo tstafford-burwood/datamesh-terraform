@@ -4,28 +4,28 @@ steps:
 
 # SECURE DATA STAGING PROJECT
 
-- id: "staging projects - init"
+- id: "data-ops projects - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/staging-project'
+  '-backend-config=prefix=${_PREFIX}/data-ops-project'
   ]
 
   
-- id: "staging project - destroy plan"
+- id: "data-ops project - destroy plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-destroy'
   ]
 
-- id: "staging project - destroy all"
+- id: "data-ops project - destroy all"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'destroy',
   '-var-file=env/${_TFVARS_FILE}.tfvars',

@@ -1692,7 +1692,7 @@ resource "google_cloudbuild_trigger" "packer_container_image_dev" {
   }
 
   substitutions = {
-    _IMAGE_PROJECT_ID = var.image_project_id
+    _IMAGE_PROJECT_ID = var.image_project_id_dev
     _REGION           = local.image_default_region_dev
   }
 }
@@ -1727,7 +1727,7 @@ resource "google_cloudbuild_trigger" "packer_container_image_prod" {
   }
 
   substitutions = {
-    _IMAGE_PROJECT_ID = var.image_project_id
+    _IMAGE_PROJECT_ID = var.image_project_id_prod
     _REGION           = local.image_default_region_prod
   }
 }

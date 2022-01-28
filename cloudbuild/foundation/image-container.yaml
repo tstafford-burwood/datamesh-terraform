@@ -28,6 +28,6 @@ substitutions:
   _PACKER_VERSION_SHA256SUM: 1a8719f0797e9e45abd98d2eb38099b09e5566ec212453052d2f21facc990c73
 
 images:
-  - '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:latest'
-  - '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:${_PACKER_VERSION}'
+  - '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:latest'
+  - '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:${_PACKER_VERSION}'
 tags: ['cloud-builders-community']

@@ -18,7 +18,7 @@ module "gcs_bucket_staging_ingress" {
   creators               = var.staging_ingress_bucket_creators
   viewers                = var.staging_ingress_bucket_viewers
   bucket_versioning = {
-    local.function = true
+    "${local.function}" = true
   }
   bucket_encryption_key_names = {}
   bucket_folders              = {}

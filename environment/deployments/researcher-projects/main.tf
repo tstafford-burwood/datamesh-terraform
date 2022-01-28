@@ -43,7 +43,7 @@ locals {
   staging_project_id        = data.terraform_remote_state.staging_project.outputs.staging_project_id
   staging_project_number    = data.terraform_remote_state.staging_project.outputs.staging_project_number
   staging_default_region    = data.terraform_remote_state.staging_project.outputs.subnets_regions[0]
-  imaging_project_id        = data.terraform_remote_state.imaging-project.outputs.project_id
+  imaging_project_id        = data.terraform_remote_state.imaging_project.outputs.project_id
   org_id                    = module.constants.value.org_id
   billing_account_id        = module.constants.value.billing_account_id
   srde_folder_id            = data.terraform_remote_state.folders.outputs.ids[var.researcher_workspace_name]

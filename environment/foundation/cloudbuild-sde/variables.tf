@@ -364,8 +364,8 @@ variable "image_project_id" {
   default     = ""
 }
 
-variable "image_image_tag" {
-  description = "The container image tag of Image that was provisioned."
+variable "packer_image_tag" {
+  description = "The container packer tag of Image that was provisioned."
   type        = string
   default     = ""
 }

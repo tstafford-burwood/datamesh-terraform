@@ -71,13 +71,6 @@ deep_learning_vm_image_build_trigger_tags     = []
 deep_learning_vm_image_build_trigger_disabled = false
 packer_image_tag                              = "1.7.3"
 
-#--------------------------------------------------
-# CLOUDBUILD TRIGGERS - RHEL CIS IMAGE BUILD TFVARS
-#--------------------------------------------------
-
-rhel_cis_image_build_trigger_tags     = []
-rhel_cis_image_build_trigger_disabled = false
-
 #----------------------------------------------------
 # CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE TFVARS
 #----------------------------------------------------

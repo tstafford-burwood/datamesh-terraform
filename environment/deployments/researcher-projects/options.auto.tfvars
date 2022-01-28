@@ -696,7 +696,7 @@ bastion_vm_metadata = {
 }
 
 bastion_vm_machine_type     = "n2-standard-4"
-bastion_vm_name             = "bastion-vm-cis-rhel1"
+bastion_vm_name             = "bastion-vm"
 bastion_vm_tags             = ["allow-iap", "bastion-vm"] // NETWORK TAG APPLIED TO VM FOR FIREWALL FILTERING AND USED WITH IAP FW RULE
 bastion_vm_auto_delete_disk = true
 

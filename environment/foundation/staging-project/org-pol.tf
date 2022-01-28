@@ -4,7 +4,7 @@ locals {
 }
 
 #-----------------------------------------------------------------------
-# SRDE FOLDER DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS check
+# DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS check
 #-----------------------------------------------------------------------
 module "srde_project_disable_automatic_iam_for_default_sa" {
   source      = "terraform-google-modules/org-policy/google"
@@ -17,7 +17,7 @@ module "srde_project_disable_automatic_iam_for_default_sa" {
 }
 
 #----------------------------------------------
-# DISABLE SRDE FOLDER SERVICE ACCOUNT CREATION check
+# DISABLE SERVICE ACCOUNT CREATION check
 #----------------------------------------------
 module "srde_project_disable_sa_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -30,7 +30,7 @@ module "srde_project_disable_sa_creation" {
 }
 
 #--------------------------------------------------
-# DISABLE SRDE FOLDER SERVICE ACCOUNT KEY CREATION check
+# DISABLE SERVICE ACCOUNT KEY CREATION check
 #--------------------------------------------------
 module "srde_project_disable_sa_key_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -43,7 +43,7 @@ module "srde_project_disable_sa_key_creation" {
 }
 
 #----------------------------------------------
-# DISABLE SDE FOLDER VM NESTED VIRTUALIZATION check
+# DISABLE VM NESTED VIRTUALIZATION check
 #----------------------------------------------
 module "srde_project_disable_vm_nested_virtualization" {
   source      = "terraform-google-modules/org-policy/google"
@@ -56,7 +56,7 @@ module "srde_project_disable_vm_nested_virtualization" {
 }
 
 #------------------------------------------------------------
-# SDE FOLDER ENFORCE PUBLIC ACCESS PREVENTION ON GCS BUCKETS
+# ENFORCE PUBLIC ACCESS PREVENTION ON GCS BUCKETS
 #------------------------------------------------------------
 
 module "srde_project_enforce_public_access_prevention" {
@@ -70,7 +70,7 @@ module "srde_project_enforce_public_access_prevention" {
 }
 
 #------------------------------------------------
-# SRDE FOLDER ENFORCE UNIFORM BUCKET LEVEL ACCESS check
+# ENFORCE UNIFORM BUCKET LEVEL ACCESS check
 #------------------------------------------------
 
 module "srde_project_enforce_uniform_bucket_level_access" {
@@ -84,7 +84,7 @@ module "srde_project_enforce_uniform_bucket_level_access" {
 }
 
 #--------------------------------------
-# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
+# REQUIRE OS LOGIN FOR VMs check
 #--------------------------------------
 module "srde_project_vm_os_login" {
   source      = "terraform-google-modules/org-policy/google"
@@ -97,7 +97,7 @@ module "srde_project_vm_os_login" {
 }
 
 #--------------------------------------
-# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
+# REQUIRE SHIELDED VMs
 #--------------------------------------
 module "srde_project_shielded_vms" {
   source      = "terraform-google-modules/org-policy/google"
@@ -112,7 +112,7 @@ module "srde_project_shielded_vms" {
 # ------------------------------------------------------------------------------------
 
 #--------------------------------------------------------
-# SDE FOLDER LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP check
+# LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP check
 #--------------------------------------------------------
 module "srde_project_vm_allowed_external_ip" {
   source            = "terraform-google-modules/org-policy/google"
@@ -143,7 +143,7 @@ resource "google_project_organization_policy" "domain_restricted_shared" {
 }
 
 #-------------------------------------------
-# SRDE FOLDER RESOURCE LOCATION RESTRICTION
+# RESOURCE LOCATION RESTRICTION
 #-------------------------------------------
 
 module "srde_project_resource_location_restriction" {

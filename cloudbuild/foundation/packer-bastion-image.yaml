@@ -73,9 +73,9 @@ steps:
       END
 
 - id: 'VM Build and Image Creation'
-  name: '${_REGION}-docker.pkg.dev/${_PACKER_PROJECT_ID}/packer/packer:${_PACKER_IMAGE_TAG}'
+  name: '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:${_IMAGE_TAG}'
   args:
     - build
     - -var
-    - project_id=${_PACKER_PROJECT_ID}
+    - project_id=${_IMAGE_PROJECT_ID}
     - packer.json

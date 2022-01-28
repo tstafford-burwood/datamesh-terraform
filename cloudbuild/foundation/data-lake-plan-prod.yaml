@@ -11,10 +11,25 @@ steps:
     '-backend-config=prefix=${_PREFIX}/data-lake'
   ]
 
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/data-lake'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/foundation/data-lake'
+  args: ['validate',
+    '-no-color'
+    ]
+
 - id: "datalake project - plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/data-lake'
   args: [
     'plan',
+    '-var=terraform_foundation_state_prefix=${_PREFIX}',
     '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]

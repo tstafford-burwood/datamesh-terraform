@@ -16,6 +16,7 @@ steps:
   dir: 'environment/foundation/data-lake'
   args: [
     'plan',
+    '-var=terraform_foundation_state_prefix=${_PREFIX}',
     '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
@@ -24,6 +25,7 @@ steps:
   dir: 'environment/foundation/data-lake'
   args: [
     'destroy',
+    '-var=terraform_foundation_state_prefix=${_PREFIX}',
     '-var-file=env/${_TFVARS_FILE}.tfvars',
     '-auto-approve'
   ]

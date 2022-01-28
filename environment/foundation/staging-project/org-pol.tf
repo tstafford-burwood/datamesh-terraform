@@ -96,6 +96,19 @@ module "srde_project_vm_os_login" {
   enforce     = var.enforce
 }
 
+#--------------------------------------
+# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
+#--------------------------------------
+module "srde_project_shielded_vms" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 3.0.2"
+  constraint  = "constraints/compute.requireShieldedVm"
+  policy_type = "boolean"
+  policy_for  = local.policy_for
+  project_id  = local.project_id
+  enforce     = var.enforce
+}
+
 # ------------------------------------------------------------------------------------
 
 #--------------------------------------------------------

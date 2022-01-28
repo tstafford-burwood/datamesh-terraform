@@ -140,7 +140,6 @@ module "srde_project_resource_location_restriction" {
   policy_type = "list"
   policy_for  = "project"
   project_id  = local.project_id
-  enforce     = true
   #allow             = var.srde_project_resource_location_restriction_allow
   allow             = ["in:us-locations"]
   allow_list_length = length(var.srde_project_resource_location_restriction_allow)

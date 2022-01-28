@@ -53,6 +53,11 @@ output "route_names" {
   value       = module.image_vpc.route_names
 }
 
+output "subnets_regions" {
+  description = "The region where the subnets will be created."
+  value       = module.image_vpc.subnets_regions
+}
+
 #----------------------------------------------------------------------------
 # PACKER CONTAINER ARTIFACT REGISTRY REPOSITORY OUTPUTS
 #----------------------------------------------------------------------------

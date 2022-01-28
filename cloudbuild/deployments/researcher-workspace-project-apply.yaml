@@ -79,7 +79,7 @@ steps:
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/staging-project'
+    '-backend-config=prefix=${_PREFIX_FOUNDATION}/staging-project'
   ]
 
 - id: "output file creation - staging project"

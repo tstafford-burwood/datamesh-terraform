@@ -802,7 +802,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "composer_plan_trigger" {
+resource "google_cloudbuild_trigger" "composer_plan_dev_trigger" {
 
   project = local.automation_project_id
   name    = "composer-plan-dev"
@@ -845,7 +845,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "composer_apply_trigger" {
+resource "google_cloudbuild_trigger" "composer_apply_dev_trigger" {
 
   project = local.automation_project_id
   name    = "composer-apply-dev"
@@ -888,7 +888,7 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "composer_plan_trigger" {
+resource "google_cloudbuild_trigger" "composer_plan_prod_trigger" {
 
   project = local.automation_project_id
   name    = "composer-plan-prod"
@@ -931,7 +931,7 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "composer_apply_trigger" {
+resource "google_cloudbuild_trigger" "composer_apply_prod_trigger" {
 
   project = local.automation_project_id
   name    = "composer-apply-prod"

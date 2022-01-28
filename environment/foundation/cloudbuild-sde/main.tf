@@ -33,7 +33,7 @@ data "terraform_remote_state" "image_project_prod" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev, "image-project")
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod, "image-project")
   }
 }
 

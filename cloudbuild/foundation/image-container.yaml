@@ -12,11 +12,11 @@ timeout: 1800s
 
 steps:
   - name: 'gcr.io/cloud-builders/wget'
-    dir: 'environment/foundation/packer-project/packer-container'
+    dir: 'environment/foundation/image-project/packer-container'
     args: ["https://releases.hashicorp.com/packer/${_PACKER_VERSION}/packer_${_PACKER_VERSION}_linux_amd64.zip"]
 
   - name: 'gcr.io/cloud-builders/docker'
-    dir: 'environment/foundation/packer-project/packer-container'
+    dir: 'environment/foundation/image-project/packer-container'
     args: ['build', '-t', '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:latest',
           '-t', '${_REGION}-docker.pkg.dev/${_IMAGE_PROJECT_ID}/packer/packer:${_PACKER_VERSION}',
            '--build-arg', 'PACKER_VERSION=${_PACKER_VERSION}',

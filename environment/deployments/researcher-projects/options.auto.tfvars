@@ -763,7 +763,7 @@ egress_default_service_account = "disable"
 
 // REQUIRED TFVARS
 
-payload_format     = "JSON_API_V1"
+payload_format = "JSON_API_V1"
 #pub_sub_topic_name = "secure-staging-project-topic"
 
 // OPTIONAL TFVARS

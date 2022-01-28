@@ -136,10 +136,10 @@ variable "datalake_project_member" {
 variable "member_prefix" {
   description = "Prefix user or group or serviceAccount."
   type        = string
-  #default     = "group"
+  default     = "group"
 
   validation {
-    condition     = contains(["user", "serviceAccount", "group"])
+    condition     = contains(["user", "serviceAccount", "group"], var.member_prefix)
     error_message = "Valid values for var: member_prefix are (user, seserviceAccount, group)."
   }
 }

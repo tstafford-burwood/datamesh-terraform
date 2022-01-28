@@ -1,40 +1,43 @@
-#---------------------------------------------------
-# DATA LAKE PROJECT TFVARS
-#--------------------------------------------------- 
+datalake_project_member = ""
 
-data_lake_project_name = "aaron3-"
 
-#---------------------------------------------------
-# DATA LAKE IAM MEMBER TFVARS
-# Recommendation is to use a Google Group
-#---------------------------------------------------
+# #---------------------------------------------------
+# # DATA LAKE PROJECT TFVARS
+# #--------------------------------------------------- 
 
-datalake_project_member = "group:srde-datagroup@prorelativity.com" # Update w/ new group name
+# data_lake_project_name = "aaron3-"
 
-#---------------------------------------------------
-# STAGING PROJECT - INGRESS BUCKET TFVARS
-#---------------------------------------------------
+# #---------------------------------------------------
+# # DATA LAKE IAM MEMBER TFVARS
+# # Recommendation is to use a Google Group
+# #---------------------------------------------------
 
-staging_ingress_bucket_admins = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
+# datalake_project_member = "group:srde-datagroup@prorelativity.com" # Update w/ new group name
 
-#---------------------------------------------------
-# VPC SC REGULAR PERIMETER - DATA LAKE TFVARS
-#---------------------------------------------------
+# #---------------------------------------------------
+# # STAGING PROJECT - INGRESS BUCKET TFVARS
+# #---------------------------------------------------
 
-datalake_regular_service_perimeter_name = "aaron3_data_lake_perimeter"
+# staging_ingress_bucket_admins = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
 
-#---------------------------------------------------
-# VPC SC ACCESS LEVELS TFVARS
-# Currently only users and service accounts are supported
-# Creates the Access Context Manager and adds accounts
-#---------------------------------------------------
+# #---------------------------------------------------
+# # VPC SC REGULAR PERIMETER - DATA LAKE TFVARS
+# #---------------------------------------------------
 
-datalake_access_level_name    = "aaron3_datalake_access_level"
-datalake_access_level_members = ["user:datasteward@prorelativity.com", "user:astrong@prorelativity.com"]
+# datalake_regular_service_perimeter_name = "aaron3_data_lake_perimeter"
 
-#---------------------------------------------------
-# VPC SC DATALAKE TO STAGING BRIDGE PERIMETER TFVARS
-# Builds a bridge between two VPC Service Perimeters
-#---------------------------------------------------
+# #---------------------------------------------------
+# # VPC SC ACCESS LEVELS TFVARS
+# # Currently only users and service accounts are supported
+# # Creates the Access Context Manager and adds accounts
+# #---------------------------------------------------
 
-datalake_bridge_service_perimeter_name = "aaron3_datalake_to_staging_project_bridge"
+# datalake_access_level_name    = "aaron3_datalake_access_level"
+# datalake_access_level_members = ["user:datasteward@prorelativity.com", "user:astrong@prorelativity.com"]
+
+# #---------------------------------------------------
+# # VPC SC DATALAKE TO STAGING BRIDGE PERIMETER TFVARS
+# # Builds a bridge between two VPC Service Perimeters
+# #---------------------------------------------------
+
+# datalake_bridge_service_perimeter_name = "aaron3_datalake_to_staging_project_bridge"

@@ -6,7 +6,7 @@ data "terraform_remote_state" "folders" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = "foundation/folders"
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "folders")
   }
 }
 
@@ -16,7 +16,15 @@ data "terraform_remote_state" "staging_project" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = "foundation/staging-project"
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
+  }
+}
+
+data "terraform_remote_state" "cloud-composer" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "cloud-composer")
   }
 }
 
@@ -31,20 +39,23 @@ module "constants" {
 // SET CONSTANT MODULE VALUES AS LOCALS
 
 locals {
-  org_id             = module.constants.value.org_id
-  billing_account_id = module.constants.value.billing_account_id
-  folder_id                        = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  parent_access_policy_id          = module.constants.value.parent_access_policy_id
-  cloudbuild_access_level_name     = module.constants.value.cloudbuild_access_level_name
-  cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
-  srde_admin_access_level_name     = module.constants.value.srde_admin_access_level_name
-  vpc_sc_all_restricted_apis       = module.constants.value.vpc_sc_all_restricted_apis
-  staging_project_id               = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  staging_project_number           = data.terraform_remote_state.staging_project.outputs.staging_project_number
+  org_id                 = module.constants.value.org_id
+  billing_account_id     = module.constants.value.billing_account_id
+  folder_id              = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  staging_project_id     = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_number = data.terraform_remote_state.staging_project.outputs.staging_project_number
   custom_iam_role_name = {
     custom_iam_role_name = module.datalake_iam_custom_role.name
   }
-  data_lake_default_region = module.constants.value.data_lake_default_region
+  function                   = "data-lake"
+  primary_contact            = "example1"
+  cloudbuild_service_account = module.constants.value.cloudbuild_service_account
+  #data_lake_default_region = module.constants.value.data_lake_default_region
+  #parent_access_policy_id          = module.constants.value.parent_access_policy_id
+  #cloudbuild_access_level_name     = module.constants.value.cloudbuild_access_level_name
+  #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
+  #srde_admin_access_level_name     = module.constants.value.srde_admin_access_level_name
+  #vpc_sc_all_restricted_apis       = module.constants.value.vpc_sc_all_restricted_apis
 }
 
 #------------------
@@ -55,23 +66,25 @@ module "data-lake-project" {
   source = "../../../modules/project_factory"
 
   // REQUIRED FIELDS
-  project_name       = format("%v-%v", var.data_lake_project_name, "data-lake")
+  project_name       = format("%v-%v", var.environment, local.function)
   org_id             = local.org_id
   billing_account_id = local.billing_account_id
   folder_id          = local.folder_id
 
   // OPTIONAL FIELDS
-  activate_apis               = var.data_lake_activate_apis
-  auto_create_network         = var.data_lake_auto_create_network
-  create_project_sa           = var.data_lake_create_project_sa
-  default_service_account     = var.data_lake_default_service_account
-  disable_dependent_services  = var.data_lake_disable_dependent_services
-  disable_services_on_destroy = var.data_lake_disable_services_on_destroy
-  group_name                  = var.data_lake_group_name
-  group_role                  = var.data_lake_group_role
-  project_labels              = var.data_lake_project_labels
-  lien                        = var.data_lake_lien
-  random_project_id           = var.data_lake_random_project_id
+  activate_apis               = ["compute.googleapis.com", "serviceusage.googleapis.com", "bigquery.googleapis.com"]
+  auto_create_network         = false
+  create_project_sa           = false
+  default_service_account     = "delete"
+  disable_dependent_services  = true
+  disable_services_on_destroy = true
+  lien                        = false
+  random_project_id           = true
+  project_labels = {
+    environment      = var.environment
+    application_name = local.function
+    primary_contact  = local.primary_contact
+  }
 }
 
 #-----------------------------------------
@@ -82,12 +95,12 @@ module "datalake_iam_custom_role" {
   source = "../../../modules/iam/project_iam_custom_role"
 
   project_iam_custom_role_project_id  = module.data-lake-project.project_id
-  project_iam_custom_role_description = var.datalake_iam_custom_role_description
-  project_iam_custom_role_id          = var.datalake_iam_custom_role_id
-  project_iam_custom_role_title       = var.datalake_iam_custom_role_title
-  project_iam_custom_role_permissions = var.datalake_iam_custom_role_permissions
-  project_iam_custom_role_stage       = var.datalake_iam_custom_role_stage
-  depends_on                          = [module.data-lake-project]
+  project_iam_custom_role_description = format("Custom SDE Role for %s Data Lake Storage Operations.", upper(var.environment))
+  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations"
+  project_iam_custom_role_title       = format("[%s Custom] SRDE Data Lake Storage Operations Role", var.environment)
+  project_iam_custom_role_permissions = ["storage.buckets.list", "storage.objects.list", "storage.objects.get"] # TODO: Update as needed
+  project_iam_custom_role_stage       = "GA"
+  #depends_on                          = [module.data-lake-project]
 }
 
 #-----------------------------------
@@ -98,10 +111,10 @@ resource "google_project_iam_member" "datalake_project" {
 
   for_each = local.custom_iam_role_name
 
-  project    = module.data-lake-project.project_id
-  role       = each.value
-  member     = var.datalake_project_member
-  depends_on = [module.datalake_iam_custom_role]
+  project = module.data-lake-project.project_id
+  role    = each.value
+  member  = var.datalake_project_member
+  #depends_on = [module.datalake_iam_custom_role]
 }
 
 # ----------------------------------------------------

@@ -4,7 +4,7 @@ locals {
 }
 
 #-----------------------------------------------------------------------
-# DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS check
+# DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS
 #-----------------------------------------------------------------------
 module "srde_project_disable_automatic_iam_for_default_sa" {
   source      = "terraform-google-modules/org-policy/google"
@@ -17,7 +17,7 @@ module "srde_project_disable_automatic_iam_for_default_sa" {
 }
 
 #----------------------------------------------
-# DISABLE SERVICE ACCOUNT CREATION check
+# DISABLE SERVICE ACCOUNT CREATION
 #----------------------------------------------
 module "srde_project_disable_sa_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -30,7 +30,7 @@ module "srde_project_disable_sa_creation" {
 }
 
 #--------------------------------------------------
-# DISABLE SERVICE ACCOUNT KEY CREATION check
+# DISABLE SERVICE ACCOUNT KEY CREATION
 #--------------------------------------------------
 module "srde_project_disable_sa_key_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -43,7 +43,7 @@ module "srde_project_disable_sa_key_creation" {
 }
 
 #----------------------------------------------
-# DISABLE VM NESTED VIRTUALIZATION check
+# DISABLE VM NESTED VIRTUALIZATION
 #----------------------------------------------
 module "srde_project_disable_vm_nested_virtualization" {
   source      = "terraform-google-modules/org-policy/google"
@@ -70,7 +70,7 @@ module "srde_project_enforce_public_access_prevention" {
 }
 
 #------------------------------------------------
-# ENFORCE UNIFORM BUCKET LEVEL ACCESS check
+# ENFORCE UNIFORM BUCKET LEVEL ACCESS
 #------------------------------------------------
 
 module "srde_project_enforce_uniform_bucket_level_access" {
@@ -84,7 +84,7 @@ module "srde_project_enforce_uniform_bucket_level_access" {
 }
 
 #--------------------------------------
-# REQUIRE OS LOGIN FOR VMs check
+# REQUIRE OS LOGIN FOR VMs
 #--------------------------------------
 module "srde_project_vm_os_login" {
   source      = "terraform-google-modules/org-policy/google"
@@ -112,7 +112,7 @@ module "srde_project_shielded_vms" {
 # ------------------------------------------------------------------------------------
 
 #--------------------------------------------------------
-# LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP check
+# LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP
 #--------------------------------------------------------
 module "srde_project_vm_allowed_external_ip" {
   source            = "terraform-google-modules/org-policy/google"

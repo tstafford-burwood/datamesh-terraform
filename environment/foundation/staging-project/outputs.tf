@@ -50,7 +50,7 @@ output "subnets_secondary_ranges" {
 
 output "subnets_regions" {
   description = "The region where the subnets will be created."
-  value       = module.vpc.subnets_secondary_ranges
+  value       = module.vpc.subnets_regions
 }
 
 #----------------------

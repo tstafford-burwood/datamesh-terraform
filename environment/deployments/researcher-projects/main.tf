@@ -7,7 +7,7 @@ module "constants" {
 }
 
 #----------------------------------------------------------------------------------------------
-# DATA BLOCKS
+# TERRAFORM STATE IMPORTS
 # Retrieve Staging project state
 #----------------------------------------------------------------------------------------------
 
@@ -15,7 +15,15 @@ data "terraform_remote_state" "staging_project" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = "deployments/staging-project"
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
+  }
+}
+
+data "terraform_remote_state" "folders_deployment" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "folders")
   }
 }
 
@@ -26,13 +34,15 @@ data "terraform_remote_state" "staging_project" {
 locals {
   staging_project_id        = data.terraform_remote_state.staging_project.outputs.staging_project_id
   staging_project_number    = data.terraform_remote_state.staging_project.outputs.staging_project_number
+  staging_default_region    = data.terraform_remote_state.staging_project.outputs.subnets_regions[0]
   org_id                    = module.constants.value.org_id
   billing_account_id        = module.constants.value.billing_account_id
-  srde_folder_id            = module.constants.value.sde_folder_id
-  workspace_default_region  = module.constants.value.workspace_default_region
-  bastion_default_region    = module.constants.value.bastion_default_region
-  staging_default_region    = module.constants.value.staging_default_region
+  srde_folder_id            = data.terraform_remote_state.folders.outputs.ids[var.researcher_workspace_name]
+  bastion_default_region    = var.bastion_default_region
+  workspace_default_region  = var.workspace_default_region
   researcher_workspace_name = var.researcher_workspace_name
+  #workspace_default_region  = module.constants.value.workspace_default_region
+  #bastion_default_region    = module.constants.value.bastion_default_region
 }
 
 #----------------------------------------------------------------------------------------------

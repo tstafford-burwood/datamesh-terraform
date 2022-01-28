@@ -9,9 +9,9 @@ locals {
     org_id                     = "645343216837"                                // CHANGE BEFORE FIRST DEPLOYMENT
     billing_account_id         = "01EF01-627C10-7CD2DF"                        // CHANGE BEFORE FIRST DEPLOYMENT
     sde_folder_id             = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
-    parent_folder_id           = "398150021301"                        // CHANGE BEFORE FIRST DEPLOYMENT
-    folder_foundation_id       = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
-    folder_research_group_id   = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    #parent_folder_id           = "398150021301"                        // CHANGE BEFORE FIRST DEPLOYMENT
+    #folder_foundation_id       = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
+    #folder_research_group_id   = "398150021301"                                // CHANGE BEFORE FIRST DEPLOYMENT
     automation_project_id      = "automation-dan-sde"                          // CHANGE BEFORE FIRST DEPLOYMEN
     cloudbuild_service_account = "547140210872@cloudbuild.gserviceaccount.com" // CHANGE BEFORE FIRST DEPLOYMENT
     terraform_state_bucket     = "terraform-state-sde-1292"                    // CHANGE BEFORE FIRST DEPLOYMENT
@@ -21,8 +21,8 @@ locals {
     // PACKER PROJECT INFORMATION
 
     #image_project_id                 = "aaron3-packer-9c1b" //CHANGE AFTER PROVISIONING PACKER PROJECT
-    packer_base_image_id_bastion      = "packer-1642018453"  // CHANGE AFTER NEW IMAGE IS CREATED
-    packer_base_image_id_deeplearning = "packer-1642018799"  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_base_image_id_bastion      = ""  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_base_image_id_deeplearning = ""  // CHANGE AFTER NEW IMAGE IS CREATED
     #image_default_region             = "us-central1"        // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
 
     // STAGING PROJECT INFORMATION
@@ -41,7 +41,7 @@ locals {
 
     // BASTION PROJECT INFORMATION
 
-    bastion_default_region = "us-central1"
+    #bastion_default_region = "us-central1"
 
     // VPC SERVICE CONTROL INFORMATION
 

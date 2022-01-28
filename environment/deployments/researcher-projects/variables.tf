@@ -2,9 +2,32 @@
 # REQUIRED VARIABLE
 # ---------------------------------------------------------------------------
 
+variable "environment" {
+  description = "Environment name."
+  type        = string
+}
+
+variable "terraform_foundation_state_prefix" {
+  description = "The name of the foundation prefix to create in the state bucket. Set in during the pipeline."
+  type        = string
+}
+
+
 variable "researcher_workspace_name" {
   description = "The research workspace name. This will be descripter for all projects and resources."
-  type = string
+  type        = string
+}
+
+variable "bastion_default_region" {
+  description = "The default region to place resources."
+  type        = string
+  default     = "us-central1"
+}
+
+variable "workspace_default_region" {
+  description = "The default region to place resources."
+  type        = string
+  default     = "us-central1"
 }
 
 

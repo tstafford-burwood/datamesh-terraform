@@ -11,7 +11,7 @@ module "bigquery_data_lake" {
 
   // REQUIRED
 
-  dataset_id = format("%s_%s_%s", var.environment, local.function, "dataset")
+  dataset_id = format("%s_%s_%s", var.environment, replace(local.function, "-", "_"), "dataset")
   project_id = module.data-lake-project.project_id
 
   // OPTIONAL

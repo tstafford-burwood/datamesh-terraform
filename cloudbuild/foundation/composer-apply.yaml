@@ -40,7 +40,7 @@ steps:
     # '-var=enforce_staging_project_shielded_vms=false'
   ]
 
-- id: "composer - first apply and disable org policies"
+- id: "composer - first apply and disable project policies"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/staging-project/cloud-composer'
   args: [
@@ -74,15 +74,16 @@ steps:
   args:
     - '-c'
     - |
+      echo "sleeping for 60 seconds ..."
       sleep 60
       terraform plan \
       -var-file=env/${_TFVARS_FILE}.tfvars \
       -var=terraform_foundation_state_prefix=${_PREFIX} \
-      -target=module.project_disable_sa_creation \
-      -var="enforce=true" \
-      -target=module.project_vm_os_login \
+      #-target=module.project_disable_sa_creation \
+      #-var="enforce=true"
+      #-target=module.project_vm_os_login \
       #-var="enforce_staging_project_vm_os_login=true" \
-      -target=module.project_shielded_vms
+      #-target=module.project_shielded_vms
       #-var="enforce_staging_project_shielded_vms=true"
 
 - id: "composer - second apply and ensure project policies are re-enabled"
@@ -95,11 +96,11 @@ steps:
       terraform apply -auto-approve \
       -var-file=env/${_TFVARS_FILE}.tfvars \
       -var=terraform_foundation_state_prefix=${_PREFIX} \
-      -target=module.project_disable_sa_creation \
-      -var="enforce=true" \
-      -target=module.project_vm_os_login \
+      #-target=module.project_disable_sa_creation \
+      #-var="enforce=true"
+      #-target=module.project_vm_os_login \
       # -var="enforce_staging_project_vm_os_login=true" \
-      -target=module.project_shielded_vms
+      #-target=module.project_shielded_vms
       # -var="enforce_staging_project_shielded_vms=true"
 
 - id: "staging project state pull - init"

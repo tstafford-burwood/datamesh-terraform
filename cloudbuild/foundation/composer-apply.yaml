@@ -62,7 +62,7 @@ steps:
       -var="enforce=true" \
       -target=module.srde_project_vm_os_login \
       #-var="enforce_staging_project_vm_os_login=true" \
-      -target=module.staging_project_shielded_vms
+      -target=module.srde_project_shielded_vms
       #-var="enforce_staging_project_shielded_vms=true"
 
 - id: "composer - second apply and ensure project policies are re-enabled"
@@ -79,7 +79,7 @@ steps:
       -var="enforce=true" \
       -target=module.srde_project_vm_os_login \
       # -var="enforce_staging_project_vm_os_login=true" \
-      -target=module.staging_project_shielded_vms
+      -target=module.srde_project_shielded_vms
       # -var="enforce_staging_project_shielded_vms=true"
 
 - id: "staging project state pull - init"

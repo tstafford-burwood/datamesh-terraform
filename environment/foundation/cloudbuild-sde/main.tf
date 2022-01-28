@@ -56,8 +56,8 @@ locals {
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
 
   # Check what region the image project vpc is using, if not deployed defalt to empty string
-  image_default_region_dev       = try(data.terraform_remote_state.image_project_dev.outputs.subnets_regions[0], "")
-  image_default_region_prod      = try(data.terraform_remote_state.image_project_prod.outputs.subnets_regions[0], "")
+  image_default_region_dev  = try(data.terraform_remote_state.image_project_dev.outputs.subnets_regions[0], "")
+  image_default_region_prod = try(data.terraform_remote_state.image_project_prod.outputs.subnets_regions[0], "")
 
   # Check if the image project has been deployed, if not default to empty string
   image_project_id_dev  = try(data.terraform_remote_state.image_project_dev.outputs.project_id, "")
@@ -1526,6 +1526,9 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_prod" {
     _IMAGE_TAG        = var.packer_image_tag
     _REGION           = local.image_default_region_prod
     _IMAGE_ZONE       = "${local.image_default_region_prod}-b"
+    _BUCKET           = local.terraform_state_bucket
+    _PREFIX           = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG              = var.terraform_container_version
   }
 }
 
@@ -1563,6 +1566,9 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_dev" {
     _IMAGE_TAG        = var.packer_image_tag
     _REGION           = local.image_default_region_dev
     _IMAGE_ZONE       = "${local.image_default_region_dev}-b"
+    _BUCKET           = local.terraform_state_bucket
+    _PREFIX           = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG              = var.terraform_container_version
   }
 }
 
@@ -1605,6 +1611,9 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
     _REGION           = local.image_default_region_prod
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
     _IMAGE_ZONE       = "${local.image_default_region_prod}-b"
+    _BUCKET           = local.terraform_state_bucket
+    _PREFIX           = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG              = var.terraform_container_version
   }
 }
 
@@ -1643,6 +1652,9 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
     _REGION           = local.image_default_region_dev
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
     _IMAGE_ZONE       = "${local.image_default_region_dev}-b"
+    _BUCKET           = local.terraform_state_bucket
+    _PREFIX           = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG              = var.terraform_container_version
   }
 }
 

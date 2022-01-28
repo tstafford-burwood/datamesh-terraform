@@ -1,6 +1,16 @@
 timeout: 1800s
 
 steps:
+
+- id: "image project state pull - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/image-project'
+  args: [
+    'init',
+    '-backend-config=bucket=${_BUCKET}',
+    '-backend-config=prefix=${_PREFIX}/image-project'
+  ]
+
 - id: output file creation - image project
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/image-project'

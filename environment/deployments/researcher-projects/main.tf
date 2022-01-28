@@ -50,7 +50,7 @@ locals {
   bastion_default_region    = var.bastion_default_region
   workspace_default_region  = var.workspace_default_region
   researcher_workspace_name = var.researcher_workspace_name
-  
+
   # Packer Images
   #packer_base_image_id_bastion = module.constants.value.packer_base_image_id_bastion
   #packer_base_image_id_deeplearning = module.constants.value.packer_base_image_id_deeplearning

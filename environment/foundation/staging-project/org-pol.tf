@@ -143,17 +143,18 @@ module "srde_project_vm_allowed_external_ip" {
 #-------------------------------------------
 # SRDE FOLDER RESOURCE LOCATION RESTRICTION
 #-------------------------------------------
-# module "srde_project_resource_location_restriction" {
-#   source            = "terraform-google-modules/org-policy/google"
-#   version           = "~> 3.0.2"
-#   constraint        = "constraints/gcp.resourceLocations"
-#   policy_type       = "list"
-#   policy_for        = local.policy_for
-#   project_id        = local.project_id
-#   enforce           = var.enforce
-#   allow             = var.srde_project_resource_location_restriction_allow
-#   allow_list_length = length(var.srde_project_resource_location_restriction_allow)
-# }
+
+module "srde_project_resource_location_restriction" {
+  source            = "terraform-google-modules/org-policy/google"
+  version           = "~> 3.0.2"
+  constraint        = "constraints/gcp.resourceLocations"
+  policy_type       = "list"
+  policy_for        = local.policy_for
+  project_id        = local.project_id
+  enforce           = var.enforce
+  allow             = var.srde_project_resource_location_restriction_allow
+  allow_list_length = length(var.srde_project_resource_location_restriction_allow)
+}
 
 # ------------------------------------------
 # VARIABLES

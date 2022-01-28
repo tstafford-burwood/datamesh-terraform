@@ -1,5 +1,5 @@
 environment             = "prod"
-datalake_project_member = "srde-datagroup@prorelativity.com"    
+datalake_project_member = "srde-datagroup@prorelativity.com"     
 
 
 # #---------------------------------------------------

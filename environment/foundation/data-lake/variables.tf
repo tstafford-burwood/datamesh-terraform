@@ -140,7 +140,7 @@ variable "member_prefix" {
 
   validation {
     condition     = contains(["user", "serviceAccount", "group"])
-    error_message = "Valie values for var: member_prefix are (user, seserviceAccount, group)."
+    error_message = "Valid values for var: member_prefix are (user, seserviceAccount, group)."
   }
 }
 

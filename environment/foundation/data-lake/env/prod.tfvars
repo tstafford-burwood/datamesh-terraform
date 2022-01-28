@@ -1,4 +1,5 @@
 environment             = "prod"
+member_prefix           = "group"
 datalake_project_member = "srde-datagroup@prorelativity.com"     
 
 

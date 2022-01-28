@@ -1,8 +1,16 @@
 timeout: 1800s
 
 steps:
+- id: output file creation - image project
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/image-project'
+  entrypoint: /bin/bash
+  args: [
+    '-c',
+    'terraform output subnets_names[0] > /workspace/subnets_names.txt',
+    'terraform output project_id > /workspace/project_id.txt'
+  ]
 
-steps:
 - name: ubuntu 
   id: 'create_image_spec'
   entrypoint: "bash"
@@ -20,14 +28,14 @@ steps:
           "type": "googlecompute",
           "instance_name": "packer-builder-vm-$SHORT_SHA",
           "disk_size": "50",
-          "project_id": "${_PACKER_PROJECT_ID}",
+          "project_id": "$(cat /workspace/project_id.txt)",
           "source_image_family": "${_IMAGE_FAMILY}",
           "image_name": "custom-image-$SHORT_SHA",
           "image_family": "packer-custom-image",
           "image_description": "created-with-packer",
           "communicator": "ssh",
           "ssh_username": "ubuntu",
-          "subnetwork" : "projects/${_PACKER_PROJECT_ID}/regions/${_REGION}/subnetworks/packer-us-central1-subnet",
+          "subnetwork" : "projects/$(cat /workspace/project_id.txt)/regions/${_REGION}/subnetworks/$(cat /workspace/subnets_names.txt)",
           "zone": "${_IMAGE_ZONE}",
           "tags": ["packer"],
           "use_os_login":true,

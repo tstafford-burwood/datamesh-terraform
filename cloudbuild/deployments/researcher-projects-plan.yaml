@@ -10,11 +10,26 @@ steps:
   '-backend-config=prefix=${_PREFIX}/researcher-projects'
   ]
 
+- id: Terraform Format
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: Terraform Validate
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects'
+  args: ['validate',
+    '-no-color'
+    ]
+
 - id: "researcher projects - plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
   args: [
   'plan',
+  '-var=terraform_foundation_state_prefix=${_PREFIX}',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '--out',
   'tfplan.binary'

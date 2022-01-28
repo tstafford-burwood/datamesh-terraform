@@ -402,16 +402,16 @@ resource "google_cloudbuild_trigger" "image_project_apply_prod" {
 # DATA OPS PROJECT PLAN TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data-ops_project_plan_dev" {
+resource "google_cloudbuild_trigger" "data_ops_project_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.data-ops_project_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.data_ops_project_trigger_name, var.env_name_dev)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data-ops_project_trigger_name, var.env_name_dev)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_ops_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data-ops_project_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data-ops_project_trigger_name, var.env_name_dev)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data_ops_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_ops_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -443,16 +443,16 @@ resource "google_cloudbuild_trigger" "data-ops_project_plan_dev" {
 # DATA OPS PROJECT PLAN TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data-ops_project_plan_prod" {
+resource "google_cloudbuild_trigger" "data_ops_project_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.data-ops_project_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.data_ops_project_trigger_name, var.env_name_prod)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data-ops_project_trigger_name, var.env_name_prod)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_ops_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data-ops_project_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data-ops_project_trigger_name, var.env_name_prod)
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data_ops_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_ops_project_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -484,16 +484,16 @@ resource "google_cloudbuild_trigger" "data-ops_project_plan_prod" {
 # DATA OPS PROJECT APPLY TRIGGER - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data-ops_project_apply_dev" {
+resource "google_cloudbuild_trigger" "data_ops_project_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.data-ops_project_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.data_ops_project_trigger_name, var.env_name_dev)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data-ops_project_trigger_name, var.env_name_dev)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_ops_project_trigger_name, var.env_name_dev)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data-ops_project_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data-ops_project_trigger_name, var.env_name_dev)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data_ops_project_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_ops_project_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -523,19 +523,19 @@ resource "google_cloudbuild_trigger" "data-ops_project_apply_dev" {
 
 
 #------------------------------------------------------------------------
-# data-ops PROJECT APPLY TRIGGER - PROD
+# DATA OPS PROJECT APPLY TRIGGER - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "data-ops_project_apply_prod" {
+resource "google_cloudbuild_trigger" "data_ops_project_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.data-ops_project_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.data_ops_project_trigger_name, var.env_name_prod)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data-ops_project_trigger_name, var.env_name_prod)
+  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_ops_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data-ops_project_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data-ops_project_trigger_name, var.env_name_prod)
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data_ops_project_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/%s/env/%s.tfvars", var.data_ops_project_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -897,7 +897,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_prod" {
 
 #------------------------------------------------------------------------
 # CLOUDBUILD TRIGGERS - COMPOSER PLAN - DEV
-# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/data-ops-project/cloud-composer
+# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/foundation/data-ops-project/cloud-composer
 #------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "composer_plan_dev_trigger" {

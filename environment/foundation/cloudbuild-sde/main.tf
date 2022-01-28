@@ -798,20 +798,20 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
 }
 
 #------------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - COMPOSER PLAN
+# CLOUDBUILD TRIGGERS - COMPOSER PLAN - DEV
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "composer_plan_trigger" {
 
   project = local.automation_project_id
-  name    = "composer-plan-sde"
+  name    = "composer-plan-dev"
 
   description    = "Pipeline for SDE-Composer created with Terraform"
   tags           = var.composer_plan_trigger_tags
   disabled       = var.composer_plan_trigger_disabled
   filename       = "cloudbuild/foundation/composer-plan.yaml"
-  included_files = ["environment/foundation/staging-project/cloud-composer/env/terraform.tfvars"]
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/${var.env_name_dev}.tfvars"]
 
   /*
   trigger_template {
@@ -836,25 +836,25 @@ resource "google_cloudbuild_trigger" "composer_plan_trigger" {
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
-    _TFVARS_FILE         = ""
+    _TFVARS_FILE         = var.env_name_dev
   }
 }
 
 #------------------------------------------------------------------------
-# CLOUDBUILD TRIGGERS - COMPOSER APPLY
+# CLOUDBUILD TRIGGERS - COMPOSER APPLY - DEV
 # THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
 #------------------------------------------------------------------------
 
 resource "google_cloudbuild_trigger" "composer_apply_trigger" {
 
   project = local.automation_project_id
-  name    = "composer-apply-sde"
+  name    = "composer-apply-dev"
 
   description    = "Pipeline for SRDE-Composer created with Terraform"
   tags           = var.composer_apply_trigger_tags
   disabled       = var.composer_apply_trigger_disabled
   filename       = "cloudbuild/foundation/composer-apply.yaml"
-  included_files = ["environment/foundation/staging-project/cloud-composer/env/terraform.tfvars"]
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/${var.env_name_dev}.tfvars"]
 
   /*
   trigger_template {
@@ -879,7 +879,93 @@ resource "google_cloudbuild_trigger" "composer_apply_trigger" {
     _PREFIX              = var.terraform_foundation_state_prefix
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
-    _TFVARS_FILE         = ""
+    _TFVARS_FILE         = var.env_name_dev
+  }
+}
+
+#------------------------------------------------------------------------
+# CLOUDBUILD TRIGGERS - COMPOSER PLAN - PROD
+# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "composer_plan_trigger" {
+
+  project = local.automation_project_id
+  name    = "composer-plan-prod"
+
+  description    = "Pipeline for SDE-Composer created with Terraform"
+  tags           = var.composer_plan_trigger_tags
+  disabled       = var.composer_plan_trigger_disabled
+  filename       = "cloudbuild/foundation/composer-plan.yaml"
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/${var.env_name_prod}.tfvars"]
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+*/
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _TFVARS_FILE         = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# CLOUDBUILD TRIGGERS - COMPOSER APPLY - PROD
+# THIS WILL PROVISION A PIPELINE FOR CLOUD COMPOSER LOCATED IN environment/deployments/srde/staging-project/cloud-composer
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "composer_apply_trigger" {
+
+  project = local.automation_project_id
+  name    = "composer-apply-prod"
+
+  description    = "Pipeline for SRDE-Composer created with Terraform"
+  tags           = var.composer_apply_trigger_tags
+  disabled       = var.composer_apply_trigger_disabled
+  filename       = "cloudbuild/foundation/composer-apply.yaml"
+  included_files = ["environment/foundation/staging-project/cloud-composer/env/${var.env_name_prod}.tfvars"]
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET              = local.terraform_state_bucket
+    _PREFIX              = var.terraform_foundation_state_prefix
+    _TAG                 = var.terraform_container_version
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _TFVARS_FILE         = var.env_name_prod
   }
 }
 

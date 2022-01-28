@@ -12,7 +12,7 @@ steps:
   ]
 
 - id: output file creation - image project
-  #name: hashicorp/terraform:${_TAG}
+  name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/image-project'
   entrypoint: /bin/sh
   args: [

@@ -17,7 +17,7 @@ steps:
   entrypoint: /bin/sh
   args: [
     '-c',
-    'terraform output subnets_names[0] > /workspace/subnets_names.txt',
+    #'terraform output subnets_names[0] > /workspace/subnets_names.txt',
     'terraform output project_id > /workspace/project_id.txt'
   ]
 
@@ -45,7 +45,7 @@ steps:
           "image_description": "created-with-packer",
           "communicator": "ssh",
           "ssh_username": "ubuntu",
-          "subnetwork" : "projects/$(cat /workspace/project_id.txt)/regions/${_REGION}/subnetworks/$(cat /workspace/subnets_names.txt)",
+          "subnetwork" : "projects/$(cat /workspace/project_id.txt)/regions/${_REGION}/subnetworks/image-us-central1-subnet",
           "zone": "${_IMAGE_ZONE}",
           "tags": ["packer"],
           "use_os_login":true,

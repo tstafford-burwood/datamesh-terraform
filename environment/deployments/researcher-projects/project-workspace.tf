@@ -251,7 +251,7 @@ module "researcher_workspace_deeplearning_vm_private_ip" {
     {
       vm_disk_size  = 100
       vm_disk_type  = "pd-standard"
-      vm_disk_image = "${module.constants.value.packer_project_id}/${module.constants.value.packer_base_image_id_deeplearning}"
+      vm_disk_image = "${local.imaging_project_id}/${module.constants.value.packer_base_image_id_deeplearning}"
     }
   ]
   auto_delete_disk = var.workspace_deeplearning_vm_auto_delete_disk

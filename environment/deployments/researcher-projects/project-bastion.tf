@@ -181,7 +181,7 @@ module "researcher_bastion_vm_private_ip" {
     {
       vm_disk_size  = 100
       vm_disk_type  = "pd-standard"
-      vm_disk_image = "${module.constants.value.packer_project_id}/${module.constants.value.packer_base_image_id_bastion}"
+      vm_disk_image = "${local.imaging_project_id}/${module.constants.value.packer_base_image_id_bastion}"
     }
   ]
   auto_delete_disk = var.bastion_vm_auto_delete_disk

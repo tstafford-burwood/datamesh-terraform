@@ -1080,7 +1080,7 @@ resource "google_cloudbuild_trigger" "composer_apply_prod_trigger" {
 resource "google_cloudbuild_trigger" "access_level_cloudbuild_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.access_level_cloudbuild_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.access_level_cloudbuild_trigger_name, var.env_name_dev)
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.access_level_cloudbuild_plan_trigger_tags
@@ -1122,7 +1122,7 @@ resource "google_cloudbuild_trigger" "access_level_cloudbuild_plan_dev" {
 resource "google_cloudbuild_trigger" "access_level_cloudbuild_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.access_level_cloudbuild_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.access_level_cloudbuild_trigger_name, var.env_name_prod)
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.access_level_cloudbuild_plan_trigger_tags
@@ -1164,7 +1164,7 @@ resource "google_cloudbuild_trigger" "access_level_cloudbuild_plan_prod" {
 resource "google_cloudbuild_trigger" "access_level_cloudbuild_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.access_level_cloudbuild_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.access_level_cloudbuild_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.access_level_cloudbuild_trigger_name, var.env_name_dev)
   tags           = var.access_level_cloudbuild_apply_trigger_tags
@@ -1206,7 +1206,7 @@ resource "google_cloudbuild_trigger" "access_level_cloudbuild_apply_dev" {
 resource "google_cloudbuild_trigger" "access_level_cloudbuild_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.access_level_cloudbuild_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.access_level_cloudbuild_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE-%s %s created with Terraform", var.access_level_cloudbuild_trigger_name, var.env_name_prod)
   tags           = var.access_level_cloudbuild_apply_trigger_tags
@@ -1247,7 +1247,7 @@ resource "google_cloudbuild_trigger" "access_level_cloudbuild_apply_prod" {
 resource "google_cloudbuild_trigger" "access_level_admin_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.access_level_admin_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.access_level_admin_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_dev)
   tags           = var.access_level_admin_plan_trigger_tags
@@ -1288,7 +1288,7 @@ resource "google_cloudbuild_trigger" "access_level_admin_plan_dev" {
 resource "google_cloudbuild_trigger" "access_level_admin_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-sde-%s", var.access_level_admin_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.access_level_admin_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_prod)
   tags           = var.access_level_admin_plan_trigger_tags
@@ -1329,7 +1329,7 @@ resource "google_cloudbuild_trigger" "access_level_admin_plan_prod" {
 resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.access_level_admin_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.access_level_admin_trigger_name, var.env_name_dev)
 
   description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_dev)
   tags           = var.access_level_admin_apply_trigger_tags
@@ -1370,7 +1370,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
 resource "google_cloudbuild_trigger" "admin_access_level_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-sde-%s", var.access_level_admin_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.access_level_admin_trigger_name, var.env_name_prod)
 
   description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_prod)
   tags           = var.access_level_admin_apply_trigger_tags

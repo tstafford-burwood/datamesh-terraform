@@ -1,5 +1,3 @@
-timeout: 1800s
-
 steps:
 
 
@@ -7,16 +5,16 @@ steps:
 
 - id: "sde admin access levels - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/dmin-access-level'
+  dir: 'environment/foundation/vpc-service-controls/access-level-admin'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}admin-access-level'
+  '-backend-config=prefix=${_PREFIX}/access-level-admin'
   ]
 
 - id: "sde admin access levels - plan destroy"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/admin-access-level'
+  dir: 'environment/foundation/vpc-service-controls/access-level-admin'
   args: [
   'plan',
   '-destroy'
@@ -24,8 +22,10 @@ steps:
 
 - id: "sde admin access levels - destroy"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/admin-access-level'
+  dir: 'environment/foundation/vpc-service-controls/access-level-admin'
   args: [
   'destroy',
   '-auto-approve'
   ]
+
+timeout: 1800s

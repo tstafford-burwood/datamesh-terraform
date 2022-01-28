@@ -1,20 +1,20 @@
 steps:
 
 
-# CLOUDBUILD ACCESS LEVELS
+# SDE ACCESS LEVEL CLDUBUILD
 
 - id: "access levels terraform init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/cloudbuild-access-levels'
+  dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/cloudbuild-access-levels'
+  '-backend-config=prefix=${_PREFIX}/access-level-cloudbuild'
   ]
 
 - id: "access levels terraform plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/cloudbuild-access-levels'
+  dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
   'plan'
   ]

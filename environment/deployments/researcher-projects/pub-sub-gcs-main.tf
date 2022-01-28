@@ -8,6 +8,10 @@
 # PUB/SUB GCS NOTIFICATION MODULE
 #--------------------------------
 
+locals {
+  staging_pub_sub_topic_name = data.terraform_remote_state.staging_project.outputs.topic_name
+}
+
 module "gcs_pub_sub_notification" {
   source = "../../../modules/pub_sub/pub_sub_gcs_notification"
 
@@ -16,7 +20,7 @@ module "gcs_pub_sub_notification" {
   // REQUIRED
   bucket_name    = each.value
   payload_format = var.payload_format
-  pub_sub_topic  = "projects/${local.staging_project_id}/topics/${var.pub_sub_topic_name}" // TOPIC SHOULD BE PROVISIONED PRIOR TO USING THIS MODULE
+  pub_sub_topic  = "projects/${local.staging_project_id}/topics/${local.staging_pub_sub_topic_name}" // TOPIC SHOULD BE PROVISIONED PRIOR TO USING THIS MODULE
 
   // OPTIONAL
   custom_attributes  = var.custom_attributes

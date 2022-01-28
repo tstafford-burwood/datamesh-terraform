@@ -10,11 +10,11 @@ variable "payload_format" {
   default     = ""
 }
 
-variable "pub_sub_topic_name" {
-  description = "The name of the Pub Sub Topic that will have GCS notifications sent to."
-  type        = string
-  default     = ""
-}
+# variable "pub_sub_topic_name" {
+#   description = "The name of the Pub Sub Topic that will have GCS notifications sent to."
+#   type        = string
+#   default     = ""
+# }
 
 // OPTIONAL VARIABLES
 
@@ -42,11 +42,11 @@ variable "object_name_prefix" {
 
 // REQUIRED VARIABLES
 
-variable "project_id" {
-  description = "The Project ID that contains the Pub/Sub topic that will have a member and an IAM role applied to."
-  type        = string
-  default     = ""
-}
+# variable "project_id" {
+#   description = "The Project ID that contains the Pub/Sub topic that will have a member and an IAM role applied to."
+#   type        = string
+#   default     = ""
+# }
 
 variable "topic_name" {
   description = "The Pub/Sub Topic name. Used to find the parent resource to bind the IAM policy to."

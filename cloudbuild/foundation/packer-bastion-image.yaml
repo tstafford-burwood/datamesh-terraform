@@ -12,9 +12,9 @@ steps:
   ]
 
 - id: output file creation - image project
-  name: hashicorp/terraform:${_TAG}
+  #name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/image-project'
-  entrypoint: /bin/bash
+  entrypoint: /bin/sh
   args: [
     '-c',
     'terraform output subnets_names[0] > /workspace/subnets_names.txt',

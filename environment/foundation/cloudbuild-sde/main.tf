@@ -1435,7 +1435,7 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_prod" {
 
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_prod
-    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _IMAGE_TAG        = var.image_image_tag
     _REGION           = local.image_default_region
     _IMAGE_ZONE       = "${local.image_default_region}-b"
   }
@@ -1472,7 +1472,7 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_dev" {
 
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_dev
-    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _IMAGE_TAG        = var.image_image_tag
     _REGION           = local.image_default_region
     _IMAGE_ZONE       = "${local.image_default_region}-b"
   }
@@ -1513,7 +1513,7 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
 
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_prod
-    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _IMAGE_TAG        = var.image_image_tag
     _REGION           = local.image_default_region
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
     _IMAGE_ZONE       = "${local.image_default_region}-b"
@@ -1551,7 +1551,7 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
 
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_dev
-    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _IMAGE_TAG        = var.image_image_tag
     _REGION           = local.image_default_region
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
     _IMAGE_ZONE       = "${local.image_default_region}-b"

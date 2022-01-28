@@ -1,6 +1,7 @@
 researcher_workspace_name = "group2"
 environment = "prod"
-
+bastion_project_member = "user:dspeck@sde.burwood.io" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH INTO BASTION
+workspace_project_member = "user:dspeck@sde.burwood.io" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH FROM BASTION TO WORKSPACE VM
 
 # #------------------------------------
 # # RESEARCHER WORKSPACE PROJECT TFVARS
@@ -12,7 +13,7 @@ environment = "prod"
 # # RESEARCHER WORKSPACE PROJECT IAM MEMBER BINDING TFVARS
 # #-------------------------------------------------------
 
-# workspace_project_member = "group:srde-datagroup@prorelativity.com" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH FROM BASTION TO WORKSPACE VM
+
 
 # #----------------------------------
 # # RESEARCHER BASTION PROJECT TFVARS
@@ -24,7 +25,7 @@ environment = "prod"
 # # RESEARCHER BASTION PROJECT IAM MEMBER BINDING TFVARS
 # #------------------------------------------------------
 
-# bastion_project_member = "group:srde-datagroup@prorelativity.com" // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH INTO BASTION
+
 
 # #--------------------------------------
 # # RESEARCHER DATA EGRESS PROJECT TFVARS
@@ -36,13 +37,13 @@ environment = "prod"
 # # STAGING PROJECT - INGRESS BUCKET TFVARS
 # #----------------------------------------
 
-# staging_ingress_bucket_admins = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
+staging_ingress_bucket_admins = ["user:dspeck@sde.burwood.io"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
 
 # #----------------------------------------
 # # STAGING PROJECT - EGRESS BUCKET TFVARS
 # #----------------------------------------
 
-# staging_egress_bucket_viewers = ["group:srde-datagroup@prorelativity.com"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
+staging_egress_bucket_viewers = ["user:dspeck@sde.burwood.io"] // DATA STEWARDS IN RESEARCH GROUP; CHANGE WITH EACH NEW PROJECT
 
 # #----------------------------------------------------
 # # VPC SC RESEARCHER GROUP MEMBER ACCESS LEVELS TFVARS

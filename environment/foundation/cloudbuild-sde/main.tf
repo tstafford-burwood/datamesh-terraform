@@ -1727,7 +1727,7 @@ resource "google_cloudbuild_trigger" "packer_container_image_prod" {
   }
 
   substitutions = {
-    _IMAGE_PROJECT_ID = var.image_project_id_prod
+    _IMAGE_PROJECT_ID = local.image_project_id_prod
     _REGION           = local.image_default_region_prod
   }
 }

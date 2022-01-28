@@ -53,8 +53,11 @@ locals {
   folder_id                  = module.constants.value.sde_folder_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
   automation_project_id      = module.constants.value.automation_project_id
-  image_default_region       = module.constants.value.image_default_region
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
+
+  # Check what region the image project vpc is using, if not deployed defalt to empty string
+  image_default_region_dev       = try(data.terraform_remote_state.image_project_dev.outputs.subnets_regions[0], "")
+  image_default_region_prod      = try(data.terraform_remote_state.image_project_prod.outputs.subnets_regions[0], "")
 
   # Check if the image project has been deployed, if not default to empty string
   image_project_id_dev  = try(data.terraform_remote_state.image_project_dev.outputs.project_id, "")
@@ -1519,8 +1522,8 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_prod" {
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_prod
     _IMAGE_TAG        = var.packer_image_tag
-    _REGION           = local.image_default_region
-    _IMAGE_ZONE       = "${local.image_default_region}-b"
+    _REGION           = local.image_default_region_prod
+    _IMAGE_ZONE       = "${local.image_default_region_prod}-b"
   }
 }
 
@@ -1556,8 +1559,8 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_dev" {
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_dev
     _IMAGE_TAG        = var.packer_image_tag
-    _REGION           = local.image_default_region
-    _IMAGE_ZONE       = "${local.image_default_region}-b"
+    _REGION           = local.image_default_region_dev
+    _IMAGE_ZONE       = "${local.image_default_region_dev}-b"
   }
 }
 
@@ -1597,9 +1600,9 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_prod
     _IMAGE_TAG        = var.packer_image_tag
-    _REGION           = local.image_default_region
+    _REGION           = local.image_default_region_prod
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
-    _IMAGE_ZONE       = "${local.image_default_region}-b"
+    _IMAGE_ZONE       = "${local.image_default_region_prod}-b"
   }
 }
 
@@ -1635,9 +1638,9 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
   substitutions = {
     _IMAGE_PROJECT_ID = local.image_project_id_dev
     _IMAGE_TAG        = var.packer_image_tag
-    _REGION           = local.image_default_region
+    _REGION           = local.image_default_region_dev
     _IMAGE_FAMILY     = "ubuntu-1804-lts"
-    _IMAGE_ZONE       = "${local.image_default_region}-b"
+    _IMAGE_ZONE       = "${local.image_default_region_dev}-b"
   }
 }
 
@@ -1645,10 +1648,10 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
 # CLOUDBUILD TRIGGERS - PACKER CONTAINER IMAGE
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "packer_container_image" {
+resource "google_cloudbuild_trigger" "packer_container_image_dev" {
 
   project = local.automation_project_id
-  name    = "packer-container-image-sde"
+  name    = "packer-container-image-${var.env_name_dev}"
 
   description    = "Pipeline for Packer container image created with Terraform"
   tags           = var.packer_container_image_build_trigger_tags
@@ -1676,7 +1679,42 @@ resource "google_cloudbuild_trigger" "packer_container_image" {
 
   substitutions = {
     _IMAGE_PROJECT_ID = var.image_project_id
-    _REGION           = local.image_default_region
+    _REGION           = local.image_default_region_dev
+  }
+}
+
+resource "google_cloudbuild_trigger" "packer_container_image_prod" {
+
+  project = local.automation_project_id
+  name    = "packer-container-image-${var.env_name_prod}"
+
+  description    = "Pipeline for Packer container image created with Terraform"
+  tags           = var.packer_container_image_build_trigger_tags
+  disabled       = var.packer_container_image_build_trigger_disabled
+  filename       = "cloudbuild/foundation/image-container.yaml"
+  included_files = ["environment/foundation/image-project/packer-container/Dockerfile"]
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.apply_trigger_repo_name
+    invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _IMAGE_PROJECT_ID = var.image_project_id
+    _REGION           = local.image_default_region_prod
   }
 }
 

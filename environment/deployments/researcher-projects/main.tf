@@ -19,7 +19,7 @@ data "terraform_remote_state" "staging_project" {
   }
 }
 
-data "terraform_remote_state" "folders_deployment" {
+data "terraform_remote_state" "folders" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket

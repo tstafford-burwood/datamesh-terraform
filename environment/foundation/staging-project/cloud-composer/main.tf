@@ -185,6 +185,6 @@ module "srde_project_shielded_vms" {
   constraint  = "constraints/compute.requireShieldedVm"
   policy_type = "boolean"
   policy_for  = local.policy_for
-  project_id  = local.project_id
+  project_id  = local.staging_project_id
   enforce     = var.enforce
 }

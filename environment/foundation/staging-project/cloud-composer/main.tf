@@ -153,7 +153,7 @@ module "folder_iam_member" {
 #----------------------------------------------
 # SERVICE ACCOUNT CREATION
 #----------------------------------------------
-module "srde_project_disable_sa_creation" {
+module "project_disable_sa_creation" {
   source      = "terraform-google-modules/org-policy/google"
   version     = "~> 3.0.2"
   constraint  = "constraints/iam.disableServiceAccountCreation"
@@ -166,7 +166,7 @@ module "srde_project_disable_sa_creation" {
 #--------------------------------------
 # REQUIRE OS LOGIN FOR VMs
 #--------------------------------------
-module "srde_project_vm_os_login" {
+module "project_vm_os_login" {
   source      = "terraform-google-modules/org-policy/google"
   version     = "~> 3.0.2"
   constraint  = "constraints/compute.requireOsLogin"
@@ -179,7 +179,7 @@ module "srde_project_vm_os_login" {
 #--------------------------------------
 # REQUIRE SHIELDED VMs
 #--------------------------------------
-module "srde_project_shielded_vms" {
+module "project_shielded_vms" {
   source      = "terraform-google-modules/org-policy/google"
   version     = "~> 3.0.2"
   constraint  = "constraints/compute.requireShieldedVm"

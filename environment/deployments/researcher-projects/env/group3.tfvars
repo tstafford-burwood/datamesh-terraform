@@ -1,4 +1,4 @@
-researcher_workspace_name     = "group2"
+researcher_workspace_name     = "group3"
 environment                   = "prod"
 bastion_project_member        = "user:dspeck@sde.burwood.io"   // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH INTO BASTION
 workspace_project_member      = "user:dspeck@sde.burwood.io"   // UPDATE WITH RESEARCH GOOGLE GROUP TO ALLOW SSH FROM BASTION TO WORKSPACE VM

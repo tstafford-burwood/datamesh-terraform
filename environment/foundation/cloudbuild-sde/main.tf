@@ -852,7 +852,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_dev" {
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
-    #_PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
@@ -1576,8 +1576,8 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
   description    = "${var.env_name_prod} Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
   disabled       = var.bastion_cis_image_build_trigger_disabled
-  filename       = "cloudbuild/foundation/image-bastion-image.yaml"
-  included_files = ["cloudbuild/foundation/image-bastion-image.yaml"]
+  filename       = "cloudbuild/foundation/packer-bastion-image.yaml"
+  included_files = ["cloudbuild/foundation/packer-bastion-image.yaml"]
 
   /*
   trigger_template {
@@ -1614,8 +1614,8 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
   description    = "${var.env_name_dev} Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
   disabled       = var.bastion_cis_image_build_trigger_disabled
-  filename       = "cloudbuild/foundation/image-bastion-image.yaml"
-  included_files = ["cloudbuild/foundation/image-bastion-image.yaml"]
+  filename       = "cloudbuild/foundation/packer-bastion-image.yaml"
+  included_files = ["cloudbuild/foundation/packer-bastion-image.yaml"]
 
   /*
   trigger_template {

@@ -919,7 +919,7 @@ resource "google_cloudbuild_trigger" "composer_plan_prod_trigger" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = var.env_name_prod
@@ -962,7 +962,7 @@ resource "google_cloudbuild_trigger" "composer_apply_prod_trigger" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
     _TFVARS_FILE         = var.env_name_prod

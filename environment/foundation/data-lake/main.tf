@@ -101,7 +101,7 @@ module "datalake_iam_custom_role" {
 
   project_iam_custom_role_project_id  = module.data-lake-project.project_id
   project_iam_custom_role_description = format("Custom SDE Role for %s Data Lake Storage Operations.", upper(var.environment))
-  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations-${random_id.custom_role_unique_id.id}"
+  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations_${random_id.custom_role_unique_id.id}"
   project_iam_custom_role_title       = format("[%s Custom %s] SRDE Data Lake Storage Operations Role", var.environment, random_id.custom_role_unique_id.id)
   project_iam_custom_role_permissions = ["storage.buckets.list", "storage.objects.list", "storage.objects.get"] # TODO: Update as needed
   project_iam_custom_role_stage       = "GA"

@@ -4,7 +4,7 @@ locals {
 }
 
 #-----------------------------------------------------------------------
-# SRDE FOLDER DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS
+# SRDE FOLDER DISABLE AUTOMATIC IAM GRANTS FOR DEFAULT SERVICE ACCOUNTS check
 #-----------------------------------------------------------------------
 module "srde_project_disable_automatic_iam_for_default_sa" {
   source      = "terraform-google-modules/org-policy/google"
@@ -17,7 +17,7 @@ module "srde_project_disable_automatic_iam_for_default_sa" {
 }
 
 #----------------------------------------------
-# DISABLE SRDE FOLDER SERVICE ACCOUNT CREATION
+# DISABLE SRDE FOLDER SERVICE ACCOUNT CREATION check
 #----------------------------------------------
 module "srde_project_disable_sa_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -30,7 +30,7 @@ module "srde_project_disable_sa_creation" {
 }
 
 #--------------------------------------------------
-# DISABLE SRDE FOLDER SERVICE ACCOUNT KEY CREATION
+# DISABLE SRDE FOLDER SERVICE ACCOUNT KEY CREATION check
 #--------------------------------------------------
 module "srde_project_disable_sa_key_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -43,7 +43,7 @@ module "srde_project_disable_sa_key_creation" {
 }
 
 #----------------------------------------------
-# DISABLE SRDE FOLDER VM NESTED VIRTUALIZATION
+# DISABLE SDE FOLDER VM NESTED VIRTUALIZATION check
 #----------------------------------------------
 module "srde_project_disable_vm_nested_virtualization" {
   source      = "terraform-google-modules/org-policy/google"
@@ -56,7 +56,7 @@ module "srde_project_disable_vm_nested_virtualization" {
 }
 
 #------------------------------------------------------------
-# SRDE FOLDER ENFORCE PUBLIC ACCESS PREVENTION ON GCS BUCKETS
+# SDE FOLDER ENFORCE PUBLIC ACCESS PREVENTION ON GCS BUCKETS
 #------------------------------------------------------------
 
 module "srde_project_enforce_public_access_prevention" {
@@ -70,7 +70,7 @@ module "srde_project_enforce_public_access_prevention" {
 }
 
 #------------------------------------------------
-# SRDE FOLDER ENFORCE UNIFORM BUCKET LEVEL ACCESS
+# SRDE FOLDER ENFORCE UNIFORM BUCKET LEVEL ACCESS check
 #------------------------------------------------
 
 module "srde_project_enforce_uniform_bucket_level_access" {
@@ -84,7 +84,7 @@ module "srde_project_enforce_uniform_bucket_level_access" {
 }
 
 #--------------------------------------
-# SRDE FOLDER REQUIRE OS LOGIN FOR VMs
+# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
 #--------------------------------------
 module "srde_project_vm_os_login" {
   source      = "terraform-google-modules/org-policy/google"
@@ -99,7 +99,7 @@ module "srde_project_vm_os_login" {
 # ------------------------------------------------------------------------------------
 
 #--------------------------------------------------------
-# SRDE FOLDER LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP
+# SDE FOLDER LIST OF VMs ALLOWED TO HAVE AN EXTERNAL IP check
 #--------------------------------------------------------
 module "srde_project_vm_allowed_external_ip" {
   source            = "terraform-google-modules/org-policy/google"
@@ -128,32 +128,32 @@ module "srde_project_vm_allowed_external_ip" {
 #   allow_list_length = length(var.srde_project_domain_restricted_sharing_allow)
 # }
 
-resource "google_project_organization_policy" "domain_restricted_shared" {
-  # Loop through any values
-  for_each   = var.srde_project_domain_restricted_sharing_allow != [] ? toset(var.srde_project_domain_restricted_sharing_allow) : []
-  project    = local.project_id
-  constraint = "iam.allowedPolicyMemberDomains"
-  list_policy {
-    allow {
-      values = [each.value]
-    }
-  }
-}
+# resource "google_project_organization_policy" "domain_restricted_shared" {
+#   # Loop through any values
+#   for_each   = var.srde_project_domain_restricted_sharing_allow != [] ? toset(var.srde_project_domain_restricted_sharing_allow) : []
+#   project    = local.project_id
+#   constraint = "iam.allowedPolicyMemberDomains"
+#   list_policy {
+#     allow {
+#       values = [each.value]
+#     }
+#   }
+# }
 
 #-------------------------------------------
 # SRDE FOLDER RESOURCE LOCATION RESTRICTION
 #-------------------------------------------
-module "srde_project_resource_location_restriction" {
-  source            = "terraform-google-modules/org-policy/google"
-  version           = "~> 3.0.2"
-  constraint        = "constraints/gcp.resourceLocations"
-  policy_type       = "list"
-  policy_for        = local.policy_for
-  project_id        = local.project_id
-  enforce           = var.enforce
-  allow             = var.srde_project_resource_location_restriction_allow
-  allow_list_length = length(var.srde_project_resource_location_restriction_allow)
-}
+# module "srde_project_resource_location_restriction" {
+#   source            = "terraform-google-modules/org-policy/google"
+#   version           = "~> 3.0.2"
+#   constraint        = "constraints/gcp.resourceLocations"
+#   policy_type       = "list"
+#   policy_for        = local.policy_for
+#   project_id        = local.project_id
+#   enforce           = var.enforce
+#   allow             = var.srde_project_resource_location_restriction_allow
+#   allow_list_length = length(var.srde_project_resource_location_restriction_allow)
+# }
 
 # ------------------------------------------
 # VARIABLES

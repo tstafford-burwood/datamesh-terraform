@@ -2,6 +2,17 @@
 # CLOUDBUILD TRIGGERS - REQUIRED VARAIBLES
 #-----------------------------------------
 
+variable "env_name_dev" {
+  description = "Name of development environment to append to triggers"
+  type        = string
+  default     = "dev"
+}
+
+variable "env_name_prod" {
+  description = "Name of production environment to append to triggers"
+  type        = string
+  default     = "prod"
+}
 
 variable "access_level_admin_trigger_name" {
   description = "Name of data lake project trigger"
@@ -19,18 +30,6 @@ variable "data_lake_project_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
   default     = "data-lake"
-}
-
-variable "env_name_dev" {
-  description = "Name of development environment to append to triggers"
-  type        = string
-  default     = "dev"
-}
-
-variable "env_name_prod" {
-  description = "Name of production environment to append to triggers"
-  type        = string
-  default     = "prod"
 }
 
 variable "folders_trigger_name" {

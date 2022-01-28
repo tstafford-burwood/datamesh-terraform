@@ -10,19 +10,38 @@ module "constants" {
 # RETRIEVE TF STATE
 #------------------------------------------------------------------------
 
-data "terraform_remote_state" "cloud_composer" {
+data "terraform_remote_state" "cloud_composer_prod" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "cloud-composer")
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod, "cloud-composer")
   }
 }
 
-data "terraform_remote_state" "image_project" {
+data "terraform_remote_state" "cloud_composer_dev" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "image-project")
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev, "cloud-composer")
+  }
+}
+
+
+
+
+data "terraform_remote_state" "image_project_prod" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev, "image-project")
+  }
+}
+
+data "terraform_remote_state" "image_project_dev" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev, "image-project")
   }
 }
 
@@ -38,10 +57,12 @@ locals {
   terraform_state_bucket     = module.constants.value.terraform_state_bucket
 
   # Check if the image project has been deployed, if not default to empty string
-  image_project_id = try(data.terraform_remote_state.image_project.outputs.project_id, "")
+  image_project_id_dev  = try(data.terraform_remote_state.image_project.outputs.project_id, "")
+  image_project_id_prod = try(data.terraform_remote_state.image_project.outputs.project_id, "")
 
   # Check if the composer state file is present, if so format the output else an empty string
-  composer_gcs_bucket = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer.outputs.gcs_bucket, "gs://"), "/dags"), "")
+  composer_gcs_bucket_dev  = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer_dev.outputs.gcs_bucket, "gs://"), "/dags"), "")
+  composer_gcs_bucket_prod = try(trimsuffix(trimprefix(data.terraform_remote_state.cloud_composer_prod.outputs.gcs_bucket, "gs://"), "/dags"), "")
 }
 
 
@@ -580,7 +601,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan_dev" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = var.env_name_dev
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
 
@@ -623,7 +644,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan_prod" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = var.env_name_prod
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
   }
 }
 
@@ -665,7 +686,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_dev" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = var.env_name_dev
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
 
@@ -707,7 +728,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = var.env_name_prod
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
 
@@ -835,7 +856,7 @@ resource "google_cloudbuild_trigger" "composer_plan_dev_trigger" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
     _TFVARS_FILE         = var.env_name_dev
   }
 }
@@ -878,7 +899,7 @@ resource "google_cloudbuild_trigger" "composer_apply_dev_trigger" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
     _TFVARS_FILE         = var.env_name_dev
   }
 }
@@ -921,7 +942,7 @@ resource "google_cloudbuild_trigger" "composer_plan_prod_trigger" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
     _TFVARS_FILE         = var.env_name_prod
   }
 }
@@ -964,7 +985,7 @@ resource "google_cloudbuild_trigger" "composer_apply_prod_trigger" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
     _TFVARS_FILE         = var.env_name_prod
   }
 }

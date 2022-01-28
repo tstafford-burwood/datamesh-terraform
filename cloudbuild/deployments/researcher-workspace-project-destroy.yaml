@@ -26,6 +26,6 @@ steps:
   args: [
   'destroy',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-var=terraform_foundation_state_prefix=${_PREFIX}',
+  '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
   '-auto-approve'
   ]

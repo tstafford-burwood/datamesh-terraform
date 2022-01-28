@@ -5,23 +5,23 @@ steps:
 
 - id: "scp init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/${_PREFIX}/vpc-service-controls/perimeter'
+  dir: 'environment/${_PREFIX}/vpc-service-controls/service-perimeter'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/scp_test'
+  '-backend-config=prefix=${_PREFIX}/service-perimeter'
   ]
 
 - id: "scp plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/perimeter'
+  dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
   'plan'
   ]
 
 - id: "scp apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-service-controls/perimeter'
+  dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
   'apply',
   '-auto-approve'

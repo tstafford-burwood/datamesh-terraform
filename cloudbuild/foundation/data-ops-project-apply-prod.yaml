@@ -4,67 +4,67 @@ steps:
 
 # SECURE DATA STAGING PROJECT
 
-- id: "staging project - init"
+- id: "data-ops project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/staging-project'
+  '-backend-config=prefix=${_PREFIX}/data-ops-project'
   ]
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: ['validate',
     '-no-color'
     ]
 
-- id: "staging project - first plan"
+- id: "data-ops project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',
-  '-target=module.secure-staging-project'
+  '-target=module.secure-data-ops-project'
   ]
 
-- id: "staging project - first apply"
+- id: "data-ops project - first apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'apply',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',
-  '-target=module.secure-staging-project',
+  '-target=module.secure-data-ops-project',
   '-auto-approve'
   ]
 
-# Get staging project ID in order to enable the DLP API service agent
+# Get data-ops project ID in order to enable the DLP API service agent
 
-- id: "staging project - output"
+- id: "data-ops project - output"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   entrypoint: /bin/sh
   args: [
   '-c',
-  'terraform output staging_project_id > _STAGING_PROJECT_ID && cat _STAGING_PROJECT_ID'
+  'terraform output data-ops_project_id > _STAGING_PROJECT_ID && cat _STAGING_PROJECT_ID'
   ]
 
 
 # Need to enable here in order to perform IAM role assignments
 
-- id: "staging project - enable DLP API service agent"
+- id: "data-ops project - enable DLP API service agent"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   entrypoint: "bash"
   args:
     - "-c"
@@ -79,31 +79,31 @@ steps:
         --compressed) \
     - echo "$$RESPONSE"
 
-# Need to copy json file w/ BQ table definition for GCS Events from a sub-directory into the staging project directory
+# Need to copy json file w/ BQ table definition for GCS Events from a sub-directory into the data-ops project directory
 
-- id: "staging project - copy table_schema_gcs_events.json"
+- id: "data-ops project - copy table_schema_gcs_events.json"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/foundation/staging-project/bigquery-table-schema'
+  dir: 'environment/foundation/data-ops-project/bigquery-table-schema'
   entrypoint: /bin/sh
   args: [
   '-c',
-  'cp table_schema_gcs_events.json /workspace/environment/foundation/staging-project'
+  'cp table_schema_gcs_events.json /workspace/environment/foundation/data-ops-project'
   ]
 
 # The following steps provision everything else.
 
-- id: "staging project - second plan"
+- id: "data-ops project - second plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'plan',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',
   '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
-- id: "staging project - second apply"
+- id: "data-ops project - second apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'apply',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',

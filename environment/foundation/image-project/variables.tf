@@ -187,6 +187,12 @@ variable "routes" {
   default     = []
 }
 
+variable "default_region" {
+  description = "The default region to deploy resources."
+  type        = string
+  default     = "us-central1"
+}
+
 #--------------------------------------------------------
 # PACKER CONTAINER ARTIFACT REGISTRY REPOSITORY VARIABLES
 #--------------------------------------------------------

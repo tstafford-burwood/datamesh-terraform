@@ -34,8 +34,9 @@ locals {
   org_id               = module.constants.value.org_id
   billing_account_id   = module.constants.value.billing_account_id
   folder_id            = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  image_default_region = module.constants.value.image_default_region
+  image_default_region = var.default_region
   function             = "image-factory"
+  #image_default_region = module.constants.value.image_default_region
 }
 
 #----------------------------------------------------------------------------

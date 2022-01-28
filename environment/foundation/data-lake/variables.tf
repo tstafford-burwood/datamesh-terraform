@@ -134,7 +134,7 @@ variable "datalake_project_member" {
 }
 
 variable "member_prefix" {
-  description = "Prefix member or group or serviceaccount."
+  description = "Prefix user or group or serviceAccount."
   type        = string
   #default     = "group"
 

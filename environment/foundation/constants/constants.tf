@@ -21,8 +21,8 @@ locals {
     // PACKER PROJECT INFORMATION
 
     #image_project_id                 = "aaron3-packer-9c1b" //CHANGE AFTER PROVISIONING PACKER PROJECT
-    packer_base_image_id_bastion      = ""  // CHANGE AFTER NEW IMAGE IS CREATED
-    packer_base_image_id_deeplearning = ""  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_base_image_id_bastion      = "custom-image-4f102f4"  // CHANGE AFTER NEW IMAGE IS CREATED
+    packer_base_image_id_deeplearning = "deeplearning-image-fcb0466"  // CHANGE AFTER NEW IMAGE IS CREATED
     #image_default_region             = "us-central1"        // SELECT A DEFAULT REGION. `us-central1` has been selected as a default
 
     // STAGING PROJECT INFORMATION

@@ -151,7 +151,7 @@ module "folder_iam_member" {
 
 
 #----------------------------------------------
-# DISABLE SRDE FOLDER SERVICE ACCOUNT CREATION check
+# SERVICE ACCOUNT CREATION
 #----------------------------------------------
 module "srde_project_disable_sa_creation" {
   source      = "terraform-google-modules/org-policy/google"
@@ -164,7 +164,7 @@ module "srde_project_disable_sa_creation" {
 }
 
 #--------------------------------------
-# SRDE FOLDER REQUIRE OS LOGIN FOR VMs check
+# REQUIRE OS LOGIN FOR VMs
 #--------------------------------------
 module "srde_project_vm_os_login" {
   source      = "terraform-google-modules/org-policy/google"
@@ -173,5 +173,18 @@ module "srde_project_vm_os_login" {
   policy_type = "boolean"
   policy_for  = local.policy_for
   project_id  = local.staging_project_id
+  enforce     = var.enforce
+}
+
+#--------------------------------------
+# REQUIRE SHIELDED VMs
+#--------------------------------------
+module "srde_project_shielded_vms" {
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 3.0.2"
+  constraint  = "constraints/compute.requireShieldedVm"
+  policy_type = "boolean"
+  policy_for  = local.policy_for
+  project_id  = local.project_id
   enforce     = var.enforce
 }

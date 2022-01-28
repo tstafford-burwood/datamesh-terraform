@@ -4,35 +4,35 @@ steps:
 
 # SECURE DATA STAGING PROJECT
 
-- id: "staging project - init"
+- id: "data-ops project - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/staging-project'
+  '-backend-config=prefix=${_PREFIX}/data-ops-project'
   ]
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: ['validate',
     '-no-color'
     ]
 
-- id: "staging project - first plan"
+- id: "data-ops project - first plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',
-  '-target=module.secure-staging-project'
+  '-target=module.secure-data-ops-project'
   ]

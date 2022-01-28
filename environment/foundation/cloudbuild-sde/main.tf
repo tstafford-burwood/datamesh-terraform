@@ -615,7 +615,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_plan_prod" {
   project = local.automation_project_id
   name    = format("%s-plan-%s", var.data_lake_project_trigger_name, var.env_name_prod)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.data_lake_project_trigger_name, var.env_name_prod)
@@ -699,7 +699,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
   project = local.automation_project_id
   name    = format("%s-apply-%s", var.data_lake_project_trigger_name, var.env_name_prod)
 
-  description    = format("Dev pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE-%s %s created with Terraform", var.data_lake_project_trigger_name, var.env_name_prod)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.data_lake_project_trigger_name, var.env_name_prod)
@@ -989,9 +989,9 @@ resource "google_cloudbuild_trigger" "composer_apply_dev_trigger" {
 resource "google_cloudbuild_trigger" "composer_plan_prod_trigger" {
 
   project = local.automation_project_id
-  name    = "composer-plan-prod"
+  name    = "composer-plan-${var.env_name_prod}"
 
-  description    = "Pipeline for SDE-Composer created with Terraform"
+  description    = "${var.env_name_prod} Pipeline for SDE-Composer created with Terraform"
   tags           = var.composer_plan_trigger_tags
   disabled       = var.composer_plan_trigger_disabled
   filename       = "cloudbuild/foundation/composer-plan.yaml"
@@ -1032,9 +1032,9 @@ resource "google_cloudbuild_trigger" "composer_plan_prod_trigger" {
 resource "google_cloudbuild_trigger" "composer_apply_prod_trigger" {
 
   project = local.automation_project_id
-  name    = "composer-apply-prod"
+  name    = "composer-apply-${var.env_name_prod}"
 
-  description    = "Pipeline for SRDE-Composer created with Terraform"
+  description    = "${var.env_name_prod} Pipeline for SRDE-Composer created with Terraform"
   tags           = var.composer_apply_trigger_tags
   disabled       = var.composer_apply_trigger_disabled
   filename       = "cloudbuild/foundation/composer-apply.yaml"
@@ -1487,7 +1487,7 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
   project = local.automation_project_id
   name    = "bastion-vm-image-${var.env_name_prod}"
 
-  description    = "Pipeline for bastion CIS Image Build created with Terraform"
+  description    = "${var.env_name_prod} Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
   disabled       = var.bastion_cis_image_build_trigger_disabled
   filename       = "cloudbuild/foundation/image-bastion-image.yaml"
@@ -1525,7 +1525,7 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
   project = local.automation_project_id
   name    = "bastion-vm-image-${var.env_name_dev}"
 
-  description    = "Pipeline for bastion CIS Image Build created with Terraform"
+  description    = "${var.env_name_dev} Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
   disabled       = var.bastion_cis_image_build_trigger_disabled
   filename       = "cloudbuild/foundation/image-bastion-image.yaml"

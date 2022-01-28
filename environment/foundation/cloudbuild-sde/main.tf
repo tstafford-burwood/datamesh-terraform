@@ -727,7 +727,7 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
     _BUCKET              = local.terraform_state_bucket
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = var.env_name_prod
+    _TFVARS_FILE         = var.env_name_dev
     _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
@@ -771,7 +771,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
   }
 }
 
@@ -809,7 +809,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_prod" {
     _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
   }
 }
 
@@ -852,7 +852,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply" {
     _PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
   }
 }
 
@@ -891,7 +891,7 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_apply_prod" {
     _PREFIX_FOUNDATION   = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
     _TFVARS_FILE         = ""
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
   }
 }
 

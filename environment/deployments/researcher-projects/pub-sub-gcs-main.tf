@@ -70,7 +70,8 @@ module "pub_sub_topic_iam_binding" {
   // REQUIRED
 
   project_id = local.staging_project_id
-  topic_name = var.topic_name
+  #topic_name = var.topic_name
+  topic_name = local.staging_pub_sub_topic_name
   iam_member = "serviceAccount:${each.value}"
   role       = var.role
 }

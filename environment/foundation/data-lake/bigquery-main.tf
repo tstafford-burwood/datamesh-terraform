@@ -47,7 +47,7 @@ module "bigquery_staging_data_lake_ingress" {
 
   // REQUIRED
 
-  dataset_id = format("%s_%s", lower(var.envrionment), "staging_data_lake_ingress_dataset_1")
+  dataset_id = format("%s_%s", lower(var.environment), "staging_data_lake_ingress_dataset_1")
   project_id = local.staging_project_id
 
   // OPTIONAL

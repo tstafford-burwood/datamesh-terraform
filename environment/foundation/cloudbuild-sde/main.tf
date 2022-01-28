@@ -725,10 +725,10 @@ resource "google_cloudbuild_trigger" "data_lake_project_apply_prod" {
 
   substitutions = {
     _BUCKET              = local.terraform_state_bucket
-    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _PREFIX              = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
     _TAG                 = var.terraform_container_version
-    _TFVARS_FILE         = var.env_name_dev
-    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_dev
+    _TFVARS_FILE         = var.env_name_prod
+    _COMPOSER_DAG_BUCKET = local.composer_gcs_bucket_prod
   }
 }
 

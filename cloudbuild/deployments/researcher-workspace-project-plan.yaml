@@ -29,7 +29,7 @@ steps:
   dir: 'environment/deployments/researcher-projects'
   args: [
   'plan',
-  '-var=terraform_foundation_state_prefix=${_PREFIX}',
+  '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '--out',
   'tfplan.binary'

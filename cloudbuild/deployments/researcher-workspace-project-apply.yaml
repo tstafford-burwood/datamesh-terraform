@@ -78,7 +78,7 @@ steps:
 
 - id: "staging project state pull - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -87,7 +87,7 @@ steps:
 
 - id: "output file creation - staging project"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project'
+  dir: 'environment/foundation/staging-project'
   entrypoint: /bin/sh
   args: [
     '-c',

@@ -2,7 +2,6 @@
 # CLOUD COMPOSER VARIABLES
 #-------------------------
 
-
 variable "environment" {
   description = "Environment name."
   type        = string
@@ -11,7 +10,6 @@ variable "environment" {
 variable "terraform_foundation_state_prefix" {
   description = "The name of the foundation prefix to create in the state bucket. Set in during the pipeline."
   type        = string
-  #default     = "foundation"
 }
 
 // REQUIRED

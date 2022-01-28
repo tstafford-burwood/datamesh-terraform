@@ -10,10 +10,18 @@ data "terraform_remote_state" "staging_project" {
   }
 }
 
-# data "google_storage_project_service_account" "gcs_account" {
-#   # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
-#   project = module.secure-staging-project.project_id
-# }
+data "terraform_remote_state" "folders" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "folders")
+  }
+}
+
+data "google_storage_project_service_account" "gcs_account" {
+  # DATA BLOCK TO RETRIEVE PROJECT'S GCS SERVICE ACCOUNT
+  project = module.secure-staging-project.project_id
+}
 
 #----------------------------------------------------------------------------
 # IMPORT CONSTANTS
@@ -28,8 +36,8 @@ module "constants" {
 locals {
   org_id               = module.constants.value.org_id
   billing_account_id   = module.constants.value.billing_account_id
-  srde_folder_id       = module.constants.value.sde_folder_id
-  default_region       = module.constants.value.staging_default_region
+  foundation_folder_id = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  default_region       = data.terraform_remote_state.staging_project.outputs.subnets_regions[0]
   staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
   staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
   staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
@@ -133,86 +141,8 @@ module "composer_service_account" {
 module "folder_iam_member" {
   source = "../../../../modules/iam/folder_iam"
 
-  folder_id     = local.srde_folder_id
+  folder_id     = local.foundation_folder_id
   iam_role_list = var.iam_role_list
   folder_member = module.composer_service_account.iam_email
   depends_on    = [module.composer_service_account]
 }
-
-#------------------------------------------------
-# VPC SC ACCESS LEVELS - COMPOSER SERVICE ACCOUNT
-#------------------------------------------------
-
-// FOR COMPOSER SERVICE ACCOUNT
-
-# module "cloud_composer_access_level_members" {
-#   source = "../../../../modules/vpc_service_controls/access_levels"
-
-#   // REQUIRED
-#   #access_level_name  = var.access_level_name
-#   access_level_name  = local.cloud_composer_access_level_name
-#   parent_policy_name = local.parent_access_policy_id
-
-#   // OPTIONAL - NON PREMIUM
-#   combining_function       = var.combining_function
-#   access_level_description = var.access_level_description
-#   ip_subnetworks           = var.ip_subnetworks
-#   access_level_members     = ["serviceAccount:${module.composer_service_account.email}"]
-#   negate                   = var.negate
-#   regions                  = var.regions
-#   required_access_levels   = var.required_access_levels
-
-#   // OPTIONAL - DEVICE POLICY (PREMIUM FEATURE)
-#   allowed_device_management_levels = var.allowed_device_management_levels
-#   allowed_encryption_statuses      = var.allowed_encryption_statuses
-#   minimum_version                  = var.minimum_version
-#   os_type                          = var.os_type
-#   require_corp_owned               = var.require_corp_owned
-#   require_screen_lock              = var.require_screen_lock
-#   depends_on                       = [module.composer_service_account]
-# }
-
-// THE BELOW POLICIES ARE LISTED HERE TO DISABLE THEN RE-ENABLE DURING CLOUD BUILD PIPELINE RUNS
-// THESE POLICIES ARE ALSO APPLIED AT THE SRDE FOLDER LEVEL IN THE `../..srde-folder-policies` DIRECTORY
-
-#-----------------------------------------
-# STAGING PROJECT SERVICE ACCOUNT CREATION
-#-----------------------------------------
-
-# module "staging_project_disable_sa_creation" {
-#   source      = "terraform-google-modules/org-policy/google"
-#   version     = "~> 3.0.2"
-#   constraint  = "constraints/iam.disableServiceAccountCreation"
-#   policy_type = "boolean"
-#   policy_for  = "project"
-#   project_id  = local.staging_project_id
-#   enforce     = var.enforce_staging_project_disable_sa_creation
-# }
-
-#-----------------------------------------
-# STAGING PROJECT REQUIRE OS LOGIN FOR VMs
-#-----------------------------------------
-
-# module "staging_project_vm_os_login" {
-#   source      = "terraform-google-modules/org-policy/google"
-#   version     = "~> 3.0.2"
-#   constraint  = "constraints/compute.requireOsLogin"
-#   policy_type = "boolean"
-#   policy_for  = "project"
-#   project_id  = local.staging_project_id
-#   enforce     = var.enforce_staging_project_vm_os_login
-# }
-
-#-----------------------------
-# STAGING PROJECT SHIELDED VMs
-#-----------------------------
-
-# module "staging_project_shielded_vms" {
-#   source      = "terraform-google-modules/org-policy/google"
-#   version     = "~> 3.0.2"
-#   constraint  = "constraints/compute.requireShieldedVm"
-#   policy_type = "boolean"
-#   policy_for  = "project"
-#   project_id  = local.staging_project_id
-#   enforce     = var.enforce_staging_project_shielded_vms
-# }

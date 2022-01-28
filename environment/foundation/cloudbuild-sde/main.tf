@@ -745,8 +745,8 @@ resource "google_cloudbuild_trigger" "researcher_workspace_project_plan_dev" {
   description    = format("Pipeline for SDE-%s created with Terraform", var.researcher_workspace_project_trigger_name)
   tags           = var.plan_trigger_tags
   disabled       = var.plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan.yaml", var.researcher_workspace_project_trigger_name)
-  included_files = formatlist("environment/foundation/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
+  filename       = format("cloudbuild/deployments/%s-plan.yaml", var.researcher_workspace_project_trigger_name)
+  included_files = formatlist("environment/deployments/%s/env/terraform.tfvars", var.researcher_workspace_project_trigger_name)
 
   /*
   trigger_template {

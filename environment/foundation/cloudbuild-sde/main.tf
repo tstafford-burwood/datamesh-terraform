@@ -1482,10 +1482,10 @@ resource "google_cloudbuild_trigger" "deep_learning_vm_image_build_dev" {
 # CLOUDBUILD TRIGGERS - bastion CIS IMAGE BUILD 
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "bastion_cis_image_build" {
+resource "google_cloudbuild_trigger" "bastion_cis_image_build_prod" {
 
   project = local.automation_project_id
-  name    = "bastion-vm-image"
+  name    = "bastion-vm-image-${var.env_name_prod}"
 
   description    = "Pipeline for bastion CIS Image Build created with Terraform"
   tags           = var.bastion_cis_image_build_trigger_tags
@@ -1512,7 +1512,45 @@ resource "google_cloudbuild_trigger" "bastion_cis_image_build" {
   }
 
   substitutions = {
-    _IMAGE_PROJECT_ID = local.image_project_id
+    _IMAGE_PROJECT_ID = local.image_project_id_prod
+    _IMAGE_IMAGE_TAG  = var.image_image_tag
+    _REGION           = local.image_default_region
+    _IMAGE_FAMILY     = "ubuntu-1804-lts"
+    _IMAGE_ZONE       = "${local.image_default_region}-b"
+  }
+}
+
+resource "google_cloudbuild_trigger" "bastion_cis_image_build_dev" {
+
+  project = local.automation_project_id
+  name    = "bastion-vm-image-${var.env_name_dev}"
+
+  description    = "Pipeline for bastion CIS Image Build created with Terraform"
+  tags           = var.bastion_cis_image_build_trigger_tags
+  disabled       = var.bastion_cis_image_build_trigger_disabled
+  filename       = "cloudbuild/foundation/image-bastion-image.yaml"
+  included_files = ["cloudbuild/foundation/image-bastion-image.yaml"]
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.apply_trigger_repo_name
+   invert_regex = var.apply_trigger_invert_regex
+    branch_name  = var.apply_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.apply_trigger_invert_regex
+      branch       = var.apply_branch_name
+    }
+  }
+
+  substitutions = {
+    _IMAGE_PROJECT_ID = local.image_project_id_dev
     _IMAGE_IMAGE_TAG  = var.image_image_tag
     _REGION           = local.image_default_region
     _IMAGE_FAMILY     = "ubuntu-1804-lts"

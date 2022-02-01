@@ -73,29 +73,29 @@ steps:
     'terraform output -json > /workspace/researcher-output.json && cat /workspace/researcher-output.json'
   ]
 
-- id: "staging project state pull - init"
+- id: "data ops project state pull - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX_FOUNDATION}/staging-project'
+    '-backend-config=prefix=${_PREFIX_FOUNDATION}/data-ops-project'
   ]
 
-- id: "output file creation - staging project"
+- id: "output file creation - data ops project"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/staging-project'
   entrypoint: /bin/sh
   args: [
     '-c',
-    'terraform output -json > /workspace/staging-output.json && cat /workspace/staging-output.json'
+    'terraform output -json > /workspace/data-ops-output.json && cat /workspace/data-ops-output.json'
   ]
 
   # Perform variable substitution in the DAGs and upload all of them to the Composer DAGs folder.
 
 - id: "load variables for Researcher DAG envs"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/foundation/staging-project/cloud-composer/composer-dag-files'
+  dir: 'environment/foundation/data-ops-project/cloud-composer/composer-dag-files'
   entrypoint: python
   args: [
     'set_researcher_dag_envs.py'
@@ -103,7 +103,7 @@ steps:
 
 - id: "load DAG to GCS bucket"
   name: gcr.io/cloud-builders/gsutil
-  dir: 'environment/foundation/staging-project/cloud-composer/composer-dag-files'
+  dir: 'environment/foundation/data-ops-project/cloud-composer/composer-dag-files'
   args: [
     'cp',
     '-n',

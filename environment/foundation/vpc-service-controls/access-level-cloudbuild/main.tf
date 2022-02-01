@@ -23,12 +23,12 @@ locals {
 // ENABLES A CLOUDBUILD SERVICE ACCOUNT TO ACCESS PROJECTS WITH A VPC SERVICE CONTROL PERIMETER AROUND IT
 // WITHOUT THIS ANY RESTRICTED APIs WOULD NOT BE ACCESSIBLE BY THE CLOUDBUILD SERVICE ACCOUNT
 
-module "cloudbuild_access_level" {
+module "access_level_cloudbuild" {
   source = "../../../../modules/vpc_service_controls/access_levels"
 
   // REQUIRED
   # access_level_name  = var.access_level_name
-  access_level_name  = var.cloudbuild_access_level_name
+  access_level_name  = format("%s_%s",var.access_level_cloudbuild_name, var.environment)
   parent_policy_name = local.parent_access_policy_id
 
   // OPTIONAL - NON PREMIUM

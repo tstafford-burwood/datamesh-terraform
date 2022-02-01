@@ -1,4 +1,6 @@
 
+environment = "prod"
+
 resources = [
   "207846422464",
   "810291290728",

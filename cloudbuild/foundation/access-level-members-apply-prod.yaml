@@ -1,0 +1,32 @@
+steps:
+
+
+# SDE ACCESS LEVEL MEMBERS
+
+- id: "access level members - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-admin'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/access-level-members'
+  ]
+
+- id: "access level members - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
+  ]
+
+- id: "access level members - apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  '-auto-approve'
+  ]
+  
+timeout: 1800s

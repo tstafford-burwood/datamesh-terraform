@@ -3,7 +3,7 @@ steps:
 
 # SDE ACCESS LEVEL CLOUDBUILD
 
-- id: "access levels cloudbuild terraform init"
+- id: "access level cloudbuild terraform init"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
@@ -12,18 +12,20 @@ steps:
   '-backend-config=prefix=${_PREFIX}/access-level-cloudbuild'
   ]
 
-- id: "access levels cloudbuild terraform plan"
+- id: "access level cloudbuild terraform plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
-- id: "access levels cloudbuild apply"
+- id: "access level cloudbuild apply"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
   'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 

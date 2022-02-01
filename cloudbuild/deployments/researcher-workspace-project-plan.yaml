@@ -35,7 +35,7 @@ steps:
   'tfplan.binary'
   ]
 
-- id: "staging project - first show"
+- id: "data ops project - first show"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh

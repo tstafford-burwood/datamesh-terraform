@@ -11,23 +11,35 @@ module "constants" {
 }
 
 #------------------------------------------------------------------------
-# RETRIEVE COMPOSER TF STATE
+# RETRIEVE ACCESS LEVEL TF STATE
 #------------------------------------------------------------------------
 
-//data "terraform_remote_state" "cloud_composer" {
-//  backend = "gcs"
-//  config = {
-//    bucket = module.constants.value.terraform_state_bucket
-//    prefix = format("%s/%s", var.terraform_state_prefix, "cloud-composer")
-//  }
-//}
+data "terraform_remote_state" "access_level_cloudbuild_dev" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev, "access-level-cloudbuild")
+  }
+}
+
+data "terraform_remote_state" "access_level_cloudbuild_prod" {
+  backend = "gcs"
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = format("%s/%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod, "access-level-cloudbuild")
+  }
+}
 
 // SET LOCAL VALUES
 
 locals {
   parent_access_policy_id    = module.constants.value.parent_access_policy_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
-  #cloudbuild_access_level_name = module.constants.value.cloudbuild_access_level_name
+
+   # Check if the access level cloudbuild has been deployed, if not default to empty string
+  access_level_cloudbuild_name_dev  = try(data.terraform_remote_state.access_level_cloudbuild_dev.outputs.name, "")
+  access_level_cloudbuild_name_prod  = try(data.terraform_remote_state.access_level_cloudbuild_prod.outputs.name, "")
+
 }
 
 #resource "google_access_context_manager_service_perimeter_resource" "service-perimeter-resource" {
@@ -38,13 +50,14 @@ locals {
 
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = format("accessPolicies/%s", local.parent_access_policy_id)
-  name   = format("accessPolicies/%s/servicePerimeters/sde_scp_3", local.parent_access_policy_id)
+  name   = format("accessPolicies/%s/servicePerimeters/sde_scp_%s", local.parent_access_policy_id, var.environment)
   title  = "sde_scp_3"
   perimeter_type = "PERIMETER_TYPE_REGULAR"
   status {
     restricted_services = var.restricted_services
     resources = var.scp_perimeter_projects
-    access_levels = ["accessPolicies/548853993361/accessLevels/cloudbuild"]
+    #access_levels = ["accessPolicies/548853993361/accessLevels/cloudbuild"]
+    access_levels = local.access_level_cloudbuild_name_dev
 
     vpc_accessible_services {
       enable_restriction = true
@@ -58,7 +71,8 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
         identity_type = "ANY_SERVICE_ACCOUNT"
         identities    = [""]
         sources {
-          access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
+          #access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
+          access_level = local.access_level_cloudbuild_name_dev
         }
       }
       ingress_to {

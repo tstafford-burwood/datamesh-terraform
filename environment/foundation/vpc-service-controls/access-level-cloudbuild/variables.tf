@@ -4,7 +4,7 @@
 
 // REQUIRED VARIABLES
 
-variable "cloudbuild_access_level_name" {
+variable "access_level_cloudbuild_name" {
   description = "Description of the AccessLevel and its use. Does not affect behavior."
   type        = string
   default     = "cloudbuild"
@@ -22,6 +22,11 @@ variable "access_level_description" {
   description = "Description of the access level."
   type        = string
   default     = ""
+}
+
+variable "environment" {
+  description = "Environment name."
+  type        = string
 }
 
 variable "ip_subnetworks" {

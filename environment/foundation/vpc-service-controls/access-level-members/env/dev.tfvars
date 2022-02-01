@@ -1,3 +1,6 @@
+
+environment = "dev"
+
 #----------------------------
 # VPC SC ACCESS LEVELS TFVARS
 # Can only use individuals, no Google Groups

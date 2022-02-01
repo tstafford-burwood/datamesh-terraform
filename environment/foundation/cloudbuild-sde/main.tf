@@ -1494,7 +1494,7 @@ resource "google_cloudbuild_trigger" "service_perimeter_plan_prod" {
 resource "google_cloudbuild_trigger" "service_perimeter_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.service_perimeter_trigger_name, var.env_name_dev)
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.service_perimeter_plan_trigger_tags
@@ -1536,7 +1536,7 @@ resource "google_cloudbuild_trigger" "service_perimeter_apply_dev" {
 resource "google_cloudbuild_trigger" "service_perimeter_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.service_perimeter_trigger_name, var.env_name_prod)
 
   description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
   tags           = var.service_perimeter_plan_trigger_tags

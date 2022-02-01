@@ -37,8 +37,8 @@ locals {
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
 
    # Check if the access level cloudbuild has been deployed, if not default to empty string
-  access_level_cloudbuild_name_dev  = try(data.terraform_remote_state.access_level_cloudbuild_dev.outputs.name, "")
-  access_level_cloudbuild_name_prod  = try(data.terraform_remote_state.access_level_cloudbuild_prod.outputs.name, "")
+  access_level_cloudbuild_id_dev  = try(data.terraform_remote_state.access_level_cloudbuild_dev.outputs.name_id, "")
+  access_level_cloudbuild_id_prod  = try(data.terraform_remote_state.access_level_cloudbuild_prod.outputs.name_id, "")
 
 }
 
@@ -57,7 +57,7 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
     restricted_services = var.restricted_services
     resources = var.scp_perimeter_projects
     #access_levels = ["accessPolicies/548853993361/accessLevels/cloudbuild"]
-    access_levels = local.access_level_cloudbuild_name_dev
+    access_levels = local.access_level_cloudbuild_id_dev
 
     vpc_accessible_services {
       enable_restriction = true
@@ -72,7 +72,7 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
         identities    = [""]
         sources {
           #access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
-          access_level = local.access_level_cloudbuild_name_dev
+          access_level = local.access_level_cloudbuild_id_dev
         }
       }
       ingress_to {

@@ -16,7 +16,8 @@ steps:
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-members'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 - id: "access level members - apply"
@@ -24,6 +25,7 @@ steps:
   dir: 'environment/foundation/vpc-service-controls/access-level-members'
   args: [
   'apply',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 

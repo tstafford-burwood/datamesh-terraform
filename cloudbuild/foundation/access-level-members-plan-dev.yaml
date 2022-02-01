@@ -18,5 +18,6 @@ steps:
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-members'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]

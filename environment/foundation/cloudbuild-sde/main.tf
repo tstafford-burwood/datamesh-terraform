@@ -1244,16 +1244,16 @@ resource "google_cloudbuild_trigger" "access_level_cloudbuild_apply_prod" {
 # ACCESS LEVEL ADMIN PLAN - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "access_level_admin_plan_dev" {
+resource "google_cloudbuild_trigger" "access_level_members_plan_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.access_level_admin_trigger_name, var.env_name_dev)
+  name    = format("%s-plan-%s", var.access_level_members_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_dev)
-  tags           = var.access_level_admin_plan_trigger_tags
-  disabled       = var.access_level_admin_plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.access_level_admin_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_admin_trigger_name, var.env_name_dev)
+  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_members_trigger_name, var.env_name_dev)
+  tags           = var.access_level_members_plan_trigger_tags
+  disabled       = var.access_level_members_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.access_level_members_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_members_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -1285,16 +1285,16 @@ resource "google_cloudbuild_trigger" "access_level_admin_plan_dev" {
 # ACCESS LEVEL ADMIN PLAN - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "access_level_admin_plan_prod" {
+resource "google_cloudbuild_trigger" "access_level_members_plan_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-plan-%s", var.access_level_admin_trigger_name, var.env_name_prod)
+  name    = format("%s-plan-%s", var.access_level_members_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_prod)
-  tags           = var.access_level_admin_plan_trigger_tags
-  disabled       = var.access_level_admin_plan_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.access_level_admin_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_admin_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_members_trigger_name, var.env_name_prod)
+  tags           = var.access_level_members_plan_trigger_tags
+  disabled       = var.access_level_members_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.access_level_members_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_members_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {
@@ -1326,16 +1326,16 @@ resource "google_cloudbuild_trigger" "access_level_admin_plan_prod" {
 # ACCESS LEVEL ADMIN APPLY - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
+resource "google_cloudbuild_trigger" "access_level_members_apply_dev" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.access_level_admin_trigger_name, var.env_name_dev)
+  name    = format("%s-apply-%s", var.access_level_members_trigger_name, var.env_name_dev)
 
-  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_dev)
-  tags           = var.access_level_admin_apply_trigger_tags
-  disabled       = var.access_level_admin_apply_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.access_level_admin_trigger_name, var.env_name_dev)
-  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_admin_trigger_name, var.env_name_dev)
+  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_members_trigger_name, var.env_name_dev)
+  tags           = var.access_level_members_apply_trigger_tags
+  disabled       = var.access_level_members_apply_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.access_level_members_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_members_trigger_name, var.env_name_dev)
 
   /*
   trigger_template {
@@ -1367,16 +1367,16 @@ resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
 # ACCESS LEVEL ADMIN APPLY - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "admin_access_level_apply_prod" {
+resource "google_cloudbuild_trigger" "access_level_members_apply_prod" {
 
   project = local.automation_project_id
-  name    = format("%s-apply-%s", var.access_level_admin_trigger_name, var.env_name_prod)
+  name    = format("%s-apply-%s", var.access_level_members_trigger_name, var.env_name_prod)
 
-  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_admin_trigger_name, var.env_name_prod)
-  tags           = var.access_level_admin_apply_trigger_tags
-  disabled       = var.access_level_admin_apply_trigger_disabled
-  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.access_level_admin_trigger_name, var.env_name_prod)
-  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_admin_trigger_name, var.env_name_prod)
+  description    = format("Pipeline for SDE %s %s created with Terraform", var.access_level_members_trigger_name, var.env_name_prod)
+  tags           = var.access_level_members_apply_trigger_tags
+  disabled       = var.access_level_members_apply_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.access_level_members_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.access_level_members_trigger_name, var.env_name_prod)
 
   /*
   trigger_template {

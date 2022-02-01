@@ -1326,7 +1326,7 @@ resource "google_cloudbuild_trigger" "access_level_members_plan_prod" {
 # ACCESS LEVEL ADMIN APPLY - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
+resource "google_cloudbuild_trigger" "access_level_members_apply_dev" {
 
   project = local.automation_project_id
   name    = format("%s-apply-%s", var.access_level_members_trigger_name, var.env_name_dev)
@@ -1367,7 +1367,7 @@ resource "google_cloudbuild_trigger" "admin_access_level_apply_dev" {
 # ACCESS LEVEL ADMIN APPLY - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "admin_access_level_apply_prod" {
+resource "google_cloudbuild_trigger" "access_level_members_apply_prod" {
 
   project = local.automation_project_id
   name    = format("%s-apply-%s", var.access_level_members_trigger_name, var.env_name_prod)

@@ -282,13 +282,13 @@ variable "access_level_cloudbuild_apply_trigger_disabled" {
 # ACCESS LEVEL ADMIN PLAN VARIABLES
 #-------------------------------------------------------------
 
-variable "access_level_admin_plan_trigger_tags" {
+variable "access_level_members_plan_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "access_level_admin_plan_trigger_disabled" {
+variable "access_level_members_plan_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false
@@ -298,13 +298,13 @@ variable "access_level_admin_plan_trigger_disabled" {
 # ACCESS LEVEL ADMIN APPLY VARIABLES
 #--------------------------------------------------------------
 
-variable "access_level_admin_apply_trigger_tags" {
+variable "access_level_members_apply_trigger_tags" {
   description = "Tags for annotation of a BuildTrigger"
   type        = list(string)
   default     = []
 }
 
-variable "access_level_admin_apply_trigger_disabled" {
+variable "access_level_admin_members_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false

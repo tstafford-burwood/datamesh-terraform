@@ -5,7 +5,7 @@ steps:
 
 - id: "init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/${_PREFIX}/vpc-service-controls/service-perimeter'
+  dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',

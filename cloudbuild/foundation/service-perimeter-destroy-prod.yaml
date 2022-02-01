@@ -1,7 +1,7 @@
 steps:
 
 
-# SCP Workflows
+# Service Control Perimeter Terraform Destory Prod
 
 - id: "init"
   name: hashicorp/terraform:${_TAG}
@@ -17,6 +17,7 @@ steps:
   dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
   'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-destroy'
   ]
 
@@ -25,6 +26,7 @@ steps:
   dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
   'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 

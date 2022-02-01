@@ -1,7 +1,7 @@
 steps:
 
 
-# SCP Workflows
+# Service Control Perimeter Terraform Plan Dev
 
 - id: "scp init"
   name: hashicorp/terraform:${_TAG}
@@ -16,7 +16,8 @@ steps:
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/service-perimeter'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 timeout: 3600s

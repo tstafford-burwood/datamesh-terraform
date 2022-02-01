@@ -50,7 +50,7 @@ locals {
 
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = format("accessPolicies/%s", local.parent_access_policy_id)
-  name   = format("accessPolicies/%s/servicePerimeters/sde_scp_3", local.parent_access_policy_id)
+  name   = format("accessPolicies/%s/servicePerimeters/sde_scp_%s", local.parent_access_policy_id, var.environment)
   title  = "sde_scp_3"
   perimeter_type = "PERIMETER_TYPE_REGULAR"
   status {
@@ -71,7 +71,8 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
         identity_type = "ANY_SERVICE_ACCOUNT"
         identities    = [""]
         sources {
-          access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
+          #access_level = "accessPolicies/548853993361/accessLevels/cloudbuild"
+          access_level = local.access_level_cloudbuild_name_dev
         }
       }
       ingress_to {

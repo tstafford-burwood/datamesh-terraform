@@ -1409,7 +1409,7 @@ resource "google_cloudbuild_trigger" "access_level_members_apply_prod" {
 # SERVICE PERIMETER CLOUDBUILD PLAN - DEV
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "service_perimeter_dev" {
+resource "google_cloudbuild_trigger" "service_perimeter_plan_dev" {
 
   project = local.automation_project_id
   name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_dev)
@@ -1450,7 +1450,7 @@ resource "google_cloudbuild_trigger" "service_perimeter_dev" {
 # SERVICE PERIMETER CLOUDBUILD PLAN - PROD
 #------------------------------------------------------------------------
 
-resource "google_cloudbuild_trigger" "service_perimeter_prod" {
+resource "google_cloudbuild_trigger" "service_perimeter_plan_prod" {
 
   project = local.automation_project_id
   name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_prod)
@@ -1459,6 +1459,89 @@ resource "google_cloudbuild_trigger" "service_perimeter_prod" {
   tags           = var.service_perimeter_plan_trigger_tags
   disabled       = var.service_perimeter_plan_trigger_disabled
   filename       = format("cloudbuild/foundation/%s-plan-%s.yaml", var.service_perimeter_trigger_name, var.env_name_prod)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.service_perimeter_trigger_name, var.env_name_prod)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_prod)
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_prod
+  }
+}
+
+#------------------------------------------------------------------------
+# SERVICE PERIMETER CLOUDBUILD APPLY - DEV
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "service_perimeter_apply_dev" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_dev)
+
+  description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
+  tags           = var.service_perimeter_plan_trigger_tags
+  disabled       = var.service_perimeter_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.service_perimeter_trigger_name, var.env_name_dev)
+  included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.service_perimeter_trigger_name, var.env_name_dev)
+
+  /*
+  trigger_template {
+    project_id   = local.automation_project_id
+    repo_name    = var.plan_trigger_repo_name
+    invert_regex = var.plan_trigger_invert_regex
+    branch_name  = var.plan_branch_name
+  }
+  */
+
+  github {
+    owner = var.github_owner
+    name  = var.github_repo_name
+    push {
+      invert_regex = var.plan_trigger_invert_regex
+      branch       = var.plan_branch_name
+    }
+  }
+
+  substitutions = {
+    _BUCKET      = local.terraform_state_bucket
+    _PREFIX      = format("%s/%s", var.terraform_foundation_state_prefix, var.env_name_dev)
+    _TAG         = var.terraform_container_version
+    _TFVARS_FILE = var.env_name_dev
+  }
+}
+
+
+#------------------------------------------------------------------------
+# SERVICE PERIMETER CLOUDBUILD APPLY - PROD
+#------------------------------------------------------------------------
+
+resource "google_cloudbuild_trigger" "service_perimeter_apply_prod" {
+
+  project = local.automation_project_id
+  name    = format("%s-plan-%s", var.service_perimeter_trigger_name, var.env_name_prod)
+
+  description    = "Pipeline for SRDE Cloudbuild Access Level created with Terraform"
+  tags           = var.service_perimeter_plan_trigger_tags
+  disabled       = var.service_perimeter_plan_trigger_disabled
+  filename       = format("cloudbuild/foundation/%s-apply-%s.yaml", var.service_perimeter_trigger_name, var.env_name_prod)
   included_files = formatlist("environment/foundation/vpc-service-controls/%s/env/%s.tfvars", var.service_perimeter_trigger_name, var.env_name_prod)
 
   /*

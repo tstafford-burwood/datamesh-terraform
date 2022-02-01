@@ -1,0 +1,31 @@
+steps:
+
+
+# SDE ACCESS LEVEL MEMBERS
+
+- id: "access level members - init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/access-level-members'
+  ]
+
+- id: "access level members - plan destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'plan',
+  '-destroy'
+  ]
+
+- id: "access level members - destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'destroy',
+  '-auto-approve'
+  ]
+
+timeout: 1800s

@@ -1,0 +1,22 @@
+timeout: 1800s
+
+steps:
+
+
+# SDE ADMIN ACCESS LEVEL
+
+- id: "access level members- init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'init',
+  '-backend-config=bucket=${_BUCKET}',
+  '-backend-config=prefix=${_PREFIX}/access-level-members'
+  ]
+
+- id: "access level members - plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-service-controls/access-level-members'
+  args: [
+  'plan'
+  ]

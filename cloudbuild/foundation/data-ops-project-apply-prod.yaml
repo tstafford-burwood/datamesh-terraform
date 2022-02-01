@@ -2,7 +2,7 @@ timeout: 3600s
 
 steps:
 
-# SECURE DATA STAGING PROJECT
+# SECURE DATA DATA OPS PROJECT
 
 - id: "data-ops project - init"
   name: hashicorp/terraform:${_TAG}

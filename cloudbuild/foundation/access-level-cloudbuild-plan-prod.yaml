@@ -3,7 +3,7 @@ steps:
 
 # SDE ACCESS LEVEL CLDUBUILD
 
-- id: "access levels terraform init"
+- id: "access level cloudbuild terraform init"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
@@ -12,11 +12,12 @@ steps:
   '-backend-config=prefix=${_PREFIX}/access-level-cloudbuild'
   ]
 
-- id: "access levels terraform plan"
+- id: "access level cloudbuild terraform plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
-  'plan'
+  'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars'
   ]
 
 timeout: 1800s

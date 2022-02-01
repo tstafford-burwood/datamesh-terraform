@@ -3,7 +3,7 @@ steps:
 
 # SDE ACCESS LEVEL CLOUDBUILD
 
-- id: "access levels terraform init"
+- id: "access level cloudbuild terraform init"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
@@ -12,19 +12,21 @@ steps:
   '-backend-config=prefix=${_PREFIX}/access-level-cloudbuild'
   ]
 
-- id: "access levels terraform plan destroy"
+- id: "access level cloubuild terraform plan destroy"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
   'plan',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-destroy'
   ]
 
-- id: "access levels terraform destroy"
+- id: "access level cloudbuild terraform destroy"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-service-controls/access-level-cloudbuild'
   args: [
   'destroy',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]
 

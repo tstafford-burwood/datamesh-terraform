@@ -4,7 +4,7 @@
 
 output "name" {
   description = "Description of the AccessLevel and its use. Does not affect behavior."
-  value       = module.access_level_cloudbuild_.name
+  value       = module.access_level_cloudbuild.name
 }
 
 output "name_id" {

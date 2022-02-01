@@ -29,7 +29,7 @@ locals {
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
 
    # Check if the access level cloudbuild has been deployed, if not default to empty string
-  access_level_cloudbuild_id  = try(data.terraform_remote_state.access_level_cloudbuild_dev.outputs.name_id, "")
+  access_level_cloudbuild_id  = try(data.terraform_remote_state.access_level_cloudbuild.outputs.name_id, "")
 
 }
 

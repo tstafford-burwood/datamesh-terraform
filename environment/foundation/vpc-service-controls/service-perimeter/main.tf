@@ -51,7 +51,7 @@ locals {
 resource "google_access_context_manager_service_perimeter" "service-perimeter-resource" {
   parent = format("accessPolicies/%s", local.parent_access_policy_id)
   name   = format("accessPolicies/%s/servicePerimeters/sde_scp_%s", local.parent_access_policy_id, var.environment)
-  title  = "sde_scp_3"
+  title  = format("sde_scp_%s", var.environment)
   perimeter_type = "PERIMETER_TYPE_REGULAR"
   status {
     restricted_services = var.restricted_services

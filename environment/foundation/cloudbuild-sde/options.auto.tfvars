@@ -53,15 +53,15 @@ access_level_cloudbuild_apply_trigger_disabled = false
 # ACCESS LEVEL CLOUDBUILD PLAN TFVARS
 #--------------------------------------------------------------------------
 
-access_level_admin_plan_trigger_tags     = []
-access_level_admin_plan_trigger_disabled = false
+access_level_members_plan_trigger_tags     = []
+access_level_members_plan_trigger_disabled = false
 
 #-----------------------------------------------------------
 # CLOUDBUILD TRIGGERS - SRDE ADMIN ACCESS LEVEL APPLY TFVARS
 #-----------------------------------------------------------
 
-access_level_admin_apply_trigger_tags     = []
-access_level_admin_apply_trigger_disabled = false
+access_level_members_apply_trigger_tags     = []
+access_level_members_apply_trigger_disabled = false
 
 #-------------------------------------------------------
 # CLOUDBUILD TRIGGERS - DEEP LEARNING IMAGE BUILD TFVARS

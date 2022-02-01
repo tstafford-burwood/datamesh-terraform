@@ -14,10 +14,10 @@ variable "env_name_prod" {
   default     = "prod"
 }
 
-variable "access_level_admin_trigger_name" {
+variable "access_level_members_trigger_name" {
   description = "Name of data lake project trigger"
   type        = string
-  default     = "access-level-admin"
+  default     = "access-level-members"
 }
 
 variable "access_level_cloudbuild_trigger_name" {

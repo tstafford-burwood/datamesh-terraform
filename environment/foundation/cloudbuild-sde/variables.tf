@@ -304,7 +304,7 @@ variable "access_level_members_apply_trigger_tags" {
   default     = []
 }
 
-variable "access_level_admin_members_trigger_disabled" {
+variable "access_level_members_trigger_disabled" {
   description = "Whether the trigger is disabled or not. If true, the trigger will never result in a build."
   type        = bool
   default     = false

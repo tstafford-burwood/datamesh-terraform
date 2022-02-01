@@ -57,7 +57,7 @@ resource "google_access_context_manager_service_perimeter" "service-perimeter-re
     restricted_services = var.restricted_services
     resources = var.scp_perimeter_projects
     #access_levels = ["accessPolicies/548853993361/accessLevels/cloudbuild"]
-    access_levels = local.access_level_cloudbuild_id_dev
+    access_levels = [local.access_level_cloudbuild_id_dev]
 
     vpc_accessible_services {
       enable_restriction = true

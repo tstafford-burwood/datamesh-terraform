@@ -28,7 +28,7 @@ module "cloudbuild_access_level" {
 
   // REQUIRED
   # access_level_name  = var.access_level_name
-  access_level_name  = var.cloudbuild_access_level_name
+  access_level_name  = format("%s_%s",var.access_level_cloudbuild_name, var.environment)
   parent_policy_name = local.parent_access_policy_id
 
   // OPTIONAL - NON PREMIUM

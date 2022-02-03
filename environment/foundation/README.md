@@ -20,24 +20,28 @@ The purpose of this directory is provision certain foundational resources in GCP
 <table>
 <tbody>
 <tr>
-    <td>Folders</td>
+    <td>1-Folders</td>
     <td>First deploy folders.</td>
 </tr>
 <tr>
-    <td>Image Factory Project</td>
+    <td>2-Image Factory Project</td>
     <td>Deploy the image factory</td>
 </tr>
 <tr>
-    <td>Data-Ops Project</td>
+    <td>3-Data-Ops Project</td>
     <td>Deploy data-ops projects</td>
 </tr>
 <tr>
-    <td>Cloud Composer</td>
+    <td>4-Cloud Composer</td>
     <td>Deploy cloud composer into data-ops project</td>
 </tr>
 <tr>
-    <td>Data-lake Project</td>
+    <td>5-Data-lake Project</td>
     <td>Deploy data lake</td>
-</tr>    
+</tr>
+<tr>
+    <td>6-Researcher Projects</td>
+    <td>Deploy the researcher projects</td>
+</tr>
 </tbody>
 </table>

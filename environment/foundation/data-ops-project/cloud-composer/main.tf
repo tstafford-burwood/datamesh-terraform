@@ -31,7 +31,9 @@ module "constants" {
   source = "../../../foundation/constants"
 }
 
-// SET LOCALS VALUES
+#----------------------------------------------------------------------------
+# SET LOCALS VALUES
+#----------------------------------------------------------------------------
 
 locals {
   org_id               = module.constants.value.org_id
@@ -55,11 +57,13 @@ locals {
 // USED FOR DISABLING ORG POLICIES AT THE PROJECT LEVEL
 // NEED TIME DELAY TO ALLOW POLICY CHANGE TO PROPAGATE
 
+/*
 resource "time_sleep" "wait_120_seconds" {
 
   create_duration = "120s"
   #depends_on      = [module.staging_project_shielded_vms, module.staging_project_disable_sa_creation, module.staging_project_vm_os_login]
 }
+*/
 
 #----------------------------------------------------------------------------
 # CLOUD COMPOSER MODULE
@@ -69,13 +73,14 @@ module "cloud_composer" {
   source = "../../../../modules/cloud_composer"
 
   // REQUIRED
-  #composer_env_name = var.composer_env_name
+  
   project_id        = local.staging_project_id
   composer_env_name = format("%v-%v", var.environment, "composer-private")
   network           = local.staging_network_name
   subnetwork        = local.staging_subnetwork
 
   // OPTIONAL
+  
   airflow_config_overrides         = var.airflow_config_overrides
   allowed_ip_range                 = var.allowed_ip_range
   cloud_sql_ipv4_cidr              = var.cloud_sql_ipv4_cidr
@@ -105,7 +110,7 @@ module "cloud_composer" {
   # network_project_id = var.network_project_id
   # subnetwork_region  = var.subnetwork_region
 
-  depends_on = [module.composer_service_account]
+ # depends_on = [module.composer_service_account]
 }
 
 #----------------------------------------------------------------------------
@@ -132,11 +137,13 @@ module "composer_service_account" {
   org_id                = local.org_id
   prefix                = var.environment
   project_roles         = var.project_roles
-  depends_on            = [time_sleep.wait_120_seconds]
+  #depends_on            = [time_sleep.wait_120_seconds]
 }
 
 #----------------------------------------------------------------------------
 # FOLDER IAM MEMBER MODULE
+# Assign the cloud composer service to the folder so it can move data
+# between projects.
 #----------------------------------------------------------------------------
 
 module "folder_iam_member" {
@@ -145,11 +152,14 @@ module "folder_iam_member" {
   folder_id     = local.foundation_folder_id
   iam_role_list = var.iam_role_list
   folder_member = module.composer_service_account.iam_email
-  depends_on    = [module.composer_service_account]
+  #depends_on    = [module.composer_service_account]
 }
 
-
-
+#----------------------------------------------------------------------------
+# ORG POLICIES
+# Used to turn off and on org policies during the build steps. To allow for the 
+# service account and and Cloud Composer can be built without conflicting with the policy.
+#----------------------------------------------------------------------------
 #----------------------------------------------
 # SERVICE ACCOUNT CREATION
 #----------------------------------------------

@@ -4,7 +4,7 @@ steps:
 
 - id: "composer init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
@@ -13,21 +13,21 @@ steps:
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   args: ['validate',
     '-no-color'
     ]
 
 - id: "composer - first plan and disable project policies"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   args: [
     'plan',
     '-var=terraform_foundation_state_prefix=${_PREFIX}',
@@ -42,7 +42,7 @@ steps:
 
 - id: "composer - first apply and disable project policies"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   args: [
     'apply',
     '-var=terraform_foundation_state_prefix=${_PREFIX}',
@@ -69,7 +69,7 @@ steps:
 
 - id: "composer - second plan and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -88,7 +88,7 @@ steps:
 
 - id: "composer - second apply and ensure project policies are re-enabled"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops-project/cloud-composer'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -103,18 +103,18 @@ steps:
       #-target=module.project_shielded_vms
       # -var="enforce_staging_project_shielded_vms=true"
 
-- id: "staging project state pull - init"
+- id: "data-ops project state pull - init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/staging-project'
+    '-backend-config=prefix=${_PREFIX}/data-ops-project'
   ]
 
-- id: "output file creation - staging project"
+- id: "output file creation - data-ops project"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/data-ops-project'
   entrypoint: /bin/sh
   args: [
     '-c',
@@ -123,7 +123,7 @@ steps:
 
 - id: "load variables for notify DAG"
   name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/foundation/staging-project/cloud-composer/composer-dag-files'
+  dir: 'environment/foundation/data-ops-project/cloud-composer/composer-dag-files'
   entrypoint: python
   args: [
     'set_notify_envs.py'

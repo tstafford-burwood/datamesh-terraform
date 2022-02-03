@@ -20,8 +20,24 @@ The purpose of this directory is provision certain foundational resources in GCP
 <table>
 <tbody>
 <tr>
-    <td>0-bootstrap (this file)</td>
-    <td>Asn ecneo depan eigpeh aienf</td>
+    <td>Folders</td>
+    <td>First deploy folders.</td>
 </tr>
+<tr>
+    <td>Image Factory Project</td>
+    <td>Deploy the image factory</td>
+</tr>
+<tr>
+    <td>Data-Ops Project</td>
+    <td>Deploy data-ops projects</td>
+</tr>
+<tr>
+    <td>Cloud Composer</td>
+    <td>Deploy cloud composer into data-ops project</td>
+</tr>
+<tr>
+    <td>Data-lake Project</td>
+    <td>Deploy data lake</td>
+</tr>    
 </tbody>
 </table>

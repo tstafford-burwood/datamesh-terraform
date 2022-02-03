@@ -56,7 +56,7 @@ steps:
   entrypoint: /bin/sh
   args: [
   '-c',
-  'terraform output data-ops_project_id > _STAGING_PROJECT_ID && cat _STAGING_PROJECT_ID'
+  'terraform output staging_project_id > _STAGING_PROJECT_ID && cat _STAGING_PROJECT_ID'
   ]
 
 

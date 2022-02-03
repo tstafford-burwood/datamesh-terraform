@@ -12,7 +12,7 @@ module "constants" {
 
 locals {
   suffix           = var.suffix == "" ? "" : "-${var.suffix}"
-  parent_folder_id = format("%s/%s", "folders", module.constants.value.parent_folder_id)
+  parent_folder_id = format("%s/%s", "folders", module.constants.value.sde_folder_id)
 }
 
 #----------------------------------------------------------------------------

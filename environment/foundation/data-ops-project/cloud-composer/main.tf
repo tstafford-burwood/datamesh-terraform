@@ -2,11 +2,11 @@
 # TERRAFORM STATE IMPORTS
 #----------------------------------------------------------------------------
 
-data "terraform_remote_state" "staging_project" {
+data "terraform_remote_state" "data_ops_project" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "data-ops-project")
   }
 }
 
@@ -37,11 +37,11 @@ locals {
   org_id               = module.constants.value.org_id
   billing_account_id   = module.constants.value.billing_account_id
   foundation_folder_id = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  default_region       = data.terraform_remote_state.staging_project.outputs.subnets_regions[0]
-  staging_project_id   = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  staging_project_name = data.terraform_remote_state.staging_project.outputs.staging_project_name
-  staging_network_name = data.terraform_remote_state.staging_project.outputs.network_name
-  staging_subnetwork   = data.terraform_remote_state.staging_project.outputs.subnets_names[0]
+  default_region       = data.terraform_remote_state.data_ops_project.outputs.subnets_regions[0]
+  staging_project_id   = data.terraform_remote_state.data_ops_project.outputs.staging_project_id
+  staging_project_name = data.terraform_remote_state.data_ops_project.outputs.staging_project_name
+  staging_network_name = data.terraform_remote_state.data_ops_project.outputs.network_name
+  staging_subnetwork   = data.terraform_remote_state.data_ops_project.outputs.subnets_names[0]
   policy_for           = "project"
   #parent_access_policy_id          = module.constants.value.parent_access_policy_id  
   #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name

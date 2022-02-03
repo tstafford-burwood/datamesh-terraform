@@ -16,3 +16,12 @@ The purpose of this directory is provision certain foundational resources in GCP
 1. If you were working out of a feature branch you can merge back into `master`.
     1. `git checkout <master or main>`, `git merge <FEATURE_BRANCH> --no-ff`
 1. A manual pipeline run may need to be started after a merge is done if no edits have been done on the `included_files` after the merge. These are generally the `.tfvars` files which are monitored for changes to start the pipeline.
+
+<table>
+<tbody>
+<tr>
+    <td>0-bootstrap (this file)</td>
+    <td>Asn ecneo depan eigpeh aienf</td>
+</tr>
+</tbody>
+</table>

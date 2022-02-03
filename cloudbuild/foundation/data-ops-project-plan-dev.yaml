@@ -34,5 +34,5 @@ steps:
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-var=terraform_foundation_state_prefix=${_PREFIX}',
-  '-target=module.secure-data-ops-project'
+  '-target=module.secure-staging-project'
   ]

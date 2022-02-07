@@ -23,7 +23,7 @@ data "terraform_remote_state" "staging_project" {
   backend = "gcs"
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
+    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "data-ops-project")
   }
 }
 

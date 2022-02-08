@@ -13,7 +13,7 @@ default_args = {
     'retry_delay': datetime.timedelta(minutes=20),
 }
 
-with DAG("new-gke-cluster-dag", start_date=start_date, params=default_args) as dag:
+with DAG("dlp-scan-dag", start_date=start_date, params=default_args) as dag:
     dlp_scan = KubernetesPodOperator(
         task_id="dlp_scan",
         namespace="default",

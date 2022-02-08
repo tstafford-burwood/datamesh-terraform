@@ -17,7 +17,7 @@ with DAG("fail-dlp-delete-files-dag", start_date=start_date, params=default_args
         task_id="delete_failed_files",
         namespace="default",
         image='gcr.io/composer-sde-test/fail-dlp-delete-files',
-        cmds=["python3", "_Egress_3_Staging_Fail_Inspection_DAG.py"],
+        cmds=["python3", "_Egress_3_Staging_Fail_Inspection.py"],
         name="delete_files_task_pod",
         service_account_name="composer"
     )

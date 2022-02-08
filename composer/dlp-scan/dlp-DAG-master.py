@@ -25,9 +25,9 @@ with DAG("new-gke-cluster-dag", start_date=start_date, params=default_args) as d
 
     move_files_task = GCSToGCSOperator(
         task_id="move_files",
-        source_bucket="gs://inspection11", #STAGING_GCS_EGRESS_BUCKET
-        source_object="inspection/",
-        destination_bucket="gs://inspection11", #STAGING_GCS_EGRESS_BUCKET
+        source_bucket="inspection11", #STAGING_GCS_EGRESS_BUCKET
+        source_object="inspection/*",
+        destination_bucket="inspection11", #STAGING_GCS_EGRESS_BUCKET
         destination_object="post-inspection/dlp_scan_{{ run_id }}/",
         move_object=True,
         replace=False

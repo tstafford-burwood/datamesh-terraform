@@ -2,6 +2,11 @@
 # SINGLE VM INSTANCE OUTPUTS
 #---------------------------
 
+output "name" {
+  description = "A unique name for the resource"
+  value       = google_compute_instance.single_vm_instance.name
+}
+
 output "instance_id" {
   description = "The server-assigned unique identifier of this instance."
   value       = google_compute_instance.single_vm_instance.instance_id

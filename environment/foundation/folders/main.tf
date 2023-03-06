@@ -11,35 +11,59 @@ module "constants" {
 #------------------------------------------------------------------------
 
 locals {
-  suffix           = var.suffix == "" ? "" : "-${var.suffix}"
+  #suffix           = var.suffix == "" ? "" : "-${var.suffix}"
   parent_folder_id = format("%s/%s", "folders", module.constants.value.sde_folder_id)
+  environment      = module.constants.value.environment
 }
 
 #----------------------------------------------------------------------------
 # SETUP FOLDER STRUCTURE
 #----------------------------------------------------------------------------
 
-# Environment Folder
 resource "google_folder" "environment" {
-  display_name = upper(var.environment)
+  # Parent Folder
+  display_name = format("%s-%s", "HIPAA", local.environment[terraform.workspace])
   parent       = local.parent_folder_id
 }
 
-# Foundation
-resource "google_folder" "foundation_sde" {
-  display_name = format("%s-%s", "Foundation SDE", var.environment)
-  parent       = google_folder.environment.name
-}
-
-# Deployments
-resource "google_folder" "deployments_sde_parent" {
-  display_name = format("%s-%s", "Deployments SDE", var.environment)
-  parent       = google_folder.environment.name
-}
-
-# Researcher Workspaces
+# Researcher Workspace Folders
 resource "google_folder" "researcher_workspaces" {
-  for_each     = toset(var.researcher_workspace_names)
-  display_name = "${each.value}${local.suffix}"
-  parent       = google_folder.deployments_sde_parent.name
+  for_each     = toset(var.researcher_workspace_folders)
+  display_name = each.value
+  parent       = google_folder.environment.name
+}
+
+resource "google_folder_iam_audit_config" "config" {
+  # Allow management of audit logging config for a given service for a GCP folder
+  folder  = google_folder.environment.name
+  service = var.audit_service
+  dynamic "audit_log_config" {
+    for_each = length(var.audit_log_config) > 0 ? toset(var.audit_log_config) : []
+    content {
+      log_type = audit_log_config.value
+    }
+  }
+}
+
+resource "time_sleep" "wait_30_seconds" {
+  create_duration = "30s"
+
+  depends_on = [
+    google_folder.environment,
+    google_folder.researcher_workspaces
+  ]
+}
+
+# ---- TEMP
+
+resource "google_folder_iam_member" "folderadmin" {
+  folder = google_folder.environment.name
+  role   = "roles/resourcemanager.folderAdmin"
+  member = "user:astrong@burwood.com"
+}
+
+resource "google_folder_iam_member" "owner" {
+  folder = google_folder.environment.name
+  role   = "roles/editor"
+  member = "user:astrong@burwood.com"
 }

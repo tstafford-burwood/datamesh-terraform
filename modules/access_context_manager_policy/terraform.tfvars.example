@@ -1,6 +1,0 @@
-#--------------------------------------------
-# ACCESS CONTEXT MANAGER ACCESS POLICY TFVARS
-#--------------------------------------------
-
-parent_id   = ""
-policy_name = ""

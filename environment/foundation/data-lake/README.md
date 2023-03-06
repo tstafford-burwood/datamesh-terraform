@@ -1,158 +1,74 @@
+# Terraform Directory for Data Lake Module
+
+This repository provides an opinionated way to deploy multiple GCS buckets per researcher initiative.
+
+## Reference Architecture
+![](../../../docs/data-lake-resources.png)
+
+This modules goal is to loop through all the [researcher sub-folders](../folders/variables.tf#L1) and create a GCS bucket per researcher workspace.
 
 
+The resources that this module will create are:
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### GCS Bucket
+* A new GCS bucket is created per researcher initiative. This is based off of the subfolder value located [here](../folders/variables.tf#L1).
+    - `"gcs-{region}-{researcher}-{random_id}`
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 3.65.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 3.65.0 |
 
-## Providers
+### IAM Roles
+* Project level admins that are defined in the [constants.tf](../constants/constants.tf#L18)
+    - "roles/storage.admin"
+    - "roles/bigquery.admin"
+* Project level users that are defined in the [constants.tf](../constants/constants.tf#L19)
+    - "roles/browser", # Read access to browse hiearchy for the project
+    - "roles/storage.objectViewer"
+    - "roles/bigquery.dataViewer"
+    - "roles/bigquery.filteredDataViewer"
+    - "roles/bigquery.metadataViewer"
+    - "roles/bigquery.resourceViewer"
 
-| Name | Version |
-|------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 3.65.0 |
+### IAM Custom Role Deployed
 
-## Modules
+* `Custom SDE Role for Data Lake Storage Ops`
+    * storage.buckets.list
+    * storage.objects.get
+    * storage.objects.list
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_bigquery_data_lake"></a> [bigquery\_data\_lake](#module\_bigquery\_data\_lake) | ../../../../modules/bigquery | n/a |
-| <a name="module_bigquery_staging_data_lake_ingress"></a> [bigquery\_staging\_data\_lake\_ingress](#module\_bigquery\_staging\_data\_lake\_ingress) | ../../../../modules/bigquery | n/a |
-| <a name="module_constants"></a> [constants](#module\_constants) | ../constants | n/a |
-| <a name="module_data-lake-project"></a> [data-lake-project](#module\_data-lake-project) | ../../../../modules/project_factory | n/a |
-| <a name="module_data_lake_regular_service_perimeter"></a> [data\_lake\_regular\_service\_perimeter](#module\_data\_lake\_regular\_service\_perimeter) | ../../../../modules/vpc_service_controls/regular_service_perimeter | n/a |
-| <a name="module_datalake_access_level_members"></a> [datalake\_access\_level\_members](#module\_datalake\_access\_level\_members) | ../../../../modules/vpc_service_controls/access_levels | n/a |
-| <a name="module_datalake_iam_custom_role"></a> [datalake\_iam\_custom\_role](#module\_datalake\_iam\_custom\_role) | ../../../../modules/iam/project_iam_custom_role | n/a |
-| <a name="module_datalake_to_staging_bridge_service_perimeter"></a> [datalake\_to\_staging\_bridge\_service\_perimeter](#module\_datalake\_to\_staging\_bridge\_service\_perimeter) | ../../../../modules/vpc_service_controls/bridge_service_perimeter | n/a |
-| <a name="module_gcs_bucket_data_lake"></a> [gcs\_bucket\_data\_lake](#module\_gcs\_bucket\_data\_lake) | ../../../../modules/gcs_bucket | n/a |
-| <a name="module_gcs_bucket_staging_ingress"></a> [gcs\_bucket\_staging\_ingress](#module\_gcs\_bucket\_staging\_ingress) | ../../../../modules/gcs_bucket | n/a |
 
-## Resources
+<!-- TFDOC OPTS files:1 show_extra:1 -->
+<!-- BEGIN TFDOC -->
 
-| Name | Type |
-|------|------|
-| [google_project_iam_member.datalake_project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_iam_member) | resource |
-| [google_project.staging_project_number](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
+## Files
 
-## Inputs
+| name | description | modules | resources |
+|---|---|---|---|
+| [backend.tf](./backend.tf) | None |  |  |
+| [buckets.tf](./buckets.tf) | None |  | <code>google_storage_bucket</code> · <code>random_id</code> |
+| [iam.tf](./iam.tf) | None | <code>project_iam</code> · <code>project_iam_custom_role</code> |  |
+| [main.tf](./main.tf) | Module-level locals and resources. | <code>constants</code> · <code>google</code> | <code>google_logging_project_bucket_config</code> |
+| [org-pol.tf](./org-pol.tf) | None | <code>google</code> | <code>time_sleep</code> |
+| [outputs.tf](./outputs.tf) | Module outputs. |  |  |
+| [variables.tf](./variables.tf) | Module variables. |  |  |
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_data_lake_activate_apis"></a> [data\_lake\_activate\_apis](#input\_data\_lake\_activate\_apis) | The list of apis to activate within the project | `list(string)` | <pre>[<br>  "compute.googleapis.com"<br>]</pre> | no |
-| <a name="input_data_lake_auto_create_network"></a> [data\_lake\_auto\_create\_network](#input\_data\_lake\_auto\_create\_network) | Create the default network | `bool` | `false` | no |
-| <a name="input_data_lake_bq_bigquery_deletion_protection"></a> [data\_lake\_bq\_bigquery\_deletion\_protection](#input\_data\_lake\_bq\_bigquery\_deletion\_protection) | Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail. | `bool` | `false` | no |
-| <a name="input_data_lake_bq_dataset_access"></a> [data\_lake\_bq\_dataset\_access](#input\_data\_lake\_bq\_dataset\_access) | An array of objects that define dataset access for one or more entities. | `any` | <pre>[<br>  {<br>    "group_by_email": "",<br>    "role": "roles/bigquery.dataOwner"<br>  }<br>]</pre> | no |
-| <a name="input_data_lake_bq_dataset_description"></a> [data\_lake\_bq\_dataset\_description](#input\_data\_lake\_bq\_dataset\_description) | Bigquery dataset description. | `string` | `""` | no |
-| <a name="input_data_lake_bq_dataset_id"></a> [data\_lake\_bq\_dataset\_id](#input\_data\_lake\_bq\_dataset\_id) | Unique ID for the dataset being provisioned. | `string` | `""` | no |
-| <a name="input_data_lake_bq_dataset_labels"></a> [data\_lake\_bq\_dataset\_labels](#input\_data\_lake\_bq\_dataset\_labels) | Key value pairs in a map for dataset labels. | `map(string)` | `{}` | no |
-| <a name="input_data_lake_bq_dataset_name"></a> [data\_lake\_bq\_dataset\_name](#input\_data\_lake\_bq\_dataset\_name) | Friendly name for the dataset being provisioned. | `string` | `""` | no |
-| <a name="input_data_lake_bq_default_table_expiration_ms"></a> [data\_lake\_bq\_default\_table\_expiration\_ms](#input\_data\_lake\_bq\_default\_table\_expiration\_ms) | TTL of tables using the dataset in milliseconds. | `number` | `null` | no |
-| <a name="input_data_lake_bq_delete_contents_on_destroy"></a> [data\_lake\_bq\_delete\_contents\_on\_destroy](#input\_data\_lake\_bq\_delete\_contents\_on\_destroy) | If set to true, delete all the tables in the dataset when destroying the resource; otherwise, destroying the resource will fail if tables are present. | `bool` | `true` | no |
-| <a name="input_data_lake_bq_encryption_key"></a> [data\_lake\_bq\_encryption\_key](#input\_data\_lake\_bq\_encryption\_key) | Default encryption key to apply to the dataset. Defaults to null (Google-managed). | `string` | `null` | no |
-| <a name="input_data_lake_bq_external_tables"></a> [data\_lake\_bq\_external\_tables](#input\_data\_lake\_bq\_external\_tables) | A list of objects which include table\_id, expiration\_time, external\_data\_configuration, and labels. | <pre>list(object({<br>    table_id              = string,<br>    autodetect            = bool,<br>    compression           = string,<br>    ignore_unknown_values = bool,<br>    max_bad_records       = number,<br>    schema                = string,<br>    source_format         = string,<br>    source_uris           = list(string),<br>    csv_options = object({<br>      quote                 = string,<br>      allow_jagged_rows     = bool,<br>      allow_quoted_newlines = bool,<br>      encoding              = string,<br>      field_delimiter       = string,<br>      skip_leading_rows     = number,<br>    }),<br>    google_sheets_options = object({<br>      range             = string,<br>      skip_leading_rows = number,<br>    }),<br>    hive_partitioning_options = object({<br>      mode              = string,<br>      source_uri_prefix = string,<br>    }),<br>    expiration_time = string,<br>    labels          = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_data_lake_bq_location"></a> [data\_lake\_bq\_location](#input\_data\_lake\_bq\_location) | The regional location for the dataset. Only US and EU are allowed in module. | `string` | `""` | no |
-| <a name="input_data_lake_bq_routines"></a> [data\_lake\_bq\_routines](#input\_data\_lake\_bq\_routines) | A list of objects which include routine\_id, routine\_type, routine\_language, definition\_body, return\_type, routine\_description and arguments. | <pre>list(object({<br>    routine_id      = string,<br>    routine_type    = string,<br>    language        = string,<br>    definition_body = string,<br>    return_type     = string,<br>    description     = string,<br>    arguments = list(object({<br>      name          = string,<br>      data_type     = string,<br>      argument_kind = string,<br>      mode          = string,<br>    })),<br>  }))</pre> | `[]` | no |
-| <a name="input_data_lake_bq_tables"></a> [data\_lake\_bq\_tables](#input\_data\_lake\_bq\_tables) | A list of objects which include table\_id, schema, clustering, time\_partitioning, range\_partitioning, expiration\_time and labels. | <pre>list(object({<br>    table_id   = string,<br>    schema     = string,<br>    clustering = list(string),<br>    time_partitioning = object({<br>      expiration_ms            = string,<br>      field                    = string,<br>      type                     = string,<br>      require_partition_filter = bool,<br>    }),<br>    range_partitioning = object({<br>      field = string,<br>      range = object({<br>        start    = string,<br>        end      = string,<br>        interval = string,<br>      }),<br>    }),<br>    expiration_time = string,<br>    labels          = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_data_lake_bq_views"></a> [data\_lake\_bq\_views](#input\_data\_lake\_bq\_views) | A list of objects which include table\_id, which is view id, and view query. | <pre>list(object({<br>    view_id        = string,<br>    query          = string,<br>    use_legacy_sql = bool,<br>    labels         = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_data_lake_bucket_suffix_name"></a> [data\_lake\_bucket\_suffix\_name](#input\_data\_lake\_bucket\_suffix\_name) | The suffix/ending name for the bucket. | `list(string)` | n/a | yes |
-| <a name="input_data_lake_create_project_sa"></a> [data\_lake\_create\_project\_sa](#input\_data\_lake\_create\_project\_sa) | Whether the default service account for the project shall be created | `bool` | `true` | no |
-| <a name="input_data_lake_default_service_account"></a> [data\_lake\_default\_service\_account](#input\_data\_lake\_default\_service\_account) | Project default service account setting: can be one of `delete`, `deprivilege`, `disable`, or `keep`. | `string` | `"delete"` | no |
-| <a name="input_data_lake_disable_dependent_services"></a> [data\_lake\_disable\_dependent\_services](#input\_data\_lake\_disable\_dependent\_services) | Whether services that are enabled and which depend on this service should also be disabled when this service is destroyed. | `bool` | `true` | no |
-| <a name="input_data_lake_disable_services_on_destroy"></a> [data\_lake\_disable\_services\_on\_destroy](#input\_data\_lake\_disable\_services\_on\_destroy) | Whether project services will be disabled when the resources are destroyed | `string` | `"true"` | no |
-| <a name="input_data_lake_group_name"></a> [data\_lake\_group\_name](#input\_data\_lake\_group\_name) | A Google group to control the project by being assigned group\_role (defaults to project viewer) | `string` | `""` | no |
-| <a name="input_data_lake_group_role"></a> [data\_lake\_group\_role](#input\_data\_lake\_group\_role) | The role to give the controlling group (group\_name) over the project (defaults to project viewer) | `string` | `"roles/viewer"` | no |
-| <a name="input_data_lake_ingress_bucket_admins"></a> [data\_lake\_ingress\_bucket\_admins](#input\_data\_lake\_ingress\_bucket\_admins) | IAM-style members who will be granted role/storage.objectAdmins for all buckets. | `list(string)` | `[]` | no |
-| <a name="input_data_lake_ingress_bucket_creators"></a> [data\_lake\_ingress\_bucket\_creators](#input\_data\_lake\_ingress\_bucket\_creators) | IAM-style members who will be granted roles/storage.objectCreators on all buckets. | `list(string)` | `[]` | no |
-| <a name="input_data_lake_ingress_bucket_encryption_key_names"></a> [data\_lake\_ingress\_bucket\_encryption\_key\_names](#input\_data\_lake\_ingress\_bucket\_encryption\_key\_names) | Optional map of lowercase unprefixed name => string, empty strings are ignored. | `map` | `{}` | no |
-| <a name="input_data_lake_ingress_bucket_folders"></a> [data\_lake\_ingress\_bucket\_folders](#input\_data\_lake\_ingress\_bucket\_folders) | Map of lowercase unprefixed name => list of top level folder objects. | `map` | `{}` | no |
-| <a name="input_data_lake_ingress_bucket_force_destroy"></a> [data\_lake\_ingress\_bucket\_force\_destroy](#input\_data\_lake\_ingress\_bucket\_force\_destroy) | Optional map of lowercase unprefixed name => boolean, defaults to false. | `map` | `{}` | no |
-| <a name="input_data_lake_ingress_bucket_location"></a> [data\_lake\_ingress\_bucket\_location](#input\_data\_lake\_ingress\_bucket\_location) | Bucket location. See this link for regional and multi-regional options https://cloud.google.com/storage/docs/locations#legacy | `string` | `"US"` | no |
-| <a name="input_data_lake_ingress_bucket_prefix_name"></a> [data\_lake\_ingress\_bucket\_prefix\_name](#input\_data\_lake\_ingress\_bucket\_prefix\_name) | The prefix/beginning used to generate the bucket. | `string` | n/a | yes |
-| <a name="input_data_lake_ingress_bucket_set_admin_roles"></a> [data\_lake\_ingress\_bucket\_set\_admin\_roles](#input\_data\_lake\_ingress\_bucket\_set\_admin\_roles) | Grant roles/storage.objectAdmin role to admins and bucket\_admins. | `bool` | `false` | no |
-| <a name="input_data_lake_ingress_bucket_set_creator_roles"></a> [data\_lake\_ingress\_bucket\_set\_creator\_roles](#input\_data\_lake\_ingress\_bucket\_set\_creator\_roles) | Grant roles/storage.objectCreator role to creators and bucket\_creators. | `bool` | `false` | no |
-| <a name="input_data_lake_ingress_bucket_set_viewer_roles"></a> [data\_lake\_ingress\_bucket\_set\_viewer\_roles](#input\_data\_lake\_ingress\_bucket\_set\_viewer\_roles) | Grant roles/storage.objectViewer role to viewers and bucket\_viewers. | `bool` | `false` | no |
-| <a name="input_data_lake_ingress_bucket_storage_class"></a> [data\_lake\_ingress\_bucket\_storage\_class](#input\_data\_lake\_ingress\_bucket\_storage\_class) | Bucket storage class. Supported values include: STANDARD, MULTI\_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. | `string` | `"STANDARD"` | no |
-| <a name="input_data_lake_ingress_bucket_versioning"></a> [data\_lake\_ingress\_bucket\_versioning](#input\_data\_lake\_ingress\_bucket\_versioning) | Optional map of lowercase unprefixed name => boolean, defaults to false. | `map` | `{}` | no |
-| <a name="input_data_lake_ingress_bucket_viewers"></a> [data\_lake\_ingress\_bucket\_viewers](#input\_data\_lake\_ingress\_bucket\_viewers) | IAM-style members who will be granted roles/storage.objectViewer on all buckets. | `list(string)` | `[]` | no |
-| <a name="input_data_lake_ingress_storage_bucket_labels"></a> [data\_lake\_ingress\_storage\_bucket\_labels](#input\_data\_lake\_ingress\_storage\_bucket\_labels) | Labels to be attached to the buckets | `map` | `{}` | no |
-| <a name="input_data_lake_lien"></a> [data\_lake\_lien](#input\_data\_lake\_lien) | Add a lien on the project to prevent accidental deletion | `bool` | `false` | no |
-| <a name="input_data_lake_project_labels"></a> [data\_lake\_project\_labels](#input\_data\_lake\_project\_labels) | Map of labels for project | `map(string)` | `{}` | no |
-| <a name="input_data_lake_project_name"></a> [data\_lake\_project\_name](#input\_data\_lake\_project\_name) | The name for the project | `string` | `""` | no |
-| <a name="input_data_lake_random_project_id"></a> [data\_lake\_random\_project\_id](#input\_data\_lake\_random\_project\_id) | Adds a suffix of 4 random characters to the `project_id` | `bool` | `true` | no |
-| <a name="input_datalake_access_level_description"></a> [datalake\_access\_level\_description](#input\_datalake\_access\_level\_description) | Description of the access level. | `string` | `""` | no |
-| <a name="input_datalake_access_level_members"></a> [datalake\_access\_level\_members](#input\_datalake\_access\_level\_members) | Condition - An allowed list of members (users, service accounts). The signed-in identity originating the request must be a part of one of the provided members. If not specified, a request may come from any user (logged in/not logged in, etc.). Formats: user:{emailid}, serviceAccount:{emailid} | `list(string)` | `[]` | no |
-| <a name="input_datalake_access_level_name"></a> [datalake\_access\_level\_name](#input\_datalake\_access\_level\_name) | Description of the AccessLevel and its use. Does not affect behavior. | `string` | `""` | no |
-| <a name="input_datalake_access_level_names"></a> [datalake\_access\_level\_names](#input\_datalake\_access\_level\_names) | A list of Access Level resource names that allow resources within the Service Perimeter to be accessed from the internet. Access Levels listed must be in the same policy as this Service Perimeter. Referencing a nonexistent Access Level is a syntax error. If no Access Level names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. Example: 'accessPolicies/MY\_POLICY/accessLevels/MY\_LEVEL'. For Service Perimeter Bridge, must be empty. | `list(string)` | `[]` | no |
-| <a name="input_datalake_allowed_services"></a> [datalake\_allowed\_services](#input\_datalake\_allowed\_services) | The list of APIs usable within the Service Perimeter from a VPC network within the perimeter. Must be empty unless 'enable\_restriction' is True. | `list(string)` | `[]` | no |
-| <a name="input_datalake_bridge_service_perimeter_description"></a> [datalake\_bridge\_service\_perimeter\_description](#input\_datalake\_bridge\_service\_perimeter\_description) | Description of the bridge perimeter | `string` | `""` | no |
-| <a name="input_datalake_bridge_service_perimeter_name"></a> [datalake\_bridge\_service\_perimeter\_name](#input\_datalake\_bridge\_service\_perimeter\_name) | Name of the bridge perimeter. Should be one unified string. Must only be letters, numbers and underscores | `string` | `""` | no |
-| <a name="input_datalake_bridge_service_perimeter_resources"></a> [datalake\_bridge\_service\_perimeter\_resources](#input\_datalake\_bridge\_service\_perimeter\_resources) | A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. | `list(string)` | `[]` | no |
-| <a name="input_datalake_combining_function"></a> [datalake\_combining\_function](#input\_datalake\_combining\_function) | How the conditions list should be combined to determine if a request is granted this AccessLevel. If AND is used, each Condition must be satisfied for the AccessLevel to be applied. If OR is used, at least one Condition must be satisfied for the AccessLevel to be applied. | `string` | `"AND"` | no |
-| <a name="input_datalake_enable_restriction"></a> [datalake\_enable\_restriction](#input\_datalake\_enable\_restriction) | Whether to restrict API calls within the Service Perimeter to the list of APIs specified in 'allowed\_services'. This can be useful if only certain APIs should be allowed to be accessed from a network within the VPC service control perimeter. | `bool` | `false` | no |
-| <a name="input_datalake_iam_custom_role_description"></a> [datalake\_iam\_custom\_role\_description](#input\_datalake\_iam\_custom\_role\_description) | A human-readable description for the role. | `string` | `"Custom role created with Terraform."` | no |
-| <a name="input_datalake_iam_custom_role_id"></a> [datalake\_iam\_custom\_role\_id](#input\_datalake\_iam\_custom\_role\_id) | The camel case role id to use for this role. Cannot contain - characters. | `string` | `""` | no |
-| <a name="input_datalake_iam_custom_role_permissions"></a> [datalake\_iam\_custom\_role\_permissions](#input\_datalake\_iam\_custom\_role\_permissions) | The names of the permissions this role grants when bound in an IAM policy. At least one permission must be specified. | `list(string)` | `[]` | no |
-| <a name="input_datalake_iam_custom_role_stage"></a> [datalake\_iam\_custom\_role\_stage](#input\_datalake\_iam\_custom\_role\_stage) | The current launch stage of the role. Defaults to GA. List of possible stages is [here](https://cloud.google.com/iam/docs/reference/rest/v1/organizations.roles#Role.RoleLaunchStage). | `string` | `""` | no |
-| <a name="input_datalake_iam_custom_role_title"></a> [datalake\_iam\_custom\_role\_title](#input\_datalake\_iam\_custom\_role\_title) | A human-readable title for the role. | `string` | `""` | no |
-| <a name="input_datalake_ip_subnetworks"></a> [datalake\_ip\_subnetworks](#input\_datalake\_ip\_subnetworks) | Condition - A list of CIDR block IP subnetwork specifications. May be IPv4 or IPv6. Note that for a CIDR IP address block, the specified IP address portion must be properly truncated (i.e. all the host bits must be zero) or the input is considered malformed. For example, "192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly, for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32" is not. The originating IP of a request must be in one of the listed subnets in order for this Condition to be true. If empty, all IP addresses are allowed. | `list(string)` | `[]` | no |
-| <a name="input_datalake_negate"></a> [datalake\_negate](#input\_datalake\_negate) | Whether to negate the Condition. If true, the Condition becomes a NAND over its non-empty fields, each field must be false for the Condition overall to be satisfied. | `bool` | `false` | no |
-| <a name="input_datalake_parent_policy_id"></a> [datalake\_parent\_policy\_id](#input\_datalake\_parent\_policy\_id) | ID of the parent policy | `string` | `""` | no |
-| <a name="input_datalake_parent_policy_name"></a> [datalake\_parent\_policy\_name](#input\_datalake\_parent\_policy\_name) | Name of the parent policy. | `string` | `""` | no |
-| <a name="input_datalake_project_member"></a> [datalake\_project\_member](#input\_datalake\_project\_member) | The member to apply the IAM role to. Possible options use the following syntax: user:{emailid}, serviceAccount:{emailid}, group:{emailid}, domain:{domain}. | `string` | `""` | no |
-| <a name="input_datalake_project_to_add_perimeter"></a> [datalake\_project\_to\_add\_perimeter](#input\_datalake\_project\_to\_add\_perimeter) | A list of GCP resources (only projects) that are inside of the service perimeter. Currently only projects are allowed. | `list(string)` | `[]` | no |
-| <a name="input_datalake_regions"></a> [datalake\_regions](#input\_datalake\_regions) | Condition - The request must originate from one of the provided countries/regions. Format: A valid ISO 3166-1 alpha-2 code. | `list(string)` | `[]` | no |
-| <a name="input_datalake_regular_service_perimeter_description"></a> [datalake\_regular\_service\_perimeter\_description](#input\_datalake\_regular\_service\_perimeter\_description) | Description of the regular perimeter | `string` | `""` | no |
-| <a name="input_datalake_regular_service_perimeter_name"></a> [datalake\_regular\_service\_perimeter\_name](#input\_datalake\_regular\_service\_perimeter\_name) | Name of the perimeter. Should be one unified string. Must only be letters, numbers and underscores | `string` | `""` | no |
-| <a name="input_datalake_required_access_levels"></a> [datalake\_required\_access\_levels](#input\_datalake\_required\_access\_levels) | Condition - A list of other access levels defined in the same Policy, referenced by resource name. Referencing an AccessLevel which does not exist is an error. All access levels listed must be granted for the Condition to be true. | `list(string)` | `[]` | no |
-| <a name="input_datalake_restricted_services"></a> [datalake\_restricted\_services](#input\_datalake\_restricted\_services) | GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if storage.googleapis.com is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions. | `list(string)` | `[]` | no |
-| <a name="input_staging_data_lake_ingress_bq_bigquery_deletion_protection"></a> [staging\_data\_lake\_ingress\_bq\_bigquery\_deletion\_protection](#input\_staging\_data\_lake\_ingress\_bq\_bigquery\_deletion\_protection) | Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail. | `bool` | `false` | no |
-| <a name="input_staging_data_lake_ingress_bq_dataset_access"></a> [staging\_data\_lake\_ingress\_bq\_dataset\_access](#input\_staging\_data\_lake\_ingress\_bq\_dataset\_access) | An array of objects that define dataset access for one or more entities. | `any` | <pre>[<br>  {<br>    "group_by_email": "",<br>    "role": "roles/bigquery.dataOwner"<br>  }<br>]</pre> | no |
-| <a name="input_staging_data_lake_ingress_bq_dataset_description"></a> [staging\_data\_lake\_ingress\_bq\_dataset\_description](#input\_staging\_data\_lake\_ingress\_bq\_dataset\_description) | Bigquery dataset description. | `string` | `""` | no |
-| <a name="input_staging_data_lake_ingress_bq_dataset_id"></a> [staging\_data\_lake\_ingress\_bq\_dataset\_id](#input\_staging\_data\_lake\_ingress\_bq\_dataset\_id) | Unique ID for the dataset being provisioned. | `string` | `""` | no |
-| <a name="input_staging_data_lake_ingress_bq_dataset_labels"></a> [staging\_data\_lake\_ingress\_bq\_dataset\_labels](#input\_staging\_data\_lake\_ingress\_bq\_dataset\_labels) | Key value pairs in a map for dataset labels. | `map(string)` | `{}` | no |
-| <a name="input_staging_data_lake_ingress_bq_dataset_name"></a> [staging\_data\_lake\_ingress\_bq\_dataset\_name](#input\_staging\_data\_lake\_ingress\_bq\_dataset\_name) | Friendly name for the dataset being provisioned. | `string` | `""` | no |
-| <a name="input_staging_data_lake_ingress_bq_default_table_expiration_ms"></a> [staging\_data\_lake\_ingress\_bq\_default\_table\_expiration\_ms](#input\_staging\_data\_lake\_ingress\_bq\_default\_table\_expiration\_ms) | TTL of tables using the dataset in milliseconds. | `number` | `null` | no |
-| <a name="input_staging_data_lake_ingress_bq_delete_contents_on_destroy"></a> [staging\_data\_lake\_ingress\_bq\_delete\_contents\_on\_destroy](#input\_staging\_data\_lake\_ingress\_bq\_delete\_contents\_on\_destroy) | If set to true, delete all the tables in the dataset when destroying the resource; otherwise, destroying the resource will fail if tables are present. | `bool` | `true` | no |
-| <a name="input_staging_data_lake_ingress_bq_encryption_key"></a> [staging\_data\_lake\_ingress\_bq\_encryption\_key](#input\_staging\_data\_lake\_ingress\_bq\_encryption\_key) | Default encryption key to apply to the dataset. Defaults to null (Google-managed). | `string` | `null` | no |
-| <a name="input_staging_data_lake_ingress_bq_external_tables"></a> [staging\_data\_lake\_ingress\_bq\_external\_tables](#input\_staging\_data\_lake\_ingress\_bq\_external\_tables) | A list of objects which include table\_id, expiration\_time, external\_data\_configuration, and labels. | <pre>list(object({<br>    table_id              = string,<br>    autodetect            = bool,<br>    compression           = string,<br>    ignore_unknown_values = bool,<br>    max_bad_records       = number,<br>    schema                = string,<br>    source_format         = string,<br>    source_uris           = list(string),<br>    csv_options = object({<br>      quote                 = string,<br>      allow_jagged_rows     = bool,<br>      allow_quoted_newlines = bool,<br>      encoding              = string,<br>      field_delimiter       = string,<br>      skip_leading_rows     = number,<br>    }),<br>    google_sheets_options = object({<br>      range             = string,<br>      skip_leading_rows = number,<br>    }),<br>    hive_partitioning_options = object({<br>      mode              = string,<br>      source_uri_prefix = string,<br>    }),<br>    expiration_time = string,<br>    labels          = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_staging_data_lake_ingress_bq_location"></a> [staging\_data\_lake\_ingress\_bq\_location](#input\_staging\_data\_lake\_ingress\_bq\_location) | The regional location for the dataset. Only US and EU are allowed in module. | `string` | `""` | no |
-| <a name="input_staging_data_lake_ingress_bq_routines"></a> [staging\_data\_lake\_ingress\_bq\_routines](#input\_staging\_data\_lake\_ingress\_bq\_routines) | A list of objects which include routine\_id, routine\_type, routine\_language, definition\_body, return\_type, routine\_description and arguments. | <pre>list(object({<br>    routine_id      = string,<br>    routine_type    = string,<br>    language        = string,<br>    definition_body = string,<br>    return_type     = string,<br>    description     = string,<br>    arguments = list(object({<br>      name          = string,<br>      data_type     = string,<br>      argument_kind = string,<br>      mode          = string,<br>    })),<br>  }))</pre> | `[]` | no |
-| <a name="input_staging_data_lake_ingress_bq_tables"></a> [staging\_data\_lake\_ingress\_bq\_tables](#input\_staging\_data\_lake\_ingress\_bq\_tables) | A list of objects which include table\_id, schema, clustering, time\_partitioning, range\_partitioning, expiration\_time and labels. | <pre>list(object({<br>    table_id   = string,<br>    schema     = string,<br>    clustering = list(string),<br>    time_partitioning = object({<br>      expiration_ms            = string,<br>      field                    = string,<br>      type                     = string,<br>      require_partition_filter = bool,<br>    }),<br>    range_partitioning = object({<br>      field = string,<br>      range = object({<br>        start    = string,<br>        end      = string,<br>        interval = string,<br>      }),<br>    }),<br>    expiration_time = string,<br>    labels          = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_staging_data_lake_ingress_bq_views"></a> [staging\_data\_lake\_ingress\_bq\_views](#input\_staging\_data\_lake\_ingress\_bq\_views) | A list of objects which include table\_id, which is view id, and view query. | <pre>list(object({<br>    view_id        = string,<br>    query          = string,<br>    use_legacy_sql = bool,<br>    labels         = map(string),<br>  }))</pre> | `[]` | no |
-| <a name="input_staging_ingress_bucket_admins"></a> [staging\_ingress\_bucket\_admins](#input\_staging\_ingress\_bucket\_admins) | IAM-style members who will be granted role/storage.objectAdmins for all buckets. | `list(string)` | `[]` | no |
-| <a name="input_staging_ingress_bucket_creators"></a> [staging\_ingress\_bucket\_creators](#input\_staging\_ingress\_bucket\_creators) | IAM-style members who will be granted roles/storage.objectCreators on all buckets. | `list(string)` | `[]` | no |
-| <a name="input_staging_ingress_bucket_encryption_key_names"></a> [staging\_ingress\_bucket\_encryption\_key\_names](#input\_staging\_ingress\_bucket\_encryption\_key\_names) | Optional map of lowercase unprefixed name => string, empty strings are ignored. | `map` | `{}` | no |
-| <a name="input_staging_ingress_bucket_folders"></a> [staging\_ingress\_bucket\_folders](#input\_staging\_ingress\_bucket\_folders) | Map of lowercase unprefixed name => list of top level folder objects. | `map` | `{}` | no |
-| <a name="input_staging_ingress_bucket_force_destroy"></a> [staging\_ingress\_bucket\_force\_destroy](#input\_staging\_ingress\_bucket\_force\_destroy) | Optional map of lowercase unprefixed name => boolean, defaults to false. | `map` | `{}` | no |
-| <a name="input_staging_ingress_bucket_location"></a> [staging\_ingress\_bucket\_location](#input\_staging\_ingress\_bucket\_location) | Bucket location. See this link for regional and multi-regional options https://cloud.google.com/storage/docs/locations#legacy | `string` | `"US"` | no |
-| <a name="input_staging_ingress_bucket_prefix_name"></a> [staging\_ingress\_bucket\_prefix\_name](#input\_staging\_ingress\_bucket\_prefix\_name) | The prefix/beginning used to generate the bucket. | `string` | n/a | yes |
-| <a name="input_staging_ingress_bucket_set_admin_roles"></a> [staging\_ingress\_bucket\_set\_admin\_roles](#input\_staging\_ingress\_bucket\_set\_admin\_roles) | Grant roles/storage.objectAdmin role to admins and bucket\_admins. | `bool` | `false` | no |
-| <a name="input_staging_ingress_bucket_set_creator_roles"></a> [staging\_ingress\_bucket\_set\_creator\_roles](#input\_staging\_ingress\_bucket\_set\_creator\_roles) | Grant roles/storage.objectCreator role to creators and bucket\_creators. | `bool` | `false` | no |
-| <a name="input_staging_ingress_bucket_set_viewer_roles"></a> [staging\_ingress\_bucket\_set\_viewer\_roles](#input\_staging\_ingress\_bucket\_set\_viewer\_roles) | Grant roles/storage.objectViewer role to viewers and bucket\_viewers. | `bool` | `false` | no |
-| <a name="input_staging_ingress_bucket_storage_class"></a> [staging\_ingress\_bucket\_storage\_class](#input\_staging\_ingress\_bucket\_storage\_class) | Bucket storage class. Supported values include: STANDARD, MULTI\_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. | `string` | `"STANDARD"` | no |
-| <a name="input_staging_ingress_bucket_suffix_name"></a> [staging\_ingress\_bucket\_suffix\_name](#input\_staging\_ingress\_bucket\_suffix\_name) | The suffix/ending name for the bucket. | `list(string)` | n/a | yes |
-| <a name="input_staging_ingress_bucket_versioning"></a> [staging\_ingress\_bucket\_versioning](#input\_staging\_ingress\_bucket\_versioning) | Optional map of lowercase unprefixed name => boolean, defaults to false. | `map` | `{}` | no |
-| <a name="input_staging_ingress_bucket_viewers"></a> [staging\_ingress\_bucket\_viewers](#input\_staging\_ingress\_bucket\_viewers) | IAM-style members who will be granted roles/storage.objectViewer on all buckets. | `list(string)` | `[]` | no |
-| <a name="input_staging_ingress_storage_bucket_labels"></a> [staging\_ingress\_storage\_bucket\_labels](#input\_staging\_ingress\_storage\_bucket\_labels) | Labels to be attached to the buckets | `map` | `{}` | no |
+## Variables
+
+| name | description | type | required | default | producer |
+|---|---|:---:|:---:|:---:|:---:|
+| [enforce](variables.tf#L5) | Whether this policy is enforce. | <code>bool</code> |  | <code>true</code> |  |
+| [force_destroy](variables.tf#L63) | To allow terraform to destroy the bucket even if there are objects in it. | <code>bool</code> |  | <code>true</code> |  |
+| [lbl_cloudprojectid](variables.tf#L53) | CPID that refers to a CMDB with detailed contact info | <code>number</code> |  | <code>111222</code> |  |
+| [lbl_dataclassification](variables.tf#L48) | Data sensitivity | <code>string</code> |  | <code>&#34;HIPAA&#34;</code> |  |
+| [project_iam_admins_list](variables.tf#L15) | The IAM role(s) to assign to the member at the defined project. | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;storage.admin&#34;,&#10;  &#34;roles&#47;bigquery.admin&#34;,&#10;&#93;">&#91;&#8230;&#93;</code> |  |
+| [stewards_project_iam_roles](variables.tf#L25) | The IAM role(s) to assign to the member at the defined project. | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;browser&#34;, &#35; Read access to browse hiearchy for the project&#10;  &#34;roles&#47;storage.objectViewer&#34;,&#10;  &#34;roles&#47;bigquery.dataViewer&#34;,&#10;  &#34;roles&#47;bigquery.filteredDataViewer&#34;,&#10;  &#34;roles&#47;bigquery.metadataViewer&#34;,&#10;  &#34;roles&#47;bigquery.resourceViewer&#34;,&#10;&#93;">&#91;&#8230;&#93;</code> |  |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_custom_role_id"></a> [custom\_role\_id](#output\_custom\_role\_id) | The role\_id name. |
-| <a name="output_custom_role_name"></a> [custom\_role\_name](#output\_custom\_role\_name) | The name of the role in the format projects/{{project}}/roles/{{role\_id}}. Like id, this field can be used as a reference in other resources such as IAM role bindings. |
-| <a name="output_data_lake_bq_dataset"></a> [data\_lake\_bq\_dataset](#output\_data\_lake\_bq\_dataset) | Bigquery dataset resource. |
-| <a name="output_data_lake_enabled_apis"></a> [data\_lake\_enabled\_apis](#output\_data\_lake\_enabled\_apis) | Enabled APIs in the project |
-| <a name="output_data_lake_gcs_bucket"></a> [data\_lake\_gcs\_bucket](#output\_data\_lake\_gcs\_bucket) | Name of ingress bucket in researcher workspace project. |
-| <a name="output_data_lake_project_id"></a> [data\_lake\_project\_id](#output\_data\_lake\_project\_id) | n/a |
-| <a name="output_data_lake_project_name"></a> [data\_lake\_project\_name](#output\_data\_lake\_project\_name) | n/a |
-| <a name="output_data_lake_project_number"></a> [data\_lake\_project\_number](#output\_data\_lake\_project\_number) | n/a |
-| <a name="output_regular_service_perimeter_name"></a> [regular\_service\_perimeter\_name](#output\_regular\_service\_perimeter\_name) | The perimeter's name. |
-| <a name="output_regular_service_perimeter_resources"></a> [regular\_service\_perimeter\_resources](#output\_regular\_service\_perimeter\_resources) | A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. |
-| <a name="output_staging_data_lake_ingress_bq_dataset"></a> [staging\_data\_lake\_ingress\_bq\_dataset](#output\_staging\_data\_lake\_ingress\_bq\_dataset) | Bigquery dataset resource. |
-| <a name="output_staging_data_lake_ingress_gcs_bucket"></a> [staging\_data\_lake\_ingress\_gcs\_bucket](#output\_staging\_data\_lake\_ingress\_gcs\_bucket) | Name of ingress bucket in staging project. |
-| <a name="output_vpc_accessible_services"></a> [vpc\_accessible\_services](#output\_vpc\_accessible\_services) | The API services accessible from a network within the VPC SC perimeter. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| name | description | sensitive | consumers |
+|---|---|:---:|---|
+| [bucket_list_custom_role_name](outputs.tf#L29) | Output of the custom role name |  |  |
+| [data_lake_project_id](outputs.tf#L5) | The project id |  |  |
+| [data_lake_project_name](outputs.tf#L11) | The project name |  |  |
+| [data_lake_project_number](outputs.tf#L17) | The project number. |  |  |
+| [research_to_bucket](outputs.tf#L23) | Map of researcher name to their bucket name |  |  |
+
+<!-- END TFDOC -->

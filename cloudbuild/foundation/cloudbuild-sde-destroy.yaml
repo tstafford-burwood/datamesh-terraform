@@ -8,8 +8,18 @@ steps:
   args: [
     'init',
     '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/cloudbuild-sde'
+    '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloudbuild-sde'
   ]
+
+- id: "cb-triggers terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/cloudbuild-sde'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
 
 - id: "terraform plan"
   name: hashicorp/terraform:${_TAG}

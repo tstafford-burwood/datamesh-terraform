@@ -1,47 +1,242 @@
 steps:
 
-# RESEARCHER PROJECTS WITH DAGS
-- id: "researcher projects - init"
+# ----- EGRESS PROJECT
+
+- id: "store git branch"
+  name: ubuntu
+  entrypoint: bash
+  args:
+  - -c
+  - |
+      # save git branch to persistent volume: /workspace
+      echo "Current branch name is $BRANCH_NAME"
+      if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
+        branch=test
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
+        branch=main
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      fi
+
+- id: "tf init - researcher egress"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/egress'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$(cat /workspace/branch.txt)/researcher-projects/${_WORKSPACE}/egress
+
+- id: "terraform workspace egress"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/egress'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
+
+- id: "tf fmt - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/egress'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: "tf validate - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/egress'
+  args: ['validate',
+    '-no-color'
+    ]
+
+- id: "tf plan - researcher egress - org pol disable"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/egress'
   args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/researcher-projects/${_TFVARS_FILE}'
+    'plan',
+    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+    '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars'
   ]
+
+#---- RESEARCHER PROJECTS WITH DAGS
+
+- id: "workspace store git branch"
+  name: ubuntu
+  entrypoint: bash
+  args:
+  - -c
+  - |
+      # save git branch to persistent volume: /workspace
+      echo "Current branch name is $BRANCH_NAME"     
+      if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
+        branch=test
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
+        branch=main
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      fi
+
+- id: "tf init - researcher workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$(cat /workspace/branch.txt)/researcher-projects/${_WORKSPACE}/workspace
+
+- id: "tf workspace - researcher workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
+
+- id: "tf fmt - researcher workspace"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: "tf validate - researcher workspace"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: ['validate',
+    '-no-color'
+    ]
+
+
+- id: "tf plan - researcher workspace - org pol disable"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: [
+    'plan',
+    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+    '-var=researcher_workspace_name=${_WORKSPACE}',
+    '-var=set_disable_sa_create=false'
+    ]
+
+
+# # ------ VPC SC
+
+- id: "vpc sc store git branch"
+  name: ubuntu
+  entrypoint: bash
+  args:
+  - -c
+  - |
+      # save git branch to persistent volume: /workspace
+      echo "Current branch name is $BRANCH_NAME"     
+      if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
+        branch=test
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
+        branch=main
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      fi
+
+- id: "vpc-sc init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$(cat /workspace/branch.txt)/researcher-projects/${_WORKSPACE}/vpc-sc
+
+- id: "terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
+
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: ['validate',
     '-no-color'
     ]
 
-- id: "researcher projects - plan"
+# Use the workspace tfvars to read the data stewards value
+- id: "vpc-sc plan"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: [
   'plan',
-  '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '--out',
-  'tfplan.binary'
+  '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+  '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+  '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+  '-var=researcher_workspace_name=${_WORKSPACE}'
   ]
 
-- id: "data ops project - first show"
+# --- VPC SC Foundation
+# Add researcher workspace service accounts to the access context.
+
+- id: "vpc-sc foundation store git branch"
+  name: ubuntu
+  entrypoint: bash
+  args:
+  - -c
+  - |
+      # save git branch to persistent volume: /workspace
+      echo "Current branch name is $BRANCH_NAME"     
+      if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
+        branch=test
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
+        branch=main
+        echo "Branch Name is now $branch"
+        echo $branch > /workspace/branch.txt
+      fi
+
+- id: "vpc-sc foundation init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/foundation/vpc-sc/'
   entrypoint: /bin/sh
   args:
-  - '-c'
-  - |
-    terraform show -json tfplan.binary > tfplan.json
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$(cat /workspace/branch.txt)/vpc-sc
 
-timeout: 3600s
+- id: "vpc-sc foundation terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
+
+- id: "vpc-sc foundation plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  args: [
+  'plan',
+  '-target=module.access_level_service-accounts',
+  '-target=module.access_level_stewards',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  ]

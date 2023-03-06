@@ -59,11 +59,11 @@
     [accessibility]
     screen_reader = False
     [core]
-    account = astrong@client.edu
+    account = user@client.edu
     disable_usage_reporting = True
     project = prod-phi-init-wrkspc-a326
 
-    Your active configuration is: [astrong-client]
+    Your active configuration is: [user-client]
     ```
     * Confirm the VM instance is in a running state.
     ```bash

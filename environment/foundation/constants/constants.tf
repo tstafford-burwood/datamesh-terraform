@@ -14,13 +14,11 @@ locals {
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
-    ingress-project-admins = ["user:astrong@burwood.com"]
-    image-project-admins   = ["user:tap145@client.edu", "user:astrong@burwood.com"]
-    data-lake-admins       = ["user:tap145@client.edu", "user:astrong@burwood.com"]
-    data-lake-viewers      = ["user:tap145@client.edu", "user:astrong@burwood.com"]
-    data-ops-admins        = ["user:tap145@client.edu", "user:astrong@burwood.com"]
-    data-ops-stewards      = []
-    data-ops-analysts      = []
+    ingress-project-admins = ["user:user@burwood.com"]
+    image-project-admins   = ["user:tap145@client.edu", "user:user@burwood.com"]
+    data-lake-admins       = ["user:tap145@client.edu", "user:user@burwood.com"]
+    data-lake-viewers      = ["user:tap145@client.edu", "user:user@burwood.com"]
+    data-ops-admins        = ["user:tap145@client.edu", "user:user@burwood.com"]
 
     // ONLY USERS OR SERVICE ACCOUNTS TO ASSIGN TO VPC PERIMETER
     # `vpc_sc_admins` are added to an access context level which grants them full access to all restricted services for all foundation projects
@@ -28,7 +26,6 @@ locals {
     #   this is to allow stewards to upload files to a bucket in the data ingress project.
 
     vpc_sc_admins   = []
-    vpc_sc_stewards = [] # Only `users` or `serviceAccounts` allowed.
 
     // Default Location
     default_region = "us-central1"
@@ -37,7 +34,7 @@ locals {
     // Long running Branches. These need to match the branch names in Version Control Software.
     environment = {
       # <branch_name> = <environment_value>
-      main = "prod"
+      main = "dev"
     }
   }
 }

@@ -15,5 +15,5 @@ notebook_name_prefix = "trusted"
 project              = "test-workspace-8e3a"
 region               = "us-central1"
 subnet               = "workspace-1-us-central1-subnet-01"
-trusted_scientists   = ["astrong@burwood.com"]
+trusted_scientists   = ["user@burwood.com"]
 vm_image_project     = "deeplearning-platform-release"

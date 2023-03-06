@@ -1,6 +1,6 @@
 project_admins        = ["user:tap145@client.edu", "user:milnes@client.edu"]
-researchers           = ["user:brian@client.edu", "user:afs26@client.edu", "user:milnes@client.edu", "user:sdw37@client.edu", "user:astrong@burwood.com"]
-data_stewards         = ["user:jjennings@burwood.com", "user:astrong@burwood.com"] 
+researchers           = ["user:brian@client.edu", "user:afs26@client.edu", "user:milnes@client.edu", "user:sdw37@client.edu", "user:user@burwood.com"]
+data_stewards         = ["user:jjennings@burwood.com", "user:user@burwood.com"] 
 num_instances         = 1
 instance_machine_type = "n2-standard-2"
 vm_disk_size          = 100

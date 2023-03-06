@@ -59,11 +59,11 @@ resource "time_sleep" "wait_30_seconds" {
 resource "google_folder_iam_member" "folderadmin" {
   folder = google_folder.environment.name
   role   = "roles/resourcemanager.folderAdmin"
-  member = "user:astrong@burwood.com"
+  member = "user:user@burwood.com"
 }
 
 resource "google_folder_iam_member" "owner" {
   folder = google_folder.environment.name
   role   = "roles/editor"
-  member = "user:astrong@burwood.com"
+  member = "user:user@burwood.com"
 }

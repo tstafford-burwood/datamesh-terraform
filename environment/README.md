@@ -105,12 +105,12 @@ In this example, we're going to create a new researcher initative called `Projec
     1. **egress/terraform.tfvars** `project_users`
         ```git
         - project_users = ["user:user1@example.com"] 
-        + project_users = ["user:astrong@client.edu"] 
+        + project_users = ["user:user@client.edu"] 
         ```
     1. **workspace/terraform.tfvars** `researchers`
         ```git
         - researchers = ["user:user1@example.com"]  
-        + researchers = ["user:astrong@client.edu"]  
+        + researchers = ["user:user@client.edu"]  
         ```
 1. `git add .`, `git commit -m "New researcher init"`, `git push`
 1. The Cloud Build trigger associated with `Project-Z` will be triggered and ran.

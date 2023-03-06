@@ -19,7 +19,7 @@ locals {
   default_region             = module.constants.value.default_region
 
   terraform_foundation_state_prefix = "foundation"
-  terraform_container_version       = "1.2.1"
+  terraform_container_version       = "1.3.6"
   included_files                    = "terraform"
 }
 

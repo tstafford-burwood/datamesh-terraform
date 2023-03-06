@@ -27,56 +27,56 @@ locals {
 # COMPOSER TRIGGERS
 # ---------------------------------------
 
-resource "google_cloudbuild_trigger" "composer_apply_triggers" {
-  project = local.automation_project_id
-  name    = format("%s-%s-apply", local.environment[terraform.workspace], "sde-composer")
+# resource "google_cloudbuild_trigger" "composer_apply_triggers" {
+#   project = local.automation_project_id
+#   name    = format("%s-%s-apply", local.environment[terraform.workspace], "sde-composer")
 
-  disabled       = var.plan_trigger_disabled
-  filename       = format("%s-apply.yaml", "cloudbuild/foundation/composer")
-  included_files = formatlist("environment/foundation/data-ops/cloud-composer/env/%s.tfvars", local.included_files)
+#   disabled       = var.plan_trigger_disabled
+#   filename       = format("%s-apply.yaml", "cloudbuild/foundation/composer")
+#   included_files = formatlist("environment/foundation/data-ops/cloud-composer/env/%s.tfvars", local.included_files)
 
-  github {
-    owner = var.github_owner
-    name  = var.github_repo_name
-    push {
-      invert_regex = false
-      branch       = var.branch_name
-    }
-  }
+#   github {
+#     owner = var.github_owner
+#     name  = var.github_repo_name
+#     push {
+#       invert_regex = false
+#       branch       = var.branch_name
+#     }
+#   }
 
-  substitutions = {
-    _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = format("%s", local.terraform_foundation_state_prefix)
-    _TAG         = local.terraform_container_version
-    _TFVARS_FILE = local.included_files
-  }
-}
+#   substitutions = {
+#     _BUCKET      = local.terraform_state_bucket
+#     _PREFIX      = format("%s", local.terraform_foundation_state_prefix)
+#     _TAG         = local.terraform_container_version
+#     _TFVARS_FILE = local.included_files
+#   }
+# }
 
-resource "google_cloudbuild_trigger" "composer_plan_triggers" {
-  project = local.automation_project_id
-  name    = format("%s-%s-plan", local.environment[terraform.workspace], "sde-composer")
+# resource "google_cloudbuild_trigger" "composer_plan_triggers" {
+#   project = local.automation_project_id
+#   name    = format("%s-%s-plan", local.environment[terraform.workspace], "sde-composer")
 
-  disabled       = var.plan_trigger_disabled
-  filename       = format("%s-plan.yaml", "cloudbuild/foundation/composer")
-  included_files = formatlist("environment/foundation/data-ops/cloud-composer/env/%s.tfvars", local.included_files)
+#   disabled       = var.plan_trigger_disabled
+#   filename       = format("%s-plan.yaml", "cloudbuild/foundation/composer")
+#   included_files = formatlist("environment/foundation/data-ops/cloud-composer/env/%s.tfvars", local.included_files)
 
-  github {
-    owner = var.github_owner
-    name  = var.github_repo_name
-    pull_request {
-      invert_regex    = false
-      branch          = var.branch_name
-      comment_control = "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"
-    }
-  }
+#   github {
+#     owner = var.github_owner
+#     name  = var.github_repo_name
+#     pull_request {
+#       invert_regex    = false
+#       branch          = var.branch_name
+#       comment_control = "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"
+#     }
+#   }
 
-  substitutions = {
-    _BUCKET      = local.terraform_state_bucket
-    _PREFIX      = format("%s", local.terraform_foundation_state_prefix)
-    _TAG         = local.terraform_container_version
-    _TFVARS_FILE = local.included_files
-  }
-}
+#   substitutions = {
+#     _BUCKET      = local.terraform_state_bucket
+#     _PREFIX      = format("%s", local.terraform_foundation_state_prefix)
+#     _TAG         = local.terraform_container_version
+#     _TFVARS_FILE = local.included_files
+#   }
+# }
 
 # -----------------------------------------------------------------------
 # Entire Workflow

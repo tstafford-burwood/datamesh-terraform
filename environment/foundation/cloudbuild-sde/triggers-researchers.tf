@@ -8,10 +8,10 @@ data "terraform_remote_state" "folders" {
 }
 
 locals {
-  researcher_triggers = {
-    "06A-researcher" = "Project-X",
-    "06B-researcher" = "Project-Z",
-  }
+  # researcher_triggers = {
+  #   "06A-researcher" = "Project-X",
+  #   "06B-researcher" = "Project-Z",
+  # }
 
   # Read list of folders and create a trigger per researcher initiative
   wrkspc_folders  = data.terraform_remote_state.folders.outputs.ids

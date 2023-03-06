@@ -2,13 +2,11 @@
 variable "github_owner" {
   description = "GitHub Organization Name"
   type        = string
-  default     = "client-it"
 }
 
 variable "github_repo_name" {
   description = "Name of GitHub Repo"
   type        = string
-  default     = "terraform-google-burwood-sde-prod"
 }
 
 variable "plan_trigger_disabled" {

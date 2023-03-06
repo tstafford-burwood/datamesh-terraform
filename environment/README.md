@@ -30,7 +30,7 @@ To deploy the workflow configuration file a new temporary Cloud Build file needs
 gcloud beta builds triggers create github \
 --name="bootstrap-triggers-prod-apply" \
 --repo-name="terraform-google-burwood-sde-prod" \
---repo-owner="pitt-it" \
+--repo-owner="client-it" \
 --branch-pattern="^main$" \
 --build-config="cloudbuild/foundation/cloudbuild-sde-apply.yaml"
 --substitutions _BUCKET=<bucket_id>,_PREFIX=foundation,_TAG=1.2.1
@@ -53,7 +53,7 @@ But, in order to use the [workflow config file](./cloudbuild/foundation/workflow
     gcloud beta builds triggers create github \
     --name="bootstrap-triggers-prod-apply" \
     --repo-name="terraform-google-burwood-sde-prod" \
-    --repo-owner="pitt-it" \
+    --repo-owner="client-it" \
     --branch-pattern="^main$" \
     --build-config="cloudbuild/foundation/cloudbuild-sde-apply.yaml"
     --substitutions _BUCKET=<bucket_id>,_PREFIX=foundation,_TAG=1.2.1
@@ -105,12 +105,12 @@ In this example, we're going to create a new researcher initative called `Projec
     1. **egress/terraform.tfvars** `project_users`
         ```git
         - project_users = ["user:user1@example.com"] 
-        + project_users = ["user:astrong@pitt.edu"] 
+        + project_users = ["user:astrong@client.edu"] 
         ```
     1. **workspace/terraform.tfvars** `researchers`
         ```git
         - researchers = ["user:user1@example.com"]  
-        + researchers = ["user:astrong@pitt.edu"]  
+        + researchers = ["user:astrong@client.edu"]  
         ```
 1. `git add .`, `git commit -m "New researcher init"`, `git push`
 1. The Cloud Build trigger associated with `Project-Z` will be triggered and ran.

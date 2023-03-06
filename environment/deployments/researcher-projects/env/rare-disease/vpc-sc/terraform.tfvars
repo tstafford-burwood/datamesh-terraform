@@ -1,1 +1,1 @@
-researchers = ["user:astrong@pitt.edu"]
+researchers = ["user:astrong@client.edu"]

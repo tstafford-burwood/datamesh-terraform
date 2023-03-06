@@ -2,7 +2,7 @@
 variable "github_owner" {
   description = "GitHub Organization Name"
   type        = string
-  default     = "pitt-it"
+  default     = "client-it"
 }
 
 variable "github_repo_name" {

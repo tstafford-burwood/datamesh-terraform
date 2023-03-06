@@ -1,6 +1,6 @@
-project_admins        = ["group:cloud-sde-test@pitt.edu"]
-researchers           = ["group:cloud-sde-test-users@pitt.edu"]
-data_stewards         = ["user:milnes@pitt.edu"] # individual accounts only, no group, added to the access context to access the necessary foundation projects. Syntax is `user:foo@bar.com`
+project_admins        = ["group:cloud-sde-test@client.edu"]
+researchers           = ["group:cloud-sde-test-users@client.edu"]
+data_stewards         = ["user:milnes@client.edu"] # individual accounts only, no group, added to the access context to access the necessary foundation projects. Syntax is `user:foo@bar.com`
 num_instances         = 1
 instance_machine_type = "n2-standard-2"
 vm_disk_size          = 100

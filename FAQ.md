@@ -59,15 +59,15 @@
     [accessibility]
     screen_reader = False
     [core]
-    account = astrong@pitt.edu
+    account = astrong@client.edu
     disable_usage_reporting = True
     project = prod-phi-init-wrkspc-a326
 
-    Your active configuration is: [astrong-pitt]
+    Your active configuration is: [astrong-client]
     ```
     * Confirm the VM instance is in a running state.
     ```bash
-    gcloud compute instances list --project prod-pittit-init-wrkspc-5e4d
+    gcloud compute instances list --project prod-clientit-init-wrkspc-5e4d
     NAME                             ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP  STATUS
     gcp-sde-test-deep-learning-vm-0  us-central1-b  n2-standard-2               10.20.0.2                 RUNNING
     ```
@@ -110,8 +110,8 @@
         Filesystem                          Size    Used    Avail   Use%    Mounted on
         /dev/root                           97G     17G     81G     17%     /
         ...
-        sde-prod-us-central-shared-aaaa     1.0P    0       1.0P    0%  /home/pittadmin/my-bucket
-        gcs-us-central1-<init>-bbbb         1.0P    0       1.0P    0%  /home/pittadmin/my-datalake
+        sde-prod-us-central-shared-aaaa     1.0P    0       1.0P    0%  /home/clientadmin/my-bucket
+        gcs-us-central1-<init>-bbbb         1.0P    0       1.0P    0%  /home/clientadmin/my-datalake
         ```
 
 * **How to add users to Cloud Composer (Apache Airflow)**

@@ -90,7 +90,7 @@ locals {
   data_ingress               = try(data.terraform_remote_state.data_ingress.outputs.project_number, "")
   data_ops                   = try(data.terraform_remote_state.staging_project.outputs.staging_project_number, "")
   data_lake                  = try(data.terraform_remote_state.datalake_project.outputs.data_lake_project_number, "")
-  prismacloud_sa             = ["serviceAccount:prisma-cloud-serv-jhtke@prod-pittit-infosec-8fea.iam.gserviceaccount.com"]
+  prismacloud_sa             = ["serviceAccount:prisma-cloud-serv-jhtke@prod-clientit-infosec-8fea.iam.gserviceaccount.com"]
 
   # Need to add the service accounts from the researcher workspaces. To do this we need to find the path of the tfstate,
   # read the service accounts from the state, and add them to the access context manager.

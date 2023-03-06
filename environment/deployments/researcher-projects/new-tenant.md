@@ -53,7 +53,7 @@ Create a new tenant
 ## Destroy Steps
 
 Remove the researcher projects (egress & workspace)
-1. Go to [Cloud Build](https://console.cloud.google.com/cloud-build/triggers?project=prod-pittit-automation-21012) and duplicate the `apply` trigger associated with the tenant to destroy. Click the newly duplicated trigger and update the path for the **Cloud Build configuration file location** from `cloudbuild/deployments/researcher-workspace-project-apply.yaml` to `cloudbuild/deployments/researcher-workspace-project-destroy.yaml`. Click Save.
+1. Go to [Cloud Build](https://console.cloud.google.com/cloud-build/triggers?project=prod-clientit-automation-21012) and duplicate the `apply` trigger associated with the tenant to destroy. Click the newly duplicated trigger and update the path for the **Cloud Build configuration file location** from `cloudbuild/deployments/researcher-workspace-project-apply.yaml` to `cloudbuild/deployments/researcher-workspace-project-destroy.yaml`. Click Save.
 1. Manually run the new trigger and confirm the build completes successfully.
 >**Note**: You will need to re-run the `destroy` trigger a number of times because of the timing of resources like destroying the VPC Service Controls needs time to propagate.
 

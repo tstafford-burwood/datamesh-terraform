@@ -1,5 +1,5 @@
-project_admins        = ["user:tap145@pitt.edu", "user:milnes@pitt.edu"]
-researchers           = ["user:brian@pitt.edu", "user:afs26@pitt.edu", "user:milnes@pitt.edu", "user:sdw37@pitt.edu", "user:astrong@burwood.com"]
+project_admins        = ["user:tap145@client.edu", "user:milnes@client.edu"]
+researchers           = ["user:brian@client.edu", "user:afs26@client.edu", "user:milnes@client.edu", "user:sdw37@client.edu", "user:astrong@burwood.com"]
 data_stewards         = ["user:jjennings@burwood.com", "user:astrong@burwood.com"] 
 num_instances         = 1
 instance_machine_type = "n2-standard-2"

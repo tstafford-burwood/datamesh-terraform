@@ -8,17 +8,17 @@ locals {
     org_id                     = "956334456591" # gcloud organizations list                             
     billing_account_id         = "019D3A-6DC5E4-54D0C6"
     sde_folder_id              = "396928138340"
-    automation_project_id      = "prod-pittit-automation-21012"
+    automation_project_id      = "prod-clientit-automation-21012"
     cloudbuild_service_account = "68129454576@cloudbuild.gserviceaccount.com"
     terraform_state_bucket     = "terraform-state-sde-prod-7dkc"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
-    // format: `user:user1@pitt.edu`, `group:admins@pitt.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
+    // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
     ingress-project-admins = ["user:astrong@burwood.com"]
-    image-project-admins   = ["user:tap145@pitt.edu", "user:astrong@burwood.com"]
-    data-lake-admins       = ["user:tap145@pitt.edu", "user:astrong@burwood.com"]
-    data-lake-viewers      = ["user:tap145@pitt.edu", "user:astrong@burwood.com"]
-    data-ops-admins        = ["user:tap145@pitt.edu", "user:astrong@burwood.com"]
+    image-project-admins   = ["user:tap145@client.edu", "user:astrong@burwood.com"]
+    data-lake-admins       = ["user:tap145@client.edu", "user:astrong@burwood.com"]
+    data-lake-viewers      = ["user:tap145@client.edu", "user:astrong@burwood.com"]
+    data-ops-admins        = ["user:tap145@client.edu", "user:astrong@burwood.com"]
     data-ops-stewards      = []
     data-ops-analysts      = []
 

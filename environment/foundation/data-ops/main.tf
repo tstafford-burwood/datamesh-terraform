@@ -48,8 +48,8 @@ locals {
   image_project_number = data.terraform_remote_state.image.outputs.project_number
 
   # Read from constants.tf the groups/users
-  data_ops_admins   = module.constants.value.data-ops-admins
-  data_ops_stewards = module.constants.value.data-ops-stewards
+  data_ops_admins = module.constants.value.data-ops-admins
+  #data_ops_stewards = module.constants.value.data-ops-stewards
 
   # Toggle VPC Serverless Connector - Used by Cloud Functions
   toggle_vpc_connector = true

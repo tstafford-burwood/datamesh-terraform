@@ -8,15 +8,15 @@ module "project-iam-admins" {
   project_iam_role_list = var.data_ops_admin_project_iam_roles
 }
 
-module "project_iam_data_stewards" {
-  # Project level roles for data stewards
-  for_each = length(local.data_ops_stewards) > 0 ? toset(local.data_ops_stewards) : []
+# module "project_iam_data_stewards" {
+#   # Project level roles for data stewards
+#   for_each = length(local.data_ops_stewards) > 0 ? toset(local.data_ops_stewards) : []
 
-  source                = "../../../modules/iam/project_iam"
-  project_id            = module.secure-staging-project.project_id
-  project_member        = each.value
-  project_iam_role_list = var.stewards_project_iam_roles
-}
+#   source                = "../../../modules/iam/project_iam"
+#   project_id            = module.secure-staging-project.project_id
+#   project_member        = each.value
+#   project_iam_role_list = var.stewards_project_iam_roles
+# }
 
 module "staging_project_iam_custom_role" {
   # Custom role with a single permission to list storage buckets
@@ -30,14 +30,14 @@ module "staging_project_iam_custom_role" {
   project_iam_custom_role_stage       = "GA"
 }
 
-resource "google_project_iam_member" "staging_project_custom_srde_role" {
-  # Loop through all stewards and assign custom role storage list permission to view buckets
-  for_each = length(local.data_ops_stewards) > 0 ? toset(local.data_ops_stewards) : []
+# resource "google_project_iam_member" "staging_project_custom_srde_role" {
+#   # Loop through all stewards and assign custom role storage list permission to view buckets
+#   for_each = length(local.data_ops_stewards) > 0 ? toset(local.data_ops_stewards) : []
 
-  project = module.secure-staging-project.project_id
-  role    = module.staging_project_iam_custom_role.name
-  member  = each.value
-}
+#   project = module.secure-staging-project.project_id
+#   role    = module.staging_project_iam_custom_role.name
+#   member  = each.value
+# }
 
 #----------------------------------------------------------------------------
 # SERVICE ACCOUNTS

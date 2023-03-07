@@ -43,6 +43,12 @@ variable "env_variables" {
   default     = {}
 }
 
+variable "environment_size" {
+  type        = string
+  description = "The environment size controls the performance parameters of the managed Cloud Composer infrastructure that includes the Airflow database. Values for environment size are: ENVIRONMENT_SIZE_SMALL, ENVIRONMENT_SIZE_MEDIUM, and ENVIRONMENT_SIZE_LARGE."
+  default     = "ENVIRONMENT_SIZE_SMALL"
+}
+
 variable "image_version" {
   description = "The version of Airflow running in the Cloud Composer environment. Latest version found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions)."
   type        = string
@@ -68,15 +74,70 @@ variable "node_count" {
 }
 
 variable "oauth_scopes" {
+
   description = "Google API scopes to be made available on all node."
   type        = set(string)
   default     = ["https://www.googleapis.com/auth/cloud-platform"]
+}
+
+variable "pypi_packages" {
+  type        = map(string)
+  description = " Custom Python Package Index (PyPI) packages to be installed in the environment. Keys refer to the lowercase package name (e.g. \"numpy\")."
+  default     = {}
+}
+
+variable "scheduler" {
+  type = object({
+    cpu        = string
+    memory_gb  = number
+    storage_gb = number
+    count      = number
+  })
+  default = {
+    cpu        = 2
+    memory_gb  = 7.5
+    storage_gb = 5
+    count      = 2
+  }
+  description = "Configuration for resources used by Airflow schedulers."
+}
+
+variable "web_server" {
+  type = object({
+    cpu        = string
+    memory_gb  = number
+    storage_gb = number
+  })
+  default = {
+    cpu        = 2
+    memory_gb  = 7.5
+    storage_gb = 5
+  }
+  description = "Configuration for resources used by Airflow web server."
 }
 
 variable "web_server_ipv4_cidr" {
   description = "The CIDR block from which IP range in tenant project will be reserved for the web server."
   type        = string
   default     = "10.3.0.0/29"
+}
+
+variable "worker" {
+  type = object({
+    cpu        = string
+    memory_gb  = number
+    storage_gb = number
+    min_count  = number
+    max_count  = number
+  })
+  default = {
+    cpu        = 2
+    memory_gb  = 7.5
+    storage_gb = 5
+    min_count  = 2
+    max_count  = 6
+  }
+  description = "Configuration for resources used by Airflow workers."
 }
 
 variable "web_server_machine_type" {

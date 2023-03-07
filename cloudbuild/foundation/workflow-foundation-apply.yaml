@@ -370,7 +370,7 @@ steps:
         gsutil logging set on -b gs://$(cat /workspace/logging_bucket.txt) $(cat /workspace/dag_bucket.txt)
         gsutil logging get $(cat /workspace/dag_bucket.txt)
 
----- [END] READ Data-Ops TFSTATE file
+#---- [END] READ Data-Ops TFSTATE file
 
 Third build step: enable the org policies
 - id: "tf plan - enable project org policies"

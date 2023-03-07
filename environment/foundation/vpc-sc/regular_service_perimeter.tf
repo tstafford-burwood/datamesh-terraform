@@ -54,7 +54,8 @@ module "foundation_perimeter_0" {
       "from" = {
         "sources" = {
           # allow the stewards to access the storage api in data ingress prj
-          access_levels = [module.access_level_stewards.name]
+          #access_levels = [module.access_level_stewards.name]
+          access_levels = []
         },
         "identity_type" = "ANY_USER_ACCOUNT"
       }

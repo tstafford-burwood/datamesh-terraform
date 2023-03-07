@@ -1,2 +1,2 @@
-project_admins     = ["user:tap145@client.edu"]
-external_users_vpc = ["user:tap145@client.edu", "user:user@burwood.com"] 
+project_admins     = ["group:sde-centralit@prorelativity.com"]
+external_users_vpc = ["user:astrong@prorelativity.com"] 

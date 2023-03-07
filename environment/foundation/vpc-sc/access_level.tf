@@ -3,8 +3,8 @@ locals {
   # removing the access level itself. Once you run `terraform apply`, you'll then be able to remove the access level and run
   # `terraform apply` again.
 
-  acl_admins   = length(module.constants.value.vpc_sc_admins) > 0 ? module.access_level_admins[0].name : ""
-  acl_stewards = length(module.constants.value.vpc_sc_stewards) > 0 ? module.access_level_stewards[0].name : ""
+  acl_admins = length(module.constants.value.vpc_sc_admins) > 0 ? module.access_level_admins[0].name : ""
+  #acl_stewards = length(module.constants.value.vpc_sc_stewards) > 0 ? module.access_level_stewards[0].name : ""
 
   fnd_pe_0_acclvl = compact([module.access_level_service-accounts.name, local.acl_admins]) # foundation_perimeter_0 access_levels
   fnd_pe_1_acclvl = compact([module.access_level_service-accounts.name, local.acl_admins]) # foundation_perimeter_1 access_levels

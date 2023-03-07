@@ -118,6 +118,6 @@ locals {
 
   # Contact the two lists of foundation service accounts and researcher workspaces
   # Things like the composer-sa and the workspace notebook-sa
-  acclvl_sa       = concat(local.fnd_list, local.nb_sas, local.prismacloud_sa)
+  acclvl_sa       = concat(local.fnd_list, local.nb_sas)
   acclvl_stewards = concat(local.stewards_wrkspc)
 }

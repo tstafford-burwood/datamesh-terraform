@@ -7,10 +7,10 @@ locals {
     // DOMAIN INFORMATION
     org_id                     = "575228741867"         # gcloud organizations list                             
     billing_account_id         = "01EF01-627C10-7CD2DF" # gcloud alpha billing accounts list
-    sde_folder_id              = "487372633138"
+    sde_folder_id              = "319001085975"
     automation_project_id      = "github-actions-demos"
     cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
-    terraform_state_bucket     = "terraform-state-ecc94f44d34edc8e"
+    terraform_state_bucket     = "terraform-state-36e9e98f98120dcd"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`

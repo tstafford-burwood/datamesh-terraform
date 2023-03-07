@@ -373,24 +373,24 @@ steps:
 # ---- [END] READ Data-Ops TFSTATE file
 
 # Third build step: enable the org policies
-- id: "tf plan - enable project org policies"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-    'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=enforce=true'
-  ]
+# - id: "tf plan - enable project org policies"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#     'plan',
+#     '-var-file=env/${_TFVARS_FILE}.tfvars',
+#     '-var=enforce=true'
+#   ]
 
-- id: "composer tf apply - enable project org policies"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-    'apply',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=enforce=true',
-    '-auto-approve'
-  ]
+# - id: "composer tf apply - enable project org policies"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#     'apply',
+#     '-var-file=env/${_TFVARS_FILE}.tfvars',
+#     '-var=enforce=true',
+#     '-auto-approve'
+#   ]
 
 - id: "tf init - pull state from data-ops"
   name: hashicorp/terraform:${_TAG}

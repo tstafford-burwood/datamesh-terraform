@@ -372,7 +372,7 @@ steps:
 
 #---- [END] READ Data-Ops TFSTATE file
 
-Third build step: enable the org policies
+# Third build step: enable the org policies
 - id: "tf plan - enable project org policies"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/data-ops/cloud-composer'

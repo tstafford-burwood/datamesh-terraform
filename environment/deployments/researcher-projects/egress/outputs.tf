@@ -32,7 +32,7 @@ output "external_users_vpc" {
   value       = var.external_users_vpc
 }
 
-output "client_id" {
-  description = "Client ID for Cloud Composer"
-  value       = trimprefix(regex("[A-Za-z0-9-]*\\.apps\\.googleusercontent\\.com", data.http.webui.response_headers["X-Auto-Login"]), "253D")
-}
+# output "client_id" {
+#   description = "Client ID for Cloud Composer"
+#   value       = trimprefix(regex("[A-Za-z0-9-]*\\.apps\\.googleusercontent\\.com", data.http.webui.response_headers["X-Auto-Login"]), "253D")
+# }

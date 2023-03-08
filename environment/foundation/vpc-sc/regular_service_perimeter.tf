@@ -17,7 +17,7 @@ module "foundation_perimeter_0" {
 
   # do not add logging, monitoring, and container to perimeter - this breaks the ability to see the overall health of a cloud composer environment
   restricted_services     = ["bigquery.googleapis.com", "storage.googleapis.com", "aiplatform.googleapis.com"]
-  vpc_accessible_services = ["storage.googleapis.com", "pubsub.googleapis.com", "logging.googleapis.com", "notebooks.googleapis.com", "bigquery.googleapis.com", "monitoring.googleapis.com", "container.googleapis.com", "dlp.googleapis.com", "datacatalog.googleapis.com", "containerregistry.googleapis.com", "artifactregistry.googleapis.com", "sqladmin.googleapis.com", "vpcaccess.googleapis.com", "compute.googleapis.com", "integrations.googleapis.com", "cloudfunctions.googleapis.com"]
+  vpc_accessible_services = ["storage.googleapis.com", "pubsub.googleapis.com", "logging.googleapis.com", "notebooks.googleapis.com", "bigquery.googleapis.com", "monitoring.googleapis.com", "container.googleapis.com", "dlp.googleapis.com", "datacatalog.googleapis.com", "containerregistry.googleapis.com", "artifactregistry.googleapis.com", "sqladmin.googleapis.com", "vpcaccess.googleapis.com", "compute.googleapis.com", "integrations.googleapis.com", "cloudfunctions.googleapis.com", "sts.googleapis.com"]
 
   ingress_policies = [
     {

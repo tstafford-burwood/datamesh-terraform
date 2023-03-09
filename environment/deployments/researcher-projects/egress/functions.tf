@@ -4,12 +4,13 @@ data "archive_file" "cf_egress_module_zip" {
   source_dir  = "${path.module}/functions/egress"
 
   depends_on = [
-    local_file.cf_egress_main_py
+    local_file.*.cf_egress_main_py
   ]
 }
 
 data "http" "webui" {
   # Get the CLIENT ID
+  count  = startswith(local.composer_version, "composer-1") ? 1 : 0
   url    = local.composer_ariflow_uri
   method = "GET"
 }
@@ -23,6 +24,7 @@ resource "google_storage_bucket_object" "cf_egress_module_zip" {
 
 resource "local_file" "cf_egress_main_py" {
   # Create the template file separately from the archive_file block
+  count    = startswith(local.composer_version, "composer-1") ? 1 : 0
   filename = "${path.module}/functions/egress/main.py"
   content = templatefile("${path.module}/functions/main.py.tpl", {
     # `DataOps_to_EgressPrj_DAG` is found in the ./scripts/*.tpl file
@@ -32,9 +34,6 @@ resource "local_file" "cf_egress_main_py" {
     USE_EXPERIMENTAL_API = "True"
   })
 
-  #   depends_on = [
-  #     null_resource.get_client_id
-  #   ]
 }
 
 resource "google_cloudfunctions_function" "egress" {
@@ -62,11 +61,6 @@ resource "google_cloudfunctions_function" "egress" {
   source_archive_bucket = google_storage_bucket.function_archive_storage.name
   source_archive_object = google_storage_bucket_object.cf_egress_module_zip.name
 
-
-  # event_trigger {
-  #   event_type = "google.pubsub.topic.publish"
-  #   resource   = module.pubsub_dataops_to_egress.id
-  # }
 }
 
 
@@ -84,6 +78,7 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
 resource "local_file" "cf_delete_main_py" {
   # Create the template file separately from the archive_file block
+  count    = startswith(local.composer_version, "composer-1") ? 1 : 0
   filename = "${path.module}/functions/delete/main.py"
   content = templatefile("${path.module}/functions/main.py.tpl", {
     # `deletePrj_DAG` is found in the ../../env/foundation/data-ops/cloud-composer/*.tpl file
@@ -93,9 +88,6 @@ resource "local_file" "cf_delete_main_py" {
     USE_EXPERIMENTAL_API = "True"
   })
 
-  #   depends_on = [
-  #     null_resource.get_client_id
-  #   ]
 }
 
 data "archive_file" "cf_delete_module_zip" {
@@ -104,7 +96,7 @@ data "archive_file" "cf_delete_module_zip" {
   source_dir  = "${path.module}/functions/delete"
 
   depends_on = [
-    local_file.cf_delete_main_py
+    local_file.*.cf_delete_main_py
   ]
 }
 
@@ -140,10 +132,6 @@ resource "google_cloudfunctions_function" "delete" {
   trigger_http                 = true
   https_trigger_security_level = "SECURE_ALWAYS"
 
-  # event_trigger {
-  #   event_type = "google.pubsub.topic.publish"
-  #   resource   = module.pubsub_dataops_delete.id
-  # }
 }
 
 resource "google_cloudfunctions_function_iam_member" "invoker_delete" {

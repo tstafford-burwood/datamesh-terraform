@@ -62,6 +62,7 @@ locals {
   composer_ariflow_uri      = try(data.terraform_remote_state.cloud_composer.outputs.airflow_uri, "")
   dag_bucket                = data.terraform_remote_state.cloud_composer.outputs.dag_bucket_name
   policy_for                = "project"
+  composer_version          = "composer-2.1.8-airflow-2.4.3"
 
   # Read the list of folders and create a dag per researcher initiative
   wrkspc_folders  = data.terraform_remote_state.folders.outputs.ids

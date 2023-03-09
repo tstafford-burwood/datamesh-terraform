@@ -13,10 +13,11 @@ module "cloud_composer" {
   env_variables            = var.env_variables
   environment_size         = var.environment_size
 
-  image_version = "composer-2.0.2-airflow-2.1.4"
+  image_version = var.image_version
 
   master_ipv4_cidr = var.master_ipv4_cidr
-  pypi_packages    = var.pypi_packages
+
+  pypi_packages = var.pypi_packages
 
   airflow_config_overrides = {
     "webserver-rbac"                        = "True",

@@ -52,7 +52,7 @@ variable "environment_size" {
 variable "image_version" {
   description = "The version of Airflow running in the Cloud Composer environment. Latest version found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions)."
   type        = string
-  default     = "composer-1.20.7-airflow-1.10.15"
+  default     = "composer-2.1.8-airflow-2.4.3"
 }
 
 variable "gke_machine_type" {
@@ -67,11 +67,11 @@ variable "master_ipv4_cidr" {
   default     = null
 }
 
-variable "node_count" {
-  description = "Number of worker nodes in the Cloud Composer Environment."
-  type        = number
-  default     = 3
-}
+# variable "node_count" {
+#   description = "Number of worker nodes in the Cloud Composer Environment."
+#   type        = number
+#   default     = 3
+# }
 
 variable "oauth_scopes" {
 
@@ -94,10 +94,10 @@ variable "scheduler" {
     count      = number
   })
   default = {
-    cpu        = 2
-    memory_gb  = 7.5
-    storage_gb = 5
-    count      = 2
+    cpu        = 0.5
+    memory_gb  = 1.875
+    storage_gb = 1
+    count      = 1
   }
   description = "Configuration for resources used by Airflow schedulers."
 }
@@ -109,9 +109,9 @@ variable "web_server" {
     storage_gb = number
   })
   default = {
-    cpu        = 2
-    memory_gb  = 7.5
-    storage_gb = 5
+    cpu        = 0.5
+    memory_gb  = 1.875
+    storage_gb = 1
   }
   description = "Configuration for resources used by Airflow web server."
 }
@@ -131,11 +131,11 @@ variable "worker" {
     max_count  = number
   })
   default = {
-    cpu        = 2
-    memory_gb  = 7.5
-    storage_gb = 5
-    min_count  = 2
-    max_count  = 6
+    cpu        = 0.5
+    memory_gb  = 1.875
+    storage_gb = 1
+    min_count  = 1
+    max_count  = 3
   }
   description = "Configuration for resources used by Airflow workers."
 }

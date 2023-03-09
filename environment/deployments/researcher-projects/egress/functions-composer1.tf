@@ -1,10 +1,11 @@
 data "archive_file" "cf_egress_module_zip" {
+  count       = startswith(local.composer_version, "composer-1") ? 1 : 0
   output_path = "${path.module}/egress_build_fn.zip"
   type        = "zip"
   source_dir  = "${path.module}/functions/egress"
 
   depends_on = [
-    local_file.cf_egress_main_py[0]
+    local_file.composer_1_cf_egress_main_py[0]
   ]
 }
 
@@ -16,17 +17,19 @@ data "http" "webui" {
 }
 
 resource "google_storage_bucket_object" "cf_egress_module_zip" {
+  count        = startswith(local.composer_version, "composer-1") ? 1 : 0
   bucket       = google_storage_bucket.function_archive_storage.name
   name         = "cf_egress_module.zip"
   content_type = "application/zip"
-  source       = data.archive_file.cf_egress_module_zip.output_path
+  source       = data.archive_file.cf_egress_module_zip[count.index].output_path
 }
 
-resource "local_file" "cf_egress_main_py" {
+resource "local_file" "composer_1_cf_egress_main_py" {
   # Create the template file separately from the archive_file block
-  count    = startswith(local.composer_version, "composer-1") ? 1 : 0
+  count    = startswith(local.composer_version, "composer-1") ? 1 : 0 # Composer-2 does not require CLIENT_ID
   filename = "${path.module}/functions/egress/main.py"
   content = templatefile("${path.module}/functions/main.py.tpl", {
+
     # `DataOps_to_EgressPrj_DAG` is found in the ./scripts/*.tpl file
     DAG_NAME             = format("%s_%s", lower(replace(local.researcher_workspace_name, "-", "_")), "DataOps_to_Egress_DAG")
     WEBSERVER_ID         = trimsuffix(trimprefix(local.composer_ariflow_uri, "https://"), ".appspot.com")
@@ -37,7 +40,7 @@ resource "local_file" "cf_egress_main_py" {
 }
 
 resource "google_cloudfunctions_function" "egress" {
-
+  count                 = startswith(local.composer_version, "composer-1") ? 1 : 0
   project               = local.staging_project_id
   name                  = format("%s-%s", "cf", trimprefix(trim(local_file.dataops_to_egress_dag_py.filename, ".py"), "/scripts/"))
   runtime               = "python310"
@@ -58,17 +61,18 @@ resource "google_cloudfunctions_function" "egress" {
   vpc_connector                 = local.vpc_connector
   vpc_connector_egress_settings = "ALL_TRAFFIC"
 
-  source_archive_bucket = google_storage_bucket.function_archive_storage.name
-  source_archive_object = google_storage_bucket_object.cf_egress_module_zip.name
+  source_archive_bucket = google_storage_bucket.function_archive_storage[count.index].name
+  source_archive_object = google_storage_bucket_object.cf_egress_module_zip[count.index].name
 
 }
 
 
 resource "google_cloudfunctions_function_iam_member" "invoker" {
   # IAM entry for Application Integration SA found in Data Ops project
+  count          = startswith(local.composer_version, "composer-1") ? 1 : 0
   project        = local.staging_project_id
   region         = var.region
-  cloud_function = google_cloudfunctions_function.egress.name
+  cloud_function = google_cloudfunctions_function.egress[count.index].name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:service-${local.staging_project_number}@gcp-sa-integrations.iam.gserviceaccount.com"
@@ -76,11 +80,12 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
 # Delete Module
 
-resource "local_file" "cf_delete_main_py" {
+resource "local_file" "composer_1_cf_delete_main_py" {
   # Create the template file separately from the archive_file block
-  count    = startswith(local.composer_version, "composer-1") ? 1 : 0
+  count    = startswith(local.composer_version, "composer-1") ? 1 : 0 # Composer-2 does not require CLIENT_ID
   filename = "${path.module}/functions/delete/main.py"
   content = templatefile("${path.module}/functions/main.py.tpl", {
+
     # `deletePrj_DAG` is found in the ../../env/foundation/data-ops/cloud-composer/*.tpl file
     DAG_NAME             = format("%s_%s", lower(replace(local.researcher_workspace_name, "-", "_")), "DataOps_Delete_DAG")
     WEBSERVER_ID         = trimsuffix(trimprefix(local.composer_ariflow_uri, "https://"), ".appspot.com")
@@ -91,24 +96,26 @@ resource "local_file" "cf_delete_main_py" {
 }
 
 data "archive_file" "cf_delete_module_zip" {
+  count       = startswith(local.composer_version, "composer-1") ? 1 : 0
   output_path = "${path.module}/delete_build_fn.zip"
   type        = "zip"
   source_dir  = "${path.module}/functions/delete"
 
   depends_on = [
-    local_file.cf_delete_main_py[0]
+    local_file.composer_1_cf_delete_main_py[0]
   ]
 }
 
 resource "google_storage_bucket_object" "cf_delete_module_zip" {
+  count        = startswith(local.composer_version, "composer-1") ? 1 : 0
   bucket       = google_storage_bucket.function_archive_storage.name
   name         = "cf_delete_module.zip"
   content_type = "application/zip"
-  source       = data.archive_file.cf_delete_module_zip.output_path
+  source       = data.archive_file.cf_delete_module_zip[count.index].output_path
 }
 
 resource "google_cloudfunctions_function" "delete" {
-
+  count                 = startswith(local.composer_version, "composer-1") ? 1 : 0
   project               = local.staging_project_id
   name                  = format("%s-%s-%s-%s", "cf", local.environment[terraform.workspace], local.researcher_workspace_name, "delete-dag")
   runtime               = "python310"
@@ -126,8 +133,8 @@ resource "google_cloudfunctions_function" "delete" {
   vpc_connector                 = local.vpc_connector
   vpc_connector_egress_settings = "ALL_TRAFFIC"
 
-  source_archive_bucket = google_storage_bucket.function_archive_storage.name
-  source_archive_object = google_storage_bucket_object.cf_delete_module_zip.name
+  source_archive_bucket = google_storage_bucket.function_archive_storage[count.index].name
+  source_archive_object = google_storage_bucket_object.cf_delete_module_zip[count.index].name
 
   trigger_http                 = true
   https_trigger_security_level = "SECURE_ALWAYS"
@@ -136,9 +143,10 @@ resource "google_cloudfunctions_function" "delete" {
 
 resource "google_cloudfunctions_function_iam_member" "invoker_delete" {
   # IAM entry for Application Integration SA found in Data Ops project
+  count          = startswith(local.composer_version, "composer-1") ? 1 : 0
   project        = local.staging_project_id
   region         = var.region
-  cloud_function = google_cloudfunctions_function.delete.name
+  cloud_function = google_cloudfunctions_function.delete[count.index].name
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:service-${local.staging_project_number}@gcp-sa-integrations.iam.gserviceaccount.com"

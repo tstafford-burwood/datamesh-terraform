@@ -130,13 +130,15 @@ resource "google_cloudfunctions_function" "cp2_delete" {
 
 }
 
-resource "google_cloudfunctions_function_iam_member" "cp2_invoker_delete" {
-  # IAM entry for Application Integration SA found in Data Ops project
-  count          = startswith(local.composer_version, "composer-2") ? 1 : 0
-  project        = local.staging_project_id
-  region         = var.region
-  cloud_function = google_cloudfunctions_function.cp2_delete[count.index].name
+# 3-9-23: Need to comment back in. For now, leaving out to remove the blocker.
+# Had issues deploying Application Integration
+# resource "google_cloudfunctions_function_iam_member" "cp2_invoker_delete" {
+#   # IAM entry for Application Integration SA found in Data Ops project
+#   count          = startswith(local.composer_version, "composer-2") ? 1 : 0
+#   project        = local.staging_project_id
+#   region         = var.region
+#   cloud_function = google_cloudfunctions_function.cp2_delete[count.index].name
 
-  role   = "roles/cloudfunctions.invoker"
-  member = "serviceAccount:service-${local.staging_project_number}@gcp-sa-integrations.iam.gserviceaccount.com"
-}
+#   role   = "roles/cloudfunctions.invoker"
+#   member = "serviceAccount:service-${local.staging_project_number}@gcp-sa-integrations.iam.gserviceaccount.com"
+# }

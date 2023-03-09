@@ -30,7 +30,7 @@ resource "local_file" "cf_egress_main_py" {
     # `DataOps_to_EgressPrj_DAG` is found in the ./scripts/*.tpl file
     DAG_NAME             = format("%s_%s", lower(replace(local.researcher_workspace_name, "-", "_")), "DataOps_to_Egress_DAG")
     WEBSERVER_ID         = trimsuffix(trimprefix(local.composer_ariflow_uri, "https://"), ".appspot.com")
-    CLIENT_ID            = trimprefix(regex("[A-Za-z0-9-]*\\.apps\\.googleusercontent\\.com", data.http.webui.response_headers["X-Auto-Login"]), "253D")
+    CLIENT_ID            = trimprefix(regex("[A-Za-z0-9-]*\\.apps\\.googleusercontent\\.com", data.http.webui[count.index].response_headers["X-Auto-Login"]), "253D")
     USE_EXPERIMENTAL_API = "True"
   })
 

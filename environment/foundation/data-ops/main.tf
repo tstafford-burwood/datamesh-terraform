@@ -70,7 +70,7 @@ module "secure-staging-project" {
   billing_account             = local.billing_account_id
   folder_id                   = local.folder_id
   random_project_id           = true
-  activate_apis               = ["compute.googleapis.com", "pubsub.googleapis.com", "bigquery.googleapis.com", "composer.googleapis.com", "dlp.googleapis.com", "healthcare.googleapis.com", "notebooks.googleapis.com", "servicenetworking.googleapis.com", "dns.googleapis.com", "healthcare.googleapis.com", "run.googleapis.com", "datacatalog.googleapis.com", "serviceusage.googleapis.com", "cloudfunctions.googleapis.com", "vpcaccess.googleapis.com"]
+  activate_apis               = ["compute.googleapis.com", "pubsub.googleapis.com", "bigquery.googleapis.com", "composer.googleapis.com", "dlp.googleapis.com", "healthcare.googleapis.com", "notebooks.googleapis.com", "servicenetworking.googleapis.com", "dns.googleapis.com", "healthcare.googleapis.com", "run.googleapis.com", "datacatalog.googleapis.com", "serviceusage.googleapis.com", "cloudfunctions.googleapis.com", "vpcaccess.googleapis.com", "integrations.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true

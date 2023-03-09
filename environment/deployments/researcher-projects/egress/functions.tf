@@ -4,7 +4,7 @@ data "archive_file" "cf_egress_module_zip" {
   source_dir  = "${path.module}/functions/egress"
 
   depends_on = [
-    local_file.*.cf_egress_main_py
+    local_file.cf_egress_main_py[0]
   ]
 }
 
@@ -96,7 +96,7 @@ data "archive_file" "cf_delete_module_zip" {
   source_dir  = "${path.module}/functions/delete"
 
   depends_on = [
-    local_file.*.cf_delete_main_py
+    local_file.cf_delete_main_py[0]
   ]
 }
 

@@ -32,3 +32,9 @@ output "dag_bucket_name" {
   description = "Google cloud storage bucket name only without suffix"
   value       = trimsuffix(module.cloud_composer.gcs_bucket, "/dags")
 }
+
+output "composer_version" {
+  # tfdoc:output: cloud-composer cloud build workspace
+  description = "The version of composer that is deployed."
+  value       = var.image_version
+}

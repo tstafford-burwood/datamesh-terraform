@@ -123,7 +123,7 @@ resource "google_cloudfunctions_function" "cp2_delete" {
   vpc_connector_egress_settings = "ALL_TRAFFIC"
 
   source_archive_bucket = google_storage_bucket.function_archive_storage.name
-  source_archive_object = google_storage_bucket_object.cf_delete_module_zip[count.index].name
+  source_archive_object = google_storage_bucket_object.cf_delete_module_zip.name[count.index]
 
   trigger_http                 = true
   https_trigger_security_level = "SECURE_ALWAYS"
@@ -135,7 +135,7 @@ resource "google_cloudfunctions_function_iam_member" "cp2_invoker_delete" {
   count          = startswith(local.composer_version, "composer-2") ? 1 : 0
   project        = local.staging_project_id
   region         = var.region
-  cloud_function = google_cloudfunctions_function.delete[count.index].name
+  cloud_function = google_cloudfunctions_function.delete.name[count.index]
 
   role   = "roles/cloudfunctions.invoker"
   member = "serviceAccount:service-${local.staging_project_number}@gcp-sa-integrations.iam.gserviceaccount.com"

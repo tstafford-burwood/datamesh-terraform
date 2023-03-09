@@ -21,7 +21,7 @@ from typing import Any
 
 import composer2_airflow_rest_api
 
-def trigger_dag_gcf(data, context=None):
+def http_trigger(data, context=None):
     """
     Trigger a DAG and pass event data.
 

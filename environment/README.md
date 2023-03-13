@@ -97,7 +97,8 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 
 This IaC code contained under [Foundation](./foundation/) contains several distinct Terraform projects, each within their own directory that must be applied separately, but in sequence. Each of these Terraform projects are to be layered on top of each other, and must be ran in order.
 
-1. Trigger the Cloud Build trigger: `{env}-sde-workflow-foundation-apply`.
+1. Navigate to ```cd ./environments/foundation/folders/env/terraform.tvars``` and update any values.
+1. Push the changes to the repo. The cloud build trigger will auto-launch based off of this change.
 
 ## Deploying Deployments with Cloud Build
 

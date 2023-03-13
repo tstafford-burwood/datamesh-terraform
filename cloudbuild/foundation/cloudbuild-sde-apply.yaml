@@ -32,7 +32,8 @@ steps:
     '-target=google_cloudbuild_trigger.packer_container_image',
     '-target=google_cloudbuild_trigger.researcher_vm_image',
     '-target=google_cloudbuild_trigger.copy_dags',
-    '-target=module.folder_iam_member'
+    '-target=module.folder_iam_member',
+    '-var-file=../constants/new.auto.tfvars'
   ]
 
 - id: "terraform apply"

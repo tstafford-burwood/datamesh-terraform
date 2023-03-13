@@ -72,19 +72,22 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 1. Run ```terraform init```, ```terraform plan```, ```terraform apply```.
 1. After the build runs navigate to ```cd ../environment/foundation/constants.tf``` and update with the values from the terraform output.
     ```diff
-    -automation_project_id      = ""
-    -billing_account_id         = ""
-    -cloudbuild_service_account = ""
-    -org_id                     = ""
-    -sde_folder_id              = ""
-    -terraform_state_bucket     = ""
+    # ./environments/foundation/constants.tf keys
+    - automation_project_id      = ""
+    - billing_account_id         = ""
+    - cloudbuild_service_account = ""
+    - org_id                     = ""
+    - sde_folder_id              = ""
+    - terraform_state_bucket     = ""
 
-    +automation_project_id      = "github-actions-demos"
-    +billing_account_id         = "01EF01-627C10-7CD2DF"
-    +cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
-    +org_id                     = "575228741867"
-    +sde_folder_id              = "354964175308"
-    +terraform_state_bucket     = "terraform-state-e106bfd20302a8d3"
+    # replace the empty values "" with values from the terraform outputs
+    # >$ terraform output
+    + automation_project_id = "cloudbuid-project-id"
+    + billing_account_id = "AAAAAA-BBBBBB-CCCCCC"
+    + cloudbuild_service_account = "123456789@cloudbuild.gserviceaccount.com"
+    + org_id = "12345678901"
+    + sde_folder_id = "354964175308"
+    + terraform_state_bucket = "terraform-state-e106bfd20302a8d3"
     ```
 1. Push the changes into the repo.
 1. Open Cloud Build and manually connect the `GITHUB` repo to Cloud Build.

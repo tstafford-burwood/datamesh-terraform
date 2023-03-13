@@ -8,6 +8,7 @@ resource "google_cloudbuild_trigger" "bootstrap" {
     repo_type = var.git_repo_type
   }
 
+
   git_file_source {
     path      = var.git_path
     repo_type = var.git_repo_type
@@ -18,7 +19,7 @@ resource "google_cloudbuild_trigger" "bootstrap" {
   substitutions = {
     _BUCKET = google_storage_bucket.tfstate.name
     _PREFIX = "foundation"
-    _TAG    = "1.4"
+    _TAG    = var.terraform_version
   }
 }
 

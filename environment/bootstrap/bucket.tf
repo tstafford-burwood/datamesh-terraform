@@ -31,27 +31,3 @@ resource "google_storage_bucket" "tfstate" {
     }
   }
 }
-
-# --------------------------------------------------------
-# VARIABLES
-# --------------------------------------------------------
-
-variable "storage_class" {
-  description = "The Storage class of the new bucket. Supported values: `STANDARD`, `MULTI_REGIONAL`, `REGIONAL`, `NEARLINE`, `COLDLINE`, `ARCHIVE`"
-  type        = string
-  default     = "STANDARD"
-}
-
-# --------------------------------------------------------
-# OUTPUTS
-# --------------------------------------------------------
-
-output "tfstate_url" {
-  description = "The base URL of the bucket in format of `gs://<bucket-name>`"
-  value       = google_storage_bucket.tfstate.url
-}
-
-output "tfstate_self_link" {
-  description = "The URI of the TF State bucket."
-  value       = google_storage_bucket.tfstate.self_link
-}

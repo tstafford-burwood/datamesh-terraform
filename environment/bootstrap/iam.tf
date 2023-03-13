@@ -17,26 +17,3 @@ resource "google_billing_account_iam_member" "billing_user" {
   role               = "roles/billing.user"
   member             = "serviceAccount:${var.cloudbuild_service_account}"
 }
-
-# --------------------------------------------------
-# VARIABLES
-# --------------------------------------------------
-
-variable "cloudbuild_iam_roles" {
-  description = "The IAM role(s) to assign to the `Admins` at the defined project."
-  type        = list(string)
-  default = [
-    "roles/resourcemanager.folderAdmin",
-    "roles/resourcemanager.projectCreator",
-  ]
-}
-
-variable "cloudbuild_service_account" {
-  description = "Cloud Build Service Account"
-  type        = string
-}
-
-variable "billing_account_id" {
-  description = "Billing account."
-  type        = string
-}

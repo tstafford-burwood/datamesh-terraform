@@ -28,7 +28,7 @@ locals {
     vpc_sc_admins = []
 
     // Default Location
-    default_region = var.default_region
+    default_region = "us-central1"
 
     // BRANCH IN VSC
     // Long running Branches. These need to match the branch names in Version Control Software.

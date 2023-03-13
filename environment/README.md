@@ -102,6 +102,7 @@ This IaC code contained under [Foundation](./foundation/) contains several disti
 
 1. Navigate to ```cd ./environments/foundation/folders/env/terraform.tvars``` and update any values.
 1. Push the changes to the repo. The cloud build trigger will auto-launch based off of this change.
+>**Note**: Total time include Cloud Composer (25 minutes) is 35 minutes to deploy a fresh environment.
 
 ## Deploying Deployments with Cloud Build
 

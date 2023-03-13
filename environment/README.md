@@ -9,12 +9,12 @@
     - Describe how to delegate the CB service account down to a particular folder.
     - Note, during Burwood's build, admins should have same permissions during build workshops.
 
-## Code Folder Structure
+<!-- ## Code Folder Structure
 
 The SDE is split into two main functions: `Foundation` and `Deployments`
 
 * `Foundation` contains the IaC code for setting up the folder heirarchy, Cloud Build trigger, and core projects.
-* `Development` contains the IaC code for setting up projects for researchers and to share data externally.
+* `Development` contains the IaC code for setting up projects for researchers and to share data externally. -->
 
 <!-- 
 One of the objectives is to provide a lightweight reference design for the IaC repositories, and a built-in implementation for running this code in automated pipelines. This codeset utilizes an existing project with Cloud Build already connected to the desired GitHub repository. This configuration is outside of the document, but the setup can be found [here](https://cloud.google.com/build/docs/automating-builds/github/connect-repo-github).

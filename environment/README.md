@@ -49,6 +49,34 @@ gcloud beta builds triggers create github \
 * `_PREFIX` is the initial folder name in the GCS bucket
 * `_TAG` is the Terraform version. -->
 
+## Boostrap
+
+### Pre-requirements
+
+The admin deploying the SDE needs to have the following IAM roles:
+
+**Organization Level**
+* `roles/billing.Administrator` - To assign the Cloud Build service account to the billing account
+* `roles/AccessContextAdmin` - To assign Access Context VPC Service Control delegation
+* `roles/folders.Admin` - To create a top level folder. Default name is `SDE`.
+
+**Cloud Build Project Level**
+* `roles/Owner`
+
+### Deploy Bootstrap
+
+This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
+
+1. Clone the repo into your local environment and navigate to the `environments/bootstrap` directory. ```cd .\environment\bootstrap\```
+1. Update the necessary values in the `variables.tf` file.
+1. Run ```terraform init```, ```terraform plan```, ```terraform apply```.
+    1. Capture the `sde_folder_id`, `terraform_state_bucket` from the outputs.
+1. Manually connect the GITHUB repo to Cloud Build.
+1. Run the bootstrap trigger
+    1. Manually: Click [HERE](https://console.cloud.google.com/cloud-build/triggers?_ga=2.19577400.1279332550.1678733761-964487985.1650941830&_gac=1.12577478.1678733765.Cj0KCQjwk7ugBhDIARIsAGuvgPbbxpOamuWrxgAJXGno4zq2QAWtNgIH7xCR9Lc_WT8ZHcxTmiWVLsYaAvR_EALw_wcB)
+    1. Enter command: ```gcloud beta builds triggers run bootstrap-trigger --project=<PROJECT_ID>```
+
+
 ## Deploying Foundation with Cloud Build
 
 This IaC code contained under [Foundation](./foundation/) contains several distinct Terraform projects, each within their own directory that must be applied separately, but in sequence. Each of these Terraform projects are to be layered on top of each other, and must be ran in order.

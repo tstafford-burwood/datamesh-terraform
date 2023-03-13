@@ -68,10 +68,26 @@ The admin deploying the SDE needs to have the following IAM roles:
 This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 
 1. Clone the repo into your local environment and navigate to the `environments/bootstrap` directory. ```cd .\environment\bootstrap\```
-1. Update the necessary values in the `variables.tf` file.
+1. Update the necessary values in the `terraform.tfvars` file.
 1. Run ```terraform init```, ```terraform plan```, ```terraform apply```.
-    1. Capture the `sde_folder_id`, `terraform_state_bucket` from the outputs.
-1. Manually connect the GITHUB repo to Cloud Build.
+1. After the build runs navigate to ```cd ../environment/foundation/constants.tf``` and update with the values from the terraform output.
+    ```diff
+    -automation_project_id      = ""
+    -billing_account_id         = ""
+    -cloudbuild_service_account = ""
+    -org_id                     = ""
+    -sde_folder_id              = ""
+    -terraform_state_bucket     = ""
+
+    +automation_project_id      = "github-actions-demos"
+    +billing_account_id         = "01EF01-627C10-7CD2DF"
+    +cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
+    +org_id                     = "575228741867"
+    +sde_folder_id              = "354964175308"
+    +terraform_state_bucket     = "terraform-state-e106bfd20302a8d3"
+    ```
+1. Push the changes into the repo.
+1. Open Cloud Build and manually connect the `GITHUB` repo to Cloud Build.
 1. Run the bootstrap trigger
     1. Manually: Click [HERE](https://console.cloud.google.com/cloud-build/triggers?_ga=2.19577400.1279332550.1678733761-964487985.1650941830&_gac=1.12577478.1678733765.Cj0KCQjwk7ugBhDIARIsAGuvgPbbxpOamuWrxgAJXGno4zq2QAWtNgIH7xCR9Lc_WT8ZHcxTmiWVLsYaAvR_EALw_wcB)
     1. Enter command: ```gcloud beta builds triggers run bootstrap-trigger --project=<PROJECT_ID>```
@@ -81,42 +97,7 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 
 This IaC code contained under [Foundation](./foundation/) contains several distinct Terraform projects, each within their own directory that must be applied separately, but in sequence. Each of these Terraform projects are to be layered on top of each other, and must be ran in order.
 
-### Create a GCS Bucket for Terraform State
-
-Terraform needs a place to store its state. The common location is in the project that hosts the Cloud Build API.
-
-Create a GCS bucket now that will be referenced in later steps.
-
-### Create a Bootstrap Trigger
-
-To help with this sequence, a [Cloud Build workflow configuration file](./cloudbuild/foundation/workflow-foundation-apply.yaml) has been developed to provision the environment in the appropriate sequence.
-
-But, in order to use the [workflow config file](./cloudbuild/foundation/workflow-foundation-apply.yaml), you must create a temporary Bootstrap trigger. Below are the steps:
-
-1. Clone the repo into your local environment and navigate to the `folders` directory. ```cd .\environment\foundation\folders\```
-1. Create a temporary cloud build trigger called `bootstrap-triggers-prod-apply` to create the cloud build triggers.
-   ```bash
-    gcloud beta builds triggers create github \
-    --name="bootstrap-triggers-prod-apply" \
-    --repo-name="terraform-google-sde" \
-    --repo-owner="OWNER" \
-    --branch-pattern="^main$" \
-    --build-config="cloudbuild/foundation/cloudbuild-sde-apply.yaml"
-    --substitutions _BUCKET=<bucket_id>,_PREFIX=foundation,_TAG=1.2.1
-    ``` 
-    * `_BUCKET` is the GCS bucket name that will store the Terraform tfstate files
-    * `_PREFIX` is the initial folder name in the GCS bucket
-    * `_TAG` is the Terraform version.
-1. Update the necessary files:
-    1. Update the constants.tf file
-    1. Update the cloudbuild sde [variables.tf](./foundation/cloudbuild-sde/variables.tf) file with GITHUB Owner and Repository info.
-    1. Update the folders/env/terraform.tfvars file
-    1. Grant Cloud Build SA `folder admin` and `project creator` to the parent folder. Grant Cloud Build SA `Org Policy Admin` at the org level. Grant Cloud Build SA `billing user` on billing account.
-1. Manually set the trigger to disabled, and then run the trigger.
-    >**Note:** you will see new triggers. These triggers monitor changes to any of the *.tfvar files under `Foundation`.
-
-1. Push changes into the Git repository. The `workflow` pipeline will see the change and kick-off.
-1. Destroy the trigger named `bootstrap-triggers-prod-apply`.
+1. Trigger the Cloud Build trigger: `{env}-sde-workflow-foundation-apply`.
 
 ## Deploying Deployments with Cloud Build
 

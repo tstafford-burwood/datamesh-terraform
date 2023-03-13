@@ -5,12 +5,12 @@ locals {
   constants = {
 
     // DOMAIN INFORMATION
-    org_id                     = "575228741867"         # gcloud organizations list                             
-    billing_account_id         = "01EF01-627C10-7CD2DF" # gcloud alpha billing accounts list
-    sde_folder_id              = "319001085975"
-    automation_project_id      = "github-actions-demos"
-    cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
-    terraform_state_bucket     = "terraform-state-36e9e98f98120dcd"
+    org_id                     = var.org_id         # gcloud organizations list                             
+    billing_account_id         = var.billing_account_id # gcloud alpha billing accounts list
+    sde_folder_id              = var.sde_folder_id
+    automation_project_id      = var.automation_project_id
+    cloudbuild_service_account = var.cloudbuild_service_account
+    terraform_state_bucket     = var.terraform_state_bucket
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
@@ -28,7 +28,7 @@ locals {
     vpc_sc_admins = []
 
     // Default Location
-    default_region = "us-central1"
+    default_region = var.default_region
 
     // BRANCH IN VSC
     // Long running Branches. These need to match the branch names in Version Control Software.

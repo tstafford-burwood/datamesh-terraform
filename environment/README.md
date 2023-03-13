@@ -70,7 +70,7 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 1. Clone the repo into your local environment and navigate to the `environments/bootstrap` directory. ```cd .\environment\bootstrap\```
 1. Update the necessary values in the `terraform.tfvars` file.
 1. Run ```terraform init```, ```terraform plan```, ```terraform apply```.
-1. After the build runs navigate to ```cd ../environment/foundation/constants.tf``` and update with the values from the terraform output.
+1. After `terraform apply` completes successfully, navigate to ```cd ../environment/foundation/constants.tf``` and update with the values from the terraform output.
     ```diff
     # ./environments/foundation/constants.tf keys
     - automation_project_id      = ""
@@ -89,9 +89,9 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
     + sde_folder_id = "354964175308"
     + terraform_state_bucket = "terraform-state-e106bfd20302a8d3"
     ```
-1. Push the changes into the repo.
-1. Open Cloud Build and manually connect the `GITHUB` repo to Cloud Build.
-1. Run the bootstrap trigger
+1. Push the changes into the repo. ```git add .```, ```git commit -m "updated values"```, ```git push```
+1. Open Cloud Build and manually connect the `GITHUB` [repository to Cloud Build](https://cloud.google.com/build/docs/automating-builds/github/connect-repo-github).
+1. Run the bootstrap trigger either manually or with a `gcloud` command.
     1. Manually: Click [HERE](https://console.cloud.google.com/cloud-build/triggers?_ga=2.19577400.1279332550.1678733761-964487985.1650941830&_gac=1.12577478.1678733765.Cj0KCQjwk7ugBhDIARIsAGuvgPbbxpOamuWrxgAJXGno4zq2QAWtNgIH7xCR9Lc_WT8ZHcxTmiWVLsYaAvR_EALw_wcB)
     1. Enter command: ```gcloud beta builds triggers run bootstrap-trigger --project=<PROJECT_ID>```
 

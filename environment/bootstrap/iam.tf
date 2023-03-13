@@ -13,7 +13,7 @@ resource "google_organization_iam_member" "policy_admin" {
 }
 
 resource "google_billing_account_iam_member" "billing_user" {
-  billing_account_id = var.billing_account_id
+  billing_account_id = data.google_billing_account.billing_id.id
   role               = "roles/billing.user"
   member             = "serviceAccount:${var.cloudbuild_service_account}"
 }

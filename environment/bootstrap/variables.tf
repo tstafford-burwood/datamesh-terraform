@@ -36,11 +36,6 @@ variable "cloudbuild_service_account" {
   type        = string
 }
 
-variable "billing_account_id" {
-  description = "Billing account."
-  type        = string
-}
-
 # --- Folders
 
 variable "folder_name" {

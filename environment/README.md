@@ -89,7 +89,7 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
     + sde_folder_id = "354964175308"
     + terraform_state_bucket = "terraform-state-e106bfd20302a8d3"
     ```
-1. Update the VPC-SC [terraform.tfvars](./foundation/vpc-sc/env/terraform.tfvars) with the new `parent_access_policy_id`.
+
 1. Push the changes into the repo. ```git add .```, ```git commit -m "updated values"```, ```git push```
 1. Open Cloud Build and manually connect the `GITHUB` [repository to Cloud Build](https://cloud.google.com/build/docs/automating-builds/github/connect-repo-github).
 1. Run the bootstrap trigger either manually or with a `gcloud` command.
@@ -102,6 +102,7 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 This IaC code contained under [Foundation](./foundation/) contains several distinct Terraform projects, each within their own directory that must be applied separately, but in sequence. Each of these Terraform projects are to be layered on top of each other, and must be ran in order.
 
 1. Navigate to ```cd ./environments/foundation/folders/env/terraform.tvars``` and update any values.
+1. Update the VPC-SC [terraform.tfvars](./foundation/vpc-sc/env/terraform.tfvars) with the new `parent_access_policy_id`.
 1. Push the changes to the repo. The cloud build trigger will auto-launch based off of this change.
 >**Note**: Total time include Cloud Composer (25 minutes) is 35 minutes to deploy a fresh environment.
 

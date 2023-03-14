@@ -57,7 +57,7 @@ The admin deploying the SDE needs to have the following IAM roles:
 
 **Organization Level**
 * `roles/billing.Administrator` - To assign the Cloud Build service account to the billing account
-* `roles/AccessContextAdmin` - To assign Access Context VPC Service Control delegation
+* `roles/accesscontextmanager.policyAdmin` - To assign Access Context VPC Service Control delegation
 * `roles/folders.Admin` - To create a top level folder. Default name is `SDE`.
 
 **Cloud Build Project Level**
@@ -98,6 +98,12 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
 
 
 ## Deploying Foundation with Cloud Build
+
+### Before you begin
+
+* Ensure the VPC Service Control [Access Policy](./access-policy.md) has been setup and delegated.
+
+### Deployment of the Foundation
 
 This IaC code contained under [Foundation](./foundation/) contains several distinct Terraform projects, each within their own directory that must be applied separately, but in sequence. Each of these Terraform projects are to be layered on top of each other, and must be ran in order.
 

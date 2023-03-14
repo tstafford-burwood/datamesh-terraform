@@ -2,11 +2,10 @@
 
 **Pre-Requirements <u>NOT</u> part of this build** 
 
-1. GCP Project with Cloud Build must be established (Not part of this code base).
-1. Cloud Build Service Account must have appropriate IAM roles
-    - List IAM roles here
+1. A Google Cloud Project with Cloud Build must be established (Not part of this code base).
+    > **Note**: Burwood employees can use the Google Project [github-actions-demos](https://console.cloud.google.com/home/dashboard?authuser=0&project=github-actions-demos) in Prorelativity with Cloud Build already enabled.
 1. Cloud Build Service Account must have appropriate VPC Service Controls Permissions
-    - Describe how to delegate the CB service account down to a particular folder.
+    - Follow the [Access Policy](./access-policy.md) to delegate access to the Cloud Build service account.
     - Note, during Burwood's build, admins should have same permissions during build workshops.
 
 <!-- ## Code Folder Structure
@@ -51,9 +50,9 @@ gcloud beta builds triggers create github \
 
 ## Boostrap
 
-### Pre-requirements
+### Before you begin
 
-The admin deploying the SDE needs to have the following IAM roles:
+* The admin deploying the SDE needs to have the following IAM roles:
 
 **Organization Level**
 * `roles/billing.Administrator` - To assign the Cloud Build service account to the billing account

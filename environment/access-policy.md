@@ -10,6 +10,8 @@ This page describes how to create an organization-level access policy for your o
 
 ## Create an organization-level access policy
 
+Check if an Org Level policy already exists by running ```gcloud access-context-manager policies list --organization=<ORG_ID>```. If not, run the following command:
+
 ```
 gcloud access-context-manager policies create \
 --organization ORGANIZATION_ID --title POLICY_TITLE

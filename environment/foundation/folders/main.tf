@@ -35,6 +35,7 @@ resource "google_folder" "researcher_workspaces" {
 
 resource "google_folder_iam_audit_config" "config" {
   # Allow management of audit logging config for a given service for a GCP folder
+  count   = length(var.audit_log_config)
   folder  = google_folder.environment.name
   service = var.audit_service
   dynamic "audit_log_config" {

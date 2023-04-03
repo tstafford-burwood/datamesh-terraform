@@ -1,11 +1,15 @@
 resource "google_storage_bucket_object" "dag" {
   # Upload DAG to the data-ops cloud composer DAG bucket
+  count = local.dag_bucket != "" ? 1 : 0 # deploy if there is a Cloud Composer DAG bucket
+
   bucket = trimprefix(local.dag_bucket, "gs://")
   name   = "dags/${local.environment[terraform.workspace]}_${local.researcher_workspace_name}_dataops_to_egress_dag.py"
   source = local_file.dataops_to_egress_dag_py.filename
 }
 
 resource "local_file" "dataops_to_egress_dag_py" {
+  count = local.dag_bucket != "" ? 1 : 0 # deploy if there is a Cloud Composer DAG bucket
+
   filename = "${path.module}/scripts/${local.environment[terraform.workspace]}_${local.researcher_workspace_name}_dataops_to_egress_dag.py"
   content = templatefile("${path.module}/scripts/DataOps_to_EgressPrj_DAG.py.tpl", {
     RESEARCHER_WORKSPACE_NAME = lower(replace(local.researcher_workspace_name, "-", "_"))

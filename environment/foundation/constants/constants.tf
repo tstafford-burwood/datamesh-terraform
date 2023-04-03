@@ -9,16 +9,16 @@ locals {
     billing_account_id         = "01EF01-627C10-7CD2DF"
     cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
     org_id                     = "575228741867"
-    sde_folder_id              = "354964175308"
-    terraform_state_bucket     = "terraform-state-e106bfd20302a8d3"
+    sde_folder_id              = "728052361398"
+    terraform_state_bucket     = "terraform-state-855bc0ccbc1acfa8"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
     ingress-project-admins = ["group:sde-centralit@prorelativity.com"]
     image-project-admins   = ["group:sde-centralit@prorelativity.com"]
-    data-lake-admins       = ["group:sde-centralit@prorelativity.com"]
-    data-lake-viewers      = ["group:sde-centralit@prorelativity.com"]
-    data-ops-admins        = ["group:sde-centralit@prorelativity.com"]
+    data-lake-admins       = ["group:srde-datagroup@prorelativity.com"]
+    data-lake-viewers      = ["group:srde-datagroup@prorelativity.com"]
+    data-ops-admins        = ["group:srde-datagroup@prorelativity.com"]
 
     // ONLY USERS OR SERVICE ACCOUNTS TO ASSIGN TO VPC PERIMETER
     # `vpc_sc_admins` are added to an access context level which grants them full access to all restricted services for all foundation projects
@@ -34,7 +34,7 @@ locals {
     // Long running Branches. These need to match the branch names in Version Control Software.
     environment = {
       # <branch_name> = <environment_value>
-      base-1 = "qa"
+      vi-workbench = "qa"
     }
   }
 }

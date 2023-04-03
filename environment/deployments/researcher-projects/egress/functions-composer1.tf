@@ -42,7 +42,7 @@ resource "local_file" "composer_1_cf_egress_main_py" {
 resource "google_cloudfunctions_function" "egress" {
   count                 = startswith(local.composer_version, "composer-1") ? 1 : 0
   project               = local.staging_project_id
-  name                  = format("%s-%s", "cf", trimprefix(trim(local_file.dataops_to_egress_dag_py.filename, ".py"), "/scripts/"))
+  name                  = format("%s-%s", "cf", trimprefix(trim(local_file.dataops_to_egress_dag_py.*.filename, ".py"), "/scripts/"))
   runtime               = "python310"
   description           = format("Research initiative: %s", lower(replace(local.researcher_workspace_name, "-", "_")))
   available_memory_mb   = 256

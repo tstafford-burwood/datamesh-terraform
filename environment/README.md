@@ -54,8 +54,10 @@ gcloud beta builds triggers create github \
 
 * The admin deploying the SDE needs to have the following IAM roles:
 
-**Organization Level**
+**Billing Account**
 * `roles/billing.Administrator` - To assign the Cloud Build service account to the billing account
+
+**Organization Level**
 * `roles/accesscontextmanager.policyAdmin` - To assign Access Context VPC Service Control delegation
 * `roles/folders.Admin` - To create a top level folder. Default name is `SDE`.
 

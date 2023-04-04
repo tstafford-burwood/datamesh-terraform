@@ -77,7 +77,6 @@ locals {
   staging_project_name   = data.terraform_remote_state.data_ops_project.outputs.staging_project_name
   staging_network_name   = data.terraform_remote_state.data_ops_project.outputs.network_name
   staging_subnetwork     = data.terraform_remote_state.data_ops_project.outputs.subnets_names[0]
-  composer_sa            = data.terraform_remote_state.data_ops_project.outputs.email
   dataops_bucket         = data.terraform_remote_state.data_ops_project.outputs.csv_names_list
   ingress_buckets        = data.terraform_remote_state.ingress_project.outputs.bucket_names
   datalake_buckets       = data.terraform_remote_state.data_lake_project.outputs.research_to_bucket

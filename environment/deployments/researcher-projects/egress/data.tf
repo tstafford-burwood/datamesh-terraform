@@ -58,7 +58,7 @@ locals {
   vpc_connector             = data.terraform_remote_state.staging_project.outputs.vpc_access_connector_id[0]
   pubsub_appint_results     = data.terraform_remote_state.staging_project.outputs.pubsub_trigger_appint_results
   data_ops_bucket           = data.terraform_remote_state.staging_project.outputs.research_to_bucket
-  composer_sa               = try(data.terraform_remote_state.staging_project.outputs.email, "")
+  composer_sa               = try(data.terraform_remote_state.cloud_composer.outputs.email, "")
   composer_ariflow_uri      = try(data.terraform_remote_state.cloud_composer.outputs.airflow_uri, "")
   dag_bucket                = try(data.terraform_remote_state.cloud_composer.outputs.dag_bucket_name, "")
   policy_for                = "project"

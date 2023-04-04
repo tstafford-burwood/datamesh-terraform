@@ -70,6 +70,7 @@ locals {
   foundation_folder_id   = data.terraform_remote_state.folders.outputs.foundation_folder_id
   default_region         = data.terraform_remote_state.data_ops_project.outputs.subnets_regions[0]
   environment            = module.constants.value.environment
+  environment_folder_id  = data.terraform_remote_state.folders.outputs.environemnt_folder_id
   folder_id              = data.terraform_remote_state.folders.outputs.foundation_folder_id
   staging_project_id     = data.terraform_remote_state.data_ops_project.outputs.staging_project_id
   staging_project_number = data.terraform_remote_state.data_ops_project.outputs.staging_project_number

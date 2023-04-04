@@ -2,7 +2,7 @@ resource "google_storage_bucket_object" "dag" {
   # Upload DAG to the data-ops cloud composer DAG bucket
   bucket = trimprefix(local.dag_bucket, "gs://")
   name   = "dags/${local.environment[terraform.workspace]}_${local.researcher_workspace_name}_dataops_to_egress_dag.py"
-  source = local_file.dataops_to_egress_dag_py.*.filename
+  source = local_file.dataops_to_egress_dag_py.filename
 }
 
 resource "local_file" "dataops_to_egress_dag_py" {

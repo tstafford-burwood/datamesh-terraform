@@ -241,15 +241,14 @@ with models.DAG(
         #delimiter='.csv',
     )
     
-#    is_empty = ShortCircuitOperator(
-#        # If there aren't any files, then skip the remaining tasks
-#        task_id='is_empty',
-#        python_callable=_is_empty,
-#        provide_context=False,
-#        op_kwargs={
-#        'files': '{{ti.xcom_pull(task_ids="list_files")}}'
-#        },
-#    )
+    is_empty = ShortCircuitOperator(
+        # If there aren't any files, then skip the remaining tasks
+        task_id='is_empty',
+        python_callable=_is_empty,
+        op_kwargs={
+        'files': '{{ti.xcom_pull(task_ids="list_files")}}'
+        },
+    )
 
     move_prj_x_files_task = GCSToGCSOperator(
         # If there are files, then move to the data ops cordon bucket
@@ -273,5 +272,4 @@ with models.DAG(
         messages=[m1],
         )
             
-    #gcs_list_files >> is_empty >> move_prj_x_files_task >> py_create_dlp_job_task >> push_to_pubsub
-    gcs_list_files >> move_prj_x_files_task >> py_create_dlp_job_task >> push_to_pubsub
+    gcs_list_files >> is_empty >> move_prj_x_files_task >> py_create_dlp_job_task >> push_to_pubsub

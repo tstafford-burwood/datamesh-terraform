@@ -41,10 +41,3 @@ module "cloud_composer" {
   maintenance_end_time   = "2021-01-01T07:00:00Z"
   maintenance_recurrence = "FREQ=WEEKLY;BYDAY=SU,FR,SA"
 }
-
-resource "google_service_account_iam_member" "custom_service_account" {
-  provider           = google-beta
-  service_account_id = google_service_account.custom_service_account.name
-  role               = "roles/composer.ServiceAgentV2Ext"
-  member             = "serviceAccount:service-PROJECT_NUMBER@cloudcomposer-accounts.iam.gserviceaccount.com"
-}

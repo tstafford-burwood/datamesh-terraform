@@ -25,17 +25,17 @@ variable "cloud_sql_ipv4_cidr" {
   default     = "10.4.0.0/24"
 }
 
-variable "database_machine_type" {
-  description = "The machine type to setup for the SQL database in the Cloud Composer environment."
-  type        = string
-  default     = "db-n1-standard-4"
-}
+# variable "database_machine_type" {
+#   description = "The machine type to setup for the SQL database in the Cloud Composer environment."
+#   type        = string
+#   default     = "db-n1-standard-4"
+# }
 
-variable "disk_size" {
-  description = "The disk size in GB for nodes."
-  type        = string
-  default     = "50"
-}
+# variable "disk_size" {
+#   description = "The disk size in GB for nodes."
+#   type        = string
+#   default     = "50"
+# }
 
 variable "env_variables" {
   description = "Variables of the airflow environment."
@@ -55,11 +55,11 @@ variable "image_version" {
   default     = "composer-2.1.11-airflow-2.4.3"
 }
 
-variable "gke_machine_type" {
-  description = "Machine type of Cloud Composer nodes."
-  type        = string
-  default     = "n1-standard-2"
-}
+# variable "gke_machine_type" {
+#   description = "Machine type of Cloud Composer nodes."
+#   type        = string
+#   default     = "n1-standard-2"
+# }
 
 variable "master_ipv4_cidr" {
   description = "The CIDR block from which IP range in tenant project will be reserved for the master."
@@ -140,11 +140,11 @@ variable "worker" {
   description = "Configuration for resources used by Airflow workers."
 }
 
-variable "web_server_machine_type" {
-  description = "The machine type to setup for the Apache Airflow Web Server UI."
-  type        = string
-  default     = "composer-n1-webserver-4"
-}
+# variable "web_server_machine_type" {
+#   description = "The machine type to setup for the Apache Airflow Web Server UI."
+#   type        = string
+#   default     = "composer-n1-webserver-4"
+# }
 
 variable "enforce" {
   description = "Whether this policy is enforced."

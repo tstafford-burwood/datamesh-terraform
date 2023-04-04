@@ -66,21 +66,7 @@ variable "lbl_cloudprojectid" {
   default     = "111222"
 }
 
-variable "composer_iam_roles" {
-  description = "The IAM role(s) to assign to the Cloud Compuser service account, defined at the folder."
-  type        = list(string)
-  default = [
-    "roles/composer.worker",
-    "roles/iam.serviceAccountUser",
-    "roles/iam.serviceAccountTokenCreator",
-    "roles/bigquery.dataOwner",
-    "roles/dlp.jobsEditor",
-    "roles/storage.objectAdmin",
-    "roles/bigquery.jobUser",
-    "roles/bigquery.dataOwner",
-    "roles/bigquery.jobUser"
-  ]
-}
+
 
 #---------------------------------------------
 # ORGANIZATION POLICY VARIABLES

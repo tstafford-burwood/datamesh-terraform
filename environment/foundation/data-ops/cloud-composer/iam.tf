@@ -23,13 +23,13 @@ resource "google_project_iam_member" "custom_service_account" {
   role = "roles/composer.worker"
 }
 
-resource "google_service_account_iam_member" "custom_service_account" {
-  # Add a new role binding to your environments service account
-  provider           = google-beta
-  service_account_id = google_service_account.custom_service_account.name
-  role               = "roles/composer.ServiceAgentV2Ext"
-  member             = "serviceAccount:service-${local.staging_project_number}@cloudcomposer-accounts.iam.gserviceaccount.com"
-}
+# resource "google_service_account_iam_member" "custom_service_account" {
+#   # Add a new role binding to your environments service account
+#   provider           = google-beta
+#   service_account_id = google_service_account.custom_service_account.name
+#   role               = "roles/composer.ServiceAgentV2Ext"
+#   member             = "serviceAccount:service-${local.staging_project_number}@cloudcomposer-accounts.iam.gserviceaccount.com"
+# }
 
 #----------------------------------------------------------------------------
 # SERVICE ACCOUNT IAM ROLES

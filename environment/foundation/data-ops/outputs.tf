@@ -1,4 +1,5 @@
 output "staging_project_id" {
+  # tfdoc:output: consumers composer
   description = "Project ID"
   value       = module.secure-staging-project.project_id
 }
@@ -9,6 +10,7 @@ output "staging_project_name" {
 }
 
 output "staging_project_number" {
+  # tfdoc:output: consumers composer
   description = "Project Number"
   value       = module.secure-staging-project.project_number
 }
@@ -54,12 +56,6 @@ output "custom_role_id" {
   description = "The role_id name."
   value       = module.staging_project_iam_custom_role.role_id
 }
-
-
-
-
-
-
 
 // DLP Outputs
 

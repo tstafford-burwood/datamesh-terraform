@@ -38,3 +38,24 @@ output "composer_version" {
   description = "The version of composer that is deployed."
   value       = var.image_version
 }
+
+#------------------------
+# CLOUD COMPOSER SA OUTPUTS
+#------------------------
+
+output "id" {
+  description = "Cloud Composer account IAM-format email."
+  value       = google_service_account.composer_sa.id
+}
+
+output "email" {
+  # tfdoc:output: consumers cloud-composer, egress, workspaces
+  description = "Cloud Composer service account email."
+  value       = google_service_account.composer_sa.email
+}
+
+output "name" {
+  # tfdoc:output consumers cloud-composer
+  description = "Cloud Composer Service account resource (for single use)."
+  value       = google_service_account.composer_sa.name
+}

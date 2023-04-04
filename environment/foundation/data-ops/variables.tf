@@ -15,28 +15,30 @@ variable "data_ops_admin_project_iam_roles" {
     "roles/monitoring.admin", # Full access to monitoring, used by Cloud Composer
     "roles/notebooks.admin",  # Start/stop and create notebooks
     "roles/logging.admin",    # Full access to Logging
+    "roles/integrationAdmin", # Full access to all Application Integration resources
     # "roles/owner",                      # TEMP - BREAK GLASS
+
   ]
 }
 
-variable "stewards_project_iam_roles" {
-  description = "The IAM role(s) to assign to the `Data Stewards` at the defined project."
-  type        = list(string)
-  default = [
-    "roles/bigquery.user",           # Run jobs
-    "roles/bigquery.dataViewer",     # Can enumerate all datasets in the project
-    "roles/storage.objectViewer",    # View objects in buckets
-    "roles/storage.objectCreator",   # Create objects, but not delete or overwrite objects
-    "roles/container.clusterViewer", # Provides access to get and list GKE clusters - used to view Composer Environemtn
-    "roles/composer.user",
-    "roles/composer.environmentAndStorageObjectViewer",
-    "roles/monitoring.viewer", # read-only access to get and list info about all monitoring data
-    "roles/notebooks.viewer",
-    "roles/bigquery.admin",
-    "roles/logging.viewer", # see longs from within Cloud Composer
-    "roles/dlp.admin",
-  ]
-}
+# variable "stewards_project_iam_roles" {
+#   description = "The IAM role(s) to assign to the `Data Stewards` at the defined project."
+#   type        = list(string)
+#   default = [
+#     "roles/bigquery.user",           # Run jobs
+#     "roles/bigquery.dataViewer",     # Can enumerate all datasets in the project
+#     "roles/storage.objectViewer",    # View objects in buckets
+#     "roles/storage.objectCreator",   # Create objects, but not delete or overwrite objects
+#     "roles/container.clusterViewer", # Provides access to get and list GKE clusters - used to view Composer Environemtn
+#     "roles/composer.user",
+#     "roles/composer.environmentAndStorageObjectViewer",
+#     "roles/monitoring.viewer", # read-only access to get and list info about all monitoring data
+#     "roles/notebooks.viewer",
+#     "roles/bigquery.admin",
+#     "roles/logging.viewer", # see longs from within Cloud Composer
+#     "roles/dlp.admin",
+#   ]
+# }
 
 #----------------------------------------------------
 # FOLDER IAM MEMBER VARIABLES - DLP API SERVICE AGENT
@@ -62,10 +64,6 @@ variable "lbl_cloudprojectid" {
   type        = number
   default     = "111222"
 }
-
-#---------------------------------------------
-# DATA STEWARDS - PROJECT IAM MEMBER VARIABLES
-#---------------------------------------------
 
 variable "composer_iam_roles" {
   description = "The IAM role(s) to assign to the Cloud Compuser service account, defined at the folder."

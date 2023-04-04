@@ -65,24 +65,27 @@ data "google_compute_zones" "available" {
 #----------------------------------------------------------------------------
 
 locals {
-  org_id               = module.constants.value.org_id
-  billing_account_id   = module.constants.value.billing_account_id
-  foundation_folder_id = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  default_region       = data.terraform_remote_state.data_ops_project.outputs.subnets_regions[0]
-  environment          = module.constants.value.environment
-  staging_project_id   = data.terraform_remote_state.data_ops_project.outputs.staging_project_id
-  staging_project_name = data.terraform_remote_state.data_ops_project.outputs.staging_project_name
-  staging_network_name = data.terraform_remote_state.data_ops_project.outputs.network_name
-  staging_subnetwork   = data.terraform_remote_state.data_ops_project.outputs.subnets_names[0]
-  composer_sa          = data.terraform_remote_state.data_ops_project.outputs.email
-  dataops_bucket       = data.terraform_remote_state.data_ops_project.outputs.csv_names_list
-  ingress_buckets      = data.terraform_remote_state.ingress_project.outputs.bucket_names
-  datalake_buckets     = data.terraform_remote_state.data_lake_project.outputs.research_to_bucket
-  policy_for           = "project"
-  enable_org_policy    = false # Toggle switch to enable (true) or disable (false)
+  org_id                 = module.constants.value.org_id
+  billing_account_id     = module.constants.value.billing_account_id
+  foundation_folder_id   = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  default_region         = data.terraform_remote_state.data_ops_project.outputs.subnets_regions[0]
+  environment            = module.constants.value.environment
+  staging_project_id     = data.terraform_remote_state.data_ops_project.outputs.staging_project_id
+  staging_project_number = data.terraform_remote_state.data_ops_project.outputs.staging_project_number
+  staging_project_name   = data.terraform_remote_state.data_ops_project.outputs.staging_project_name
+  staging_network_name   = data.terraform_remote_state.data_ops_project.outputs.network_name
+  staging_subnetwork     = data.terraform_remote_state.data_ops_project.outputs.subnets_names[0]
+  composer_sa            = data.terraform_remote_state.data_ops_project.outputs.email
+  dataops_bucket         = data.terraform_remote_state.data_ops_project.outputs.csv_names_list
+  ingress_buckets        = data.terraform_remote_state.ingress_project.outputs.bucket_names
+  datalake_buckets       = data.terraform_remote_state.data_lake_project.outputs.research_to_bucket
+  policy_for             = "project"
+
+  enable_org_policy = false # Toggle switch to enable (true) or disable (false)
 
   airflow_config_overrides = try(data.terraform_remote_state.cloud-composer.outputs.gke_cluster, null)
-  access_control           = local.airflow_config_overrides == null ? "Admin" : "Public"
+  #access_control           = local.airflow_config_overrides == null ? "Admin" : "Public"
+  access_control = "Admin"
 
   # Read the list of folders and create a dag per researcher initiative
   wrkspc_folders  = data.terraform_remote_state.folders.outputs.ids

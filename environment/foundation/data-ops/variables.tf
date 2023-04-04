@@ -15,7 +15,7 @@ variable "data_ops_admin_project_iam_roles" {
     "roles/monitoring.admin", # Full access to monitoring, used by Cloud Composer
     "roles/notebooks.admin",  # Start/stop and create notebooks
     "roles/logging.admin",    # Full access to Logging
-    "roles/roles/integrations.integrationAdmin",
+    "roles/integrations.integrationAdmin",
     #"roles/integrationAdmin", # Full access to all Application Integration resources
     # "roles/owner",                      # TEMP - BREAK GLASS
 

@@ -9,9 +9,9 @@ resource "google_service_account" "composer_sa" {
   description  = "Terraform managed"
   project      = local.staging_project_id
 
-    depends_on = [
-      time_sleep.wait_120_seconds
-    ]
+  depends_on = [
+    time_sleep.wait_120_seconds
+  ]
 }
 
 resource "google_project_iam_member" "custom_service_account" {

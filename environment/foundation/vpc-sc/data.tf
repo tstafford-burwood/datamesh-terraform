@@ -25,7 +25,7 @@ data "terraform_remote_state" "cloud_composer_sa" {
   workspace = terraform.workspace
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s/%s", "foundation", local.environment[terraform.workspace], "cloud-composer")
+    prefix = "foundation/${terraform.workspace}/cloud-composer"
   }
 }
 

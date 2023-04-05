@@ -419,34 +419,34 @@ steps:
     'terraform output -json > /workspace/output.json && cat /workspace/output.json'
   ]
 
-# # --- VPC SC
+# --- VPC SC
 
-# - id: "vpc-sc init"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/foundation/vpc-sc/'
-#   entrypoint: /bin/sh
-#   args:
-#     - '-c'
-#     - |
-#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/vpc-sc
+- id: "vpc-sc init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/vpc-sc
 
-# - id: "vpc-sc terraform workspace"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/foundation/vpc-sc/'
-#   entrypoint: /bin/sh
-#   args:
-#     - '-c'
-#     - |
-#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+- id: "vpc-sc terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-# - id: "vpc-sc apply"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/foundation/vpc-sc/'
-#   args: [
-#   'apply',
-#   '-auto-approve',
-#   '-var-file=env/${_TFVARS_FILE}.tfvars',
-#   ]
+- id: "vpc-sc apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  args: [
+  'apply',
+  '-auto-approve',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
+  ]
 
 
 # substitutions:

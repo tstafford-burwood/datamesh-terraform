@@ -103,18 +103,6 @@ module "vpc" {
       subnet_private_access     = "true"
     }
   ]
-  # secondary_ranges = {
-  #   "${local.function}-${local.default_region}-subnet-01" = [
-  #     {
-  #       range_name    = "kubernetes-pods"
-  #       ip_cidr_range = "10.1.0.0/20"
-  #     },
-  #     {
-  #       range_name    = "kubernetes-services"
-  #       ip_cidr_range = "10.2.0.0/24"
-  #     }
-  #   ]
-  # }
 }
 
 resource "google_vpc_access_connector" "connector" {

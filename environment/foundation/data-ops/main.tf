@@ -85,7 +85,7 @@ module "secure-staging-project" {
 module "vpc" {
   # Create the VPC
   source  = "terraform-google-modules/network/google"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   project_id   = module.secure-staging-project.project_id
   network_name = format("%v-%v-vpc", local.environment[terraform.workspace], local.function)
@@ -103,6 +103,19 @@ module "vpc" {
       subnet_private_access     = "true"
     }
   ]
+
+  secondary_ranges = {
+    format("%s-%s-%s", local.function, local.default_region, "subnet-01") = [
+      {
+        range_name    = "kubernetes-pods"
+        ip_cidr_range = "10.168.0.0/17"
+      },
+      {
+        range_name    = "kubernetes-services"
+        ip_cidr_range = "10.168.128.0/22"
+      }
+    ]
+  }
 }
 
 resource "google_vpc_access_connector" "connector" {

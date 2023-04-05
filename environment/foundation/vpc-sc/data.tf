@@ -84,7 +84,7 @@ locals {
   environment                = module.constants.value.environment
   parent_access_policy_id    = var.parent_access_policy_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
-  composer_sa                = try(data.terraform_remote_state.staging_project.outputs.email, "")
+  composer_sa                = data.terraform_remote_state.cloud_composer_sa.outputs.email
   image_project              = try(data.terraform_remote_state.image_project.outputs.project_number, "")
   image_project_sa           = try(data.terraform_remote_state.image_project.outputs.image_build_email, "")
   data_ingress               = try(data.terraform_remote_state.data_ingress.outputs.project_number, "")

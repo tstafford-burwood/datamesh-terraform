@@ -50,23 +50,26 @@ module "foundation_perimeter_0" {
         }
       }
     },
-    {
-      "from" = {
-        "sources" = {
-          # allow the stewards to access the storage api in data ingress prj
-          access_levels = [module.access_level_stewards.name]
-        },
-        "identity_type" = "ANY_USER_ACCOUNT"
-      }
-      "to" = {
-        "resources" = ["projects/${local.data_ingress}", "projects/${local.data_ops}", "projects/${local.data_lake}"]
-        "operations" = {
-          "storage.googleapis.com" = {
-            "methods" = ["*"]
-          },
-        }
-      }
-    },
+    # Note: Cannot be enabled on initial deployment
+    #
+    # {
+    #   "from" = {
+    #     "sources" = {
+    #       # allow the stewards to access the storage api in data ingress prj
+    #       #access_levels = [module.access_level_stewards.name]
+    #       access_levels = []
+    #     },
+    #     "identity_type" = "ANY_USER_ACCOUNT"
+    #   }
+    #   "to" = {
+    #     "resources" = ["projects/${local.data_ingress}", "projects/${local.data_ops}", "projects/${local.data_lake}"]
+    #     "operations" = {
+    #       "storage.googleapis.com" = {
+    #         "methods" = ["*"]
+    #       },
+    #     }
+    #   }
+    # },
   ]
   egress_policies = [{
     "from" = {

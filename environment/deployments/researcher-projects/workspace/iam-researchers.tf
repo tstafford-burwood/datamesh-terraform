@@ -15,7 +15,9 @@ module "project_users" {
     "roles/serviceusage.serviceUsageConsumer", # Grant user the ability to use Services
     "roles/compute.viewer",                    # Allow researcher to view instance
     "roles/browser",                           # Read access to browse hiearchy for the project
-    "roles/iap.tunnelResourceAccessor",        # Access tunnel resources which use IAP    
+    "roles/iap.tunnelResourceAccessor",        # Access tunnel resources which use IAP
+    "roles/notebooks.viewer",
+    "roles/notebooks.admin"
   ]
 }
 

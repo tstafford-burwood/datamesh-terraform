@@ -23,5 +23,4 @@ terraform {
   provider_meta "google-beta" {
     module_name = "blueprints/terraform/terraform-google-composer:create_environment_v2/v3.4.0"
   }
-
 }

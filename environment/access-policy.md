@@ -35,8 +35,10 @@ gcloud access-context-manager policies add-iam-policy-binding \
 [POLICY] --member=PRINCIPAL --role=ROLE
 ```
 
-* **POLICY** is ID of the policy or fully qualified identifier for the policy.
+* **POLICY** is ID of the policy or fully qualified identifier for the policy. Must be of the form `accessPolicies/<policy id>`. Use the list command above to get the ID number of the policy.
 
 * **PRINCIPAL** is the principal to add the binding for. Specify in the following format: user|group|serviceAccount:email or domain:domain.
 
-* **ROLE** is the role name to assign to the principal. The role name is the complete path of a predefined role, such as roles/accesscontextmanager.policyReader, or the role ID for a custom role, such as organizations/{ORGANIZATION_ID}/roles/accesscontextmanager.policyReader.
+* **ROLE** is the role name to assign to the principal. The role name is the complete path of a predefined role, such as `roles/accesscontextmanager.policyAdmin`, `roles/accesscontextmanager.policyReader`, or the role ID for a custom role, such as organizations/{ORGANIZATION_ID}/roles/accesscontextmanager.policyReader.
+
+> **Note**: You will want to make the Cloud Build Service Account or Terraform Service Account a Policy Admin.

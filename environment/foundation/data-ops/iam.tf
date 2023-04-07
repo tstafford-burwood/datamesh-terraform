@@ -39,32 +39,9 @@ module "staging_project_iam_custom_role" {
 #   member  = each.value
 # }
 
-#----------------------------------------------------------------------------
-# SERVICE ACCOUNTS
-#----------------------------------------------------------------------------
 
-resource "google_service_account" "composer_sa" {
-  account_id   = substr("${local.environment[terraform.workspace]}-composer-sa", 0, 28)
-  display_name = "Cloud Composer SA"
-  description  = "Terraform managed"
-  project      = module.secure-staging-project.project_id
 
-  depends_on = [
-    time_sleep.wait_60_seconds
-  ]
-}
 
-#----------------------------------------------------------------------------
-# SERVICE ACCOUNT IAM ROLES
-#----------------------------------------------------------------------------
-
-module "folder_iam_member" {
-  # Assign the Cloud Composer Service Account at the folder level so it can move data between projects.
-  source        = "../../../modules/iam/folder_iam"
-  folder_id     = local.environment_folder_id
-  iam_role_list = var.composer_iam_roles
-  folder_member = "serviceAccount:${google_service_account.composer_sa.email}"
-}
 
 resource "google_project_iam_member" "dlp_service_account_iam" {
   # Project level roles for the DLP Service Agent

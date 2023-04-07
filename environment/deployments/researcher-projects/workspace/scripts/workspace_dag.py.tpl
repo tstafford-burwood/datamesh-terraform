@@ -245,7 +245,6 @@ with models.DAG(
         # If there aren't any files, then skip the remaining tasks
         task_id='is_empty',
         python_callable=_is_empty,
-        provide_context=False,
         op_kwargs={
         'files': '{{ti.xcom_pull(task_ids="list_files")}}'
         },

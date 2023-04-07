@@ -3,6 +3,7 @@ variable "researcher_workspace_folders" {
   type        = list(string)
   default = [
     "workspace-1",
+    "workspace-2"
   ]
 }
 

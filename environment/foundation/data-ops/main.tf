@@ -70,7 +70,7 @@ module "secure-staging-project" {
   billing_account             = local.billing_account_id
   folder_id                   = local.folder_id
   random_project_id           = true
-  activate_apis               = ["compute.googleapis.com", "pubsub.googleapis.com", "bigquery.googleapis.com", "composer.googleapis.com", "dlp.googleapis.com", "healthcare.googleapis.com", "notebooks.googleapis.com", "servicenetworking.googleapis.com", "dns.googleapis.com", "healthcare.googleapis.com", "run.googleapis.com", "datacatalog.googleapis.com", "serviceusage.googleapis.com", "cloudfunctions.googleapis.com", "vpcaccess.googleapis.com", "integrations.googleapis.com"]
+  activate_apis               = ["compute.googleapis.com", "pubsub.googleapis.com", "bigquery.googleapis.com", "composer.googleapis.com", "dlp.googleapis.com", "healthcare.googleapis.com", "notebooks.googleapis.com", "servicenetworking.googleapis.com", "dns.googleapis.com", "healthcare.googleapis.com", "run.googleapis.com", "datacatalog.googleapis.com", "serviceusage.googleapis.com", "cloudfunctions.googleapis.com", "vpcaccess.googleapis.com", "integrations.googleapis.com", "runapps.googleapis.com", "connectors.googleapis.com", "cloudkms.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true
@@ -85,7 +85,7 @@ module "secure-staging-project" {
 module "vpc" {
   # Create the VPC
   source  = "terraform-google-modules/network/google"
-  version = "~> 5.0"
+  version = "~> 6.0"
 
   project_id   = module.secure-staging-project.project_id
   network_name = format("%v-%v-vpc", local.environment[terraform.workspace], local.function)
@@ -103,15 +103,16 @@ module "vpc" {
       subnet_private_access     = "true"
     }
   ]
+
   secondary_ranges = {
-    "${local.function}-${local.default_region}-subnet-01" = [
+    format("%s-%s-%s", local.function, local.default_region, "subnet-01") = [
       {
         range_name    = "kubernetes-pods"
-        ip_cidr_range = "10.1.0.0/20"
+        ip_cidr_range = "10.168.0.0/17"
       },
       {
         range_name    = "kubernetes-services"
-        ip_cidr_range = "10.2.0.0/24"
+        ip_cidr_range = "10.168.128.0/22"
       }
     ]
   }

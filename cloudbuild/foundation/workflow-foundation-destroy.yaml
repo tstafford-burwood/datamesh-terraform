@@ -41,7 +41,7 @@ steps:
   ]
 
 
-# # CLOUD COMPOSER
+# CLOUD COMPOSER
 
 # - id: "composer init"
 #   name: hashicorp/terraform:${_TAG}
@@ -79,7 +79,7 @@ steps:
 #   '-auto-approve'
 #   ]
 
-# # Data Ops
+# Data Ops
 
 # - id: "data-ops projects - init"
 #   name: hashicorp/terraform:${_TAG}

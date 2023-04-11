@@ -66,7 +66,7 @@ module "data-lake-project" {
   billing_account             = local.billing_account_id
   folder_id                   = local.folder_id
   random_project_id           = true
-  activate_apis               = ["compute.googleapis.com", "serviceusage.googleapis.com", "bigquery.googleapis.com", "healthcare.googleapis.com", "serviceusage.googleapis.com"]
+  activate_apis               = ["compute.googleapis.com", "serviceusage.googleapis.com", "bigquery.googleapis.com", "healthcare.googleapis.com", "serviceusage.googleapis.com", "cloudasset.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true

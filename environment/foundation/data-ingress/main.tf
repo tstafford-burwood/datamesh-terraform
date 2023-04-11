@@ -51,7 +51,7 @@ module "project" {
   // OPTIONAL FIELDS
   random_project_id           = true
   auto_create_network         = false
-  activate_apis               = ["deploymentmanager.googleapis.com", "runtimeconfig.googleapis.com", "oslogin.googleapis.com", "compute.googleapis.com", "secretmanager.googleapis.com", "storage-api.googleapis.com", "servicemanagement.googleapis.com", "servicenetworking.googleapis.com", "cloudapis.googleapis.com", "iamcredentials.googleapis.com", "serviceusage.googleapis.com"]
+  activate_apis               = ["deploymentmanager.googleapis.com", "runtimeconfig.googleapis.com", "oslogin.googleapis.com", "compute.googleapis.com", "secretmanager.googleapis.com", "storage-api.googleapis.com", "servicemanagement.googleapis.com", "servicenetworking.googleapis.com", "cloudapis.googleapis.com", "iamcredentials.googleapis.com", "serviceusage.googleapis.com", "cloudasset.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true

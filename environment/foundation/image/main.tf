@@ -52,7 +52,7 @@ module "image-project" {
   billing_account             = local.billing_account_id
   folder_id                   = local.folder_id
   random_project_id           = true
-  activate_apis               = ["cloudbuild.googleapis.com", "artifactregistry.googleapis.com", "deploymentmanager.googleapis.com", "runtimeconfig.googleapis.com", "oslogin.googleapis.com", "compute.googleapis.com", "secretmanager.googleapis.com", "storage-api.googleapis.com", "servicemanagement.googleapis.com", "cloudapis.googleapis.com", "serviceusage.googleapis.com"]
+  activate_apis               = ["cloudbuild.googleapis.com", "artifactregistry.googleapis.com", "deploymentmanager.googleapis.com", "runtimeconfig.googleapis.com", "oslogin.googleapis.com", "compute.googleapis.com", "secretmanager.googleapis.com", "storage-api.googleapis.com", "servicemanagement.googleapis.com", "cloudapis.googleapis.com", "serviceusage.googleapis.com", "cloudasset.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true

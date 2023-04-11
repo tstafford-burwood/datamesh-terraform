@@ -32,7 +32,8 @@ module "workspace_project" {
     "healthcare.googleapis.com",
     "servicenetworking.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "serviceusage.googleapis.com"
+    "serviceusage.googleapis.com",
+    "cloudasset.googleapis.com"
   ]
   default_service_account     = "delete"
   disable_dependent_services  = true

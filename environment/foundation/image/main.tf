@@ -59,9 +59,7 @@ module "image-project" {
   lien                        = false
   create_project_sa           = false
   labels = {
-    dataclassification = lower(var.lbl_dataclassification)
-    cloudprojectid     = var.lbl_cloudprojectid
-    environment        = local.environment[terraform.workspace]
+    environment = local.environment[terraform.workspace]
   }
 }
 

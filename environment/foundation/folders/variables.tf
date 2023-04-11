@@ -3,14 +3,13 @@ variable "researcher_workspace_folders" {
   type        = list(string)
   default = [
     "workspace-1",
-    "workspace-2"
   ]
 }
 
 variable "audit_log_config" {
   description = "Permission type for which logging is to be configured. Can be `DATA_READ`, `DATA_WRITE`, or `ADMIN_READ`. Leave emtpy list to turn off."
   type        = list(string)
-  default     = []
+  default     = ["DATA_READ", "DATA_WRITE", "ADMIN_READ"]
 }
 
 variable "audit_service" {

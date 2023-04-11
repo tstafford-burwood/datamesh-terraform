@@ -158,6 +158,23 @@ module "shielded_vms" {
   ]
 }
 
+module "restrict_public_ip_on_sql_instances" {
+  # RESTRICT PUBLIC IP ACCESS ON CLOUD SQL INSTANCES
+  count       = local.enable_org_policy ? 1 : 0
+  source      = "terraform-google-modules/org-policy/google"
+  version     = "~> 5.0"
+  constraint  = "constraints/sql.restrictPublicIp"
+  policy_type = "boolean"
+  policy_for  = local.policy_for
+  project_id  = local.orgpol_project_id
+  folder_id   = local.orgpol_folder_id
+  enforce     = var.enforce
+
+  depends_on = [
+    time_sleep.wait_30_seconds
+  ]
+}
+
 
 module "vm_allowed_external_ip" {
   count = local.enable_org_policy ? 1 : 0
@@ -210,3 +227,4 @@ module "resource_location_restriction" {
     time_sleep.wait_30_seconds
   ]
 }
+

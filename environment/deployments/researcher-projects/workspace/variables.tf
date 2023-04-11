@@ -62,6 +62,13 @@ variable "set_vm_os_login" {
   default     = true
 }
 
+variable "metadata" {
+  description = "Key/value pairs made available to instance. Default is to turn off serial port."
+  default = {
+    serial-port-enable = false
+  }
+}
+
 variable "force_destroy" {
   default = true
 }

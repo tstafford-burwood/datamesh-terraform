@@ -34,6 +34,8 @@ module "researcher_workspace_deeplearning_vm_private_ip" {
   enable_secure_boot          = true
   enable_vtpm                 = true
   enable_integrity_monitoring = true
+
+  metadata = var.metadata
 }
 
 resource "google_compute_resource_policy" "snapshot_schedule" {

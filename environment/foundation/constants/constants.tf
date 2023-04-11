@@ -5,12 +5,12 @@ locals {
   constants = {
 
     // DOMAIN INFORMATION
-    automation_project_id      = "github-actions-demos"
-    billing_account_id         = "01EF01-627C10-7CD2DF"
-    cloudbuild_service_account = "62218100388@cloudbuild.gserviceaccount.com"
-    org_id                     = "575228741867"
-    sde_folder_id              = "954834310824"
-    terraform_state_bucket     = "terraform-state-f46d240db3691068"
+    automation_project_id      = "<CLOUD_BUILD_PROJECT_ID>" # Project ID that hosts Cloud Build
+    billing_account_id         = "<BILLING_ID>"             # Cloud Build
+    cloudbuild_service_account = "<CLOUDBUILD_PROJECT_NUMBER>@cloudbuild.gserviceaccount.com"
+    org_id                     = "<ORG_ID>"
+    sde_folder_id              = "<FOLDER_ID>"
+    terraform_state_bucket     = "<TF_STATE_BUCKET_NAME>"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
@@ -34,7 +34,8 @@ locals {
     // Long running Branches. These need to match the branch names in Version Control Software.
     environment = {
       # <branch_name> = <environment_value>
-      vi-workbench = "qa"
+      # Example: main = "prod"
+      branch-name = "<ENVIRONMENT>"
     }
   }
 }

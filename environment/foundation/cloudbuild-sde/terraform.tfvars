@@ -1,3 +1,3 @@
 github_owner     = "Burwood"
 github_repo_name = "terraform-gcp-sde"
-branch_name      = "^vi-workbench$"
+branch_name      = "<BRANCH_NAME>"

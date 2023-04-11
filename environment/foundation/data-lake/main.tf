@@ -72,9 +72,7 @@ module "data-lake-project" {
   disable_services_on_destroy = true
   create_project_sa           = false
   labels = {
-    dataclassification = lower(var.lbl_dataclassification)
-    cloudprojectid     = var.lbl_cloudprojectid
-    environment        = local.environment[terraform.workspace]
+    environment = local.environment[terraform.workspace]
   }
 }
 

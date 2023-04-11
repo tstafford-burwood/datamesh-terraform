@@ -27,16 +27,5 @@ variable "enforce" {
 }
 
 #--------------------------------------
-# PROJECT LABELS
+# PROJECT LABELS, if any
 #--------------------------------------
-
-variable "lbl_dataclassification" {
-  description = "Data sensitivity"
-  type        = string
-  default     = "HIPAA"
-}
-variable "lbl_cloudprojectid" {
-  description = "CPID that refers to a CMDB with detailed contact info"
-  type        = number
-  default     = "111222"
-}

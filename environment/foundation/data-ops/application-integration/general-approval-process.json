@@ -1,9 +1,7 @@
 {
   "name": "projects/72560599746/locations/us-central1/integrations/approval-process/versions/6dcd147a-ac62-43a8-b4f9-7348dc6575db",
   "updateTime": "2023-04-06T15:25:44.716Z",
-  "lockHolder": "astrong@prorelativity.com",
   "createTime": "2023-04-06T15:25:27.594Z",
-  "lastModifierEmail": "astrong@prorelativity.com",
   "triggerConfigs": [{
     "label": "Cloud Pub/Sub Approval",
     "startTasks": [{

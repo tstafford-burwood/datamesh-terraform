@@ -4,4 +4,4 @@
 # ---------------------------------------------------------  
 
 domain_restricted_sharing_allow   = ["C037h2gza"]
-researcher_workspace_folders = ["first-space"]
+researcher_workspace_folders = []

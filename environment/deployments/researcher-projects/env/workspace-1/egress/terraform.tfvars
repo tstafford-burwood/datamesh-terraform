@@ -1,2 +1,2 @@
 project_admins     = []
-external_users_vpc = ["user:datasteward@prorelativity.com"]    
+external_users_vpc = ["user:speralta@tunedcold.site"]    

@@ -14,11 +14,11 @@ locals {
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
-    ingress-project-admins = ["group:sde-centralit@prorelativity.com"]
-    image-project-admins   = ["group:sde-centralit@prorelativity.com"]
-    data-lake-admins       = ["group:srde-datagroup@prorelativity.com"]
-    data-lake-viewers      = ["group:srde-datagroup@prorelativity.com"]
-    data-ops-admins        = ["group:srde-datagroup@prorelativity.com"]
+    ingress-project-admins = ["user:speralta@tunedcold.site"]
+    image-project-admins   = ["user:speralta@tunedcold.site"]
+    data-lake-admins       = ["user:speralta@tunedcold.site"]
+    data-lake-viewers      = ["user:speralta@tunedcold.site"]
+    data-ops-admins        = ["user:speralta@tunedcold.site"]
 
     // ONLY USERS OR SERVICE ACCOUNTS TO ASSIGN TO VPC PERIMETER
     # `vpc_sc_admins` are added to an access context level which grants them full access to all restricted services for all foundation projects

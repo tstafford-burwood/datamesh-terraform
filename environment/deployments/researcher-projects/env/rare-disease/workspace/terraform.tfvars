@@ -1,6 +1,6 @@
-project_admins        = ["group:sde-centralit@prorelativity.com"]
-researchers           = ["group:sde-centralit@prorelativity.com"]
-data_stewards         = ["user:astrong@prorelativity.com"] 
+project_admins        = ["user:speralta@tunedcold.site"]
+researchers           = ["user:speralta@tunedcold.site"]
+data_stewards         = ["user:speralta@tunedcold.site"] 
 num_instances         = 0
 instance_machine_type = "n2-standard-2"
 vm_disk_size          = 100

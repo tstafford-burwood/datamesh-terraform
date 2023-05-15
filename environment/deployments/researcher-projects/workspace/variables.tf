@@ -120,3 +120,27 @@ variable "golden_image_version" {
 #--------------------------------------
 # PROJECT LABELS
 #--------------------------------------
+variable "lbl_department" {
+  description = "labels."
+  type        = string
+}
+
+variable "snapshot_max_retention_days" {
+  description = "Snapshot max retention days."
+  type        = number
+  default     = "7"
+}
+
+variable "snapshot_days_in_cycle" {
+  description = "Snapshot cycle days."
+  type        = number
+  default     = "1"
+
+}
+
+variable "snapshot_start_time" {
+  description = "snapshot start time."
+  type        = string
+  default     = "04:00"
+
+}

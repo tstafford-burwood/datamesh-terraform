@@ -16,7 +16,7 @@ module "data_ingestion_vpc_sc" {
   perimeter_members   = local.perimeter_members_data_ingestion # users or service accounts
   restricted_services = local.restricted_services              # list of restricted services
 
-  egress_policies = var.egress_policies
+  egress_policies = local.egress_rules
 
   # depends_on needed to prevent intermittent errors
   # when the VPC-SC is created but perimeter member

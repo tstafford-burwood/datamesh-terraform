@@ -27,6 +27,12 @@ variable "additional_restricted_services" {
   default     = []
 }
 
+variable "data_ingestion_dataflow_deployer_identities" {
+  description = "List of members in the standard GCP form: user:{email}, serviceAccount:{email} that will deploy Dataflow jobs in the Data Ingestion project. These identities will be added to the VPC-SC secure data exchange egress rules."
+  type        = list(string)
+  default     = []
+}
+
 variable "egress_policies" {
   description = "A list of all [egress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#egress-rules-reference), each list object has a `from` and `to` value that describes egress_from and egress_to. See also [secure data exchange](https://cloud.google.com/vpc-service-controls/docs/secure-data-exchange#allow_access_to_a_google_cloud_resource_outside_the_perimeter)."
   type = list(object({

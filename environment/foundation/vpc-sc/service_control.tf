@@ -56,4 +56,39 @@ locals {
   ]
 
   restricted_services = distinct(concat(local.base_restricted_services, var.additional_restricted_services))
+
+  egress_rules = [
+    {
+      "from" = {
+        "identity_type" = ""
+        "identities" = distinct(concat(
+          var.data_ingestion_dataflow_deployer_identities,
+          ["serviceAccount:${local.cloudbuild_service_account}"]
+        ))
+      },
+      "to" = {
+        "resources" = ["*"]
+        "operations" = {
+          "container.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "monitoring.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "cloudfunctions.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "artifactregistry.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "compute.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "storage.googleapis.com" = {
+            "methods" = ["*"]
+          }
+        }
+      }
+    },
+  ]
 }

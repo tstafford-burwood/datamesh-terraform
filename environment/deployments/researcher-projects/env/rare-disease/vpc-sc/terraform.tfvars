@@ -1,0 +1,1 @@
+researchers = ["user:user@client.edu"]

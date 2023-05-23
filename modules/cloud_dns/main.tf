@@ -4,7 +4,7 @@
 
 module "cloud-dns" {
   source  = "terraform-google-modules/cloud-dns/google"
-  version = "~> 3.1.0"
+  version = "~> 4.0"
 
   // REQUIRED
   domain     = var.cloud_dns_domain

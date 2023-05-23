@@ -35,5 +35,5 @@ variable "project_iam_custom_role_permissions" {
 variable "project_iam_custom_role_stage" {
   description = "The current launch stage of the role. Defaults to GA. List of possible stages is [here](https://cloud.google.com/iam/docs/reference/rest/v1/organizations.roles#Role.RoleLaunchStage)."
   type        = string
-  default     = ""
+  default     = "GA"
 }

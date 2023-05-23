@@ -70,8 +70,8 @@ variable "cloud_dns_recordsets" {
 
 variable "target_name_server_addresses" {
   description = "List of target name servers for forwarding zone."
-  type        = list(string)
   default     = []
+  type        = list(map(any))
 }
 
 variable "cloud_dns_target_network" {

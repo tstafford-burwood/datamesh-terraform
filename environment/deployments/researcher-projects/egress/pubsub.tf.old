@@ -1,0 +1,18 @@
+
+module "pubsub_dataops_to_egress" {
+  source  = "terraform-google-modules/pubsub/google"
+  version = "~> 5.0"
+
+  create_topic = true
+  project_id   = local.staging_project_id
+  topic        = format("%s", trimprefix(trim(local_file.dataops_to_egress_dag_py.filename, ".py"), "/scripts/"))
+}
+
+module "pubsub_dataops_delete" {
+  source  = "terraform-google-modules/pubsub/google"
+  version = "~> 5.0"
+
+  create_topic = true
+  project_id   = local.staging_project_id
+  topic        = format("%s_%s", "${local.environment[terraform.workspace]}_${local.researcher_workspace_name}", "delete_dag")
+}

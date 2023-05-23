@@ -1,6 +1,0 @@
-#--------------------------------------
-# GOOGLE CLOUD SOURCE REPOSITORY TFVARS
-#--------------------------------------
-
-cloud_source_repo_name       = ""
-cloud_source_repo_project_id = ""

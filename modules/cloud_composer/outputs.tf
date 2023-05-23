@@ -2,6 +2,11 @@
 # CLOUD COMPOSER OUTPUTS
 #------------------------
 
+output "airflow_uri" {
+  description = "URI of the Apache Airflow Web UI hosted within Cloud Composer Environment."
+  value       = google_composer_environment.composer_env.config.0.airflow_uri
+}
+
 output "composer_env_name" {
   description = "Name of the Cloud Composer Environment."
   value       = google_composer_environment.composer_env.name

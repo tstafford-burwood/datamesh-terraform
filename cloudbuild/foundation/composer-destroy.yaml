@@ -6,29 +6,36 @@ steps:
 
 - id: "composer init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops/cloud-composer'
   args: [
   'init',
   '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/cloud-composer'
+  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloud-composer'
   ]
 
-- id: "composer plan"
+- id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops/cloud-composer'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+- id: "composer plan destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/data-ops/cloud-composer'
   args: [
   'plan',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-var=terraform_foundation_state_prefix=${_PREFIX}',
   '-destroy'
   ]
 
 - id: "composer destroy"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/staging-project/cloud-composer'
+  dir: 'environment/foundation/data-ops/cloud-composer'
   args: [
   'destroy',
-  '-var=terraform_foundation_state_prefix=${_PREFIX}',
   '-var-file=env/${_TFVARS_FILE}.tfvars',
   '-auto-approve'
   ]

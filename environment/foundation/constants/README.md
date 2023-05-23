@@ -1,39 +1,64 @@
 # Terraform Directory for Constant Values
 
-The purpose of this directory is to declare constant values such as `org_id`, `billing_account_id`,`folder_id`, etc. This directory can then be imported into other directories as a `module` and values can be referenced in those other directories. This will help reduce the need to declare the same input repeatedly.
+The purpose of this directory is to declare constant values that can be shared across projects in the Foundation directory and the Deployments directory. Values such as `org_id`, `billing_account_id`,`srd_folder_id`. 
 
 ## Usage
 
-This directory is not linked to a Cloud Build pipeline. 
+### Domain Information
 
-1. Values can be updated here on an as-needed basis.
-1. Save, commit, and push changes to a source repository.
-1. If local values were changed and need to be propagated to pre-existing infrastructure then run those respective pipelines such as the `researcher-projects` or `secure-staging-project` directory.
+The values under the Domain Information will be used across ALL projects in both Foundation folder and Deployment folder. Example is the same billing ID listed here, will be linked to ALL projects.
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+```hcl
+# gcloud organizations list
+org_id                     = 247721031950"                                
+billing_account_id         = "0108A8-828C4A-C5572D"                       
+sde_folder_id              = "0123456789" # parent folder id to place resources under
+automation_project_id      = "tf-automation-example" # Project ID that has Cloud Build
+cloudbuild_service_account = "<project_number>@cloudbuild.gserviceaccount.com"
+terraform_state_bucket     = "tfstate-bucket-name" 
+```
 
-No requirements.
+### Foundation User Groups
 
-## Providers
+Any GCP project under the Foundation folder, the IAM roles for those projects can be controlled here using the the provided variables.
 
-No providers.
+```hcl
+// GROUPS TO ASSING TO FOUNDATION PROJECTS
+image-project-admins = ["group:packer-image-team@example.com"]
+data-lake-admins     = ["group:data-lake-admins@example.com"]
+data-lake-viewers    = ["group:data-lake-viewers@example.com"]
+data-ops-admins      = ["group:data-ops-admins@example.com"]
+data-ops-stewards    = ["user:stewards1@example.com","user:stewards2@example.com"]
+```
 
-## Modules
+### Branches in Version Control Software
 
-No modules.
+This application uses Terraform workspaces to control the deployment of different environments. Going forward, `environments` = `long-running-branches`
 
-## Resources
+```hcl
+environment = {
+    # <branch_name> = <environment_value>
+    dev  = "dev"
+    test = "test"
+    main = "prod"
+}
+```
 
-No resources.
 
-## Inputs
+<!-- TFDOC OPTS files:1 show_extra:1 -->
+<!-- BEGIN TFDOC -->
 
-No inputs.
+## Files
+
+| name | description |
+|---|---|
+| [constants.tf](./constants.tf) | None |
+| [outputs.tf](./outputs.tf) | Module outputs. |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_value"></a> [value](#output\_value) | Reference output for accessing locals values in this directory. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| name | description | sensitive | consumers |
+|---|---|:---:|---|
+| [value](outputs.tf#L5) | Reference output for accessing locals values in this directory. |  |  |
+
+<!-- END TFDOC -->

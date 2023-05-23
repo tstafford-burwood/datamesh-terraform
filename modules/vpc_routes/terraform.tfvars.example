@@ -1,8 +1,0 @@
-#------------------
-# VPC ROUTES TFVARS
-#------------------
-
-vpc_project_id    = ""
-vpc_network_name  = ""
-vpc_routes        = []
-module_depends_on = []

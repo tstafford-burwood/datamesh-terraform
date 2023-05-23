@@ -1,187 +1,86 @@
-// DATA BLOCK
-
-// RETRIEVE FOLDER ID
-
-data "terraform_remote_state" "folders" {
-  backend = "gcs"
-  config = {
-    bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "folders")
-  }
-}
-
-// RETRIEVE STAGING PROJECT NUMBER (I.E. 1234567890)
-
-data "terraform_remote_state" "staging_project" {
-  backend = "gcs"
-  config = {
-    bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "staging-project")
-  }
-}
-
-data "terraform_remote_state" "cloud-composer" {
-  backend = "gcs"
-  config = {
-    bucket = module.constants.value.terraform_state_bucket
-    prefix = format("%s/%s", var.terraform_foundation_state_prefix, "cloud-composer")
-  }
-}
-
-#------------------
+#----------------------------------------------------------------------------
 # IMPORT CONSTANTS
-#------------------
+#----------------------------------------------------------------------------
 
 module "constants" {
   source = "../constants"
 }
 
-// SET CONSTANT MODULE VALUES AS LOCALS
+#----------------------------------------------------------------------------
+# TERRAFORM STATE IMPORTS
+#----------------------------------------------------------------------------
 
-locals {
-  org_id                 = module.constants.value.org_id
-  billing_account_id     = module.constants.value.billing_account_id
-  folder_id              = data.terraform_remote_state.folders.outputs.foundation_folder_id
-  staging_project_id     = data.terraform_remote_state.staging_project.outputs.staging_project_id
-  staging_project_number = data.terraform_remote_state.staging_project.outputs.staging_project_number
-  custom_iam_role_name = {
-    custom_iam_role_name = module.datalake_iam_custom_role.name
+data "terraform_remote_state" "folders" {
+  backend   = "gcs"
+  workspace = terraform.workspace
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = "foundation/${terraform.workspace}/folders"
   }
-  function                   = "data-lake"
-  primary_contact            = "example1"
-  cloudbuild_service_account = module.constants.value.cloudbuild_service_account
-  #data_lake_default_region = module.constants.value.data_lake_default_region
-  #parent_access_policy_id          = module.constants.value.parent_access_policy_id
-  #cloudbuild_access_level_name     = module.constants.value.cloudbuild_access_level_name
-  #cloud_composer_access_level_name = module.constants.value.cloud_composer_access_level_name
-  #srde_admin_access_level_name     = module.constants.value.srde_admin_access_level_name
-  #vpc_sc_all_restricted_apis       = module.constants.value.vpc_sc_all_restricted_apis
 }
 
-#------------------
+data "terraform_remote_state" "staging_project" {
+  backend   = "gcs"
+  workspace = terraform.workspace
+  config = {
+    bucket = module.constants.value.terraform_state_bucket
+    prefix = "foundation/${terraform.workspace}/data-ops"
+  }
+}
+
+#----------------------------------------------------------------------------
+# SET LOCALS VALUES
+#----------------------------------------------------------------------------
+
+locals {
+  function             = "data-lake"
+  org_id               = module.constants.value.org_id
+  billing_account_id   = module.constants.value.billing_account_id
+  environment          = module.constants.value.environment
+  folder_id            = data.terraform_remote_state.folders.outputs.foundation_folder_id
+  default_region       = module.constants.value.default_region
+  log_retentation_days = 30
+
+  # Read from tfstate the data ops parameters  
+  staging_project_id         = data.terraform_remote_state.staging_project.outputs.staging_project_id
+  staging_project_number     = data.terraform_remote_state.staging_project.outputs.staging_project_number
+  composer_sa                = try(data.terraform_remote_state.staging_project.outputs.email, "")
+  notebook_sa                = try(data.terraform_remote_state.staging_project.outputs.notebook_sa_email, "")
+  cloudbuild_service_account = module.constants.value.cloudbuild_service_account
+
+  # Read list of folders and create a bucket per researcher initiative
+  wrkspc_folders  = data.terraform_remote_state.folders.outputs.ids
+  research_wrkspc = [for k, v in local.wrkspc_folders : lower(k)]
+}
+
+# ---------------------------------------------------------------------------
 # DATA LAKE PROJECT
-#------------------
+# ---------------------------------------------------------------------------
 
 module "data-lake-project" {
-  source = "../../../modules/project_factory"
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 13.0"
 
-  // REQUIRED FIELDS
-  project_name       = format("%v-%v", var.environment, local.function)
-  org_id             = local.org_id
-  billing_account_id = local.billing_account_id
-  folder_id          = local.folder_id
-
-  // OPTIONAL FIELDS
-  activate_apis               = ["compute.googleapis.com", "serviceusage.googleapis.com", "bigquery.googleapis.com"]
-  auto_create_network         = false
-  create_project_sa           = false
+  name                        = format("%v-sde-%v", local.environment[terraform.workspace], local.function)
+  org_id                      = local.org_id
+  billing_account             = local.billing_account_id
+  folder_id                   = local.folder_id
+  random_project_id           = true
+  activate_apis               = ["compute.googleapis.com", "serviceusage.googleapis.com", "bigquery.googleapis.com", "healthcare.googleapis.com", "serviceusage.googleapis.com", "cloudasset.googleapis.com"]
   default_service_account     = "delete"
   disable_dependent_services  = true
   disable_services_on_destroy = true
-  lien                        = false
-  random_project_id           = true
-  project_labels = {
-    environment      = var.environment
-    application_name = local.function
-    primary_contact  = local.primary_contact
+  create_project_sa           = false
+  labels = {
+    environment = local.environment[terraform.workspace]
   }
 }
 
-#-----------------------------------------
-# DATA LAKE PROJECT IAM CUSTOM ROLE MODULE
-# Create a unique custom role
-#-----------------------------------------
-
-resource "random_id" "custom_role_unique_id" {
-  byte_length = 4
+resource "google_logging_project_bucket_config" "default" {
+  # Increase the -Default logging bucket in days. Default is 30 days.
+  # https://cloud.google.com/logging/docs/routing/overview
+  project        = module.data-lake-project.project_id
+  location       = "global"
+  retention_days = local.log_retentation_days
+  bucket_id      = "_Default"
 }
-
-module "datalake_iam_custom_role" {
-  source = "../../../modules/iam/project_iam_custom_role"
-
-  project_iam_custom_role_project_id  = module.data-lake-project.project_id
-  project_iam_custom_role_description = format("Custom SDE Role for %s Data Lake Storage Operations.", upper(var.environment))
-  project_iam_custom_role_id          = "srdeCustomRoleDataLakeStorageOperations_${random_id.custom_role_unique_id.id}"
-  project_iam_custom_role_title       = format("[%s Custom %s] SRDE Data Lake Storage Operations Role", var.environment, random_id.custom_role_unique_id.id)
-  project_iam_custom_role_permissions = ["storage.buckets.list", "storage.objects.list", "storage.objects.get"] # TODO: Update as needed
-  project_iam_custom_role_stage       = "GA"
-}
-
-#-----------------------------------
-# DATALAKE PROJECT IAM MEMBER MODULE
-#-----------------------------------
-
-resource "google_project_iam_member" "datalake_project" {
-  for_each = local.custom_iam_role_name
-  project  = module.data-lake-project.project_id
-  role     = each.value
-  member   = "${var.member_prefix}:${var.datalake_project_member}"
-}
-
-# ----------------------------------------------------
-# VPC SC REGULAR SERVICE PERIMETER - DATA LAKE PROJECT
-# ----------------------------------------------------
-
-# module "data_lake_regular_service_perimeter" {
-#   source = "../../../modules/vpc_service_controls/regular_service_perimeter"
-
-#   // REQUIRED
-#   regular_service_perimeter_description = var.datalake_regular_service_perimeter_description
-#   regular_service_perimeter_name        = var.datalake_regular_service_perimeter_name
-#   parent_policy_id                      = local.parent_access_policy_id
-
-#   // OPTIONAL
-#   access_level_names = [
-#     local.cloudbuild_access_level_name,
-#     local.cloud_composer_access_level_name,
-#     local.srde_admin_access_level_name
-#   ]
-#   project_to_add_perimeter = [module.data-lake-project.project_number]
-#   restricted_services      = local.vpc_sc_all_restricted_apis
-#   enable_restriction       = var.datalake_enable_restriction
-#   allowed_services         = var.datalake_allowed_services
-#   depends_on               = [module.data-lake-project]
-# }
-
-#--------------------------------------
-# VPC SC DATA LAKE ACCESS LEVELS MODULE
-#--------------------------------------
-
-# module "datalake_access_level_members" {
-#   source = "../../../modules/vpc_service_controls/access_levels"
-
-#   // REQUIRED
-#   access_level_name  = var.datalake_access_level_name
-#   parent_policy_name = local.parent_access_policy_id
-
-#   // OPTIONAL - NON PREMIUM
-#   combining_function       = var.datalake_combining_function
-#   access_level_description = var.datalake_access_level_description
-#   ip_subnetworks           = var.datalake_ip_subnetworks
-#   access_level_members     = var.datalake_access_level_members
-#   negate                   = var.datalake_negate
-#   regions                  = var.datalake_regions
-#   required_access_levels   = var.datalake_required_access_levels
-# }
-
-#----------------------------------------------------
-# VPC SC DATALAKE TO STAGING PROJECT BRIDGE PERIMETER 
-#----------------------------------------------------
-
-# module "datalake_to_staging_bridge_service_perimeter" {
-#   source = "../../../modules/vpc_service_controls/bridge_service_perimeter"
-
-#   // REQUIRED
-
-#   bridge_service_perimeter_name = var.datalake_bridge_service_perimeter_name
-#   parent_policy_name            = local.parent_access_policy_id
-#   bridge_service_perimeter_resources = [
-#     local.staging_project_number,
-#     module.data-lake-project.project_number
-#   ]
-
-#   // OPTIONAL
-
-#   bridge_service_perimeter_description = var.datalake_bridge_service_perimeter_description
-#   depends_on                           = [module.data_lake_regular_service_perimeter]
-# }

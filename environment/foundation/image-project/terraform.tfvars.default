@@ -1,7 +1,0 @@
-# ---------------------------------------------------------
-# STEP 1
-# CHANGE THE BELOW VALUES
-# ---------------------------------------------------------
-
-project_name             = "" // CHANGE BEFORE FIRST DEPLOYMENT
-deploymentmanager_editor = "" // CHANGE BEFORE FIRST DEPLOYMENT: use user{} or group{}

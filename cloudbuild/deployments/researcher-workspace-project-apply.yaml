@@ -1,114 +1,225 @@
 steps:
 
-# RESEARCHER PROJECTS WITH DAGS
-- id: "researcher projects - init"
+# ----- EGRESS PROJECT
+
+- id: "tf init - researcher egress"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/egress'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/egress
+
+- id: "terraform workspace egress"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/egress'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+
+- id: "tf fmt - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/egress'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: "tf validate - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/egress'
+  args: ['validate',
+    '-no-color'
+    ]
+
+# - id: "tf plan - researcher egress - org pol disable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/egress'
+#   args: [
+#     'plan',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars'
+#   ]
+
+- id: "tf apply - researcher egress - org pol disabled"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/egress'
   args: [
-    'init',
-    '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX}/researcher-projects/${_TFVARS_FILE}'
+    'apply',
+    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+    '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+    '-auto-approve'
   ]
+
+#---- RESEARCHER PROJECTS WITH DAGS
+
+- id: "tf init - researcher workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/workspace
+
+- id: "terraform workspace tenant"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+- id: "tf fmt - researcher workspace"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: "tf validate - researcher workspace"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: ['validate',
+    '-no-color'
+    ]
+
+# - id: "tf plan - researcher workspace - org pol disable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#     'plan',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var=researcher_workspace_name=${_WORKSPACE}',
+#     '-var=set_disable_sa_create=false'
+#   ]
+
+- id: "tf apply - researcher workspace - org pol disable"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: [
+    'apply',
+    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+    '-var=set_disable_sa_create=false',
+    '-var=researcher_workspace_name=${_WORKSPACE}',
+    '-auto-approve'
+  ]
+
+# - id: "tf plan - researcher workspace - org pol enable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#     'plan',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var=researcher_workspace_name=${_WORKSPACE}'
+#   ]
+
+- id: "tf apply - researcher workspace - org pol enable"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace'
+  args: [
+    'apply',
+    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+    '-var=researcher_workspace_name=${_WORKSPACE}',
+    '-auto-approve'
+  ]
+
+# # ------ VPC SC
+
+- id: "vpc-sc init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
+
+- id: "terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: ['fmt',
     '-check'
     ]
 
 - id: Terraform Validate
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: ['validate',
     '-no-color'
     ]
 
+# Use the workspace tfvars to read the data stewards value
+# - id: "vpc-sc plan"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: [
+#   'plan',
+#   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#   '-var=researcher_workspace_name=${_WORKSPACE}'
+#   ]
 
-- id: "researcher projects - plan org policies disabled"
+- id: "vpc-sc apply"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/deployments/researcher-projects/vpc-sc'
   args: [
-    'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
-    '-var=enforce_researcher_workspace_disable_sa_creation=false',
-    '-var=enforce_bastion_project_disable_sa_creation=false'
+  'apply',
+  '-auto-approve',
+  '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+  '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+  '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+  '-var=researcher_workspace_name=${_WORKSPACE}'
   ]
 
-- id: "researcher projects - apply org policies disabled"
+# --- VPC SC Foundation
+# Add researcher workspace service accounts to the access context.
+
+- id: "vpc-sc foundation init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'apply',
-    '-auto-approve',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
-    '-var=enforce_researcher_workspace_disable_sa_creation=false',
-    '-var=enforce_bastion_project_disable_sa_creation=false'
-  ]
-
-- id: "researcher projects - apply org policies enabled"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
-  args: [
-    'apply',
-    '-auto-approve',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=terraform_foundation_state_prefix=${_PREFIX_FOUNDATION}',
-    '-var=enforce_researcher_workspace_disable_sa_creation=true',
-    '-var=enforce_bastion_project_disable_sa_creation=true'
-  ]
-
-
-# Create output files to use when performing variable substitution in the Composer DAGs for this workspace
-# Changing the workspace paths below will effect the Composer DAG Python scripts
-
-- id: "output file creation - researcher projects"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects'
+  dir: 'environment/foundation/vpc-sc/'
   entrypoint: /bin/sh
-  args: [
-    '-c',
-    'terraform output -json > /workspace/researcher-output.json && cat /workspace/researcher-output.json'
-  ]
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
 
-- id: "data ops project state pull - init"
+- id: "vpc-sc foundation terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops-project'
-  args: [
-    'init',
-    '-backend-config=bucket=${_BUCKET}',
-    '-backend-config=prefix=${_PREFIX_FOUNDATION}/data-ops-project'
-  ]
-
-- id: "output file creation - data ops project"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/staging-project'
+  dir: 'environment/foundation/vpc-sc/'
   entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+- id: "vpc-sc foundation apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
   args: [
-    '-c',
-    'terraform output -json > /workspace/data-ops-output.json && cat /workspace/data-ops-output.json'
+  'apply',
+  '-target=module.access_level_service-accounts',
+  '-target=module.access_level_stewards',
+  '-auto-approve',
+  '-var-file=env/${_TFVARS_FILE}.tfvars',
   ]
-
-  # Perform variable substitution in the DAGs and upload all of them to the Composer DAGs folder.
-
-- id: "load variables for Researcher DAG envs"
-  name: gcr.io/cloud-builders/gcloud
-  dir: 'environment/foundation/data-ops-project/cloud-composer/composer-dag-files'
-  entrypoint: python
-  args: [
-    'set_researcher_dag_envs.py'
-  ]
-
-- id: "load DAG to GCS bucket"
-  name: gcr.io/cloud-builders/gsutil
-  dir: 'environment/foundation/data-ops-project/cloud-composer/composer-dag-files'
-  args: [
-    'cp',
-    '-n',
-    '/workspace/*_DAG.py',
-    'gs://${_COMPOSER_DAG_BUCKET}/dags/'
-  ]
-
-timeout: 3600s

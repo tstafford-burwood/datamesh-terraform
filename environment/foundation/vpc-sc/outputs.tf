@@ -10,20 +10,20 @@ output "serviceaccount_access_level_name" {
   value       = module.access_level_service-accounts.name
 }
 
-output "foundation_perimeter_name" {
-  # tfdoc:output:consumers egress, workspaces
-  description = "The perimeter's name."
-  value       = module.foundation_perimeter_0.perimeter_name
-}
+# output "foundation_perimeter_name" {
+#   # tfdoc:output:consumers egress, workspaces
+#   description = "The perimeter's name."
+#   value       = module.foundation_perimeter_0.perimeter_name
+# }
 
-output "foundation_resources" {
-  # tfdoc:output:consumers egress, workspaces
-  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-  value       = module.foundation_perimeter_0.resources
-}
+# output "foundation_resources" {
+#   # tfdoc:output:consumers egress, workspaces
+#   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
+#   value       = module.foundation_perimeter_0.resources
+# }
 
-output "foundation_shared_resources" {
-  # tfdoc:output:consumers egress, workspaces
-  description = "A map of lists of resources to share in a Bridge perimeter module. Each list should contain all or a subset of the perimeters resources"
-  value       = module.foundation_perimeter_0.shared_resources
-}
+# output "foundation_shared_resources" {
+#   # tfdoc:output:consumers egress, workspaces
+#   description = "A map of lists of resources to share in a Bridge perimeter module. Each list should contain all or a subset of the perimeters resources"
+#   value       = module.foundation_perimeter_0.shared_resources
+# }

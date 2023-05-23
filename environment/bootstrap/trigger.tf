@@ -31,7 +31,7 @@ variable "git_repo_url" {
 variable "git_ref" {
   description = "What ref should be built by the Cloud Build trigger."
   type        = string
-  default     = "refs/heads/base-1"
+  default     = "refs/heads/main"
 }
 
 variable "git_repo_type" {

@@ -27,3 +27,7 @@ output "terraform_state_bucket" {
   description = "The GCS bucket name to enter into the [constants.tf]() file"
   value       = trimprefix(google_storage_bucket.tfstate.url, "gs://")
 }
+
+output "branch_name" {
+  value = element(split("/", var.git_ref), 2)
+}

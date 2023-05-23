@@ -51,7 +51,7 @@ steps:
     # '-target=module.folder_iam_member',
     '-auto-approve',
     '-input=false',
-    '-plan.tfplan'
+    'plan.tfplan'
   ]
 
 timeout: 1800s

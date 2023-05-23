@@ -11,4 +11,4 @@ terraform {
   provider_meta "google" {
     module_name = "blueprints/terraform/terraform-example-foundation:bootstrap/v3.0.0"
   }
-}
+} 

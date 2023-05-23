@@ -1,7 +1,7 @@
 // BACKEND AND REQUIRED PROVIDERS BLOCK
 
 terraform {
-  backend "gcs" {}
+  #backend "gcs" {}
   required_version = ">= 1.1.0"
   required_providers {
     google = {

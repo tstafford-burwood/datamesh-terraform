@@ -32,7 +32,8 @@ steps:
     '-target=google_cloudbuild_trigger.packer_container_image',
     '-target=google_cloudbuild_trigger.researcher_vm_image',
     '-target=google_cloudbuild_trigger.copy_dags',
-    '-target=module.folder_iam_member'
+    '-target=module.folder_iam_member',
+    '-out=plan.tfplan'
   ]
 
 - id: "terraform apply"
@@ -40,15 +41,17 @@ steps:
   dir: 'environment/foundation/cloudbuild-sde'
   args: [
     'apply',
-    '-target=google_cloudbuild_trigger.composer_apply_triggers',
-    '-target=google_cloudbuild_trigger.composer_plan_triggers',
-    '-target=google_cloudbuild_trigger.workflow_apply_triggers',
-    '-target=google_cloudbuild_trigger.workflow_plan_triggers',
-    '-target=google_cloudbuild_trigger.packer_container_image',
-    '-target=google_cloudbuild_trigger.researcher_vm_image',
-    '-target=google_cloudbuild_trigger.copy_dags',
-    '-target=module.folder_iam_member',
-    '-auto-approve'
+    # '-target=google_cloudbuild_trigger.composer_apply_triggers',
+    # '-target=google_cloudbuild_trigger.composer_plan_triggers',
+    # '-target=google_cloudbuild_trigger.workflow_apply_triggers',
+    # '-target=google_cloudbuild_trigger.workflow_plan_triggers',
+    # '-target=google_cloudbuild_trigger.packer_container_image',
+    # '-target=google_cloudbuild_trigger.researcher_vm_image',
+    # '-target=google_cloudbuild_trigger.copy_dags',
+    # '-target=module.folder_iam_member',
+    '-auto-approve',
+    '-input=false',
+    '-plan.tfplan'
   ]
 
 timeout: 1800s

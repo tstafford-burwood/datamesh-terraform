@@ -9,7 +9,7 @@ module "data_ingestion_vpc_sc" {
   common_name                      = "data_enclave"
   common_suffix                    = random_id.suffix.hex
   resources = {
-    data_ingestion = local.data.ingress
+    data_ingestion = local.data_ingress
     data_ops       = local.data_ops
     data_lake      = local.data_lake
   }                                                            # List of GCP projects

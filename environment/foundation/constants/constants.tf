@@ -5,20 +5,20 @@ locals {
   constants = {
 
     // DOMAIN INFORMATION
-    automation_project_id      = "sde-bootstrap-386401" # Project ID that hosts Cloud Build
-    billing_account_id         = "01EF01-627C10-7CD2DF"             # Cloud Build
-    cloudbuild_service_account = "362800255770@cloudbuild.gserviceaccount.com"
-    org_id                     = "195074099351"
-    sde_folder_id              = "145142361598"
-    terraform_state_bucket     = "terraform-state-f381f52977451720"
+    automation_project_id      = "aaron-cb-sde" # Project ID that hosts Cloud Build
+    billing_account_id         = "01EF01-627C10-7CD2DF"             
+    cloudbuild_service_account = "213453898789@cloudbuild.gserviceaccount.com" # Cloud Build
+    org_id                     = "575228741867"
+    sde_folder_id              = "170589415885"
+    terraform_state_bucket     = "terraform-state-32f5040503749c0d"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
-    ingress-project-admins = ["user:speralta@tunedcold.site"]
-    image-project-admins   = ["user:speralta@tunedcold.site"]
-    data-lake-admins       = ["user:speralta@tunedcold.site"]
-    data-lake-viewers      = ["user:speralta@tunedcold.site"]
-    data-ops-admins        = ["user:speralta@tunedcold.site"]
+    ingress-project-admins = ["group:sde-centralit@prorelativity.com"]
+    image-project-admins   = ["group:sde-centralit@prorelativity.com"]
+    data-lake-admins       = ["group:gcp_security_admins@prorelativity.com"]
+    data-lake-viewers      = ["group:gcp_security_admins@prorelativity.com"]
+    data-ops-admins        = ["group:gcp_security_admins@prorelativity.com"]
 
     // ONLY USERS OR SERVICE ACCOUNTS TO ASSIGN TO VPC PERIMETER
     # `vpc_sc_admins` are added to an access context level which grants them full access to all restricted services for all foundation projects

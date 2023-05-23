@@ -5,20 +5,20 @@ locals {
   constants = {
 
     // DOMAIN INFORMATION
-    automation_project_id      = "<CLOUD_BUILD_PROJECT_ID>" # Project ID that hosts Cloud Build
-    billing_account_id         = "<BILLING_ID>"             # Cloud Build
-    cloudbuild_service_account = "<CLOUDBUILD_PROJECT_NUMBER>@cloudbuild.gserviceaccount.com"
-    org_id                     = "<ORG_ID>"
-    sde_folder_id              = "<FOLDER_ID>"
-    terraform_state_bucket     = "<TF_STATE_BUCKET_NAME>"
+    automation_project_id      = "sde-bootstrap-386401" # Project ID that hosts Cloud Build
+    billing_account_id         = "01EF01-627C10-7CD2DF"             # Cloud Build
+    cloudbuild_service_account = "362800255770@cloudbuild.gserviceaccount.com"
+    org_id                     = "195074099351"
+    sde_folder_id              = "145142361598"
+    terraform_state_bucket     = "terraform-state-f381f52977451720"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
-    ingress-project-admins = ["group:sde-centralit@prorelativity.com"]
-    image-project-admins   = ["group:sde-centralit@prorelativity.com"]
-    data-lake-admins       = ["group:srde-datagroup@prorelativity.com"]
-    data-lake-viewers      = ["group:srde-datagroup@prorelativity.com"]
-    data-ops-admins        = ["group:srde-datagroup@prorelativity.com"]
+    ingress-project-admins = ["user:speralta@tunedcold.site"]
+    image-project-admins   = ["user:speralta@tunedcold.site"]
+    data-lake-admins       = ["user:speralta@tunedcold.site"]
+    data-lake-viewers      = ["user:speralta@tunedcold.site"]
+    data-ops-admins        = ["user:speralta@tunedcold.site"]
 
     // ONLY USERS OR SERVICE ACCOUNTS TO ASSIGN TO VPC PERIMETER
     # `vpc_sc_admins` are added to an access context level which grants them full access to all restricted services for all foundation projects
@@ -35,7 +35,7 @@ locals {
     environment = {
       # <branch_name> = <environment_value>
       # Example: main = "prod"
-      branch-name = "<ENVIRONMENT>"
+      tunedcold-sde = "qa"
     }
   }
 }

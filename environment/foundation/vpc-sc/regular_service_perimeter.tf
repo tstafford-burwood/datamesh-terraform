@@ -25,7 +25,7 @@ module "foundation_perimeter_0" {
         "sources" = {
           # allow any of the service accounts to to hit the listed APIs
           #access_levels = [module.access_level_service-accounts.name]
-          access_levels = []
+          access_levels = ["*"]
         },
         "identity_type" = "ANY_SERVICE_ACCOUNT"
       }
@@ -45,6 +45,9 @@ module "foundation_perimeter_0" {
             "methods" = ["*"]
           },
           "compute.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "storage.googleapis.com" = {
             "methods" = ["*"]
           }
         }

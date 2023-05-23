@@ -40,6 +40,7 @@ module "researcher_workspace_deeplearning_vm_private_ip" {
 
 resource "google_compute_resource_policy" "snapshot_schedule" {
   # Create a snapshot schedule
+  count       = var.num_instances > 0 ? 1 : 0
   project     = module.workspace_project.project_id
   name        = "disk-snapshot-schedule"
   description = "Managed by Terraform."
@@ -60,13 +61,15 @@ resource "google_compute_resource_policy" "snapshot_schedule" {
   }
 }
 
+
 resource "google_compute_disk_resource_policy_attachment" "attachment" {
-  count   = var.num_instances > 0 ? var.num_instances : 0
+  count   = var.num_instances > 0 ? 1 : 0
   project = module.workspace_project.project_id
-  name    = google_compute_resource_policy.snapshot_schedule.name
+  name    = google_compute_resource_policy.snapshot_schedule[count.index].name
   disk    = module.researcher_workspace_deeplearning_vm_private_ip[count.index].name
   zone    = "${var.region}-b"
 }
+
 
 resource "local_file" "loginscript_bat" {
   # Create the file based off of the template file

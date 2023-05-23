@@ -14,3 +14,24 @@ variable "ip_subnetworks_stewards" {
   type        = list(string)
   default     = []
 }
+
+variable "perimeter_additional_members" {
+  description = "The list additional members to be added on perimeter access. Prefix user: (user:email@email.com) or serviceAccount: (serviceAccount:my-service-account@email.com) is required."
+  type        = list(string)
+  default     = []
+}
+
+variable "additional_restricted_services" {
+  description = "The list of additional Google services to be protected by the VPC-SC service perimeters."
+  type        = list(string)
+  default     = []
+}
+
+variable "egress_policies" {
+  description = "A list of all [egress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#egress-rules-reference), each list object has a `from` and `to` value that describes egress_from and egress_to. See also [secure data exchange](https://cloud.google.com/vpc-service-controls/docs/secure-data-exchange#allow_access_to_a_google_cloud_resource_outside_the_perimeter)."
+  type = list(object({
+    from = any
+    to   = any
+  }))
+  default = []
+}

@@ -35,7 +35,7 @@ locals {
     environment = {
       # <branch_name> = <environment_value>
       # Example: main = "prod"
-      tunedcold-sde = "qa"
+      main = "qa"
     }
   }
 }

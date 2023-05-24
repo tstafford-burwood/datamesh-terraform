@@ -15,14 +15,17 @@
  */
 
 terraform {
-  required_version = "~> 1.0"
-
+  required_version = ">= 0.13"
   required_providers {
-    google      = "~> 3.77"
-    google-beta = "~> 3.77"
 
-    local = {
-      version = "~> 2.1"
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.62, < 5.0"
     }
   }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-vpc-service-controls/v5.0.0"
+  }
+
 }

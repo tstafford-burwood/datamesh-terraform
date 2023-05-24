@@ -38,7 +38,7 @@ module "secure_imaging" {
       "from" = {
         "sources" = {
           # allow any of the service accounts to to hit the listed APIs
-          access_levels = [module.access_level_service-accounts.name]
+          access_levels = ["*"]
         },
         "identity_type" = "ANY_SERVICE_ACCOUNT"
       }

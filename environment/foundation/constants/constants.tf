@@ -14,8 +14,8 @@ locals {
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
-    ingress-project-admins = ["group:sde-centralit@prorelativity.com"]
-    image-project-admins   = ["group:sde-centralit@prorelativity.com"]
+    ingress-project-admins = ["group:gcp_security_admins@prorelativity.com"]
+    image-project-admins   = ["group:gcp_security_admins@prorelativity.com"]
     data-lake-admins       = ["group:gcp_security_admins@prorelativity.com"]
     data-lake-viewers      = ["group:gcp_security_admins@prorelativity.com"]
     data-ops-admins        = ["group:gcp_security_admins@prorelativity.com"]

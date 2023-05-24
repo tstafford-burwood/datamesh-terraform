@@ -43,79 +43,79 @@ steps:
 
 # CLOUD COMPOSER
 
-- id: "composer init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloud-composer'
-  ]
+# - id: "composer init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloud-composer'
+#   ]
 
-- id: "composer terraform workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+# - id: "composer terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-- id: "composer plan destroy"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-  'plan',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-destroy'
-  ]
+# - id: "composer plan destroy"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#   'plan',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-destroy'
+#   ]
 
-- id: "composer destroy"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-  'destroy',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-auto-approve'
-  ]
+# - id: "composer destroy"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#   'destroy',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-auto-approve'
+#   ]
 
 # Data Ops
 
-- id: "data-ops projects - init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/data-ops'
-  ]
+# - id: "data-ops projects - init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/data-ops'
+#   ]
 
-- id: "data-ops terraform workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+# - id: "data-ops terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
   
-- id: "data-ops project - destroy plan"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops'
-  args: [
-  'plan',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-destroy'
-  ]
+# - id: "data-ops project - destroy plan"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops'
+#   args: [
+#   'plan',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-destroy'
+#   ]
 
-- id: "data-ops project - destroy all"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops'
-  args: [
-  'destroy',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-auto-approve'
-  ]
+# - id: "data-ops project - destroy all"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops'
+#   args: [
+#   'destroy',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-auto-approve'
+#   ]
 
 # PACKER PROJECT
 

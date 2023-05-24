@@ -1,6 +1,6 @@
 project_admins        = []
-researchers           = ["user:speralta@tunedcold.site"]
-data_stewards         = ["user:speralta@tunedcold.site"] # individual accounts only, no group, added to the access context to access the necessary foundation projects. Syntax is `user:foo@bar.com`
+researchers           = ["user:sde@prorelativity.com"]
+data_stewards         = ["user:sde@prorelativity.com"] # individual accounts only, no group, added to the access context to access the necessary foundation projects. Syntax is `user:foo@bar.com`
 num_instances         = 0
 instance_machine_type = "n2-standard-2"
 vm_disk_size          = 100

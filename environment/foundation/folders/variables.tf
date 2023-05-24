@@ -1,7 +1,7 @@
 variable "researcher_workspace_folders" {
   description = "List of folder to create for researcher workspaces"
   type        = list(string)
-  default = []
+  default     = []
 }
 
 variable "audit_log_config" {

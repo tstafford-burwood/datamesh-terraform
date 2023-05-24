@@ -36,7 +36,7 @@ resource "random_id" "suffix" {
 module "secure_data" {
   source = "../../../modules/vpc-sc"
 
-  access_context_manager_policy_id = "428294780283"
+  access_context_manager_policy_id = var.parent_access_policy_id
   common_name                      = "data_enclave"
   common_suffix                    = random_id.suffix.hex
   resources = [

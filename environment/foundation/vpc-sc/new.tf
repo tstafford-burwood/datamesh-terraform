@@ -47,4 +47,67 @@ module "secure_data" {
 
   perimeter_members   = local.perimeter_members_data_ingestion # users or service accounts
   restricted_services = local.restricted_services
+
+  ingress_policies = [
+    {
+      "from" = {
+        "sources" = {
+          # allow any of the service accounts to to hit the listed APIs
+          #access_levels = [module.access_level_service-accounts.name]
+          access_levels = ["*"]
+        },
+        "identity_type" = "ANY_SERVICE_ACCOUNT"
+      }
+      "to" = {
+        "resources" = ["*"]
+        "operations" = {
+          "container.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "monitoring.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "cloudfunctions.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "artifactregistry.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "compute.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "storage.googleapis.com" = {
+            "methods" = ["*"]
+          }
+        }
+      }
+    },
+  ]
+
+  egress_policies = [{
+    "from" = {
+      "identity_type" = "ANY_SERVICE_ACCOUNT"
+      "identities"    = []
+    },
+    "to" = {
+      "resources" = ["*"]
+      "operations" = {
+        "container.googleapis.com" = {
+          "methods" = ["*"]
+        },
+        "monitoring.googleapis.com" = {
+          "methods" = ["*"]
+        },
+        "cloudfunctions.googleapis.com" = {
+          "methods" = ["*"]
+        },
+        "artifactregistry.googleapis.com" = {
+          "methods" = ["*"]
+        },
+        "compute.googleapis.com" = {
+          "methods" = ["*"]
+        }
+      }
+    }
+  }, ]
 }

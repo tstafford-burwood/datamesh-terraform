@@ -68,7 +68,8 @@ variable "environment_size" {
 variable "image_version" {
   description = "The version of Airflow running in the Cloud Composer environment. Latest version found [here](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions)."
   type        = string
-  default     = "composer-2.1.11-airflow-2.4.3"
+  default     = "composer-2.1.15-airflow-2.5.1"
+  #default     = "composer-2.1.11-airflow-2.4.3"
 }
 
 # variable "gke_machine_type" {

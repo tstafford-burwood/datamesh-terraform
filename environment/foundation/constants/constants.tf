@@ -9,8 +9,8 @@ locals {
     billing_account_id         = "01EF01-627C10-7CD2DF"             
     cloudbuild_service_account = "213453898789@cloudbuild.gserviceaccount.com" # Cloud Build
     org_id                     = "575228741867"
-    sde_folder_id              = "170589415885"
-    terraform_state_bucket     = "terraform-state-32f5040503749c0d"
+    sde_folder_id              = "338489631672"
+    terraform_state_bucket     = "terraform-state-45b286c14bde108f"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS
     // format: `user:user1@client.edu`, `group:admins@client.edu`, or `serviceAccount:my-app@appspot.gserviceaccount.com`
@@ -35,7 +35,7 @@ locals {
     environment = {
       # <branch_name> = <environment_value>
       # Example: main = "prod"
-      main = "qa"
+      northwestern-prep-1 = "qa"
     }
   }
 }

@@ -20,6 +20,46 @@ resource "random_id" "suffix" {
   byte_length = 4
 }
 
+module "secure_imaging" {
+  source = "../../../modules/vpc-sc"
+
+  access_context_manager_policy_id = var.parent_access_policy_id
+  common_name                      = "image_prj"
+  common_suffix                    = random_id.suffix.hex
+  resources = [
+    local.image_project,
+  ]
+
+  perimeter_members   = local.perimeter_members_data_ingestion # users or service accounts
+  restricted_services = ["run.googleapis.com", "bigquery.googleapis.com", "bigtable.googleapis.com", "sqladmin.googleapis.com", "pubsub.googleapis.com", "container.googleapis.com"]
+
+  ingress_policies = [
+    {
+      "from" = {
+        "sources" = {
+          # allow any of the service accounts to to hit the listed APIs
+          access_levels = [module.access_level_service-accounts.name]
+        },
+        "identity_type" = "ANY_SERVICE_ACCOUNT"
+      }
+      "to" = {
+        "resources" = ["*"]
+        "operations" = {
+          "monitoring.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "logging.googleapis.com" = {
+            "methods" = ["*"]
+          },
+          "artifactregistry.googleapis.com" = {
+            "methods" = ["*"]
+          }
+        }
+      }
+    },
+  ]
+}
+
 module "secure_data" {
   source = "../../../modules/vpc-sc"
 

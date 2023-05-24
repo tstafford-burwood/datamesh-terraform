@@ -6,7 +6,7 @@ locals {
     "serviceAccount:${local.data_ops}@cloudbuild.gserviceaccount.com",
     "serviceAccount:service-${local.data_ops}@gcf-admin-robot.iam.gserviceaccount.com",
     "serviceAccount:${local.image_project_sa}",
-  ], var.perimeter_additional_members))
+  ], var.perimeter_additional_members, local.acclvl_sa))
 
   base_restricted_services = [
     "bigquery.googleapis.com",

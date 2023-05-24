@@ -10,19 +10,6 @@ locals {
 
   base_restricted_services = [
     "bigquery.googleapis.com",
-    "cloudasset.googleapis.com",
-    "cloudfunctions.googleapis.com",
-    "cloudkms.googleapis.com",
-    "compute.googleapis.com",
-    "datacatalog.googleapis.com",
-    "dataflow.googleapis.com",
-    "dlp.googleapis.com",
-    "logging.googleapis.com",
-    "monitoring.googleapis.com",
-    "pubsub.googleapis.com",
-    "secretmanager.googleapis.com",
-    "sts.googleapis.com",
-    "iam.googleapis.com",
     "storage.googleapis.com"
   ]
 

@@ -5,3 +5,5 @@
 
 domain_restricted_sharing_allow   = ["C03g5ccaa"]
 researcher_workspace_folders      = ["workspace-1"]
+
+audit_log_config = ["DATA_READ", "DATA_WRITE", "ADMIN_READ"]

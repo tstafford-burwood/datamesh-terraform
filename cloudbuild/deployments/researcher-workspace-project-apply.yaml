@@ -133,93 +133,93 @@ steps:
     '-auto-approve'
   ]
 
-# # ------ VPC SC
+# # # ------ VPC SC
 
-- id: "vpc-sc init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
+# - id: "vpc-sc init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
 
-- id: "terraform workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+# - id: "terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
 
-- id: Terraform Format
-  name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  args: ['fmt',
-    '-check'
-    ]
+# - id: Terraform Format
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: ['fmt',
+#     '-check'
+#     ]
 
-- id: Terraform Validate
-  name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  args: ['validate',
-    '-no-color'
-    ]
+# - id: Terraform Validate
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: ['validate',
+#     '-no-color'
+#     ]
 
-# Use the workspace tfvars to read the data stewards value
-# - id: "vpc-sc plan"
+# # Use the workspace tfvars to read the data stewards value
+# # - id: "vpc-sc plan"
+# #   name: hashicorp/terraform:${_TAG}
+# #   dir: 'environment/deployments/researcher-projects/vpc-sc'
+# #   args: [
+# #   'plan',
+# #   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+# #   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+# #   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+# #   '-var=researcher_workspace_name=${_WORKSPACE}'
+# #   ]
+
+# - id: "vpc-sc apply"
 #   name: hashicorp/terraform:${_TAG}
 #   dir: 'environment/deployments/researcher-projects/vpc-sc'
 #   args: [
-#   'plan',
+#   'apply',
+#   '-auto-approve',
 #   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
 #   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
 #   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
 #   '-var=researcher_workspace_name=${_WORKSPACE}'
 #   ]
 
-- id: "vpc-sc apply"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  args: [
-  'apply',
-  '-auto-approve',
-  '-var-file=../env/${_WORKSPACE}/globals.tfvars',
-  '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
-  '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
-  '-var=researcher_workspace_name=${_WORKSPACE}'
-  ]
+# # --- VPC SC Foundation
+# # Add researcher workspace service accounts to the access context.
 
-# --- VPC SC Foundation
-# Add researcher workspace service accounts to the access context.
+# - id: "vpc-sc foundation init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
 
-- id: "vpc-sc foundation init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-sc/'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
+# - id: "vpc-sc foundation terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-- id: "vpc-sc foundation terraform workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-sc/'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
-
-- id: "vpc-sc foundation apply"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/vpc-sc/'
-  args: [
-  'apply',
-  '-target=module.access_level_service-accounts',
-  '-target=module.access_level_stewards',
-  '-auto-approve',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  ]
+# - id: "vpc-sc foundation apply"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   args: [
+#   'apply',
+#   '-target=module.access_level_service-accounts',
+#   '-target=module.access_level_stewards',
+#   '-auto-approve',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   ]

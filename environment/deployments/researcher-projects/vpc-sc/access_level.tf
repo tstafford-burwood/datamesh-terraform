@@ -1,6 +1,6 @@
 locals {
   #pe_1_acclvl   = compact([local.fdn_sa])
-  #access_levels = length(var.external_users_vpc) > 0 ? [local.fdn_sa, module.access_level_users[0].name] : [local.fdn_sa]
+  access_levels = length(var.external_users_vpc) > 0 ? [local.fdn_sa, module.access_level_users[0].name] : [local.fdn_sa]
 }
 
 module "access_level_users" {

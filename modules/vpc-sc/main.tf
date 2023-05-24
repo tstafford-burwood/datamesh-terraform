@@ -33,7 +33,7 @@ module "service_perimeter" {
   resource_keys       = var.resource_keys
   resources           = var.resources
   restricted_services = var.restricted_services
-  access_levels       = var.access_levels
+  access_levels       = [module.access_level_members.name]
   egress_policies     = var.egress_policies
   ingress_policies    = var.ingress_policies
 }

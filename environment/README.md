@@ -81,6 +81,7 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
     - sde_folder_id              = ""
     - terraform_state_bucket     = ""
 
+
     # replace the empty values "" with values from the terraform outputs
     # >$ terraform output
     + automation_project_id = "cloudbuid-project-id"
@@ -89,6 +90,8 @@ This bootstrap is used to help configure an <u>existing Cloud Build</u> service.
     + org_id = "12345678901"
     + sde_folder_id = "354964175308"
     + terraform_state_bucket = "terraform-state-e106bfd20302a8d3"
+    ...
+    environment = { <branch_name> = "prod" }
     ```
 
 1. Push the changes into the repo. ```git add .```, ```git commit -m "updated values"```, ```git push```

@@ -7,7 +7,8 @@ output "parent_access_policy_id" {
 output "serviceaccount_access_level_name" {
   # tfdoc:output:consumers egress, workspaces
   description = "Description of the Service account AccessLevel and its use. Does not affect behavior."
-  value       = local.acclvl_sa
+  value       = module.secure_data.name
+  #value       = local.acclvl_sa
   #value       = module.access_level_service-accounts.name
 }
 

@@ -3,20 +3,20 @@ steps:
 
 # Service Control Perimeter Terraform Plan Prod
 
-- id: "store git branch"
-  name: ubuntu
-  entrypoint: bash
-  args:
-  - -c
-  - |
-      # save git branch to persistent volume: /workspace
-      echo "Current branch name is $BRANCH_NAME"
-      echo ""
-      if [[ "$BRANCH_NAME" != "test" ]] || [[ "$BRANCH_NAME" != "main" ]]; then
-        branch=test
-        echo "Branch Name is now $branch"
-        echo $branch > /workspace/branch.txt
-      fi
+# - id: "store git branch"
+#   name: ubuntu
+#   entrypoint: bash
+#   args:
+#   - -c
+#   - |
+#       # save git branch to persistent volume: /workspace
+#       echo "Current branch name is $BRANCH_NAME"
+#       echo ""
+#       if [[ "$BRANCH_NAME" != "test" ]] || [[ "$BRANCH_NAME" != "main" ]]; then
+#         branch=test
+#         echo "Branch Name is now $branch"
+#         echo $branch > /workspace/branch.txt
+#       fi
 
 - id: "vpc-sc init"
   name: hashicorp/terraform:${_TAG}
@@ -25,7 +25,8 @@ steps:
   args:
     - '-c'
     - |
-        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$(cat /workspace/branch.txt)/vpc-sc
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/vpc-sc
+        #terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$(cat /workspace/branch.txt)/vpc-sc
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
@@ -34,7 +35,8 @@ steps:
   args:
     - '-c'
     - |
-        terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+        #terraform workspace select $(cat /workspace/branch.txt) || terraform workspace new $(cat /workspace/branch.txt)
 
 - id: Terraform Format
   name: 'hashicorp/terraform:${_TAG}'

@@ -1,0 +1,221 @@
+steps:
+
+- id: "tf init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}
+
+- id: "terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+
+- id: "tf fmt - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  args: ['fmt',
+    '-check'
+    ]
+
+- id: "tf validate - researcher egress"
+  name: 'hashicorp/terraform:${_TAG}'
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  args: ['validate',
+    '-no-color'
+    ]
+
+- id: "tf plan"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  args: [
+    'plan'
+  ]
+
+# - id: "tf apply - researcher egress - org pol disabled"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/egress'
+#   args: [
+#     'apply',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+#     '-auto-approve'
+#   ]
+
+# #---- RESEARCHER PROJECTS WITH DAGS
+
+# - id: "tf init - researcher workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/workspace
+
+# - id: "terraform workspace tenant"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+# - id: "tf fmt - researcher workspace"
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: ['fmt',
+#     '-check'
+#     ]
+
+# - id: "tf validate - researcher workspace"
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: ['validate',
+#     '-no-color'
+#     ]
+
+# # - id: "tf plan - researcher workspace - org pol disable"
+# #   name: hashicorp/terraform:${_TAG}
+# #   dir: 'environment/deployments/researcher-projects/workspace'
+# #   args: [
+# #     'plan',
+# #     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+# #     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+# #     '-var=researcher_workspace_name=${_WORKSPACE}',
+# #     '-var=set_disable_sa_create=false'
+# #   ]
+
+# - id: "tf apply - researcher workspace - org pol disable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#     'apply',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var=set_disable_sa_create=false',
+#     '-var=researcher_workspace_name=${_WORKSPACE}',
+#     '-auto-approve'
+#   ]
+
+# # - id: "tf plan - researcher workspace - org pol enable"
+# #   name: hashicorp/terraform:${_TAG}
+# #   dir: 'environment/deployments/researcher-projects/workspace'
+# #   args: [
+# #     'plan',
+# #     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+# #     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+# #     '-var=researcher_workspace_name=${_WORKSPACE}'
+# #   ]
+
+# - id: "tf apply - researcher workspace - org pol enable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#     'apply',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var=researcher_workspace_name=${_WORKSPACE}',
+#     '-auto-approve'
+#   ]
+
+# # # ------ VPC SC
+
+# - id: "vpc-sc init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
+
+# - id: "terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+
+# - id: Terraform Format
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: ['fmt',
+#     '-check'
+#     ]
+
+# - id: Terraform Validate
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: ['validate',
+#     '-no-color'
+#     ]
+
+# # Use the workspace tfvars to read the data stewards value
+# # - id: "vpc-sc plan"
+# #   name: hashicorp/terraform:${_TAG}
+# #   dir: 'environment/deployments/researcher-projects/vpc-sc'
+# #   args: [
+# #   'plan',
+# #   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+# #   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+# #   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+# #   '-var=researcher_workspace_name=${_WORKSPACE}'
+# #   ]
+
+# - id: "vpc-sc apply"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: [
+#   'apply',
+#   '-auto-approve',
+#   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#   '-var=researcher_workspace_name=${_WORKSPACE}'
+#   ]
+
+# # --- VPC SC Foundation
+# # Add researcher workspace service accounts to the access context.
+
+# - id: "vpc-sc foundation init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
+
+# - id: "vpc-sc foundation terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+# - id: "vpc-sc foundation apply"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   args: [
+#   'apply',
+#   '-target=module.access_level_service-accounts',
+#   '-target=module.access_level_stewards',
+#   '-auto-approve',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   ]

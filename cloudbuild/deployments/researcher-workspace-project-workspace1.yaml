@@ -19,14 +19,14 @@ steps:
         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
 
-- id: "tf fmt - researcher egress"
+- id: "tf fmt"
   name: 'hashicorp/terraform:${_TAG}'
   dir: 'environment/deployments/researcher-projects/workspace-1'
   args: ['fmt',
     '-check'
     ]
 
-- id: "tf validate - researcher egress"
+- id: "tf validate"
   name: 'hashicorp/terraform:${_TAG}'
   dir: 'environment/deployments/researcher-projects/workspace-1'
   args: ['validate',

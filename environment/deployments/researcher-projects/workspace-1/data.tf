@@ -129,7 +129,7 @@ locals {
   imaging_project_id        = data.terraform_remote_state.image_project.outputs.project_id
   apt_repo_name             = data.terraform_remote_state.image_project.outputs.apt_repo_name
   notebook_sa               = try(data.terraform_remote_state.notebook_sa.outputs.notebook_sa_email, "")
-  egress                    = try(data.terraform_remote_state.egress_project.outputs.project_number, "")
+  #egress                    = try(data.terraform_remote_state.egress_project.outputs.project_number, "")
   imaging_bucket            = data.terraform_remote_state.image_project.outputs.research_to_bucket
   vpc_connector             = data.terraform_remote_state.staging_project.outputs.vpc_access_connector_id[0]
   composer_ariflow_uri      = try(data.terraform_remote_state.cloud_composer.outputs.airflow_uri, "")

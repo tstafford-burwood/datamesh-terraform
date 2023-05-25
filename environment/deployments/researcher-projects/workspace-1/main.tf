@@ -23,7 +23,7 @@ module "workspace_1" {
   enforce                           = true
   environment                       = local.environment
   external_users_vpc                = []
-  folder_id                         = var.srde_folder_id
+  folder_id                         = local.srde_folder_id
   force_destroy                     = true
   golden_image_version              = ""
   imaging_bucket_name               = local.imaging_bucket

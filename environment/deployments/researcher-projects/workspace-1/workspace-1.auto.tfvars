@@ -11,7 +11,7 @@ environment = {
 
 folder_id = "folders/410033687827"
 
-tf_state_bucket = "terraform-state-45b286c14bde108f"
+#tf_state_bucket = "terraform-state-45b286c14bde108f"
 
 data_ops_project_id = "qa-sde-data-ops-6a6f"
 

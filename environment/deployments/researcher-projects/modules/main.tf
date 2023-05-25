@@ -16,7 +16,6 @@ module "egress_project" {
   composer_dag_bucket       = var.composer_dag_bucket
   prefix                    = var.prefix
   wrkspc_folders            = var.wrkspc_folders
-  tf_state_bucket           = var.tf_state_bucket
   enforce                   = var.enforce
   project_admins            = var.project_admins
   data_stewards             = var.data_stewards
@@ -33,7 +32,6 @@ module "workspace_project" {
   folder_id                         = var.folder_id
   researcher_workspace_name         = var.researcher_workspace_name
   region                            = var.region
-  tf_state_bucket                   = var.tf_state_bucket
   cloudbuild_service_account        = var.cloudbuild_service_account
   research_to_bucket                = var.research_to_bucket
   csv_names_list                    = var.csv_names_list

@@ -40,7 +40,6 @@ module "workspace_1" {
   set_disable_sa_create             = true
   set_vm_os_login                   = true
   stewards_access_level_name        = local.fnd_stewards
-  tf_state_bucket                   = var.tf_state_bucket
   vpc_connector                     = local.vpc_connector
   wrkspc_folders                    = local.wrkspc_folders
 

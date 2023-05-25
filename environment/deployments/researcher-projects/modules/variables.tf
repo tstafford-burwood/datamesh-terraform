@@ -81,10 +81,10 @@ variable "wrkspc_folders" {
   # }  
 }
 
-variable "tf_state_bucket" {
-  description = "Bucket that holds terraform state"
-  type        = string
-}
+# variable "tf_state_bucket" {
+#   description = "Bucket that holds terraform state"
+#   type        = string
+# }
 
 variable "enforce" {
   description = "Whether this policy is enforce."

@@ -7,10 +7,10 @@ variable "prefix" {
   default = "test"
 }
 
-variable "tf_state_bucket" {
-  description = "Bucket that holds terraform state"
-  type        = string
-}
+# variable "tf_state_bucket" {
+#   description = "Bucket that holds terraform state"
+#   type        = string
+# }
 
 
 variable "billing_account" {

@@ -146,9 +146,9 @@ variable "apt_repo_name" {
   default     = "apt-repo"
 }
 
-variable "egress_project_number" {
-  type = string
-}
+# variable "egress_project_number" {
+#   type = string
+# }
 
 variable "data_ingress_project_id" {
   type = string

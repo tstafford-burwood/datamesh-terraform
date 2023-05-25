@@ -122,8 +122,8 @@ locals {
   data_lake_bucket       = data.terraform_remote_state.datalake_project.outputs.research_to_bucket
   data_lake_custom_role  = data.terraform_remote_state.datalake_project.outputs.bucket_list_custom_role_name
   #composer_sa               = try(data.terraform_remote_state.staging_project.outputs.email, "")
-  dag_bucket                = data.terraform_remote_state.cloud_composer.outputs.dag_bucket_name
-  workspace_project_id      = module.workspace_project.project_id
+  dag_bucket = data.terraform_remote_state.cloud_composer.outputs.dag_bucket_name
+  #workspace_project_id      = module.workspace_project.project_id
   researcher_workspace_name = lower(var.researcher_workspace_name)
   region                    = var.region
   imaging_project_id        = data.terraform_remote_state.image_project.outputs.project_id

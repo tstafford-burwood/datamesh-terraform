@@ -36,20 +36,20 @@ steps:
 - id: "tf plan"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects/workspace-1'
-  args: [
-    'plan'
-  ]
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform plan
 
-# - id: "tf apply - researcher egress - org pol disabled"
-#   name: hashicorp/terraform:${_TAG}
-#   dir: 'environment/deployments/researcher-projects/egress'
-#   args: [
-#     'apply',
-#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
-#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
-#     '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
-#     '-auto-approve'
-#   ]
+- id: "tf apply"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/workspace-1'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform apply -auto-approve
 
 # #---- RESEARCHER PROJECTS WITH DAGS
 

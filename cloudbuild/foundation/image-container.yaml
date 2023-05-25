@@ -18,6 +18,8 @@ steps:
   - |
       # save git branch to persistent volume: /workspace
       echo "Current branch name is $BRANCH_NAME"
+      branch=$BRANCH_NAME
+      echo $branch > /workspace/branch.txt
       echo ""      
       if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
         branch=test

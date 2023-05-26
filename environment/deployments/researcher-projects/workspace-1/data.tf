@@ -104,8 +104,9 @@ locals {
   environment                = module.constants.value.environment
   org_id                     = module.constants.value.org_id
   cloudbuild_service_account = module.constants.value.cloudbuild_service_account
+  billing_account_id         = var.billing_account == "" ? module.constants.value.billing_account_id : var.billing_account
+  region                     = var.region == "" ? module.constants.value.default_region : var.region
 
-  billing_account_id     = var.billing_account
   composer_sa            = data.terraform_remote_state.cloud_composer.outputs.email
   srde_folder_id         = data.terraform_remote_state.folders.outputs.ids[var.researcher_workspace_name]
   staging_project_id     = data.terraform_remote_state.staging_project.outputs.staging_project_id
@@ -125,10 +126,10 @@ locals {
   dag_bucket = data.terraform_remote_state.cloud_composer.outputs.dag_bucket_name
   #workspace_project_id      = module.workspace_project.project_id
   researcher_workspace_name = lower(var.researcher_workspace_name)
-  region                    = var.region
-  imaging_project_id        = data.terraform_remote_state.image_project.outputs.project_id
-  apt_repo_name             = data.terraform_remote_state.image_project.outputs.apt_repo_name
-  notebook_sa               = try(data.terraform_remote_state.notebook_sa.outputs.notebook_sa_email, "")
+
+  imaging_project_id = data.terraform_remote_state.image_project.outputs.project_id
+  apt_repo_name      = data.terraform_remote_state.image_project.outputs.apt_repo_name
+  notebook_sa        = try(data.terraform_remote_state.notebook_sa.outputs.notebook_sa_email, "")
   #egress                    = try(data.terraform_remote_state.egress_project.outputs.project_number, "")
   imaging_bucket       = data.terraform_remote_state.image_project.outputs.research_to_bucket
   vpc_connector        = data.terraform_remote_state.staging_project.outputs.vpc_access_connector_id[0]

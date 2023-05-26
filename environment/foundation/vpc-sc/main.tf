@@ -133,6 +133,9 @@ module "secure_data" {
         },
         "compute.googleapis.com" = {
           "methods" = ["*"]
+        },
+        "storage.googleapis.com" = {
+          "methods" = ["*"]
         }
       }
     }

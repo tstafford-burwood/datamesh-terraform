@@ -67,5 +67,5 @@ variable "external_users_vpc" {
 variable "project_admins" {
   description = "Name of the Google Group for admin level access."
   type        = list(string)
-  default     = []
+  default     = ["user:sde@prorelativity.com",]
 }

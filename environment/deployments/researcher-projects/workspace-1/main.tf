@@ -59,6 +59,21 @@ module "workspace_1" {
   members                          = distinct(flatten([var.data_stewards, var.external_users_vpc, var.project_admins, var.researchers]))
   access_level_ip_subnetworks      = []
   restricted_services              = ["bigquery.googleapis.com", "storage.googleapis.com"]
+  ingress_policies                 = []
+  egress_policies = [{
+    "from" = {
+      "identity_type" = "ANY_SERVICE_ACCOUNT"
+      "identities"    = []
+    },
+    "to" = {
+      "resources" = ["*"]
+      "operations" = {
+        "artifactregistry.googleapis.com" = {
+          "methods" = ["*"]
+        }
+      }
+    }
+  }, ]
 
   bridge1_resources = [local.staging_project_number, local.data_lake]
   bridge2_resources = [local.imaging_project_number]

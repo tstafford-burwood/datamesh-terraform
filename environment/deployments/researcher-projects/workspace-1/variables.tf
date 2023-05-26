@@ -25,7 +25,7 @@ variable "instance_name" {
 variable "golden_image_version" {
   description = "Retrieves the specific custom image version from the image project."
   type        = string
-  default     = "qa-sde-image-factory-a701"
+  default     = "packer-data-science-e88b3e3"
 }
 
 variable "researcher_workspace_name" {

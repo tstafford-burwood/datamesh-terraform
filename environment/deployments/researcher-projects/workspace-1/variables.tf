@@ -22,6 +22,12 @@ variable "instance_name" {
   default     = "deep-learning-vm"
 }
 
+variable "golden_image_version" {
+  description = "Retrieves the specific custom image version from the image project."
+  type        = string
+  default     = ""
+}
+
 variable "researcher_workspace_name" {
   description = "Variable represents the GCP folder NAME to place resource into and is used to separate tfstate. GCP Folder MUST pre-exist."
   type        = string

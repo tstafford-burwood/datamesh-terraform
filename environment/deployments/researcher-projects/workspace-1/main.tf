@@ -37,8 +37,8 @@ module "workspace_1" {
   researcher_workspace_name         = local.researcher_workspace_name
   researchers                       = []
   serviceaccount_access_level_name  = local.fdn_sa
-  set_disable_sa_create             = true
-  set_vm_os_login                   = true
+  set_disable_sa_create             = var.set_disable_sa_create
+  set_vm_os_login                   = var.set_vm_os_login
   stewards_access_level_name        = local.fnd_stewards
   vpc_connector                     = local.vpc_connector
   wrkspc_folders                    = local.wrkspc_folders

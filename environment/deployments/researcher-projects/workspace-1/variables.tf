@@ -14,3 +14,15 @@ variable "researcher_workspace_name" {
   type        = string
   default     = "workspace-1"
 }
+
+variable "set_vm_os_login" {
+  description = "Enable the requirement for OS login for VMs"
+  type        = bool
+  default     = true
+}
+
+variable "set_disable_sa_create" {
+  description = "Enable the Disable Service Account Creation policy"
+  type        = bool
+  default     = true
+}

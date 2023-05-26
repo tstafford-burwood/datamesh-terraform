@@ -40,7 +40,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform plan -var=set_disable_sa_create=false -input=false -destroy
+        terraform plan -var=set_disable_sa_create=false -var=set_vm_os_login=false -input=false -destroy
 
 - id: "tf destroy - org pol off"
   name: hashicorp/terraform:${_TAG}
@@ -49,4 +49,36 @@ steps:
   args:
     - '-c'
     - |
-        terraform destroy -var=set_disable_sa_create=false -auto-approve -input=false
+        terraform destroy -var=set_disable_sa_create=false -var=set_vm_os_login=false -auto-approve -input=false
+
+
+
+# --- VPC SC Foundation
+# Add researcher workspace service accounts (notebooks) to the access context.
+
+- id: "vpc-sc foundation init"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
+
+- id: "vpc-sc foundation terraform workspace"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+- id: "vpc-sc foundation destroy"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/foundation/vpc-sc/'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+       terraform destroy -target=module.secure_data -auto-approve -var-file=env/${_TFVARS_FILE}.tfvars

@@ -126,10 +126,11 @@ module "bridge_vpc_perimeter_1" {
   version = "~> 5.0"
 
   policy         = var.access_context_manager_policy_id
-  perimeter_name = vformat("%s_bridge_foundation_%s", var.environment, lower(replace(var.researcher_workspace_name, "-", "")))
+  perimeter_name = format("bridge_foundation_%s", lower(replace(var.researcher_workspace_name, "-", "")))
   description    = "Research bridge to Foundation. Terraform managed"
 
-  resources = var.bridge1_resources
+  resources     = flatten([[module.workspace_project.project_number], var.bridge1_resources])
+  resource_keys = ["one", "two"]
 
   depends_on = [
     module.egress_project,
@@ -144,10 +145,11 @@ module "bridge_vpc_perimeter_2" {
   version = "~> 5.0"
 
   policy         = var.access_context_manager_policy_id
-  perimeter_name = vformat("%s_bridge_image_prj_%s", var.environment, lower(replace(var.researcher_workspace_name, "-", "")))
+  perimeter_name = format("bridge_image_prj_%s", lower(replace(var.researcher_workspace_name, "-", "")))
   description    = "Research bridge to Imaging Project. Terraform managed"
 
-  resources = var.bridge2_resources
+  resources     = flatten([[module.workspace_project.project_number, module.egress_project.project_number], var.bridge2_resources])
+  resource_keys = ["one", "two"]
 
   depends_on = [
     module.egress_project,

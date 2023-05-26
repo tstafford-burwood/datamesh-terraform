@@ -325,16 +325,6 @@ variable "access_level_regions" {
 }
 
 // BRIDGE
-# variable "bridge_description" {
-#   description = "Description of the bridge perimeter"
-#   type        = string
-#   default     = "A bridge between VPC perimeters. Managed by Terraform."
-# }
-
-# variable "bridge_perimeter_name" {
-#   description = "Name of the perimeter. Should be one unified string. Must only be letters, numbers and underscores"
-#   type        = string
-# }
 
 variable "bridge1_resources" {
   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
@@ -347,7 +337,6 @@ variable "bridge2_resources" {
 }
 
 // PERIMETER
-
 
 variable "perimeter_description" {
   description = "Description of the regular perimeter"

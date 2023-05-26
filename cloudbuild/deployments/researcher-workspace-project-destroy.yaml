@@ -1,148 +1,27 @@
 steps:
-# ------ Top Folder
 
-# Temporarily disable the Org Policy for OS Login.
-# IF not, the destroy on projects fails. Re-enable policy at the end
-- id: "folder init"
+- id: "tf init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/folders'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/folders'
-  ]
-
-- id: "folder tf workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/folders'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
-
-- id: "folders apply - disable"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/folders'
-  args: [
-  'apply',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-target=module.vm_os_login',
-  '-var=enforce=false',
-  '-auto-approve'
-  ]
-
-# ------ VPC SC
-
-- id: "vpc-sc init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
+        echo "workspace name is ${_WORKSPACE}"
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
-
-- id: "vpc-sc destroy"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/vpc-sc'
-  args: [
-  'destroy',
-  '-auto-approve',
-  '-var-file=../env/${_WORKSPACE}/globals.tfvars',
-  '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
-  '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
-  '-var=researcher_workspace_name=${_WORKSPACE}',
-  ]
-
-
-#---- RESEARCHER PROJECTS
-
-- id: "tf init - researcher workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/workspace'
-  ]
-
-- id: "tf workspace - researcher workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
-
-
-#--- Allow VPC SC time to propagate
-- id: "vps-sc propagate- sleep"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        echo "waiting for VPC SC to propagate. Sleeping 60s..."
-        sleep 60
-
-- id: "tf apply destroy - researcher workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace'
-  args: [
-    'destroy',
-    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
-    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
-    '-var=researcher_workspace_name=${_WORKSPACE}',
-    '-auto-approve'
-  ]
-
-# ----- EGRESS PROJECT
-
-- id: "tf init - researcher egress"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/egress'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/egress'
-  ]
-
-- id: "tf egress - researcher egress"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/egress'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
-
-
-- id: "tf destroy - researcher egress"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/egress'
-  args: [
-    'destroy',
-    '-var-file=../env/${_WORKSPACE}/globals.tfvars',
-    '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
-    '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
-    '-auto-approve'
-  ]
 
 
 # --- VPC SC Foundation
-# Remove researcher workspace service accounts from the access context.
+# Add researcher workspace service accounts (notebooks) to the access context.
 
 - id: "vpc-sc foundation init"
   name: hashicorp/terraform:${_TAG}
@@ -162,25 +41,200 @@ steps:
     - |
         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-- id: "vpc-sc foundation apply"
+- id: "vpc-sc foundation destroy"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/foundation/vpc-sc/'
-  args: [
-  'apply',
-  '-target=module.access_level_service-accounts',
-  '-auto-approve',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  ]
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+       terraform destroy -target=module.secure_data -auto-approve -var-file=env/${_TFVARS_FILE}.tfvars
 
-# ----
-# Re-enable the org policy at the top folder level
-- id: "folders apply - enable"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/folders'
-  args: [
-  'apply',
-  '-var-file=env/${_TFVARS_FILE}.tfvars',
-  '-target=module.vm_os_login',
-  '-var=enforce=true',
-  '-auto-approve'
-  ]
+
+# steps:
+
+# # ------ Top Folder
+
+# # Temporarily disable the Org Policy for OS Login.
+# # IF not, the destroy on projects fails. Re-enable policy at the end
+# - id: "folder init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/folders'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/folders'
+#   ]
+
+# - id: "folder tf workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/folders'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+# - id: "folders apply - disable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/folders'
+#   args: [
+#   'apply',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-target=module.vm_os_login',
+#   '-var=enforce=false',
+#   '-auto-approve'
+#   ]
+
+# # ------ VPC SC
+
+# - id: "vpc-sc init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/vpc-sc
+
+# - id: "terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+# - id: "vpc-sc destroy"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/vpc-sc'
+#   args: [
+#   'destroy',
+#   '-auto-approve',
+#   '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+#   '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#   '-var=researcher_workspace_name=${_WORKSPACE}',
+#   ]
+
+
+# #---- RESEARCHER PROJECTS
+
+# - id: "tf init - researcher workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/workspace'
+#   ]
+
+# - id: "tf workspace - researcher workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+
+# #--- Allow VPC SC time to propagate
+# - id: "vps-sc propagate- sleep"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         echo "waiting for VPC SC to propagate. Sleeping 60s..."
+#         sleep 60
+
+# - id: "tf apply destroy - researcher workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/workspace'
+#   args: [
+#     'destroy',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var=researcher_workspace_name=${_WORKSPACE}',
+#     '-auto-approve'
+#   ]
+
+# # ----- EGRESS PROJECT
+
+# - id: "tf init - researcher egress"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/egress'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/egress'
+#   ]
+
+# - id: "tf egress - researcher egress"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/egress'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+
+# - id: "tf destroy - researcher egress"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/deployments/researcher-projects/egress'
+#   args: [
+#     'destroy',
+#     '-var-file=../env/${_WORKSPACE}/globals.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/workspace/terraform.tfvars',
+#     '-var-file=../env/${_WORKSPACE}/egress/terraform.tfvars',
+#     '-auto-approve'
+#   ]
+
+
+# # --- VPC SC Foundation
+# # Remove researcher workspace service accounts from the access context.
+
+# - id: "vpc-sc foundation init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX_FOUNDATION}/$BRANCH_NAME/vpc-sc
+
+# - id: "vpc-sc foundation terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+
+# - id: "vpc-sc foundation apply"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/vpc-sc/'
+#   args: [
+#   'apply',
+#   '-target=module.access_level_service-accounts',
+#   '-auto-approve',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   ]
+
+# # ----
+# # Re-enable the org policy at the top folder level
+# - id: "folders apply - enable"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/folders'
+#   args: [
+#   'apply',
+#   '-var-file=env/${_TFVARS_FILE}.tfvars',
+#   '-target=module.vm_os_login',
+#   '-var=enforce=true',
+#   '-auto-approve'
+#   ]

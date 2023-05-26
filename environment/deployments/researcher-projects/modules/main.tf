@@ -60,6 +60,7 @@ module "workspace_project" {
   set_vm_os_login                   = var.set_vm_os_login
   set_disable_sa_create             = var.set_disable_sa_create
   num_instances                     = var.num_instances
+  golden_image_version              = var.golden_image_version
 
   depends_on = [
     module.egress_project

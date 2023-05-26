@@ -69,7 +69,6 @@ locals {
   suffix             = var.common_suffix != "" ? var.common_suffix : random_id.suffix.hex
   perimeter_name     = "rp_wrkspc_${var.common_name}_${local.suffix}"
   access_policy_name = "ac_wrkspc_${var.common_name}_${local.suffix}"
-  #access_levels      = flatten([var.additional_access_levels, [module.access_level_members.name]])
 }
 
 resource "random_id" "suffix" {
@@ -88,7 +87,6 @@ module "access_level_members" {
 
   ip_subnetworks = var.access_level_ip_subnetworks
   regions        = var.access_level_regions
-  #  required_access_levels = var.required_access_levels
 
   depends_on = [
     module.egress_project,

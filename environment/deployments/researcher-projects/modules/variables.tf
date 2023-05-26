@@ -285,7 +285,7 @@ variable "common_suffix" {
 variable "additional_access_levels" {
   description = "Additional access levels to add to the VPC perimeter"
   type        = list(string)
-  default     = ["allow-only-my-ip", "ac_dwh_data_enclave_446c2d89"]
+  default     = []
 }
 
 variable "combining_function" {

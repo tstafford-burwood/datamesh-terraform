@@ -32,7 +32,7 @@ module "workspace_1" {
   golden_image_version = ""
   imaging_bucket_name  = local.imaging_bucket
   imaging_project_id   = local.imaging_project_id
-  notebook_sa_email    = ""
+  notebook_sa_email    = "qa-sde-image-factory-a701"
   num_instances        = var.num_instances
   instance_name        = var.instance_name
 

@@ -13,7 +13,7 @@ variable "region" {
 variable "num_instances" {
   description = "Number of instances to create."
   type        = number
-  default     = 0
+  default     = 2
 }
 
 variable "instance_name" {

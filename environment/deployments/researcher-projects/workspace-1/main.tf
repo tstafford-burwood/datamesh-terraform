@@ -57,6 +57,7 @@ module "workspace_1" {
   members                          = distinct(flatten([var.data_stewards, var.external_users_vpc, var.project_admins, var.researchers]))
   access_level_ip_subnetworks      = ["66.226.105.145/32"]
   restricted_services              = ["bigquery.googleapis.com", "storage.googleapis.com"]
+  additional_access_levels         = ["ac_dwh_data_enclave_446c2d89", "ac_dwh_image_prj_446c2d89"]
 
   #egress_project_number             = ""
   #pubsub_appint_results            = "application-integration-trigger-results"

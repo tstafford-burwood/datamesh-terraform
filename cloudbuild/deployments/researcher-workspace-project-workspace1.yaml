@@ -33,23 +33,28 @@ steps:
     '-no-color'
     ]
 
-- id: "tf plan"
+- id: "tf plan - org pol off"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects/workspace-1'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform plan
+        terraform plan -var=set_disable_sa_create=false -input=false -out=plan.tfplan
 
-- id: "tf apply"
+- id: "tf apply - org pol off"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects/workspace-1'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform apply -auto-approve
+        terraform apply -auto-approve -input=false plan.tfplan
+
+artifacts:
+  objects:
+    location: 'gs://${_BUCKET}/${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/${BUILD_ID}'
+    paths: ['environment/deployments/researcher-projects/workspace-1/plan.tfplan']
 
 # #---- RESEARCHER PROJECTS WITH DAGS
 

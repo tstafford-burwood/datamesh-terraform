@@ -1,10 +1,10 @@
 module "workspace_1" {
   source = "../modules/"
 
-  access_policy_id        = local.parent_access_policy_id
-  admin_access_level_name = local.fdn_admins
-  billing_account         = local.billing_account_id
-  environment             = local.environment
+  access_policy_id = local.parent_access_policy_id
+  #admin_access_level_name = local.fdn_admins
+  billing_account = local.billing_account_id
+  environment     = local.environment
 
   org_id         = local.org_id
   folder_id      = local.srde_folder_id
@@ -32,9 +32,10 @@ module "workspace_1" {
   golden_image_version = var.golden_image_version
   imaging_bucket_name  = local.imaging_bucket
   imaging_project_id   = local.imaging_project_id
-  notebook_sa_email    = "qa-sde-image-factory-a701"
-  num_instances        = var.num_instances
-  instance_name        = var.instance_name
+  lbl_department       = var.lbl_department
+  #notebook_sa_email    = "qa-sde-image-factory-a701"
+  num_instances = var.num_instances
+  instance_name = var.instance_name
 
   research_to_bucket        = local.data_ops_bucket
   researcher_workspace_name = local.researcher_workspace_name
@@ -42,8 +43,8 @@ module "workspace_1" {
   serviceaccount_access_level_name = local.fdn_sa
   set_disable_sa_create            = var.set_disable_sa_create
   set_vm_os_login                  = var.set_vm_os_login
-  stewards_access_level_name       = local.fnd_stewards
-  vpc_connector                    = local.vpc_connector
+  #stewards_access_level_name       = local.fnd_stewards
+  vpc_connector = local.vpc_connector
 
 
   // IAM

@@ -10,6 +10,12 @@ variable "region" {
   default     = ""
 }
 
+variable "lbl_department" {
+  description = "Department. Used as part of the project name."
+  type        = string
+  default     = "pii"
+}
+
 variable "num_instances" {
   description = "Number of instances to create."
   type        = number

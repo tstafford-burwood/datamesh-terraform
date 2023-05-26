@@ -69,7 +69,7 @@ locals {
   suffix             = var.common_suffix != "" ? var.common_suffix : random_id.suffix.hex
   perimeter_name     = "rp_wrkspc_${var.common_name}_${local.suffix}"
   access_policy_name = "ac_wrkspc_${var.common_name}_${local.suffix}"
-  access_levels      = flatten(var.additional_access_levels, [module.access_level_members.name])
+  #access_levels      = flatten([var.additional_access_levels, [module.access_level_members.name]])
 }
 
 resource "random_id" "suffix" {
@@ -96,6 +96,14 @@ module "access_level_members" {
   ]
 }
 
+# data "google_project" "egress_project" {
+#   project_id = module.egress_project.project_id
+# }
+
+# data "google_project" "workspace_project" {
+#   project_id = module.workspace_project.project_id
+# }
+
 module "service_perimeter" {
   source  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
   version = "~> 5.0"
@@ -107,17 +115,20 @@ module "service_perimeter" {
   resources = [
     module.egress_project.project_number,
     module.workspace_project.project_number,
+    # "${data.google_project.egress_project.number}",
+    # "${data.google_project.workspace_project.number}",
   ]
 
+  resource_keys = ["egress", "workspace"]
+
   restricted_services = var.restricted_services
-  access_levels       = local.access_levels
+  access_levels       = flatten([var.additional_access_levels, [module.access_level_members.name]])
   ingress_policies    = var.ingress_policies
   egress_policies     = var.egress_policies
 
   depends_on = [
     module.egress_project,
     module.workspace_project,
-    module.access_level_members
   ]
 }
 

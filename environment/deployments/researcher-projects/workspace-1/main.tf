@@ -45,7 +45,7 @@ module "workspace_1" {
 
   // VPC Perimeter
   access_context_manager_policy_id = "428294780283"
-  common_name                      = local.researcher_workspace_name
+  common_name                      = replace(local.researcher_workspace_name, "-", "_")
   members                          = []
   access_level_ip_subnetworks      = ["66.226.105.145/32"]
   restricted_services              = ["bigquery.googleapis.com", "storage.googleapis.com"]

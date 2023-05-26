@@ -59,6 +59,7 @@ module "workspace_project" {
   data_lake_bucket_list_custom_role = var.data_lake_bucket_list_custom_role
   set_vm_os_login                   = var.set_vm_os_login
   set_disable_sa_create             = var.set_disable_sa_create
+  num_instances                     = var.num_instances
 
   depends_on = [
     module.egress_project

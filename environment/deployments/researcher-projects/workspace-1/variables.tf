@@ -10,6 +10,18 @@ variable "region" {
   default     = ""
 }
 
+variable "num_instances" {
+  description = "Number of instances to create."
+  type        = number
+  default     = 0
+}
+
+variable "instance_name" {
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
+  type        = string
+  default     = "deep-learning-vm"
+}
+
 variable "researcher_workspace_name" {
   description = "Variable represents the GCP folder NAME to place resource into and is used to separate tfstate. GCP Folder MUST pre-exist."
   type        = string

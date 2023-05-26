@@ -33,7 +33,8 @@ module "workspace_1" {
   imaging_bucket_name  = local.imaging_bucket
   imaging_project_id   = local.imaging_project_id
   notebook_sa_email    = ""
-  num_instances        = 0
+  num_instances        = var.num_instances
+  instance_name        = var.instance_name
 
   research_to_bucket        = local.data_lake_bucket
   researcher_workspace_name = local.researcher_workspace_name

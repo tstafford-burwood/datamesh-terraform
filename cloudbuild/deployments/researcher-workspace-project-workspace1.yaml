@@ -40,7 +40,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform plan -var=set_disable_sa_create=false -input=false -out=plan.tfplan
+        terraform plan -var=set_disable_sa_create=false -input=false
 
 - id: "tf apply - org pol off"
   name: hashicorp/terraform:${_TAG}
@@ -49,12 +49,12 @@ steps:
   args:
     - '-c'
     - |
-        terraform apply -auto-approve -input=false plan.tfplan
+        terraform apply -var=set_disable_sa_create=false -auto-approve -input=false
 
-artifacts:
-  objects:
-    location: 'gs://${_BUCKET}/${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/${BUILD_ID}'
-    paths: ['environment/deployments/researcher-projects/workspace-1/plan.tfplan']
+# artifacts:
+#   objects:
+#     location: 'gs://${_BUCKET}/${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/${BUILD_ID}'
+#     paths: ['environment/deployments/researcher-projects/workspace-1/plan.tfplan']
 
 # #---- RESEARCHER PROJECTS WITH DAGS
 

@@ -29,7 +29,7 @@ resource "time_sleep" "wait_60_seconds" {
     google_project_organization_policy.vm_os_login
   ]
 
-  create_duration = "180s"
+  create_duration = "300s"
 }
 
 resource "google_project_organization_policy" "trustedimage_project_policy" {

@@ -31,7 +31,7 @@ variable "set_disable_sa_create" {
 variable "researchers" {
   description = "The list of users who get their own managed notebook. Do not pre-append with `user`."
   type        = list(string)
-  default     = ["user:astrong@prorelativity.com"]
+  default     = []
 }
 
 variable "data_stewards" {

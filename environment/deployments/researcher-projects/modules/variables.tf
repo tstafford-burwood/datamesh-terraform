@@ -284,7 +284,7 @@ variable "common_suffix" {
 
 variable "additional_access_levels" {
   description = "Additional access levels to add to the VPC perimeter"
-  type        = list(object)
+  type        = list(string)
   default     = []
 }
 

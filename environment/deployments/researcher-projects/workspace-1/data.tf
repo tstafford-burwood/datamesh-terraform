@@ -127,9 +127,10 @@ locals {
   #workspace_project_id      = module.workspace_project.project_id
   researcher_workspace_name = lower(var.researcher_workspace_name)
 
-  imaging_project_id = data.terraform_remote_state.image_project.outputs.project_id
-  apt_repo_name      = data.terraform_remote_state.image_project.outputs.apt_repo_name
-  notebook_sa        = try(data.terraform_remote_state.notebook_sa.outputs.notebook_sa_email, "")
+  imaging_project_id     = data.terraform_remote_state.image_project.outputs.project_id
+  imaging_project_number = data.terraform_remote_state.image_project.outputs.project_number
+  apt_repo_name          = data.terraform_remote_state.image_project.outputs.apt_repo_name
+  notebook_sa            = try(data.terraform_remote_state.notebook_sa.outputs.notebook_sa_email, "")
   #egress                    = try(data.terraform_remote_state.egress_project.outputs.project_number, "")
   imaging_bucket       = data.terraform_remote_state.image_project.outputs.research_to_bucket
   vpc_connector        = data.terraform_remote_state.staging_project.outputs.vpc_access_connector_id[0]

@@ -59,6 +59,9 @@ module "workspace_1" {
   access_level_ip_subnetworks      = []
   restricted_services              = ["bigquery.googleapis.com", "storage.googleapis.com"]
 
+  bridge1_resources = [local.staging_project_number, local.data_lake]
+  bridge2_resources = [local.imaging_project_number]
+
 
   #egress_project_number             = ""
   #pubsub_appint_results            = "application-integration-trigger-results"

@@ -2,7 +2,7 @@ steps:
 
 - id: "tf init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -11,7 +11,7 @@ steps:
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -21,21 +21,21 @@ steps:
 
 - id: "tf fmt"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   args: ['fmt',
     '-check'
     ]
 
 - id: "tf validate"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   args: ['validate',
     '-no-color'
     ]
 
 - id: "tf plan - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -44,17 +44,35 @@ steps:
 
 - id: "tf apply - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
         terraform apply -var=set_disable_sa_create=false -auto-approve -input=false
 
+- id: "tf plan - org pol on"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform plan -input=false
+
+- id: "tf apply - org pol on"
+  name: hashicorp/terraform:${_TAG}
+  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  entrypoint: /bin/sh
+  args:
+    - '-c'
+    - |
+        terraform apply -auto-approve -input=false
+
 # artifacts:
 #   objects:
 #     location: 'gs://${_BUCKET}/${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}/${BUILD_ID}'
-#     paths: ['environment/deployments/researcher-projects/workspace-1/plan.tfplan']
+#     paths: ['environment/deployments/researcher-projects/${_WORKSPACE}/plan.tfplan']
 
 # #---- RESEARCHER PROJECTS WITH DAGS
 

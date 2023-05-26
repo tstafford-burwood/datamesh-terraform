@@ -65,14 +65,76 @@ module "workspace_project" {
   ]
 }
 
-# module "vpc_perimeter" {
-#   source = "./vpc-sc"
+locals {
+  suffix             = var.common_suffix != "" ? var.common_suffix : random_id.suffix.hex
+  perimeter_name     = "rp_wrkspc_${var.common_name}_${local.suffix}"
+  access_policy_name = "ac_wrkspc_${var.common_name}_${local.suffix}"
+  access_levels      = flatten(var.additional_access_levels, [module.access_level_members.name])
+}
 
-#   researcher_workspace_name = var.researcher_workspace_name
-#   external_users_vpc        = var.external_users_vpc
+resource "random_id" "suffix" {
+  byte_length = 4
+}
 
-#   depends_on = [ 
+module "access_level_members" {
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
+  version = "~> 5.0"
+
+  policy      = var.access_context_manager_policy_id
+  name        = local.access_policy_name
+  description = var.access_level_description
+
+  members = var.members
+
+  ip_subnetworks = var.access_level_ip_subnetworks
+  regions        = var.access_level_regions
+  #  required_access_levels = var.required_access_levels
+
+  depends_on = [
+    module.egress_project,
+    module.workspace_project
+  ]
+}
+
+module "service_perimeter" {
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
+  version = "~> 5.0"
+
+  policy         = var.access_context_manager_policy_id
+  perimeter_name = local.perimeter_name
+  description    = var.perimeter_description
+
+  resources = [
+    module.egress_project.project_number,
+    module.workspace_project.project_number,
+  ]
+
+  restricted_services = var.restricted_services
+  access_levels       = local.access_levels
+  ingress_policies    = var.ingress_policies
+  egress_policies     = var.egress_policies
+
+  depends_on = [
+    module.egress_project,
+    module.workspace_project,
+    module.access_level_members
+  ]
+}
+
+# module "bridge_vpc_perimeter" {
+#   source  = "terraform-google-modules/vpc-service-controls/google//modules/bridge_service_perimeter"
+#   version = "~> 5.0"
+
+#   policy         = var.access_context_manager_policy_id
+#   perimeter_name = var.bridge_perimeter_name
+#   description    = var.bridge_description
+#   resources      = var.resources
+
+#   depends_on = [
 #     module.egress_project,
-#     module.workspace
-#    ]
+#     module.workspace_project,
+#     module.access_level_members,
+#     module.service_perimeter
+#   ]
+
 # }

@@ -58,6 +58,7 @@ module "workspace_project" {
   lbl_department                    = var.lbl_department
   data_lake_bucket_list_custom_role = var.data_lake_bucket_list_custom_role
   set_vm_os_login                   = var.set_vm_os_login
+  set_disable_sa_create             = var.set_disable_sa_create
 
   depends_on = [
     module.egress_project

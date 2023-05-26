@@ -72,7 +72,7 @@ data "terraform_remote_state" "workspace_project" {
   workspace = terraform.workspace
   config = {
     bucket = module.constants.value.terraform_state_bucket
-    prefix = "deployments/${terraform.workspace}/researcher-projects/${each.value}/workspace"
+    prefix = "deployments/${terraform.workspace}/researcher-projects/${each.value}"
   }
 }
 

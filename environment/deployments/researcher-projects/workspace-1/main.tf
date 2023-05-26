@@ -52,7 +52,7 @@ module "workspace_1" {
   researchers        = var.researchers
 
   // VPC Perimeter
-  access_context_manager_policy_id = "428294780283"
+  access_context_manager_policy_id = local.parent_access_policy_id
   common_name                      = replace(local.researcher_workspace_name, "-", "_")
   members                          = distinct(flatten([var.data_stewards, var.external_users_vpc, var.project_admins, var.researchers]))
   access_level_ip_subnetworks      = ["66.226.105.145/32"]

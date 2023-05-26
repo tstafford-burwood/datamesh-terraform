@@ -36,7 +36,7 @@ module "workspace_1" {
   num_instances        = var.num_instances
   instance_name        = var.instance_name
 
-  research_to_bucket        = local.data_lake_bucket
+  research_to_bucket        = local.data_ops_bucket
   researcher_workspace_name = local.researcher_workspace_name
 
   serviceaccount_access_level_name = local.fdn_sa

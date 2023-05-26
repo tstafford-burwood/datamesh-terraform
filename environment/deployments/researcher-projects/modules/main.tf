@@ -67,8 +67,9 @@ module "workspace_project" {
 
 locals {
   suffix             = var.common_suffix != "" ? var.common_suffix : random_id.suffix.hex
-  perimeter_name     = "rp_wrkspc_${var.common_name}_${local.suffix}"
   access_policy_name = "ac_wrkspc_${var.common_name}_${local.suffix}"
+  perimeter_name     = "rp_wrkspc_${var.common_name}_${local.suffix}"
+  bridge_name        = ""
 }
 
 resource "random_id" "suffix" {
@@ -94,14 +95,6 @@ module "access_level_members" {
   ]
 }
 
-# data "google_project" "egress_project" {
-#   project_id = module.egress_project.project_id
-# }
-
-# data "google_project" "workspace_project" {
-#   project_id = module.workspace_project.project_id
-# }
-
 module "service_perimeter" {
   source  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
   version = "~> 5.0"
@@ -113,8 +106,6 @@ module "service_perimeter" {
   resources = [
     module.egress_project.project_number,
     module.workspace_project.project_number,
-    # "${data.google_project.egress_project.number}",
-    # "${data.google_project.workspace_project.number}",
   ]
 
   resource_keys = ["egress", "workspace"]
@@ -130,20 +121,38 @@ module "service_perimeter" {
   ]
 }
 
-# module "bridge_vpc_perimeter" {
-#   source  = "terraform-google-modules/vpc-service-controls/google//modules/bridge_service_perimeter"
-#   version = "~> 5.0"
+module "bridge_vpc_perimeter_1" {
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/bridge_service_perimeter"
+  version = "~> 5.0"
 
-#   policy         = var.access_context_manager_policy_id
-#   perimeter_name = var.bridge_perimeter_name
-#   description    = var.bridge_description
-#   resources      = var.resources
+  policy         = var.access_context_manager_policy_id
+  perimeter_name = vformat("%s_bridge_foundation_%s", var.environment, lower(replace(var.researcher_workspace_name, "-", "")))
+  description    = "Research bridge to Foundation. Terraform managed"
 
-#   depends_on = [
-#     module.egress_project,
-#     module.workspace_project,
-#     module.access_level_members,
-#     module.service_perimeter
-#   ]
+  resources = var.bridge1_resources
 
-# }
+  depends_on = [
+    module.egress_project,
+    module.workspace_project,
+    module.access_level_members,
+    module.service_perimeter
+  ]
+}
+
+module "bridge_vpc_perimeter_2" {
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/bridge_service_perimeter"
+  version = "~> 5.0"
+
+  policy         = var.access_context_manager_policy_id
+  perimeter_name = vformat("%s_bridge_image_prj_%s", var.environment, lower(replace(var.researcher_workspace_name, "-", "")))
+  description    = "Research bridge to Imaging Project. Terraform managed"
+
+  resources = var.bridge2_resources
+
+  depends_on = [
+    module.egress_project,
+    module.workspace_project,
+    module.access_level_members,
+    module.service_perimeter
+  ]
+}

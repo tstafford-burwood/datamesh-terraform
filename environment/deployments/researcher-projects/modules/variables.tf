@@ -336,10 +336,15 @@ variable "access_level_regions" {
 #   type        = string
 # }
 
-# variable "resources" {
-#   description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
-#   type        = list(string)
-# }
+variable "bridge1_resources" {
+  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
+  type        = list(string)
+}
+
+variable "bridge2_resources" {
+  description = "A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed."
+  type        = list(string)
+}
 
 // PERIMETER
 

@@ -24,7 +24,7 @@ resource "google_project_iam_member" "data_ingress_steward" {
   for_each = toset(concat(var.data_stewards))
 
   project = local.data_ingress_id
-  role    = "projects/${local.data_ingress_id}/roles/sreCustomRoleStorageBucketsList"
+  role    = "projects/${local.data_ingress}/roles/sreCustomRoleStorageBucketsList"
   member  = each.value
 }
 

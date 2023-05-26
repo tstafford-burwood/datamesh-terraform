@@ -70,7 +70,10 @@ module "workspace_1" {
       "operations" = {
         "artifactregistry.googleapis.com" = {
           "methods" = ["*"]
-        }
+        },
+        "storage.googleapis.com" = {
+          "methods" = ["*"]
+        },
       }
     }
   }, ]

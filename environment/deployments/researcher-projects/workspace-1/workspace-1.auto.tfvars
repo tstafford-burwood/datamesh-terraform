@@ -9,7 +9,6 @@ environment = {
   northwestern-prep-1 = "qa"
 }
 
-folder_id = "folders/410033687827"
 
 #tf_state_bucket = "terraform-state-45b286c14bde108f"
 

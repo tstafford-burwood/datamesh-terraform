@@ -25,7 +25,7 @@ variable "instance_name" {
 variable "golden_image_version" {
   description = "Retrieves the specific custom image version from the image project."
   type        = string
-  default     = ""
+  default     = "qa-sde-image-factory-a701"
 }
 
 variable "researcher_workspace_name" {
@@ -55,7 +55,7 @@ variable "researchers" {
 variable "data_stewards" {
   description = "List of or users of data stewards for this research initiative. Grants access to initiative bucket in `data-ingress`, `data-ops`. Prefix with `user:foo@bar.com`. DO NOT INCLUDE GROUPS, breaks the VPC Perimeter."
   type        = list(string)
-  default     = []
+  default     = ["user:sde@prorelativity.com", ]
 }
 
 variable "external_users_vpc" {

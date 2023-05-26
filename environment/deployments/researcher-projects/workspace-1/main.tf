@@ -43,6 +43,13 @@ module "workspace_1" {
   vpc_connector                     = local.vpc_connector
   wrkspc_folders                    = local.wrkspc_folders
 
+  // VPC Perimeter
+  access_context_manager_policy_id = "428294780283"
+  common_name                      = local.researcher_workspace_name
+  members                          = []
+  access_level_ip_subnetworks      = ["66.226.105.145/32"]
+  restricted_services              = ["bigquery.googleapis.com", "storage.googleapis.com"]
+
   #egress_project_number             = ""
   #pubsub_appint_results            = "application-integration-trigger-results"
   #prefix                           = "test"

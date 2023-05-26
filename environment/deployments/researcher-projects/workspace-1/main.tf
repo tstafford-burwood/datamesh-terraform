@@ -29,7 +29,7 @@ module "workspace_1" {
   enforce                           = true
 
   force_destroy        = true
-  golden_image_version = golden_image_version
+  golden_image_version = var.golden_image_version
   imaging_bucket_name  = local.imaging_bucket
   imaging_project_id   = local.imaging_project_id
   notebook_sa_email    = "qa-sde-image-factory-a701"

@@ -6,4 +6,4 @@ parent_folder              = "684808102738"                                # Opt
 
 git_repo_url = "https://github.com/Burwood/terraform-gcp-sde"
 git_path     = "cloudbuild/foundation/cloudbuild-sde-apply.yaml"
-git_ref      = "refs/heads/main" # What ref should be built by the Cloud Build trigger.
+git_ref      = "refs/heads/northwestern-prep-1" # What ref should be built by the Cloud Build trigger.

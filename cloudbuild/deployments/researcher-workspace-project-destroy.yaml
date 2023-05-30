@@ -7,7 +7,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/
+        terraform init -backend-config=bucket=${_BUCKET} -backend-config=prefix=${_PREFIX}/$BRANCH_NAME/researcher-projects/${_WORKSPACE}
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
@@ -18,7 +18,7 @@ steps:
     - |
         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-- id: "tf plan - org pol off"
+- id: "tf plan destroy - org pol off"
   name: hashicorp/terraform:${_TAG}
   dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh

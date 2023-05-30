@@ -120,12 +120,11 @@ locals {
   data_lake_bucket      = data.terraform_remote_state.datalake_project.outputs.research_to_bucket
   data_lake_custom_role = data.terraform_remote_state.datalake_project.outputs.bucket_list_custom_role_name
 
-  // Imaging project
+  // Imaging
   imaging_project_id     = data.terraform_remote_state.image_project.outputs.project_id
   imaging_project_number = data.terraform_remote_state.image_project.outputs.project_number
   apt_repo_name          = data.terraform_remote_state.image_project.outputs.apt_repo_name
   imaging_bucket         = data.terraform_remote_state.image_project.outputs.research_to_bucket
-
 
   // VPC Service Controls
   parent_access_policy_id = try(data.terraform_remote_state.vpc_sc.outputs.parent_access_policy_id, "")

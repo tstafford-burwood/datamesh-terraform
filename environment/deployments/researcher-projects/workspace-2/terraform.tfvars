@@ -1,5 +1,5 @@
 
-data_stewards             = []
+data_stewards             = ["user:packeradmin@prorelativity.com"]
 external_users_vpc        = []
 lbl_department            = "pci"
 project_admins            = []

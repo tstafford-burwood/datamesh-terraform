@@ -2,8 +2,6 @@ module "workspace_1" {
   source = "../modules/"
 
   // Globals
-
-
   billing_account            = local.billing_account_id
   environment                = local.environment
   org_id                     = local.org_id

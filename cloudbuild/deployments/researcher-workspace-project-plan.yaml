@@ -24,7 +24,7 @@ steps:
 
 - id: "tf init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects/'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -42,26 +42,26 @@ steps:
 
 - id: "tf fmt"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects/'
   args: ['fmt',
     '-check'
     ]
 
 - id: "tf validate"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects/'
   args: ['validate',
     '-no-color'
     ]
 
 - id: "tf plan - org pol on"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform plan -input=false
+        terraform plan -var=set_disable_sa_create=false -var-file=env//${_WORKSPACE}.auto.tfvars -input=false
 
 # #---- RESEARCHER PROJECTS WITH DAGS
 

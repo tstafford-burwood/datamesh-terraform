@@ -1,5 +1,5 @@
 module "workspace_1" {
-  source = "../../../modules/researcher-workspaces"
+  source = "../../../modules/researcher_workspaces"
 
   // Globals
   billing_account            = local.billing_account_id

@@ -2,7 +2,7 @@ steps:
 
 - id: "tf init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -12,7 +12,7 @@ steps:
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -22,39 +22,39 @@ steps:
 
 - id: "tf fmt"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   args: ['fmt',
     '-check'
     ]
 
 - id: "tf validate"
   name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   args: ['validate',
     '-no-color'
     ]
 
 - id: "tf plan - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform plan -var=set_disable_sa_create=false -input=false
+        terraform plan -var=set_disable_sa_create=false -var-file=env//${_WORKSPACE}.auto.tfvars -input=false
 
 - id: "tf apply - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
     - |
-        terraform apply -var=set_disable_sa_create=false -auto-approve -input=false
+        terraform apply -var=set_disable_sa_create=false -var-file=env//${_WORKSPACE}.auto.tfvars -auto-approve -input=false
 
 - id: "tf plan - org pol on"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -63,7 +63,7 @@ steps:
 
 - id: "tf apply - org pol on"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/${_WORKSPACE}'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'

@@ -15,7 +15,8 @@ locals {
 
   restricted_services = distinct(concat(local.base_restricted_services))
 
-  perimeter_members_data_stewards = length(local.acclvl_stewards) > 0 ? {
+  #perimeter_members_data_stewards = length(local.acclvl_stewards) > 0 ? {
+  perimeter_members_data_stewards = {
     "from" = {
       "sources" = {
         access_levels = [local.acclvl_stewards]
@@ -30,7 +31,7 @@ locals {
         },
       }
     }
-  } : {}
+  }
 }
 
 resource "random_id" "suffix" {

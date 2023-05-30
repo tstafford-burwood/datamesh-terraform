@@ -1,5 +1,5 @@
 
-data_stewards             = [""]
+data_stewards             = []
 external_users_vpc        = []
 lbl_department            = "pci"
 project_admins            = []

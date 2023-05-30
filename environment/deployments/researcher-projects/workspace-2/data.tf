@@ -129,9 +129,8 @@ locals {
 
   // VPC Service Controls
   parent_access_policy_id = try(data.terraform_remote_state.vpc_sc.outputs.parent_access_policy_id, "")
-  fdn_sa                  = try(data.terraform_remote_state.vpc_sc.outputs.serviceaccount_access_level_name, "") # foundation service accounts
-  #fdn_admins              = try(data.terraform_remote_state.vpc_sc.outputs.admin_access_level_name, "")
-  #fnd_stewards            = try(data.terraform_remote_state.vpc_sc.outputs.stewards_access_level_name, "")
+  fdn_sa                  = try(data.terraform_remote_state.vpc_sc.outputs.serviceaccount_access_level_name, "")           # foundation service accounts
+  fdn_image               = try(data.terraform_remote_state.vpc_sc.outputs.image_prj_serviceaccount_access_level_name, "") # image project service accounts
 
   # Read the list of folders and create a dag per researcher initiative
   wrkspc_folders  = data.terraform_remote_state.folders.outputs.ids

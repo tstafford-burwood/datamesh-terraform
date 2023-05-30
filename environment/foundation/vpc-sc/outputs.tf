@@ -12,6 +12,12 @@ output "serviceaccount_access_level_name" {
   #value       = module.access_level_service-accounts.name
 }
 
+output "image_prj_serviceaccount_access_level_name" {
+  # tfoc:output:consumers egress, workspace
+  description = "Name of the Access Level to access the imaging project perimeter"
+  value       = module.secure_imaging.name
+}
+
 # output "foundation_perimeter_name" {
 #   # tfdoc:output:consumers egress, workspaces
 #   description = "The perimeter's name."

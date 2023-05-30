@@ -18,7 +18,7 @@ variable "ip_subnetworks_stewards" {
 variable "perimeter_additional_members" {
   description = "The list additional members to be added on perimeter access. Prefix user: (user:email@email.com) or serviceAccount: (serviceAccount:my-service-account@email.com) is required."
   type        = list(string)
-  default     = ["user:sde@prorelativity.com"]
+  default     = []
 }
 
 variable "additional_restricted_services" {

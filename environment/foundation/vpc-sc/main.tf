@@ -30,7 +30,7 @@ locals {
         },
       }
     }
-  } : null
+  } : {}
 }
 
 resource "random_id" "suffix" {

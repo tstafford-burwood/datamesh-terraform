@@ -56,6 +56,10 @@ output "data_stewards" {
   value       = var.data_stewards
 }
 
+output "researchers" {
+  value = var.researchers
+}
+
 # output "data_stewards_vpc" {
 #   # tfdoc:output:consumers foundation/vpc-sc
 #   description = "List of individual data stewards to be added to VPC Service Control perimeter."

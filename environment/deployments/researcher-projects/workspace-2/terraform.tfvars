@@ -4,6 +4,6 @@ external_users_vpc        = []
 lbl_department            = "pci"
 project_admins            = []
 researcher_workspace_name = "workspace-2"
-researchers               = ["user:packeradmin@prorelativity.com"]
+researchers               = []
 
-num_instances = 2
+num_instances = 0

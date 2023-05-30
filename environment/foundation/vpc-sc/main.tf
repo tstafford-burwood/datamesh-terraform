@@ -16,22 +16,24 @@ locals {
   restricted_services = distinct(concat(local.base_restricted_services))
 
   #perimeter_members_data_stewards = length(local.acclvl_stewards) > 0 ? {
-  perimeter_members_data_stewards = {
-    "from" = {
-      "sources" = {
-        access_levels = [local.acclvl_stewards]
+  perimeter_members_data_stewards = <<-EOT
+{
+  "from" = {
+    "sources" = {
+      access_levels = [local.acclvl_stewards]
+    },
+    "identity_type" = "ANY_USER_ACCOUNT"
+  }
+  "to" = {
+    "resources" = [local.data_ingress, local.data_ops, local.data_lake]
+    "operations" = {
+      "storage.googleapis.com" = {
+        "methods" = ["*"]
       },
-      "identity_type" = "ANY_USER_ACCOUNT"
-    }
-    "to" = {
-      "resources" = [local.data_ingress, local.data_ops, local.data_lake]
-      "operations" = {
-        "storage.googleapis.com" = {
-          "methods" = ["*"]
-        },
-      }
     }
   }
+}
+EOT
 }
 
 resource "random_id" "suffix" {

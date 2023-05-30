@@ -23,6 +23,11 @@ output "external_gcs_egress_bucket" {
 }
 
 # WORKSPACE
+output "data_stewards" {
+  # tfdoc:output:consumers foundation/vpc-sc
+  description = "List of data stewards"
+  value       = module.workspace_1.data_stewards
+}
 
 
 output "workspace_1_id" {

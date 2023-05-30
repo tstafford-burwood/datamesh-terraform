@@ -41,7 +41,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform plan -var=set_disable_sa_create=false -var-file=env//${_WORKSPACE}.auto.tfvars -input=false
+        terraform plan -var=set_disable_sa_create=false -var-file=env/${_WORKSPACE}.auto.tfvars -input=false
 
 - id: "tf apply - org pol off"
   name: hashicorp/terraform:${_TAG}
@@ -50,7 +50,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform apply -var=set_disable_sa_create=false -var-file=env//${_WORKSPACE}.auto.tfvars -auto-approve -input=false
+        terraform apply -var=set_disable_sa_create=false -var-file=env/${_WORKSPACE}.auto.tfvars -auto-approve -input=false
 
 - id: "tf plan - org pol on"
   name: hashicorp/terraform:${_TAG}
@@ -59,7 +59,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform plan -input=false
+        terraform plan  -var-file=env/${_WORKSPACE}.auto.tfvars -input=false 
 
 - id: "tf apply - org pol on"
   name: hashicorp/terraform:${_TAG}
@@ -68,7 +68,7 @@ steps:
   args:
     - '-c'
     - |
-        terraform apply -auto-approve -input=false
+        terraform apply -var-file=env/${_WORKSPACE}.auto.tfvars -auto-approve -input=false
 
 # --- VPC SC Foundation
 # Add researcher workspace service accounts (notebooks) to the access context.

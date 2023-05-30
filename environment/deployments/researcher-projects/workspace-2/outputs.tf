@@ -22,11 +22,23 @@ output "external_gcs_egress_bucket" {
   value       = module.workspace_1.external_gcs_egress_bucket
 }
 
+output "external_users" {
+  # tfdoc:output:consumers foundation/vpc-sc
+  description = "List of individual external user ids to be added to the VPC Service Control Perimeter. Each account must be prefixed as `user:foo@bar.com`. Groups are not allowed to a VPC SC."
+  value       = module.workspace_1.external_users_vpc
+}
+
+
 # WORKSPACE
 output "data_stewards" {
   # tfdoc:output:consumers foundation/vpc-sc
   description = "List of data stewards"
   value       = module.workspace_1.data_stewards
+}
+
+output "researchers" {
+  description = "List of researchers"
+  value       = module.workspace_1.researchers
 }
 
 

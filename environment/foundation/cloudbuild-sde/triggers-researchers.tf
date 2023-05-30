@@ -31,10 +31,7 @@ resource "google_cloudbuild_trigger" "researcher_apply_triggers" {
   disabled = var.plan_trigger_disabled
   filename = format("%s-apply.yaml", "cloudbuild/deployments/researcher-workspace-project")
   included_files = [
-    format("environment/deployments/researcher-projects/env/%s/egress/%s.tfvars", each.value, local.included_files),
-    format("environment/deployments/researcher-projects/env/%s/workspace/%s.tfvars", each.value, local.included_files),
-    format("environment/deployments/researcher-projects/env/%s/vpc-sc/%s.tfvars", each.value, local.included_files),
-    format("environment/deployments/researcher-projects/env/%s/globals.tfvars", each.value)
+    format("environment/deployments/researcher-projects/env/%s.auto.tfvars", each.value),
   ]
 
   github {

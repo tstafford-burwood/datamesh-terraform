@@ -112,10 +112,31 @@ module "service_perimeter" {
 
   resource_keys = ["egress", "workspace"]
 
-  restricted_services = var.restricted_services
-  access_levels       = flatten([var.additional_access_levels, [module.access_level_members.name]])
-  ingress_policies    = var.ingress_policies
-  egress_policies     = var.egress_policies
+  #restricted_services = var.restricted_services
+  restricted_services = [
+    "storage.googleapis.com",
+    "run.googleapis.com",
+    "bigquery.googleapis.com",
+    "bigtable.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "aiplatform.googleapis.com",
+    "sqladmin.googleapis.com",
+    "pubsub.googleapis.com",
+    "container.googleapis.com",
+    "artifactregistry.googleapis.com"
+  ]
+  vpc_accessible_services = [
+    "notebooks.googleapis.com",
+    "compute.googleapis.com",
+    "storage.googleapis.com",
+    "artifactregistry.googleapis.com",
+    "logging.googleapis.com",
+    "monitoring.googleapis.com"
+  ]
+
+  access_levels    = flatten([var.additional_access_levels, [module.access_level_members.name]])
+  ingress_policies = var.ingress_policies
+  egress_policies  = var.egress_policies
 
   depends_on = [
     module.egress_project,

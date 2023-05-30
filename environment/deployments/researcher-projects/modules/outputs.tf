@@ -94,6 +94,10 @@ output "data_stewards" {
   value       = module.workspace_project.data_stewards
 }
 
+output "researchers" {
+  value = module.workspace_project.researchers
+}
+
 # # output "data_stewards_vpc" {
 # #   # tfdoc:output:consumers foundation/vpc-sc
 # #   description = "List of individual data stewards to be added to VPC Service Control perimeter."

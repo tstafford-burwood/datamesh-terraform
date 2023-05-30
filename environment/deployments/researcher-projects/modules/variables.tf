@@ -81,11 +81,6 @@ variable "wrkspc_folders" {
   # }  
 }
 
-# variable "tf_state_bucket" {
-#   description = "Bucket that holds terraform state"
-#   type        = string
-# }
-
 variable "enforce" {
   description = "Whether this policy is enforce."
   type        = bool
@@ -109,10 +104,6 @@ variable "external_users_vpc" {
   type        = list(string)
   default     = []
 }
-
-#--------------------------------------
-# PROJECT LABELS, if any
-#--------------------------------------
 
 variable "lbl_department" {
   description = "Department. Used as part of the project name."
@@ -145,10 +136,6 @@ variable "apt_repo_name" {
   type        = string
   default     = "apt-repo"
 }
-
-# variable "egress_project_number" {
-#   type = string
-# }
 
 variable "data_ingress_project_id" {
   type = string
@@ -236,7 +223,6 @@ variable "force_destroy" {
   default = true
 }
 
-
 variable "researchers" {
   description = "The list of users who get their own managed notebook. Do not pre-append with `user`."
   type        = list(string)
@@ -277,11 +263,6 @@ variable "common_suffix" {
 
 // ACCESS LEVELS
 
-# variable "access_level_name" {
-#   description = "Description of the AccessLevel and its use. Does not affect behavior."
-#   type        = string
-# }
-
 variable "additional_access_levels" {
   description = "Additional access levels to add to the VPC perimeter"
   type        = list(string)
@@ -305,12 +286,6 @@ variable "access_level_ip_subnetworks" {
   type        = list(string)
   default     = []
 }
-
-# variable "required_access_levels" {
-#   description = "Condition - A list of other access levels defined in the same Policy, referenced by resource name. Referencing an AccessLevel which does not exist is an error. All access levels listed must be granted for the Condition to be true."
-#   type        = list(string)
-#   default     = []
-# }
 
 variable "members" {
   description = "Condition - An allowed list of members (users, service accounts). The signed-in identity originating the request must be a part of one of the provided members. If not specified, a request may come from any user (logged in/not logged in, etc.). Formats: user:{emailid}, serviceAccount:{emailid}"
@@ -344,11 +319,6 @@ variable "perimeter_description" {
   default     = "Perimeter for secure workspace projects. Managed by Terraform."
 }
 
-# variable "perimeter_name" {
-#   description = "Name of the perimeter. Should be one unified string. Must only be letters, numbers and underscores"
-#   type        = string
-# }
-
 variable "restricted_services" {
   description = "GCP services that are subject to the Service Perimeter restrictions. Must contain a list of services. For example, if storage.googleapis.com is specified, access to the storage buckets inside the perimeter must meet the perimeter's access restrictions."
   type        = list(string)
@@ -360,9 +330,6 @@ variable "perimeter_resources" {
   type        = list(string)
   default     = []
 }
-
-#----
-
 
 variable "access_levels" {
   description = "A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. Example: 'accessPolicies/MY_POLICY/accessLevels/MY_LEVEL'. For Service Perimeter Bridge, must be empty."

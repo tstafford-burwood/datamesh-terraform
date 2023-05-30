@@ -2,7 +2,7 @@ steps:
 
 - id: "tf init"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -11,7 +11,7 @@ steps:
 
 - id: "terraform workspace"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -20,7 +20,7 @@ steps:
 
 - id: "tf plan - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'
@@ -29,7 +29,7 @@ steps:
 
 - id: "tf destroy - org pol off"
   name: hashicorp/terraform:${_TAG}
-  dir: 'environment/deployments/researcher-projects/workspace-1'
+  dir: 'environment/deployments/researcher-projects'
   entrypoint: /bin/sh
   args:
     - '-c'

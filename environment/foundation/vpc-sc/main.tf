@@ -14,6 +14,23 @@ locals {
   ]
 
   restricted_services = distinct(concat(local.base_restricted_services))
+
+  perimeter_members_data_stewards = length(local.acclvl_stewards) > 0 ? {
+    "from" = {
+      "sources" = {
+        access_levels = [local.acclvl_stewards]
+      },
+      "identity_type" = "ANY_USER_ACCOUNT"
+    }
+    "to" = {
+      "resources" = [local.data_ingress, local.data_ops, local.data_lake]
+      "operations" = {
+        "storage.googleapis.com" = {
+          "methods" = ["*"]
+        },
+      }
+    }
+  } : null
 }
 
 resource "random_id" "suffix" {
@@ -57,6 +74,7 @@ module "secure_imaging" {
         }
       }
     },
+    local.perimeter_members_data_stewards
   ]
 }
 

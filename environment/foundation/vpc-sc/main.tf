@@ -6,7 +6,7 @@ locals {
     "serviceAccount:${local.data_ops}@cloudbuild.gserviceaccount.com",
     "serviceAccount:service-${local.data_ops}@gcf-admin-robot.iam.gserviceaccount.com",
     "serviceAccount:${local.image_project_sa}",
-  ], var.perimeter_additional_members, local.acclvl_sa))
+  ], var.perimeter_additional_members, local.acclvl_sa, local.acclvl_stewards))
 
   base_restricted_services = [
     "bigquery.googleapis.com",
@@ -14,26 +14,6 @@ locals {
   ]
 
   restricted_services = distinct(concat(local.base_restricted_services))
-
-  #perimeter_members_data_stewards = length(local.acclvl_stewards) > 0 ? {
-  perimeter_members_data_stewards = <<-EOT
-{
-  "from" = {
-    "sources" = {
-      access_levels = [local.acclvl_stewards]
-    },
-    "identity_type" = "ANY_USER_ACCOUNT"
-  }
-  "to" = {
-    "resources" = [local.data_ingress, local.data_ops, local.data_lake]
-    "operations" = {
-      "storage.googleapis.com" = {
-        "methods" = ["*"]
-      },
-    }
-  }
-}
-EOT
 }
 
 resource "random_id" "suffix" {
@@ -77,7 +57,6 @@ module "secure_imaging" {
         }
       }
     },
-    local.perimeter_members_data_stewards
   ]
 }
 

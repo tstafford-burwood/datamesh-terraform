@@ -55,9 +55,7 @@ The resources that this module will create are:
 | name | description | type | required | default | producer |
 |---|---|:---:|:---:|:---:|:---:|
 | [enforce](variables.tf#L5) | Whether this policy is enforce. | <code>bool</code> |  | <code>true</code> |  |
-| [force_destroy](variables.tf#L63) | To allow terraform to destroy the bucket even if there are objects in it. | <code>bool</code> |  | <code>true</code> |  |
-| [lbl_cloudprojectid](variables.tf#L53) | CPID that refers to a CMDB with detailed contact info | <code>number</code> |  | <code>111222</code> |  |
-| [lbl_dataclassification](variables.tf#L48) | Data sensitivity | <code>string</code> |  | <code>&#34;HIPAA&#34;</code> |  |
+| [force_destroy](variables.tf#L53) | To allow terraform to destroy the bucket even if there are objects in it. | <code>bool</code> |  | <code>true</code> |  |
 | [project_iam_admins_list](variables.tf#L15) | The IAM role(s) to assign to the member at the defined project. | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;storage.admin&#34;,&#10;  &#34;roles&#47;bigquery.admin&#34;,&#10;&#93;">&#91;&#8230;&#93;</code> |  |
 | [stewards_project_iam_roles](variables.tf#L25) | The IAM role(s) to assign to the member at the defined project. | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;browser&#34;, &#35; Read access to browse hiearchy for the project&#10;  &#34;roles&#47;storage.objectViewer&#34;,&#10;  &#34;roles&#47;bigquery.dataViewer&#34;,&#10;  &#34;roles&#47;bigquery.filteredDataViewer&#34;,&#10;  &#34;roles&#47;bigquery.metadataViewer&#34;,&#10;  &#34;roles&#47;bigquery.resourceViewer&#34;,&#10;&#93;">&#91;&#8230;&#93;</code> |  |
 

@@ -9,7 +9,7 @@ locals {
     billing_account_id         = "01EF01-627C10-7CD2DF"             
     cloudbuild_service_account = "213453898789@cloudbuild.gserviceaccount.com" # Cloud Build
     org_id                     = "575228741867"
-    sde_folder_id              = "684808102738"
+    sde_folder_id              = "235621106107"
     terraform_state_bucket     = "terraform-state-ba1e86bdae503212"
 
     // USERS & GROUPS TO ASSIGN TO THE FOUNDATION PROJECTS

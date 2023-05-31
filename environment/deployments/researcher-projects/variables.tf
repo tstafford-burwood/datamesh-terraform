@@ -13,7 +13,7 @@ variable "region" {
 variable "lbl_department" {
   description = "Department. Used as part of the project name."
   type        = string
-  default     = "pci"
+  default     = "pii"
 }
 
 variable "num_instances" {
@@ -31,13 +31,13 @@ variable "instance_name" {
 variable "golden_image_version" {
   description = "Retrieves the specific custom image version from the image project."
   type        = string
-  default     = "packer-data-science-e88b3e3"
+  default     = ""
 }
 
 variable "researcher_workspace_name" {
   description = "Variable represents the GCP folder NAME to place resource into and is used to separate tfstate. GCP Folder MUST pre-exist."
   type        = string
-  default     = "workspace-2"
+  default     = "workspace-1"
 }
 
 variable "set_vm_os_login" {
@@ -55,7 +55,7 @@ variable "set_disable_sa_create" {
 variable "researchers" {
   description = "The list of users who get their own managed notebook. Do not pre-append with `user`."
   type        = list(string)
-  default     = ["user:astrong@prorelativity.com"]
+  default     = []
 }
 
 variable "data_stewards" {

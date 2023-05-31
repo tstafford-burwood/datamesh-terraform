@@ -29,8 +29,6 @@ module "private_access" {
   # Managed notebooks need a private access VPC connection between this project and a Google project
   source = "../../private_access"
 
-  count = var.deploy_notebook ? 1 : 0
-
   project_id    = module.workspace_project.project_id
   vpc_network   = module.workspace_vpc.network_name
   address       = "10.148.224.0"

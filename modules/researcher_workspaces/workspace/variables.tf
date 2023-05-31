@@ -252,9 +252,6 @@ variable "golden_image_version" {
   default     = ""
 }
 
-#--------------------------------------
-# PROJECT LABELS
-#--------------------------------------
 variable "lbl_department" {
   description = "labels."
   type        = string
@@ -271,12 +268,16 @@ variable "snapshot_days_in_cycle" {
   description = "Snapshot cycle days."
   type        = number
   default     = "1"
-
 }
 
 variable "snapshot_start_time" {
   description = "snapshot start time."
   type        = string
   default     = "04:00"
+}
 
+variable "deploy_notebook" {
+  description = "deploys vertex ai notebook in the workspace"
+  type        = bool
+  default     = false
 }

@@ -13,6 +13,8 @@ module "managed_notebooks" {
   # Each trusted scientist will get their own notebook
   source = "../../notebooks_managed"
 
+  count = var.deploy_notebook ? 1 : 0
+
   project               = module.workspace_project.project_id
   region                = local.region
   network               = module.workspace_vpc.network_name
@@ -26,6 +28,8 @@ module "managed_notebooks" {
 module "private_access" {
   # Managed notebooks need a private access VPC connection between this project and a Google project
   source = "../../private_access"
+
+  count = var.deploy_notebook ? 1 : 0
 
   project_id    = module.workspace_project.project_id
   vpc_network   = module.workspace_vpc.network_name
@@ -54,5 +58,5 @@ module "private_access" {
 
 output "managed_notebook_proxy_uri" {
   description = "Managed notebook proxy uri"
-  value       = module.managed_notebooks.proxy_uri
+  value       = var.deploy_notebook ? module.managed_notebooks[0].proxy_uri : null
 }

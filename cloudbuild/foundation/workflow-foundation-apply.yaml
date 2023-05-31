@@ -244,60 +244,60 @@ steps:
 # --- Composer
 
 
-# CLOUD COMPOSER WITH DAGS
+# # CLOUD COMPOSER WITH DAGS
 
-- id: "composer init"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-  'init',
-  '-backend-config=bucket=${_BUCKET}',
-  '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloud-composer'
-  ]
+# - id: "composer init"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#   'init',
+#   '-backend-config=bucket=${_BUCKET}',
+#   '-backend-config=prefix=${_PREFIX}/$BRANCH_NAME/cloud-composer'
+#   ]
 
-- id: "composer - terraform workspace"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
+# - id: "composer - terraform workspace"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         terraform workspace select $BRANCH_NAME || terraform workspace new $BRANCH_NAME
 
-- id: composer - Terraform Format
-  name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: ['fmt',
-    '-check'
-    ]
+# - id: composer - Terraform Format
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: ['fmt',
+#     '-check'
+#     ]
 
-- id: composer - terraform Validate
-  name: 'hashicorp/terraform:${_TAG}'
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: ['validate',
-    '-no-color'
-    ]
+# - id: composer - terraform Validate
+#   name: 'hashicorp/terraform:${_TAG}'
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: ['validate',
+#     '-no-color'
+#     ]
 
-# First build step: disable any org policies
-# Certain Org Policies cannot be enabled when creating Cloud Composer
-- id: "composer - tf plan - disable project org policies"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-    'plan',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=enforce=false'
-  ]
+# # First build step: disable any org policies
+# # Certain Org Policies cannot be enabled when creating Cloud Composer
+# - id: "composer - tf plan - disable project org policies"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#     'plan',
+#     '-var-file=env/${_TFVARS_FILE}.tfvars',
+#     '-var=enforce=false'
+#   ]
 
-- id: "composer - tf apply - disable project org policies"
-  name: hashicorp/terraform:${_TAG}
-  dir: 'environment/foundation/data-ops/cloud-composer'
-  args: [
-    'apply',
-    '-var-file=env/${_TFVARS_FILE}.tfvars',
-    '-var=enforce=false',
-    '-auto-approve'
-  ]
+# - id: "composer - tf apply - disable project org policies"
+#   name: hashicorp/terraform:${_TAG}
+#   dir: 'environment/foundation/data-ops/cloud-composer'
+#   args: [
+#     'apply',
+#     '-var-file=env/${_TFVARS_FILE}.tfvars',
+#     '-var=enforce=false',
+#     '-auto-approve'
+#   ]
 
 # ---- [START] READ Data-Ops TFSTATE file
 - id: "data-ops read project - init"

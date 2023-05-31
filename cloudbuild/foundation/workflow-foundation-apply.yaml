@@ -360,15 +360,15 @@ steps:
         echo "dag bucket is $(cat /workspace/dag_bucket.txt)"
 
 
-- id: "Enable Audit Logging on DAG bucket"
-  name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
-  entrypoint: /bin/sh
-  args:
-    - '-c'
-    - |
-        echo "gsutil logging set on -b gs://$(cat /workspace/logging_bucket.txt) $(cat /workspace/dag_bucket.txt)"
-        gsutil logging set on -b gs://$(cat /workspace/logging_bucket.txt) $(cat /workspace/dag_bucket.txt)
-        gsutil logging get $(cat /workspace/dag_bucket.txt)
+# - id: "Enable Audit Logging on DAG bucket"
+#   name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+#   entrypoint: /bin/sh
+#   args:
+#     - '-c'
+#     - |
+#         echo "gsutil logging set on -b gs://$(cat /workspace/logging_bucket.txt) $(cat /workspace/dag_bucket.txt)"
+#         gsutil logging set on -b gs://$(cat /workspace/logging_bucket.txt) $(cat /workspace/dag_bucket.txt)
+#         gsutil logging get $(cat /workspace/dag_bucket.txt)
 
 #---- [END] READ Data-Ops TFSTATE file
 

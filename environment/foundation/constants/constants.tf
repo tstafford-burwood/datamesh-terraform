@@ -7,7 +7,7 @@ locals {
     // DOMAIN INFORMATION
     automation_project_id      = "aaron-cb-sde" # Project ID that hosts Cloud Build
     billing_account_id         = "01EF01-627C10-7CD2DF"             
-    cloudbuild_service_account = "<PROJECT_NUMBER>@cloudbuild.gserviceaccount.com" # Cloud Build
+    cloudbuild_service_account = "213453898789@cloudbuild.gserviceaccount.com" # Cloud Build
     org_id                     = "575228741867" # gcloud organizations list
     sde_folder_id              = "720656688626"
     terraform_state_bucket     = "terraform-state-edafe2a65b489823"

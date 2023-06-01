@@ -66,10 +66,12 @@ variable "researcher_workspace_folders" {
 | name | description | modules | resources |
 |---|---|---|---|
 | [backend.tf](./backend.tf) | None |  |  |
+| [central-logging.tf](./central-logging.tf) | None | <code>centralized-logging</code> | <code>random_id</code> |
 | [main.tf](./main.tf) | Module-level locals and resources. | <code>constants</code> | <code>google_folder</code> · <code>google_folder_iam_audit_config</code> · <code>time_sleep</code> |
 | [org-pol.tf](./org-pol.tf) | None | <code>google</code> | <code>google_folder_organization_policy</code> |
 | [outputs.tf](./outputs.tf) | Module outputs. |  |  |
 | [variables.tf](./variables.tf) | Module variables. |  |  |
+| [versions.tf](./versions.tf) | Version pins. |  |  |
 
 ## Variables
 
@@ -77,11 +79,12 @@ variable "researcher_workspace_folders" {
 |---|---|:---:|:---:|:---:|:---:|
 | [audit_log_config](variables.tf#L7) | Permission type for which logging is to be configured. Can be `DATA_READ`, `DATA_WRITE`, or `ADMIN_READ`. Leave emtpy list to turn off. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#34;DATA_READ&#34;, &#34;DATA_WRITE&#34;, &#34;ADMIN_READ&#34;&#93;</code> |  |
 | [audit_service](variables.tf#L13) | Service which will be enabled for audit logging. | <code>string</code> |  | <code>&#34;storage.googleapis.com&#34;</code> |  |
-| [domain_restricted_sharing_allow](variables.tf#L29) | List one or more Cloud Identity or Google Workspace custom IDs whose principals can be added to IAM policies. Leave empty to not enable. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#93;</code> |  |
-| [enforce](variables.tf#L42) | Whether this policy is enforce. | <code>bool</code> |  | <code>true</code> |  |
+| [domain_restricted_sharing_allow](variables.tf#L35) | List one or more Cloud Identity or Google Workspace custom IDs whose principals can be added to IAM policies. Leave empty to not enable. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#93;</code> |  |
+| [enforce](variables.tf#L48) | Whether this policy is enforce. | <code>bool</code> |  | <code>true</code> |  |
+| [folder_name](variables.tf#L19) | Top level folder name | <code>string</code> |  | <code>&#34;HIPAA&#34;</code> |  |
 | [researcher_workspace_folders](variables.tf#L1) | List of folder to create for researcher workspaces | <code>list&#40;string&#41;</code> |  | <code>&#91;&#93;</code> |  |
-| [resource_location_restriction_allow](variables.tf#L36) | This list constraint defines the set of locations where location-based GCP resources can be created. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#34;in:us-central1-locations&#34;&#93;</code> |  |
-| [vms_allowed_external_ip](variables.tf#L23) | This list constraint defines the set of Compute Engine VM instances that are allowed to use external IP addresses, every element of the list must be identified by the VM instance name, in the form: projects/PROJECT_ID/zones/ZONE/instances/INSTANCE | <code>list&#40;string&#41;</code> |  | <code>&#91;&#93;</code> |  |
+| [resource_location_restriction_allow](variables.tf#L42) | This list constraint defines the set of locations where location-based GCP resources can be created. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#34;in:us-central1-locations&#34;&#93;</code> |  |
+| [vms_allowed_external_ip](variables.tf#L29) | This list constraint defines the set of Compute Engine VM instances that are allowed to use external IP addresses, every element of the list must be identified by the VM instance name, in the form: projects/PROJECT_ID/zones/ZONE/instances/INSTANCE | <code>list&#40;string&#41;</code> |  | <code>&#91;&#93;</code> |  |
 
 ## Outputs
 

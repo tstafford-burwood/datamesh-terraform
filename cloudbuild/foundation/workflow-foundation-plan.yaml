@@ -4,23 +4,23 @@ steps:
 
 # --- Folder Heirarchy
 
-- id: "folder store git branch"
-  name: ubuntu
-  entrypoint: bash
-  args:
-  - -c
-  - |
-      # save git branch to persistent volume: /workspace
-      echo "Current branch name is $BRANCH_NAME"
-      if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
-        branch=test
-        echo "Branch Name is now $branch"
-        echo $branch > /workspace/branch.txt
-      elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
-        branch=main
-        echo "Branch Name is now $branch"
-        echo $branch > /workspace/branch.txt
-      fi
+# - id: "folder store git branch"
+#   name: ubuntu
+#   entrypoint: bash
+#   args:
+#   - -c
+#   - |
+#       # save git branch to persistent volume: /workspace
+#       echo "Current branch name is $BRANCH_NAME"
+#       if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
+#         branch=test
+#         echo "Branch Name is now $branch"
+#         echo $branch > /workspace/branch.txt
+#       elif [[ "$BRANCH_NAME" == main* ]] || [[ "$BRANCH_NAME" == main ]]; then
+#         branch=main
+#         echo "Branch Name is now $branch"
+#         echo $branch > /workspace/branch.txt
+#       fi
 
 - id: "folder init"
   name: hashicorp/terraform:${_TAG}

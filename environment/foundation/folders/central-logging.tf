@@ -19,11 +19,11 @@ module "centralized_logging" {
   parent_resource_id = local.folder_id
 
   // Storage
-  storage_bucket_name   = format("fldr-%s-%s-%s", lower(var.folder_name), "sink-gcs", random_id.random_suffix)
+  storage_bucket_name   = format("fldr-%s-%s-%s", lower(var.folder_name), "sink-gcs", random_id.random_suffix.hex)
   dest_storage_location = local.default_region
 
   // Pub/Sub
-  topic_name = format("fldr-%s-%s-%s", lower(var.folder_name), "sink-pubsub", random_id.random_suffix)
+  topic_name = format("fldr-%s-%s-%s", lower(var.folder_name), "sink-pubsub", random_id.random_suffix.hex)
 
   //BQ
   create_bq_logs_export = false

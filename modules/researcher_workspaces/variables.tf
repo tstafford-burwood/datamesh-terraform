@@ -241,6 +241,12 @@ variable "golden_image_version" {
   default     = ""
 }
 
+variable "deploy_notebook" {
+  description = "deploys vertex ai notebook in the workspace"
+  type        = bool
+  default     = false
+}
+
 /**************************************************
   VPC Service Controls
 **************************************************/

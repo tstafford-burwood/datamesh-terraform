@@ -75,3 +75,9 @@ variable "project_admins" {
   type        = list(string)
   default     = []
 }
+
+variable "deploy_notebook" {
+  description = "deploys vertex ai notebook in the workspace"
+  type        = bool
+  default     = false
+}

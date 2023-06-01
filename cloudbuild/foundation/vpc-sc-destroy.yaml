@@ -76,7 +76,7 @@ steps:
   args:
   - '-c'
   - |
-      gcloud access-context-manager perimeters list --policy=366535258367
+      gcloud access-context-manager perimeters list --policy=1234567890
 
 
 timeout: 3600s

@@ -28,6 +28,7 @@ variable "cloudbuild_iam_roles" {
   default = [
     "roles/resourcemanager.folderAdmin",
     "roles/resourcemanager.projectCreator",
+    "roles/logging.configWriter"
   ]
 }
 

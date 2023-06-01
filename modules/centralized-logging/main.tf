@@ -44,7 +44,7 @@ module "destination_storage" {
   count = var.create_gcs_logs_export ? 1 : 0
 
   project_id               = module.project-factory.project_id
-  storage_bucket_name      = "storage_example_bkt"
+  storage_bucket_name      = var.storage_bucket_name
   log_sink_writer_identity = module.gcs_logs_export[0].writer_identity
 
   uniform_bucket_level_access = true

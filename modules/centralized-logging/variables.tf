@@ -101,7 +101,15 @@ variable "create_gcs_logs_export" {
 }
 
 variable "log_sink_name_storage" {
-  default = "sk-to-bkt-logs" # sink-to-bucket-logs
+  description = "Name of the sink for GCS Storage"
+  type        = string
+  default     = "sk-to-bkt-logs" # sink-to-bucket-logs
+}
+
+variable "storage_bucket_name" {
+  description = "Name of the storage bucket that will store the logs."
+  type        = string
+  default     = "storage_example_bkt"
 }
 
 variable "dest_storage_location" {
@@ -180,7 +188,15 @@ variable "create_bq_logs_export" {
 }
 
 variable "bq_log_sink_name" {
-  default = "sk-to-dataset-logs"
+  description = "Name of the sink for BQ"
+  type        = string
+  default     = "sk-to-dataset-logs"
+}
+
+variable "dataset_name" {
+  description = "The name of the bigquery dataset to be created and used for log entries matching the filter."
+  type        = string
+  default     = "bq_folder"
 }
 
 variable "bq_dataset_description" {
@@ -211,12 +227,6 @@ variable "partition_expiration_days" {
   description = "Partition expiration period in days. If both partition_expiration_days and expiration_days are not set, logs will never be deleted."
   type        = number
   default     = 30
-}
-
-variable "dataset_name" {
-  description = "The name of the bigquery dataset to be created and used for log entries matching the filter."
-  type        = string
-  default     = "bq_folder"
 }
 
 /**************************

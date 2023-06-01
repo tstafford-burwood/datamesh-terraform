@@ -12,7 +12,8 @@ steps:
   - |
       # save git branch to persistent volume: /workspace
       echo "Current branch name is $BRANCH_NAME"
-      echo ""      
+      branch=$BRANCH_NAME
+      echo $branch > /workspace/branch.txt     
       if [[ "$BRANCH_NAME" == test* ]] || [[ "$BRANCH_NAME" == test ]]; then
         branch=test
         echo "Branch Name is now $branch"
@@ -89,7 +90,7 @@ substitutions:
   _PACKER_VERSION: 1.8.4
   _IMAGE_FAMILY: ubuntu-2204-lts
   #_IMAGE_FAMILY: packer-data-science-8223c80
-  _IMAGE_PROJECT_ID: qa-sde-image-factory-6bb8
+  _IMAGE_PROJECT_ID: qa-sde-image-factory-a701
   _REGION: us-central1
   
 options:

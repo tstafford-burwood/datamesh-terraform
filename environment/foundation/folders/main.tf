@@ -22,7 +22,7 @@ locals {
 
 resource "google_folder" "environment" {
   # Parent Folder
-  display_name = format("%s-%s", "HIPAA", local.environment[terraform.workspace])
+  display_name = format("%s-%s", var.folder_name, local.environment[terraform.workspace])
   parent       = local.parent_folder_id
 }
 

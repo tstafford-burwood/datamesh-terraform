@@ -52,8 +52,6 @@ The resources that this module will create are:
 |---|---|:---:|:---:|:---:|:---:|
 | [enforce](variables.tf#L23) | Whether this policy is enforced. | <code>bool</code> |  | <code>true</code> |  |
 | [gcs_bucket](variables.tf#L17) | List of bucket names to create. | <code>list&#40;string&#41;</code> |  | <code>&#91;&#34;ingress-example-here&#34;&#93;</code> |  |
-| [lbl_cloudprojectid](variables.tf#L38) | CPID that refers to a CMDB with detailed contact info | <code>number</code> |  | <code>111222</code> |  |
-| [lbl_dataclassification](variables.tf#L33) | Data sensitivity | <code>string</code> |  | <code>&#34;HIPAA&#34;</code> |  |
 | [project_iam_admin_roles](variables.tf#L1) | List of roles to assign to admins | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;viewer&#34;,              &#35; Grants permissions to list buckets in the project&#10;  &#34;roles&#47;storage.objectAdmin&#34;, &#35; Grants full control of objects, including listing, creating, viewing, and deleting objects&#10;&#93;">&#91;&#8230;&#93;</code> |  |
 | [subnet_cidr](variables.tf#L11) | Subnet CIDR range | <code>string</code> |  | <code>&#34;172.16.0.0&#47;24&#34;</code> |  |
 

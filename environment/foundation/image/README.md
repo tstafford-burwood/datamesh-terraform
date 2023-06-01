@@ -126,8 +126,6 @@ Once a VM has been deployed in the researcher workspace, you'll want to confirm 
 | [enforce](variables.tf#L16) | Whether this policy is enforced. | <code>bool</code> |  | <code>true</code> |  |
 | [image_project_iam_roles](variables.tf#L5) | The IAM role(s) to assign to the member at the defined project. | <code>list&#40;string&#41;</code> |  | <code title="&#91;&#10;  &#34;roles&#47;deploymentmanager.editor&#34;, &#35; Provides the permissions necessary to create and manage deployments.&#10;  &#34;roles&#47;artifactregistry.admin&#34;,   &#35; Administrator access to create and manage repositories.&#10;  &#34;roles&#47;compute.admin&#34;,            &#35; Full control of all Compute Engine resources.&#10;  &#34;roles&#47;editor&#34;&#10;&#93;">&#91;&#8230;&#93;</code> |  |
 | [inherit](variables.tf#L41) | Inherit from parent | <code>bool</code> |  | <code>false</code> |  |
-| [lbl_cloudprojectid](variables.tf#L56) | CPID that refers to a CMDB with detailed contact info | <code>number</code> |  | <code>111222</code> |  |
-| [lbl_dataclassification](variables.tf#L51) | Data sensitivity | <code>string</code> |  | <code>&#34;HIPAA&#34;</code> |  |
 | [set_disable_sa_create](variables.tf#L34) | Enable the Disable Service Account Creation policy | <code>bool</code> |  | <code>true</code> |  |
 | [set_external_ip_policy](variables.tf#L28) | Enable org policy to allow External (Public) IP addresses on virtual machines. | <code>bool</code> |  | <code>true</code> |  |
 | [set_resource_location](variables.tf#L22) | Enable org policy to set resource location restriction | <code>bool</code> |  | <code>false</code> |  |

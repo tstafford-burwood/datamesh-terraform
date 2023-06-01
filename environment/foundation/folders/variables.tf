@@ -16,6 +16,12 @@ variable "audit_service" {
   default     = "storage.googleapis.com"
 }
 
+variable "folder_name" {
+  description = "Top level folder name"
+  type        = string
+  default     = "HIPAA"
+}
+
 #---------------------------------------------
 # ORGANIZATION POLICY VARIABLES
 #---------------------------------------------

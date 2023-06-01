@@ -54,6 +54,7 @@ environment = {
 |---|---|
 | [constants.tf](./constants.tf) | None |
 | [outputs.tf](./outputs.tf) | Module outputs. |
+| [variables.tf](./variables.tf) | Module variables. |
 
 ## Outputs
 

@@ -28,6 +28,7 @@ variable "cloudbuild_iam_roles" {
   default = [
     "roles/resourcemanager.folderAdmin",
     "roles/resourcemanager.projectCreator",
+    "roles/logging.configWriter"
   ]
 }
 
@@ -63,7 +64,7 @@ variable "storage_class" {
 variable "services" {
   description = "List of API services to enable in the Cloud Build project"
   type        = list(string)
-  default     = ["dlp.googleapis.com", "accesscontextmanager.googleapis.com", "cloudbuild.googleapis.com", "iam.googleapis.com", "cloudbilling.googleapis.com", "cloudresourcemanager.googleapis.com", "servicenetworking.googleapis.com"]
+  default     = ["dlp.googleapis.com", "accesscontextmanager.googleapis.com", "cloudbuild.googleapis.com", "iam.googleapis.com", "cloudbilling.googleapis.com", "cloudresourcemanager.googleapis.com", "servicenetworking.googleapis.com", "dataflow.googleapis.com"]
 }
 
 # --- Trigger

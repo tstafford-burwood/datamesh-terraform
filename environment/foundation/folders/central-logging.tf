@@ -6,7 +6,7 @@ locals {
 }
 
 resource "random_id" "random_suffix" {
-  byte_length = 4
+  byte_length = 2
 }
 
 module "centralized_logging" {
